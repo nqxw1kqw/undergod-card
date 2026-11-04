@@ -34,17 +34,31 @@ public:
     std::string toast;
     explicit Game(Config config,Timeline timeline):timeline_(std::move(timeline)),state(std::move(config)){}
     void NewRun(unsigned seed=1337);
-    bool CanAct()const{return motion_==Motion::None&&!cinematic_.Active()&&state.phase==Phase::Player&&!run.pending_reward&&!run.victory&&!run.defeat;}
+    bool CanAct()const{return motion_==Motion::None&&!cinematic_.Active()&&run.place==Place::Fight&&state.phase==Phase::Player&&!run.victory&&!run.defeat;}
     bool Busy()const{return motion_!=Motion::None||cinematic_.Active();}
     bool Cinematic()const{return cinematic_.Active();}
-    bool Reward()const{return !Busy()&&run.pending_reward;}
+    bool Map()const{return !Busy()&&run.place==Place::Map&&!run.victory&&!run.defeat;}
+    bool Reward()const{return !Busy()&&run.place==Place::Reward;}
+    bool Event()const{return !Busy()&&run.place==Place::Event;}
+    bool Shop()const{return !Busy()&&run.place==Place::Shop;}
+    bool Rest()const{return !Busy()&&run.place==Place::Rest;}
     bool Result()const{return !Busy()&&(run.victory||run.defeat);}
     void Play(int index);
     void EndTurn();
     void Ultimate();
+    void ChooseNode(int option);
     void ChooseReward(int index);
+    void ChooseEvent(int index);
+    bool Buy(int index);
+    bool RemoveCard(int index);
+    void LeaveShop();
+    bool RestHeal();
+    bool UpgradeCard(int index);
+    bool DrinkPotion(int index);
+    bool Act(const AutoStep& step);
     int SuggestCard()const{return undergod::SuggestCard(state);}
     int SuggestReward()const{return undergod::SuggestReward(run,state.config);}
+    AutoStep Suggest()const{return SuggestAuto(run,state);}
     void SkipCinematic();
     void Update(float dt);
     int Speed()const{return speed_;}

@@ -18,15 +18,6 @@ StatusId ParseStatus(const std::string& name){
     if(name=="strength")return StatusId::Strength;
     throw std::runtime_error("Unknown status: "+name);
 }
-NodeKind ParseKind(const std::string& name){
-    if(name=="combat")return NodeKind::Combat;
-    if(name=="elite")return NodeKind::Elite;
-    if(name=="event")return NodeKind::Event;
-    if(name=="shop")return NodeKind::Shop;
-    if(name=="rest")return NodeKind::Rest;
-    if(name=="boss")return NodeKind::Boss;
-    throw std::runtime_error("Unknown node kind: "+name);
-}
 Effect ParseEffect(const Json& j){
     Effect effect;const std::string op=j.at("op");
     if(op=="damage")effect.op=EffectOp::Damage;
@@ -113,6 +104,32 @@ EnemyDef ParseEnemy(const Json& j){
     if(j.contains("phases"))for(const auto& phase:j.at("phases"))enemy.phases.push_back(ParsePhase(phase));
     return enemy;
 }
+std::vector<Effect> EffectList(const Json& j,const char* key){std::vector<Effect> effects;if(!j.contains(key))return effects;for(const auto& effect:j.at(key))effects.push_back(ParseEffect(effect));return effects;}
+std::string Describe(const CardDef& card){
+    std::string text;
+    if(card.damage)text+="Gây "+std::to_string(card.damage)+" sát thương. ";
+    if(card.block)text+="Nhận "+std::to_string(card.block)+" giáp. ";
+    if(card.heal)text+="Hồi "+std::to_string(card.heal)+" HP. ";
+    if(card.poison)text+="Gây "+std::to_string(card.poison)+" Độc. ";
+    if(card.weak)text+="Gây "+std::to_string(card.weak)+" Suy Yếu. ";
+    if(card.vulnerable)text+="Gây "+std::to_string(card.vulnerable)+" Dễ Thương. ";
+    if(card.strength)text+="Nhận "+std::to_string(card.strength)+" Sức Mạnh. ";
+    if(card.cards_drawn)text+="Rút "+std::to_string(card.cards_drawn)+" lá. ";
+    if(card.energy_gain)text+="Nhận "+std::to_string(card.energy_gain)+" năng lượng. ";
+    if(text.empty())text="Đã cường hóa.";
+    return text;
+}
+CardDef UpgradeOf(CardDef card){
+    card.copies=0;card.upgraded=true;card.upgrade_id.clear();card.id+="+";card.name+="+";
+    bool boosted=false;
+    for(auto& effect:card.effects){
+        if(boosted)break;
+        if(effect.op==EffectOp::Damage||effect.op==EffectOp::Block||effect.op==EffectOp::Heal){effect.amount+=3;boosted=true;}
+        else if(effect.op==EffectOp::Apply){effect.amount+=2;boosted=true;}
+    }
+    if(!boosted&&card.cost>0){--card.cost;boosted=true;}
+    Summarize(card);card.description=Describe(card);return card;
+}
 }
 Config LoadConfig(const std::string& directory){
     Config c;const auto b=Read(directory+"/balance.json");
@@ -128,17 +145,41 @@ Config LoadConfig(const std::string& directory){
     if(c.bestiary.empty())throw std::runtime_error("Enemy list is empty");
     const auto route=Read(directory+"/run.json");
     c.reward_choices=route.value("rewardChoices",3);
-    for(const auto& node:route.at("nodes")){
-        RouteNode entry;entry.kind=ParseKind(node.at("kind"));entry.enemy_id=node.value("enemy","");
-        if(IsFightNode(entry.kind)){
-            if(!Ident(entry.enemy_id))throw std::runtime_error("Fight node needs an enemy id");
-            bool found=false;for(const auto& enemy:c.bestiary)found=found||enemy.id==entry.enemy_id;
-            if(!found)throw std::runtime_error("Route enemy was not defined: "+entry.enemy_id);
+    c.gold_start=route.value("goldStart",50);c.heal_percent=route.value("healPercent",30);c.remove_price=route.value("removePrice",70);c.potion_slots=route.value("potionSlots",2);
+    c.map_columns=route.value("columns",3);c.map_floors=route.value("floors",5);
+    c.boss_id=route.value("boss","frog");c.elite_id=route.value("elite","elite_frog");
+    if(route.contains("combats"))for(const auto& id:route.at("combats"))c.combat_ids.push_back(id.get<std::string>());
+    auto known=[&](const std::string& id){for(const auto& enemy:c.bestiary)if(enemy.id==id)return true;return false;};
+    if(c.combat_ids.empty()||!known(c.boss_id)||!known(c.elite_id)||c.map_columns<2||c.map_floors<3||c.gold_start<0||c.heal_percent<1||c.heal_percent>100||c.remove_price<1||c.potion_slots<1)throw std::runtime_error("Invalid run configuration");
+    for(const auto& id:c.combat_ids)if(!known(id))throw std::runtime_error("Unknown combat enemy: "+id);
+    for(const auto& enemy:c.bestiary)if(enemy.id==c.combat_ids.front())c.enemy=enemy;
+    for(const auto& j:Read(directory+"/events.json")){
+        EventDef event;event.id=j.at("id");event.title=j.at("title");event.text=j.at("text");
+        if(!Ident(event.id)||event.title.empty()||event.text.empty())throw std::runtime_error("Invalid event");
+        for(const auto& choice:j.at("choices")){
+            EventChoice entry;entry.label=choice.at("label");entry.outcome=choice.at("outcome");
+            entry.heal=choice.value("heal",0);entry.damage=choice.value("damage",0);entry.gold=choice.value("gold",0);entry.max_hp=choice.value("maxHp",0);
+            entry.card=choice.value("card","");entry.relic=choice.value("relic","");entry.potion=choice.value("potion","");entry.upgrade=choice.value("upgrade",false);
+            if(entry.label.empty()||entry.outcome.empty())throw std::runtime_error("Invalid event choice");
+            event.choices.push_back(entry);
         }
-        c.route.push_back(entry);
+        if(event.choices.size()<2)throw std::runtime_error("Event needs two choices");
+        c.events.push_back(std::move(event));
     }
-    if(c.route.empty()||!IsFightNode(c.route.front().kind))throw std::runtime_error("Run route must start with a fight");
-    for(const auto& enemy:c.bestiary)if(enemy.id==c.route.front().enemy_id)c.enemy=enemy;
+    for(const auto& j:Read(directory+"/relics.json")){
+        RelicDef relic;relic.id=j.at("id");relic.name=j.at("name");relic.description=j.at("description");relic.price=j.value("price",50);
+        relic.bonus_damage=j.value("bonusDamage",0);relic.bonus_block=j.value("bonusBlock",0);relic.gold_bonus=j.value("goldBonus",0);
+        relic.rest_bonus=j.value("restBonus",0);relic.shop_discount=j.value("shopDiscount",0);relic.max_hp=j.value("maxHp",0);relic.potion_slot=j.value("potionSlot",0);
+        relic.combat_start=EffectList(j,"onCombatStart");relic.turn_start=EffectList(j,"onTurnStart");
+        if(!Ident(relic.id)||relic.name.empty()||relic.price<1)throw std::runtime_error("Invalid relic");
+        c.relics.push_back(std::move(relic));
+    }
+    for(const auto& j:Read(directory+"/potions.json")){
+        PotionDef potion;potion.id=j.at("id");potion.name=j.at("name");potion.description=j.at("description");potion.price=j.value("price",40);potion.effects=EffectList(j,"effects");
+        if(!Ident(potion.id)||potion.name.empty()||potion.effects.empty()||potion.price<1)throw std::runtime_error("Invalid potion");
+        c.potions.push_back(std::move(potion));
+    }
+    if(c.events.size()<10||c.relics.size()<10||c.potions.size()<5)throw std::runtime_error("Content pool is too small");
     ids.clear();int copies=0,rewardable=0;
     for(const auto& j:Read(directory+"/cards.json")){
         CardDef card;
@@ -161,6 +202,16 @@ Config LoadConfig(const std::string& directory){
         for(const auto& word:card.keywords)if(word.empty())throw std::runtime_error("Empty keyword");
         if(card.rarity!="starter"&&card.copies==0)++rewardable;
         copies+=card.copies;c.cards.push_back(std::move(card));
+    }
+    const int base_count=int(c.cards.size());
+    for(int i=0;i<base_count;++i){CardDef upgraded=UpgradeOf(c.cards[i]);c.cards[i].upgrade_id=upgraded.id;c.cards.push_back(std::move(upgraded));}
+    auto has_card=[&](const std::string& id){for(const auto& card:c.cards)if(card.id==id)return true;return false;};
+    auto has_relic=[&](const std::string& id){for(const auto& relic:c.relics)if(relic.id==id)return true;return false;};
+    auto has_potion=[&](const std::string& id){for(const auto& potion:c.potions)if(potion.id==id)return true;return false;};
+    for(const auto& event:c.events)for(const auto& choice:event.choices){
+        if(!choice.card.empty()&&!has_card(choice.card))throw std::runtime_error("Event card was not defined: "+choice.card);
+        if(!choice.relic.empty()&&!has_relic(choice.relic))throw std::runtime_error("Event relic was not defined: "+choice.relic);
+        if(!choice.potion.empty()&&!has_potion(choice.potion))throw std::runtime_error("Event potion was not defined: "+choice.potion);
     }
     if(copies<1||copies>1000||rewardable<c.reward_choices||c.reward_choices<1||c.reward_choices>5||c.balance.player_hp<1||c.enemy.hp<1||c.balance.draw<1||c.balance.draw>10||c.balance.energy<1||c.balance.rage_max<1||c.balance.rage_attack<0||c.balance.rage_block<0||c.balance.ultimate_damage<1)throw std::runtime_error("Invalid balance configuration");
     return c;

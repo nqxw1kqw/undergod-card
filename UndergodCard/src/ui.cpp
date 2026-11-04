@@ -1,5 +1,6 @@
 #include "ui.hpp"
 #include <DxLib.h>
+#include <algorithm>
 #include <cmath>
 #include <filesystem>
 
@@ -111,7 +112,65 @@ void Ui::Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,i
     else{Text(r.x+12,r.y+r.h-40,lines[0],Muted,small_);Text(r.x+12,r.y+r.h-22,lines[1],Muted,small_);}
 }
 void Ui::Draw(const Game& game,int mx,int my){
-    const auto& s=game.state;DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
+    const auto& s=game.state;
+    auto backdrop=[&](){DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);Button(RestartButton(),"Chơi lại ↻",true,mx,my);Text(980,78,"Vàng: "+std::to_string(game.run.gold),C(146,112,48),small_);};
+    if(game.Result()){
+        backdrop();Box({440,305,560,330},C(252,249,239),24);Center(720,338,"✦",C(174,144,199),brand_);
+        Center(720,395,game.run.victory?"Khu vườn nở hoa!":"Nghỉ một chút nhé!",Ink,brand_);
+        Center(720,454,game.run.victory?"Bạn đã vượt qua Ếch Vương.":"Hành trình dừng trước khi hạ được trùm.",Muted,font_);
+        Center(720,491,game.run.victory?"Hai giai đoạn của Ếch Vương đã khép lại.":"HP không còn để sang trận tiếp theo.",Muted,small_);Button(ResultButton(),"Chơi lại ↻",true,mx,my);return;
+    }
+    if(game.Map()){
+        backdrop();Center(720,120,"Bản đồ đồng cỏ",Ink,brand_);Center(720,158,"Chọn lối đi. HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp)+".",Muted,font_);
+        for(const auto& node:game.run.map)for(int next:node.next){
+            const bool boss=game.run.map[next].kind==NodeKind::Boss;const Rect a=MapNodeRect(node.floor,node.column,node.kind==NodeKind::Boss),b=MapNodeRect(game.run.map[next].floor,game.run.map[next].column,boss);
+            DrawLine(a.x+a.w/2,a.y+a.h/2,b.x+b.w/2,b.y+b.h/2,C(186,196,176));
+        }
+        for(const auto& node:game.run.map){
+            const bool boss=node.kind==NodeKind::Boss;const Rect r=MapNodeRect(node.floor,node.column,boss);
+            const bool open=std::find(game.run.options.begin(),game.run.options.end(),int(&node-&game.run.map[0]))!=game.run.options.end();
+            const unsigned fill=node.kind==NodeKind::Elite?C(184,112,112):(node.kind==NodeKind::Boss?C(126,96,150):(node.kind==NodeKind::Shop?C(196,164,92):(node.kind==NodeKind::Rest?C(116,158,124):(node.kind==NodeKind::Event?C(120,146,176):C(206,164,132)))));
+            Box(r,open?fill:C(214,216,206),18);Center(r.x+r.w/2,r.y+14,NodeKindName(node.kind),open?C(255,252,246):Muted,small_);
+            if(node.visited)Center(r.x+r.w/2,r.y+36,"xong",open?C(255,252,246):Muted,small_);
+        }
+        for(int i=0;i<int(game.run.options.size());++i){const auto& node=game.run.map[game.run.options[i]];Button(MapChoiceRect(i,int(game.run.options.size())),std::to_string(i+1)+" · "+NodeKindName(node.kind),true,mx,my);}
+        Text(55,922,"1–9 chọn lối trên bản đồ.",Muted,small_);return;
+    }
+    if(game.Event()){
+        backdrop();Box({280,180,880,620},C(252,249,239),24);Center(720,220,game.run.event_title,Ink,brand_);
+        Center(720,280,game.run.event_text,Muted,font_);
+        for(int i=0;i<int(game.run.event_choices.size());++i){
+            const Rect r=EventChoiceRect(i);const bool hover=r.Contains(mx,my);
+            Box(r,hover?C(93,125,105):C(79,106,91),14);
+            Center(r.x+r.w/2,r.y+14,std::to_string(i+1)+" · "+game.run.event_choices[i].label,C(255,255,246),font_);
+            Center(r.x+r.w/2,r.y+48,game.run.event_choices[i].outcome,C(226,232,220),small_);
+        }
+        return;
+    }
+    if(game.Shop()){
+        backdrop();Text(80,118,"Cửa hàng",Ink,heading_);
+        for(int i=0;i<int(game.run.shop.size());++i){
+            const auto& item=game.run.shop[i];
+            std::string name=item.id;
+            if(item.ware==Ware::Card)name=s.Definition(item.id).name;else if(item.ware==Ware::Relic)name=FindRelic(s.config,item.id).name;else name=FindPotion(s.config,item.id).name;
+            Button(ShopRect(i),std::to_string(i+1)+" · "+name+"  ·  "+std::to_string(item.price)+" vàng"+(item.sold?"  ·  đã bán":""),!item.sold&&game.run.gold>=item.price,mx,my);
+        }
+        Text(80,748,"Gỡ một lá · "+std::to_string(s.config.remove_price)+" vàng. Bộ còn "+std::to_string(game.run.deck.size())+" lá.",Muted,small_);
+        for(int i=0;i<std::min(8,int(game.run.deck.size()));++i)Button(DeckRect(i),s.Definition(game.run.deck[i]).name,game.run.gold>=s.config.remove_price&&int(game.run.deck.size())>5,mx,my);
+        Button(LeaveButton(),"Rời cửa hàng",true,mx,my);return;
+    }
+    if(game.Rest()){
+        const int heal=std::max(8,game.run.max_hp*s.config.heal_percent/100);
+        backdrop();Text(120,120,"Chỗ nghỉ",Ink,heading_);
+        Button(HealButton(),"Nghỉ: hồi "+std::to_string(heal)+" HP",!game.run.rest_used,mx,my);
+        Text(120,270,"Hoặc cường hóa một lá. Chỉ làm một trong hai.",Muted,font_);
+        for(int i=0;i<std::min(10,int(game.run.deck.size()));++i){
+            const auto& card=s.Definition(game.run.deck[i]);
+            Button({120+(i%5)*240,330+(i/5)*70,220,56},std::to_string(i+1)+" · "+card.name,!card.upgraded&&!card.upgrade_id.empty(),mx,my);
+        }
+        return;
+    }
+    DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
     Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);
     std::string progress="Hành trình";
     if(!game.run.map.empty()){
@@ -119,7 +178,7 @@ void Ui::Draw(const Game& game,int mx,int my){
         progress=std::string(NodeKindName(game.run.map[node].kind))+" "+std::to_string(node+1)+"/"+std::to_string(game.run.map.size());
         if(s.PhaseCount()>1)progress+=" · Giai đoạn "+std::to_string(s.PhaseIndex()+1)+"/"+std::to_string(s.PhaseCount());
     }
-    Text(760,53,progress,Muted,small_);Button(RestartButton(),"Chơi lại ↻",!game.Busy()||game.Reward()||game.Result(),mx,my);
+    Text(760,53,progress,Muted,small_);Button(RestartButton(),"Chơi lại ↻",!game.Busy()||game.Reward()||game.Result(),mx,my);Text(980,78,"Vàng: "+std::to_string(game.run.gold),C(146,112,48),small_);
     Text(430,53,"Tốc độ",Muted,small_);
     for(int speed=1;speed<=3;++speed){const Rect r=SpeedButton(speed);const bool selected=game.Speed()==speed;Box(r,selected?C(79,106,91):(r.Contains(mx,my)?C(226,229,218):C(239,237,229)));Center(r.x+r.w/2,r.y+11,"x"+std::to_string(speed),selected?C(255,255,246):Ink,small_);}
     DrawBox(20,110,Width-20,250,C(227,240,237),TRUE);
@@ -144,26 +203,19 @@ void Ui::Draw(const Game& game,int mx,int my){
     Text(470,652,"1–9: bài  ·  E: hết lượt  ·  U: Sao Rơi",Muted,small_);
     Button(UltimateButton(),"✦ Sao Rơi",game.CanAct()&&s.rage>=s.config.balance.rage_max,mx,my);Button(EndButton(),"Kết thúc lượt →",game.CanAct(),mx,my);
     for(size_t i=0;i<s.hand.size();++i)Card(s.Definition(s.hand[i]),CardRect(int(s.hand.size()),int(i)),int(i),s.CanPlay(int(i)),!game.CanAct(),mx,my);
-    Text(55,922,"Đọc ý định của địch. HP được giữ sau mỗi trận.",Muted,small_);Text(1090,922,"HÀNH TRÌNH v0.2",Muted,small_);
+    Text(55,922,"Đọc ý định của địch. Z/X uống thuốc. HP được giữ giữa các trận.",Muted,small_);Text(1090,922,"HÀNH TRÌNH v0.3",Muted,small_);
     if(game.toast_age>0){Box({420,570,600,43},C(55,72,62));Center(720,581,game.toast,C(255,255,246),small_);}
     if(game.Cinematic())Button(SkipButton(),"Bỏ qua · Space / Esc",true,mx,my);
+    for(int i=0;i<int(game.run.potions.size())&&i<3;++i)Button(PotionRect(i),FindPotion(s.config,game.run.potions[i]).name,game.CanAct(),mx,my);
     if(game.Reward()){
         Blend(210);DrawBox(0,0,Width,Height,C(38,57,44),TRUE);Blend(255);
         Center(720,250,"Chiến lợi phẩm",Ink,brand_);
-        const auto next=NextEncounterName(game.run,s.config);
-        Center(720,300,"Chọn 1 trong 3 lá. HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp)+" được giữ"+(next.empty()?std::string("."):" sang "+next+"."),Muted,font_);
+        Center(720,300,"Chọn 1 trong 3 lá. HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp)+" được giữ sang bản đồ.",Muted,font_);
         for(int i=0;i<int(game.run.rewards.size());++i){
             const auto& card=s.Definition(game.run.rewards[i]);
             Card(card,RewardRect(i),i,true,false,mx,my);
             Center(RewardRect(i).x+RewardRect(i).w/2,RewardRect(i).y-22,RarityLabel(card.rarity),C(123,91,153),small_);
         }
-    }
-    if(game.Result()){
-        Blend(210);DrawBox(0,0,Width,Height,C(38,57,44),TRUE);Blend(255);
-        Box({440,305,560,330},C(252,249,239),24);Center(720,338,"✦",C(174,144,199),brand_);
-        Center(720,395,game.run.victory?"Khu vườn nở hoa!":"Nghỉ một chút nhé!",Ink,brand_);
-        Center(720,454,game.run.victory?"Bạn đã vượt qua Ếch Vương.":"Hành trình dừng trước khi hạ được trùm.",Muted,font_);
-        Center(720,491,game.run.victory?"Hai giai đoạn của Ếch Vương đã khép lại.":"HP không còn để sang trận tiếp theo.",Muted,small_);Button(ResultButton(),"Chơi lại ↻",true,mx,my);
     }
 }
 void Ui::Click(Game& game,int mx,int my){
@@ -175,10 +227,29 @@ void Ui::Click(Game& game,int mx,int my){
         return;
     }
     if(game.Result()){if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewRun();return;}
+    if(RestartButton().Contains(mx,my)){game.NewRun();return;}
+    if(game.Map()){
+        for(int i=0;i<int(game.run.options.size());++i)if(MapChoiceRect(i,int(game.run.options.size())).Contains(mx,my)){game.ChooseNode(i);return;}
+        for(int i=0;i<int(game.run.map.size());++i){const auto& node=game.run.map[i];if(!MapNodeRect(node.floor,node.column,node.kind==NodeKind::Boss).Contains(mx,my))continue;for(int option=0;option<int(game.run.options.size());++option)if(game.run.options[option]==i){game.ChooseNode(option);return;}}
+        return;
+    }
+    if(game.Event()){for(int i=0;i<int(game.run.event_choices.size());++i)if(EventChoiceRect(i).Contains(mx,my)){game.ChooseEvent(i);return;}return;}
+    if(game.Shop()){
+        if(LeaveButton().Contains(mx,my)){game.LeaveShop();return;}
+        for(int i=0;i<int(game.run.shop.size());++i)if(ShopRect(i).Contains(mx,my)){game.Buy(i);return;}
+        for(int i=0;i<std::min(8,int(game.run.deck.size()));++i)if(DeckRect(i).Contains(mx,my)){game.RemoveCard(i);return;}
+        return;
+    }
+    if(game.Rest()){
+        if(HealButton().Contains(mx,my)){game.RestHeal();return;}
+        for(int i=0;i<std::min(10,int(game.run.deck.size()));++i){const Rect r={120+(i%5)*240,330+(i/5)*70,220,56};if(r.Contains(mx,my)){game.UpgradeCard(i);return;}}
+        return;
+    }
     if(game.Busy())return;
     if(RestartButton().Contains(mx,my)){game.NewRun();return;}
     if(EndButton().Contains(mx,my)){game.EndTurn();return;}
     if(UltimateButton().Contains(mx,my)){game.Ultimate();return;}
+    for(int i=0;i<int(game.run.potions.size())&&i<3;++i)if(PotionRect(i).Contains(mx,my)){game.DrinkPotion(i);return;}
     const int count=int(game.state.hand.size());for(int i=0;i<count;++i)if(CardRect(count,i).Contains(mx,my)){game.Play(i);return;}
 }
 }

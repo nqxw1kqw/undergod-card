@@ -1,5 +1,6 @@
 #pragma once
 #include "quest_status.hpp"
+#include <vector>
 
 namespace undergod {
 enum class EffectOp { Damage, Block, Heal, Apply, Draw, Energy };
@@ -13,6 +14,11 @@ struct Effect {
     StatusId status=StatusId::Poison;
     int amount=0;
     int times=1;
+};
+
+struct CombatMods {
+    int bonus_damage=0,bonus_block=0;
+    std::vector<Effect> combat_start,turn_start;
 };
 
 inline const char* RarityLabel(const std::string& rarity){

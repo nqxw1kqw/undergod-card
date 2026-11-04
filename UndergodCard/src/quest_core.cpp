@@ -78,6 +78,8 @@ void Combat::BeginPlayer(){
     if(player.hp<=0){phase=Phase::Lost;return;}
     energy=config.balance.energy;
     Draw(config.balance.draw);
+    if(turn==1) Cast(mods_.combat_start);
+    if(phase==Phase::Player) Cast(mods_.turn_start);
 }
 
 void Combat::CheckEnd(){
@@ -126,35 +128,47 @@ bool Combat::TickPoison(bool enemy_target,bool& phased){
     return true;
 }
 
-void Combat::ApplyOne(const Effect& effect){
-    auto& target=effect.target==EffectTarget::Enemy?enemy:player;
-    const bool enemy_target=effect.target==EffectTarget::Enemy;
-    switch(effect.op){
+void Combat::ApplyOne(const Effect& effect,bool from_card){
+    Effect scaled=effect;
+    if(from_card&&scaled.op==EffectOp::Damage&&scaled.target==EffectTarget::Enemy) scaled.amount+=mods_.bonus_damage;
+    if(from_card&&scaled.op==EffectOp::Block&&scaled.target==EffectTarget::Self) scaled.amount+=mods_.bonus_block;
+    auto& target=scaled.target==EffectTarget::Enemy?enemy:player;
+    const bool enemy_target=scaled.target==EffectTarget::Enemy;
+    switch(scaled.op){
     case EffectOp::Damage:{
-        const int damage=ScaleDamage(effect.amount,player.status,target.status);
+        const int damage=ScaleDamage(scaled.amount,player.status,target.status);
         Hit(enemy_target,damage,false);
         break;
     }
     case EffectOp::Block:
-        target.block+=effect.amount;
-        events.push_back({EventType::Block,enemy_target,effect.amount});
+        target.block+=scaled.amount;
+        events.push_back({EventType::Block,enemy_target,scaled.amount});
         break;
     case EffectOp::Heal:{
-        const int amount=std::min(effect.amount,target.max_hp-target.hp);
+        const int amount=std::min(scaled.amount,target.max_hp-target.hp);
         target.hp+=amount;
         events.push_back({EventType::Heal,enemy_target,amount});
         break;
     }
     case EffectOp::Apply:
-        AddStatusEvent(target,enemy_target,effect.status,effect.amount);
+        AddStatusEvent(target,enemy_target,scaled.status,scaled.amount);
         break;
     case EffectOp::Draw:
-        Draw(effect.amount);
+        Draw(scaled.amount);
         break;
     case EffectOp::Energy:
-        energy=std::min(10,energy+effect.amount);
+        energy=std::min(10,energy+scaled.amount);
         break;
     }
+}
+
+void Combat::Cast(const std::vector<Effect>& effects){
+    if(effects.empty()||phase==Phase::Lost||phase==Phase::Won) return;
+    for(const auto& effect:effects){
+        const int times=std::max(1,effect.times);
+        for(int n=0;n<times&&phase!=Phase::Lost&&phase!=Phase::Won;++n) ApplyOne(effect,false);
+    }
+    if(phase!=Phase::Lost&&phase!=Phase::Won) CheckEnd();
 }
 
 void Combat::ResolveIntent(){
@@ -177,7 +191,8 @@ void Combat::ResolveIntent(){
     events.push_back({EventType::Block,true,intent.value});
 }
 
-void Combat::BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck){
+void Combat::BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck,CombatMods mods){
+    mods_=std::move(mods);
     shuffle_rng_.Seed(seed);
     intent_rng_.Seed(seed^0x19ABCu);
     ultimate_pending_=false;
@@ -309,7 +324,7 @@ bool Combat::StartUltimate(){
 bool Combat::UltimateImpact(){
     if(!ultimate_pending_) return false;
     ultimate_pending_=false;
-    Hit(true,ScaleDamage(config.balance.ultimate_damage,player.status,enemy.status),false);
+    Hit(true,ScaleDamage(config.balance.ultimate_damage+mods_.bonus_damage,player.status,enemy.status),false);
     CheckEnd();
     return true;
 }

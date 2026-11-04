@@ -1,0 +1,92 @@
+[
+  {
+    "id": "well",
+    "title": "Giếng Trong",
+    "text": "Một giếng giữa đồng. Nước trong và lạnh.",
+    "choices": [
+      {"label": "Uống", "outcome": "Nước lạnh làm bạn tỉnh. Hồi 8 HP.", "heal": 8},
+      {"label": "Bỏ đi", "outcome": "Bạn nhặt 6 vàng bên miệng giếng.", "gold": 6}
+    ]
+  },
+  {
+    "id": "chicks",
+    "title": "Bụi Gà",
+    "text": "Đàn gà con xào xạc trong bụi cỏ.",
+    "choices": [
+      {"label": "Lục tổ", "outcome": "Bạn tìm thấy một nắm Hạt Kê.", "card": "millet"},
+      {"label": "Xua nhẹ", "outcome": "Đàn gà để lại 8 vàng rồi chạy.", "gold": 8}
+    ]
+  },
+  {
+    "id": "lost_frog",
+    "title": "Ếch Đi Lạc",
+    "text": "Một con ếch nhỏ chặn lối. Nó đói, nhưng cũng run.",
+    "choices": [
+      {"label": "Cho 12 vàng", "outcome": "Ếch nhường đường và chỉ chỗ nghỉ. Hồi 10 HP.", "gold": -12, "heal": 10},
+      {"label": "Đánh đuổi", "outcome": "Ếch bỏ chạy, để lại 14 vàng. Bạn mất 6 HP.", "damage": 6, "gold": 14}
+    ]
+  },
+  {
+    "id": "nest",
+    "title": "Tổ Ấm",
+    "text": "Một tổ rơm khô, còn ấm hơi gà mẹ.",
+    "choices": [
+      {"label": "Nghỉ một lát", "outcome": "Bạn hồi 12 HP.", "heal": 12},
+      {"label": "Lấy trứng", "outcome": "Bạn nhặt lá Mổ Nhanh.", "card": "peck"}
+    ]
+  },
+  {
+    "id": "purse",
+    "title": "Túi Vàng Rơi",
+    "text": "Một túi vàng nằm trên lối mòn. Không thấy chủ.",
+    "choices": [
+      {"label": "Nhặt", "outcome": "Bạn nhận 25 vàng.", "gold": 25},
+      {"label": "Để lại", "outcome": "Bạn thấy nhẹ người. Hồi 4 HP.", "heal": 4}
+    ]
+  },
+  {
+    "id": "shrine",
+    "title": "Bàn Thờ Cũ",
+    "text": "Bàn thờ đá rêu phong. Có người đã để lại hoa.",
+    "choices": [
+      {"label": "Cầu", "outcome": "Bạn khỏe hơn. Tăng 6 HP tối đa.", "maxHp": 6},
+      {"label": "Lục đồ lễ", "outcome": "Bạn lấy 20 vàng và bị xước. Mất 5 HP.", "damage": 5, "gold": 20}
+    ]
+  },
+  {
+    "id": "healer",
+    "title": "Thầy Lang",
+    "text": "Thầy lang ngồi dưới gốc sung, thuốc thơm nhẹ.",
+    "choices": [
+      {"label": "Trả 18 vàng", "outcome": "Thuốc đắng. Hồi 16 HP.", "gold": -18, "heal": 16},
+      {"label": "Chỉ cảm ơn", "outcome": "Thầy lang tặng một Huyết Thanh.", "potion": "serum"}
+    ]
+  },
+  {
+    "id": "mirror",
+    "title": "Gương Hồ",
+    "text": "Mặt hồ phẳng như gương. Bạn thấy rõ bộ bài của mình.",
+    "choices": [
+      {"label": "Cường hóa", "outcome": "Một lá bài trong bộ trở nên sắc hơn.", "upgrade": true},
+      {"label": "Nhìn sâu", "outcome": "Hồ lạnh cắn da. Mất 4 HP, nhặt 18 vàng.", "damage": 4, "gold": 18}
+    ]
+  },
+  {
+    "id": "flock",
+    "title": "Đàn Gà Con",
+    "text": "Cả đàn chạy vòng quanh bạn, lông bay lả tả.",
+    "choices": [
+      {"label": "Xin lông", "outcome": "Bạn nhận một Khiên Khói.", "potion": "smoke_shield"},
+      {"label": "Chạy theo", "outcome": "Bạn vấp, mất 3 HP, nhưng nhặt được 12 vàng.", "damage": 3, "gold": 12}
+    ]
+  },
+  {
+    "id": "mist",
+    "title": "Sương Đêm",
+    "text": "Sương đặc phủ lối. Bên trong có tiếng leng keng rất nhỏ.",
+    "choices": [
+      {"label": "Đi vào sương", "outcome": "Sương cào da. Mất 6 HP. Bạn nhặt được Lông Tơ.", "damage": 6, "relic": "down_feather"},
+      {"label": "Đi vòng", "outcome": "Lối vòng yên. Hồi 5 HP.", "heal": 5}
+    ]
+  }
+]

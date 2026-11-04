@@ -1,0 +1,8 @@
+[
+  {"id": "serum", "name": "Huyết Thanh", "price": 40, "description": "Hồi 12 HP.", "effects": [{"op": "heal", "amount": 12, "target": "self"}]},
+  {"id": "smoke_shield", "name": "Khiên Khói", "price": 36, "description": "Nhận 12 giáp.", "effects": [{"op": "block", "amount": 12, "target": "self"}]},
+  {"id": "strength_tonic", "name": "Thuốc Sức", "price": 48, "description": "Nhận 2 Sức Mạnh.", "effects": [{"op": "apply", "status": "strength", "amount": 2, "target": "self"}]},
+  {"id": "poison_vial", "name": "Độc Dược", "price": 42, "description": "Gây 5 Độc lên địch.", "effects": [{"op": "apply", "status": "poison", "amount": 5, "target": "enemy"}]},
+  {"id": "holy_water", "name": "Nước Lạnh", "price": 30, "description": "Nhận 2 năng lượng.", "effects": [{"op": "energy", "amount": 2, "target": "self"}]},
+  {"id": "weak_brew", "name": "Nước Yếu", "price": 38, "description": "Gây 2 Suy Yếu lên địch.", "effects": [{"op": "apply", "status": "weak", "amount": 2, "target": "enemy"}]}
+]

@@ -29,5 +29,13 @@ public:
     static Rect SkipButton(){return {1130,115,250,42};}
     static Rect ResultButton(){return {570,540,300,54};}
     static Rect RewardRect(int index){const int w=250,h=230,gap=24,total=3*w+2*gap;return {(Width-total)/2+index*(w+gap),360,w,h};}
+    static Rect MapNodeRect(int floor,int column,bool boss){const int x=boss?675:400+column*240;const int y=730-floor*108;return {x,y,96,62};}
+    static Rect MapChoiceRect(int index,int count){const int w=250,h=48,gap=16,total=std::max(1,count)*w+(std::max(1,count)-1)*gap;return {(Width-total)/2+index*(w+gap),848,w,h};}
+    static Rect ShopRect(int index){return {80,150+index*66,860,58};}
+    static Rect LeaveButton(){return {1000,848,300,52};}
+    static Rect DeckRect(int index){return {80+(index%8)*150,780,140,42};}
+    static Rect HealButton(){return {120,180,420,64};}
+    static Rect EventChoiceRect(int index){return {320,480+index*110,800,88};}
+    static Rect PotionRect(int index){return {36,300+index*54,168,46};}
 };
 }

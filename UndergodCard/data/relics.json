@@ -1,0 +1,14 @@
+[
+  {"id": "down_feather", "name": "Lông Tơ", "price": 48, "description": "Đầu trận, nhận 5 giáp.", "onCombatStart": [{"op": "block", "amount": 5, "target": "self"}]},
+  {"id": "steel_beak", "name": "Mỏ Thép", "price": 90, "bonusDamage": 2, "description": "Mỗi nhát đánh gây thêm 2 sát thương."},
+  {"id": "water_jar", "name": "Bình Nước", "price": 45, "restBonus": 8, "description": "Chỗ nghỉ hồi thêm 8 HP."},
+  {"id": "coin_pouch", "name": "Túi Tiền", "price": 55, "goldBonus": 10, "description": "Mỗi trận thắng được thêm 10 vàng."},
+  {"id": "warm_egg", "name": "Trứng Ấm", "price": 140, "description": "Mỗi lượt, nhận thêm 1 năng lượng.", "onTurnStart": [{"op": "energy", "amount": 1, "target": "self"}]},
+  {"id": "thorn_shield", "name": "Khiên Gai", "price": 70, "description": "Đầu mỗi lượt, nhận 3 giáp.", "onTurnStart": [{"op": "block", "amount": 3, "target": "self"}]},
+  {"id": "venom_vial", "name": "Lọ Nọc", "price": 75, "description": "Đầu trận, gây 4 Độc lên địch.", "onCombatStart": [{"op": "apply", "status": "poison", "amount": 4, "target": "enemy"}]},
+  {"id": "brave_heart", "name": "Tim Dũng", "price": 80, "maxHp": 8, "description": "Tăng 8 HP tối đa khi nhận."},
+  {"id": "bargain", "name": "Bùa Mặc Cả", "price": 60, "shopDiscount": 20, "description": "Giá trong cửa hàng giảm 20%."},
+  {"id": "bandolier", "name": "Dây Thuốc", "price": 50, "potionSlot": 1, "description": "Thêm một ô thuốc."},
+  {"id": "war_drum", "name": "Trống Trận", "price": 85, "description": "Đầu trận, nhận 1 Sức Mạnh.", "onCombatStart": [{"op": "apply", "status": "strength", "amount": 1, "target": "self"}]},
+  {"id": "lucky_spur", "name": "Cựa May", "price": 65, "description": "Đầu trận, rút thêm 1 lá.", "onCombatStart": [{"op": "draw", "amount": 1, "target": "self"}]}
+]

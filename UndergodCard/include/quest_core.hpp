@@ -14,6 +14,8 @@ struct CardDef {
     int poison=0,strength=0,weak=0,vulnerable=0,cards_drawn=0,energy_gain=0;
     std::vector<std::string> keywords;
     std::vector<Effect> effects;
+    bool upgraded=false;
+    std::string upgrade_id;
 };
 
 struct Balance { int player_hp=50,energy=3,draw=5,rage_max=100,rage_attack=8,rage_block=5,ultimate_damage=40; };
@@ -53,6 +55,22 @@ struct EnemyDef {
 
 struct RouteNode { NodeKind kind=NodeKind::Combat; std::string enemy_id; };
 
+struct EventChoice {
+    std::string label,outcome,card,relic,potion;
+    int heal=0,damage=0,gold=0,max_hp=0;
+    bool upgrade=false;
+};
+
+struct EventDef { std::string id,title,text; std::vector<EventChoice> choices; };
+
+struct RelicDef {
+    std::string id,name,description;
+    int price=50,bonus_damage=0,bonus_block=0,gold_bonus=0,rest_bonus=0,shop_discount=0,max_hp=0,potion_slot=0;
+    std::vector<Effect> combat_start,turn_start;
+};
+
+struct PotionDef { std::string id,name,description; int price=40; std::vector<Effect> effects; };
+
 struct Config {
     Balance balance;
     EnemyDef enemy;
@@ -62,6 +80,12 @@ struct Config {
     std::vector<EnemyDef> bestiary;
     std::vector<RouteNode> route;
     int reward_choices=3;
+    int gold_start=50,heal_percent=30,remove_price=70,potion_slots=2,map_columns=3,map_floors=5;
+    std::string boss_id="frog",elite_id="elite_frog";
+    std::vector<std::string> combat_ids;
+    std::vector<EventDef> events;
+    std::vector<RelicDef> relics;
+    std::vector<PotionDef> potions;
 };
 
 Config LoadConfig(const std::string& directory="data");
@@ -127,7 +151,8 @@ class Combat {
     void BeginPlayer();
     void CheckEnd();
     void Hit(bool target_enemy,int damage,bool pierce=false);
-    void ApplyOne(const Effect& effect);
+    CombatMods mods_;
+    void ApplyOne(const Effect& effect,bool from_card=true);
     void AddStatusEvent(Fighter& fighter,bool enemy_target,StatusId id,int amount);
     bool TickPoison(bool enemy_target,bool& phased);
     void AdvancePhaseIfAny();
@@ -143,7 +168,8 @@ public:
     std::vector<Event> events;
     explicit Combat(Config c);
     void Reset(uint32_t seed=1337);
-    void BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck);
+    void BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck,CombatMods mods={});
+    void Cast(const std::vector<Effect>& effects);
     const CardDef& Definition(const std::string& id) const;
     void Draw(int count);
     bool CanPlay(int index) const;

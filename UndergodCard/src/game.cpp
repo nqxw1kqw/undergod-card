@@ -28,6 +28,13 @@ void Game::ApplyMotion(){
     else state.ActEnemy();
     AfterResolve();
 }
+void Game::ChooseNode(int option){
+    if(!Map())return;
+    if(!undergod::ChooseNode(run,state,option))return;
+    motion_=Motion::None;pending_card_=-1;motion_age_=0;motion_impact_=false;poses={};popups.clear();visual={};
+    if(run.place==Place::Fight)Toast(state.PhaseName());
+    else if(run.place==Place::Event)Toast(run.event_title);
+}
 void Game::ChooseReward(int index){
     if(!Reward())return;
     const int choice=index;
@@ -36,6 +43,30 @@ void Game::ChooseReward(int index){
     if(!undergod::ChooseReward(run,state,choice))return;
     motion_=Motion::None;pending_card_=-1;motion_age_=0;motion_impact_=false;poses={};popups.clear();visual={};
     Toast("Nhận: "+state.Definition(id).name);
+}
+void Game::ChooseEvent(int index){if(Event())undergod::ChooseEvent(run,state.config,index);}
+bool Game::Buy(int index){return Shop()&&undergod::BuyItem(run,state.config,index);}
+bool Game::RemoveCard(int index){return Shop()&&undergod::RemoveCard(run,state.config,index);}
+void Game::LeaveShop(){if(Shop())undergod::LeaveShop(run);}
+bool Game::RestHeal(){return Rest()&&undergod::RestHeal(run,state.config);}
+bool Game::UpgradeCard(int index){return Rest()&&undergod::UpgradeCard(run,state.config,index);}
+bool Game::DrinkPotion(int index){if(!CanAct())return false;const bool drank=undergod::DrinkPotion(run,state,index);if(drank)ConsumeEvents();return drank;}
+bool Game::Act(const AutoStep& step){
+    switch(step.kind){
+    case AutoKind::Node: ChooseNode(step.index); return true;
+    case AutoKind::Reward: ChooseReward(step.index); return true;
+    case AutoKind::Event: ChooseEvent(step.index); return true;
+    case AutoKind::Buy: return Buy(step.index);
+    case AutoKind::Remove: return RemoveCard(step.index);
+    case AutoKind::Leave: LeaveShop(); return true;
+    case AutoKind::Heal: return RestHeal();
+    case AutoKind::Upgrade: return UpgradeCard(step.index);
+    case AutoKind::Potion: return DrinkPotion(step.index);
+    case AutoKind::Play: Play(step.index); return true;
+    case AutoKind::EndTurn: EndTurn(); return true;
+    case AutoKind::Ultimate: Ultimate(); return true;
+    default: return false;
+    }
 }
 void Game::CueStep(const Step& step){
     const float late=std::max(0.f,cinematic_age_-step.t/1000.f);
