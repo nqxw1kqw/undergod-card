@@ -1,0 +1,28 @@
+# Visual Studio and generated build files
+.vs/
+bin/
+obj/
+release/
+artifacts/
+*.user
+*.suo
+*.VC.db
+*.opendb
+*.pdb
+*.obj
+*.ilk
+*.exe
+*.zip
+*.log
+
+# Local tools and caches
+node_modules/
+dist/
+.venv*/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+Thumbs.db
+Desktop.ini

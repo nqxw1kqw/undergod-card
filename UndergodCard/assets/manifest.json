@@ -1,0 +1,406 @@
+{
+  "player": "chick",
+  "runtime_pngs": 50,
+  "files": [
+    {
+      "path": "assets\\pastel\\cards\\cookie.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "7bc004db0db22be3b988c41a36d63d3ded38409e5c506c53dc4fa55f65f7f597"
+    },
+    {
+      "path": "assets\\pastel\\cards\\heavy.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2caa077952d101d650db1c4d711d50c80d313dc1e1ca3579a298dbf35ee6124b"
+    },
+    {
+      "path": "assets\\pastel\\cards\\punch.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "9dcae715e48feed0854e31a99cd6960d294d684201dc7bc7832c83382ba0336a"
+    },
+    {
+      "path": "assets\\pastel\\cards\\shield.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "17c914addadb62fd2ca76964efc5789de836a35bde572d85767fe90aa833ecd1"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_attack_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "585872c1c7b6cc06584278311330d393e13159773e1c7dedd5736ba116f8d1f4"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a60f50da082a49c9ac36e606b945fa15d2334c4ba68f38cbab1b23508f82e214"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "28e934f0529ab5bf83c862eedcb12281258013ad7bd166ee55dc1d1eea2680bf"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "92a50c78ad4d5cfbe225fd7ea496e260cb2abe5a2d60b49772909cd160eba981"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_defend_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "23668153de93642618856279d2eee550fde94e50e9fb245b18170ddde8658c3b"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_defend_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "afe31c0001170b2711546d8c841e704d930db0bcd6592bcebdba54e714925227"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_defend_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c014d0871e93db48f714ffb3559a11f994c264176494204ce1b5925217032ee8"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_defend_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "578b9b9baf1dc68e9cec210f8cc455c31715f5a2fc274d4f0713cf7b372cae28"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_hit_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a45f6de61f8e48aae43e7fc47dcb04ada8b22298152e23c0b269c7fe6fc1fdba"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_hit_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a68fc14827ee71a10eda0183f04abe53d4e6d5d490824f758218bfedc5987512"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_hit_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "0f168618b68874fb256cf344f9dea6dc1813285d51323bd3d949d9da3425b3e7"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_hit_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "7a2cece6f79b2ebf35ed3fbe372f9bc30d16007d847b07c6969043b2241b3b94"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4e534f2f0fcc7a0cd927e82fef0a6f1f9421ebb9eb92540323c464822f4cd7b6"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c80ea666b11852ba2937b543ee9adb83b484858f10f48c8f3ea507a653b5ca2a"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "09c6ce103f5c622cef5c785b4d79c3be0130ef0e6cec08f0f3403625408e2e29"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b315055113db03b222bfe59fb37c42466c506588f06fc543d7b62ff0c1b2ec43"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_charge_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "0f5af23c22f838befc95ea5883e08640cc5521427d2318afa99e20251a7c1a43"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_charge_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ccbed5fa2eee17dfa72da6f4858c45bffd113a5d3721d730b5198790463376fc"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_charge_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "7eed0b35e1d356197f5e4f6a706c852dd2dc3b5db52a1f058910eee1b19cf45a"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_charge_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "33b9edd3dec35140e4078f1bb5a8a6515c2bcd4388e84c2b9ee0a47463ca908a"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_throw_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b71f2eb639bde20705d1ae51b337a84e666781357e8ea87ece397a246bcdf3ff"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_throw_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "59441d1df5dad637fc1f7084c06311f06aecabb5c8ff5e6aa681480e348f1906"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_throw_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5e7aecc14bd42006758996c38164a1b3704bd7138d881898dd6262fa789ce2c8"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_chick_ult_throw_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "42305300e98c4dbbba81ac9ae0834490311b2624aecd124c4953391ea4b5c75e"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_attack_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "edd66726217cf5a2c04a1926c57a2972eeb71500c114299b12d7343b3f21b1f3"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f9b3dad1de99e37d7d72f13bd72bd8fa5ae90400540e20c46cfe409a600f9af0"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a317ae8e9ca89216cce4ab700758f796e3a593745a2ddce6d4f49542020a2747"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "910430ad4e7f98789b651c736e5f34685bc977f3b139f37eee1b2835e333405d"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_defend_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "6b3b9e94bfeb39242c360bc1217f2e0c986609bf33cbe908c29d9385cf890523"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_defend_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "509e4f16d5833cd1ae12ecdd620ec10a3232bcf3b1314e252847e3f90d7f122d"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_defend_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ea7de61a067d6a9a4c0c86d76f48b2b33918483e52cf98982c9f28ee4df7c7c7"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_defend_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1857a6e8b14fe273981e0f67ee2460ce99dc85183e6001b5b0ae8ad1eaeb08f9"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_hit_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "536b000bff6f3cb7d72b2503c18ea8e47e4e206d671db8d07181426cdf3e8786"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_hit_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5dbf6199c1859f5d7456aa98af91b1499cc1892fc887ee81d0afc1025919022d"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_hit_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "871d42099546d581d39ff6092a6ed8d3b8fc124dba6ba8a85b8955b451581475"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_hit_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ab206bbf26a40b0ac26621c393f3a02db0831f93106a8e4a2e935b10ade43e0d"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4729a4a9a71a6171055c8831b0f1c913e4b98ac166f3bef54e09dc0bec92d458"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1876b6e5a716bb6d585055f64af4424103d27fea6450368735638f5a5cbb1e04"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "0e68798776e67a42426ce0180774b596d2ac8fece1a9eaa72d76987bfefac6ad"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "72875a86c80f661957cde90ff9363504bbfd2819855390335ad5541ca0d0504f"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_ult_charge_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "413c49b6aca42d402cff96824a813963189d5efb0bde99bd5b1cb10285f5e862"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_ult_charge_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "28bd4297ad3991b882513a44c2feab49327c833ad021b62f939a86944354e32d"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_ult_charge_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3f77f29750b3d6fa8292470cb839795ba53fe7793ad8a1bbcbb8defc51ecd8d7"
+    },
+    {
+      "path": "assets\\pastel\\characters\\char_frog_ult_charge_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "10d8242bed95f1a3cde113415785226667624f53316b1018ced8e59b7467a397"
+    },
+    {
+      "path": "assets\\pastel\\vfx\\spear.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "176a5d18cb4c986930e0c1329659e52021f18e96bd3f274d1c8c8b9e213f7160"
+    },
+    {
+      "path": "assets\\pastel\\vfx\\spear_impact.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "09895d7e5a0259185ca3bd97ac425be7fa3c7f6742d12d422dc5667bf7d267ef"
+    }
+  ]
+}
