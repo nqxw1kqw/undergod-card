@@ -28,5 +28,6 @@ public:
     static Rect SpeedButton(int speed){return {520+(speed-1)*70,42,60,40};}
     static Rect SkipButton(){return {1130,115,250,42};}
     static Rect ResultButton(){return {570,540,300,54};}
+    static Rect RewardRect(int index){const int w=250,h=230,gap=24,total=3*w+2*gap;return {(Width-total)/2+index*(w+gap),360,w,h};}
 };
 }

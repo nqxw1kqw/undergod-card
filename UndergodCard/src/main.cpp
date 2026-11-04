@@ -17,11 +17,11 @@ int Smoke(undergod::Game& game,undergod::Ui& ui){
     auto capture=[&](const char* name){ClearDrawScreen();ui.Draw(game,-1,-1);const auto file=std::string("artifacts/")+name;check(SaveDrawScreenToPNG(0,0,Ui::Width,Ui::Height,file.c_str())==0,name);ScreenFlip();ProcessMessage();};
     auto click=[&](Rect r){ui.Click(game,r.x+r.w/2,r.y+r.h/2);};
     report<<"assets="<<ui.loaded<<"/"<<Ui::ExpectedAssets<<"\n";check(ui.loaded==Ui::ExpectedAssets,"all_assets");
-    game.NewRun();capture("01-battle.png");check(game.state.hand.size()==5&&game.state.player.hp==50&&game.state.enemy.hp==120,"opening");
+    game.NewRun();const int opening_hp=game.state.enemy.hp;capture("01-battle.png");check(game.state.hand.size()==5&&game.state.hand[0]=="punch"&&game.state.player.hp==50&&game.state.enemy.hp==opening_hp,"opening");
     check(game.Speed()==1,"default_speed_x1");click(Ui::SpeedButton(2));check(game.Speed()==2,"speed_x2_button");click(Ui::SpeedButton(3));check(game.Speed()==3,"speed_x3_button");click(Ui::SpeedButton(1));
-    game.state.energy=0;click(Ui::CardRect(5,0));check(!game.toast.empty()&&game.state.enemy.hp==120,"unaffordable_toast");game.state.energy=3;
-    click(Ui::CardRect(5,0));check(game.Busy(),"attack_locks_input");Tick(game,.24f);capture("02-lunge.png");check(game.state.enemy.hp==120,"no_damage_before_contact");
-    Tick(game,.11f);capture("03-hit.png");Drain(game);check(game.state.enemy.hp==114&&game.state.energy==2,"damage_at_contact");
+    game.state.energy=0;click(Ui::CardRect(5,0));check(!game.toast.empty()&&game.state.enemy.hp==opening_hp,"unaffordable_toast");game.state.energy=3;
+    click(Ui::CardRect(5,0));check(game.Busy(),"attack_locks_input");Tick(game,.24f);capture("02-lunge.png");check(game.state.enemy.hp==opening_hp,"no_damage_before_contact");
+    Tick(game,.11f);capture("03-hit.png");Drain(game);check(game.state.enemy.hp==opening_hp-6&&game.state.energy==2,"damage_at_contact");
     const int incoming=game.state.intent.value,player_hp=game.state.player.hp;
     click(Ui::EndButton());const auto hp=game.state.enemy.hp;game.Play(0);check(game.Busy()&&game.state.enemy.hp==hp,"enemy_input_lock");
     Tick(game,.69f);capture("04-boss-lunge.png");check(game.state.player.hp==player_hp&&game.ActorOffset(true)<-600,"boss_windup_and_contact_range");
@@ -38,30 +38,26 @@ int Smoke(undergod::Game& game,undergod::Ui& ui){
         else if(mode==1)click(Ui::SkipButton());else{Tick(game,2.85f);game.SkipCinematic();}
         game.SkipCinematic();check(game.state.enemy.hp==86&&game.CanAct()&&game.visual.zoom==1&&!game.visual.spear.visible,"ultimate_once_and_cleanup");
     }
-    click(Ui::RestartButton());check(game.state.turn==1&&game.state.enemy.hp==120&&game.state.hand.size()==5,"restart");
+    click(Ui::RestartButton());check(game.state.turn==1&&game.state.enemy.hp==opening_hp&&game.state.hand.size()==5,"restart");
     for(int i=0;i<100&&!game.Result();++i){click(Ui::EndButton());Drain(game);}
-    check(game.state.phase==Phase::Lost,"normal_defeat");capture("07-defeat.png");click(Ui::ResultButton());check(game.state.player.hp==50&&game.CanAct(),"result_restart");
-    game.state.enemy.hp=1;game.state.hand={"punch"};click(Ui::CardRect(1,0));Drain(game);check(game.state.phase==Phase::Won&&game.Result(),"victory_fixture");capture("08-victory-fixture.png");
+    check(game.state.phase==Phase::Lost&&game.Result(),"normal_defeat");capture("07-defeat.png");click(Ui::ResultButton());check(game.state.player.hp==50&&game.CanAct(),"result_restart");
+    game.state.enemy.hp=1;game.state.hand={"punch"};game.state.energy=1;click(Ui::CardRect(1,0));Drain(game);check(game.Reward()&&!game.Result()&&game.state.phase==Phase::Won,"victory_fixture");capture("08-reward.png");
+    const int kept_hp=game.state.player.hp,kept_deck=int(game.run.deck.size());click(Ui::RewardRect(0));check(!game.Reward()&&game.state.player.hp==kept_hp&&int(game.run.deck.size())==kept_deck+1&&game.run.index==1&&game.CanAct(),"reward_persists_hp");
     game.NewRun();game.state.player.hp=40;game.state.hand={"cookie","shield","heavy"};capture("09-all-card-art.png");
     // Full battle through gameplay APIs, with no HP/hand/rage fixtures.
-    game.NewRun(1337);
-    for(int turn=0;turn<80&&!game.Result();++turn){
+    game.NewRun(1337);int rewards=0;bool persisted=true,phase_shot=false;
+    for(int turn=0;turn<240&&!game.Result();++turn){
+        if(game.Reward()){const int hp=game.state.player.hp;click(Ui::RewardRect(game.SuggestReward()));persisted&=game.state.player.hp==hp;++rewards;continue;}
+        if(!phase_shot&&game.state.PhaseIndex()>=1){capture("11-boss-phase.png");phase_shot=true;}
         for(int play=0;play<12&&game.CanAct();++play){
             if(game.state.rage>=game.state.config.balance.rage_max){game.Ultimate();Drain(game);continue;}
-            int best=-1;double score=0;
-            for(int i=0;i<int(game.state.hand.size());++i){
-                if(!game.state.CanPlay(i))continue;const auto& card=game.state.Definition(game.state.hand[i]);
-                double value=card.damage;
-                if(card.damage>=game.state.enemy.hp+game.state.enemy.block)value+=100;
-                if(card.block>0){const int incoming=game.state.intent.attack?std::max(0,game.state.intent.value-game.state.player.block):0;value+=std::min(card.block,incoming)*1.3+1;if(incoming>=game.state.player.hp&&card.block>0)value+=100;}
-                if(card.heal>0)value+=std::min(card.heal,game.state.player.max_hp-game.state.player.hp)*(game.state.player.hp<25?2.:.8);
-                value/=std::max(1,card.cost);if(value>score){score=value;best=i;}
-            }
-            if(best<0)break;game.Play(best);Drain(game);
+            const int best=game.SuggestCard();if(best<0)break;game.Play(best);Drain(game);
         }
         if(game.CanAct()){game.EndTurn();Drain(game);}ProcessMessage();
     }
-    check(game.state.phase==Phase::Won,"playthrough_victory");report<<"playthrough_hp="<<game.state.player.hp<<" turns="<<game.state.turn<<"\n";capture("10-playthrough-result.png");
+    check(game.run.victory&&game.state.PhaseIndex()==1&&rewards==3&&persisted,"playthrough_victory");
+    report<<"run_victory="<<(game.run.victory?1:0)<<"\n";report<<"boss_phase="<<(game.state.PhaseIndex()+1)<<"\n";report<<"rewards="<<rewards<<"\n";
+    report<<"playthrough_hp="<<game.state.player.hp<<" deck="<<game.run.deck.size()<<"\n";capture("10-playthrough-result.png");
     report<<"PASS="<<okay<<"\n";return okay?0:3;
 }
 }
@@ -82,8 +78,11 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             const int mx=int(static_cast<long long>(mouse.x)*Ui::Width/std::max(1L,client.right)),my=int(static_cast<long long>(mouse.y)*Ui::Height/std::max(1L,client.bottom));
             if(pressed(KEY_INPUT_F1))game.SetSpeed(1);if(pressed(KEY_INPUT_F2))game.SetSpeed(2);if(pressed(KEY_INPUT_F3))game.SetSpeed(3);
             if(game.Cinematic()){if(pressed(KEY_INPUT_SPACE)||pressed(KEY_INPUT_ESCAPE))game.SkipCinematic();}
-            else{
-                const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5};for(int i=0;i<5;++i)if(pressed(numbers[i]))game.Play(i);
+            else if(game.Reward()){
+                const int reward_keys[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3};for(int i=0;i<3;++i)if(pressed(reward_keys[i]))game.ChooseReward(i);
+                if((pressed(KEY_INPUT_R)||pressed(KEY_INPUT_RETURN))&&!game.Busy())game.NewRun();
+            }else{
+                const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5,KEY_INPUT_6,KEY_INPUT_7,KEY_INPUT_8,KEY_INPUT_9};for(int i=0;i<9;++i)if(pressed(numbers[i]))game.Play(i);
                 if(pressed(KEY_INPUT_E))game.EndTurn();if(pressed(KEY_INPUT_U))game.Ultimate();
                 if((pressed(KEY_INPUT_R)||pressed(KEY_INPUT_RETURN))&&!game.Busy())game.NewRun();
             }

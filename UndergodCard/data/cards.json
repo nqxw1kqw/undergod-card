@@ -1,6 +1,21 @@
 [
- {"id":"punch","name":"Chọc Giáo","cost":1,"damage":6,"description":"Gây 6 sát thương.","copies":5},
- {"id":"shield","name":"Khiên Gỗ","cost":1,"block":5,"description":"Nhận 5 giáp.","copies":3},
- {"id":"heavy","name":"Đâm Mạnh","cost":2,"damage":12,"description":"Gây 12 sát thương.","copies":1},
- {"id":"cookie","name":"Bánh Quy","cost":2,"heal":8,"description":"Hồi 8 HP.","copies":1}
+  {"id":"punch","name":"Chọc Giáo","cost":1,"damage":6,"description":"Gây 6 sát thương.","copies":5,"rarity":"starter","keywords":["Tấn Công"]},
+  {"id":"shield","name":"Khiên Gỗ","cost":1,"block":5,"description":"Nhận 5 giáp.","copies":3,"rarity":"starter","keywords":["Giáp"]},
+  {"id":"heavy","name":"Đâm Mạnh","cost":2,"damage":12,"description":"Gây 12 sát thương.","copies":1,"rarity":"starter","keywords":["Tấn Công"]},
+  {"id":"cookie","name":"Bánh Quy","cost":2,"heal":8,"description":"Hồi 8 HP.","copies":1,"rarity":"starter","keywords":["Hồi Máu"]},
+  {"id":"peck","name":"Mổ Nhanh","cost":0,"rarity":"common","keywords":["Nhanh"],"description":"Gây 3 sát thương.","copies":0,"effects":[{"op":"damage","amount":3,"target":"enemy"}]},
+  {"id":"double_peck","name":"Mổ Kép","cost":1,"rarity":"common","keywords":["Liên Kích"],"description":"Gây 4 sát thương, hai lần.","copies":0,"effects":[{"op":"damage","amount":4,"times":2,"target":"enemy"}]},
+  {"id":"feather","name":"Lông Vàng","cost":1,"rarity":"common","keywords":["Rút"],"description":"Nhận 4 giáp. Rút 1 lá.","copies":0,"effects":[{"op":"block","amount":4,"target":"self"},{"op":"draw","amount":1,"target":"self"}]},
+  {"id":"millet","name":"Hạt Kê","cost":1,"rarity":"common","keywords":["Hồi Máu"],"description":"Hồi 5 HP.","copies":0,"effects":[{"op":"heal","amount":5,"target":"self"}]},
+  {"id":"stomp","name":"Dậm Chân","cost":1,"rarity":"common","keywords":["Dễ Thương"],"description":"Gây 5 sát thương. Gây 1 Dễ Thương.","copies":0,"effects":[{"op":"damage","amount":5,"target":"enemy"},{"op":"apply","status":"vulnerable","amount":1,"target":"enemy"}]},
+  {"id":"crow","name":"Gáy Vang","cost":1,"rarity":"common","keywords":["Sức Mạnh"],"description":"Nhận 2 Sức Mạnh.","copies":0,"effects":[{"op":"apply","status":"strength","amount":2,"target":"self"}]},
+  {"id":"wing","name":"Cánh Che","cost":1,"rarity":"common","keywords":["Giáp"],"description":"Nhận 7 giáp.","copies":0,"effects":[{"op":"block","amount":7,"target":"self"}]},
+  {"id":"venom_beak","name":"Mỏ Độc","cost":1,"rarity":"uncommon","keywords":["Độc"],"description":"Gây 4 sát thương. Gây 3 Độc.","copies":0,"effects":[{"op":"damage","amount":4,"target":"enemy"},{"op":"apply","status":"poison","amount":3,"target":"enemy"}]},
+  {"id":"snare","name":"Đòn Trói","cost":1,"rarity":"uncommon","keywords":["Suy Yếu"],"description":"Gây 6 sát thương. Gây 2 Suy Yếu.","copies":0,"effects":[{"op":"damage","amount":6,"target":"enemy"},{"op":"apply","status":"weak","amount":2,"target":"enemy"}]},
+  {"id":"feather_rain","name":"Mưa Lông","cost":1,"rarity":"uncommon","keywords":["Liên Kích"],"description":"Gây 2 sát thương, ba lần.","copies":0,"effects":[{"op":"damage","amount":2,"times":3,"target":"enemy"}]},
+  {"id":"guard_up","name":"Thế Thủ","cost":2,"rarity":"uncommon","keywords":["Sức Mạnh"],"description":"Nhận 8 giáp. Nhận 1 Sức Mạnh.","copies":0,"effects":[{"op":"block","amount":8,"target":"self"},{"op":"apply","status":"strength","amount":1,"target":"self"}]},
+  {"id":"grub","name":"Ăn Sâu","cost":1,"rarity":"uncommon","keywords":["Hồi Máu"],"description":"Hồi 6 HP. Rút 1 lá.","copies":0,"effects":[{"op":"heal","amount":6,"target":"self"},{"op":"draw","amount":1,"target":"self"}]},
+  {"id":"storm_spear","name":"Giáo Bão","cost":2,"rarity":"rare","keywords":["Liên Kích"],"description":"Gây 7 sát thương, hai lần.","copies":0,"effects":[{"op":"damage","amount":7,"times":2,"target":"enemy"}]},
+  {"id":"star_tip","name":"Mũi Sao","cost":2,"rarity":"rare","keywords":["Dễ Thương"],"description":"Gây 15 sát thương. Gây 2 Dễ Thương.","copies":0,"effects":[{"op":"damage","amount":15,"target":"enemy"},{"op":"apply","status":"vulnerable","amount":2,"target":"enemy"}]},
+  {"id":"toxin","name":"Bình Độc","cost":1,"rarity":"rare","keywords":["Độc"],"description":"Gây 5 Độc.","copies":0,"effects":[{"op":"apply","status":"poison","amount":5,"target":"enemy"}]}
 ]

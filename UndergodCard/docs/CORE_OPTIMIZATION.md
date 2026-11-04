@@ -2,7 +2,7 @@
 
 Runtime hiện tại đã chuyển sang Card Quest C++/DxLib. Những tối ưu Doom/Nyx của prototype RE trước đây thuộc lịch sử project; không phải luật đang chạy của bản này.
 
-Core mới ở quest_core.hpp chỉ dùng thư viện chuẩn C++: CardDef/Config tách khỏi combat state, không gọi renderer/đồng hồ. Hai luồng Mulberry32 giữ kết quả với TypeScript, tránh việc reshuffle đổi intent. Events chỉ mang giá trị, không giữ con trỏ tới actor/thẻ đã bị gỡ.
+Core combat chỉ dùng thư viện chuẩn C++: CardDef/Config tách khỏi combat state, không gọi renderer/đồng hồ. v0.2 thêm hiệu ứng đọc từ JSON, trạng thái và `RunState` trong `quest_run`; map rẽ nhánh, sự kiện, cửa hàng và di vật chưa chạy nhưng đã có chỗ gắn. Hai luồng Mulberry32 giữ kết quả với TypeScript khi địch không dùng bảng ý định mới, tránh việc reshuffle đổi intent. Events chỉ mang giá trị, không giữ con trỏ tới actor/thẻ đã bị gỡ.
 
 Controller Game quản lý một action đang chạy, khóa input cho đến hết recovery và gọi core tại contact. Timeline giữ cursor/cờ impact/end riêng nên skip nhiều lần hoặc frame dài không áp damage lặp. Renderer lấy frame từ tuổi pose, giữ đường chân cố định, UI hit-test dùng cùng Rect với draw.
 

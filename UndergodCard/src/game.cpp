@@ -2,15 +2,18 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed){cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();}
+void Game::NewRun(unsigned seed){cinematic_.Cancel();StartRun(run,state,seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();}
 void Game::ConsumeEvents(){
     for(const auto& event:state.events){
         if(event.type==EventType::Damage){const bool blocked=event.amount==0&&event.blocked>0;poses[event.enemy?1:0]={blocked?"defend":"hit",0};popups.push_back({event.enemy,event.amount?event.amount:event.blocked,EventType::Damage,0,blocked});}
         else if(event.type==EventType::Block){poses[event.enemy?1:0]={"defend",0};popups.push_back({event.enemy,event.amount,EventType::Block,0});}
         else if(event.type==EventType::Heal)popups.push_back({event.enemy,event.amount,EventType::Heal,0});
+        else if(event.type==EventType::Status)popups.push_back({event.enemy,event.amount,EventType::Status,0,false,event.status});
+        else if(event.type==EventType::Phase)Toast("Giai đoạn "+std::to_string(event.amount)+": "+state.PhaseName());
     }
     state.events.clear();
 }
+void Game::AfterResolve(){ConsumeEvents();ObserveCombat(run,state);}
 void Game::Play(int index){
     if(!CanAct()||index<0||index>=int(state.hand.size()))return;
     if(!state.CanPlay(index)){Toast("Không đủ năng lượng cho lá bài này.");return;}
@@ -23,7 +26,16 @@ void Game::ApplyMotion(){
     if(motion_impact_)return;motion_impact_=true;
     if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther)state.Play(pending_card_);
     else state.ActEnemy();
-    ConsumeEvents();
+    AfterResolve();
+}
+void Game::ChooseReward(int index){
+    if(!Reward())return;
+    const int choice=index;
+    if(choice<0||choice>=int(run.rewards.size()))return;
+    const auto id=run.rewards[choice];
+    if(!undergod::ChooseReward(run,state,choice))return;
+    motion_=Motion::None;pending_card_=-1;motion_age_=0;motion_impact_=false;poses={};popups.clear();visual={};
+    Toast("Nhận: "+state.Definition(id).name);
 }
 void Game::CueStep(const Step& step){
     const float late=std::max(0.f,cinematic_age_-step.t/1000.f);
@@ -41,7 +53,7 @@ void Game::CueStep(const Step& step){
 void Game::Ultimate(){
     if(!CanAct())return;if(!state.StartUltimate()){Toast("Sao Rơi cần đầy 100 Nộ.");return;}
     ConsumeEvents();visual={};cinematic_age_=0;
-    cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();ConsumeEvents();},[this]{state.FinishUltimate();visual={};poses[0]={};});
+    cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();AfterResolve();},[this]{state.FinishUltimate();visual={};poses[0]={};});
 }
 void Game::SkipCinematic(){cinematic_.Skip();}
 void Game::Update(float real_dt){
@@ -58,6 +70,7 @@ void Game::Update(float real_dt){
         if(motion_age_>=impact)ApplyMotion();
         if(motion_age_>=(enemy?1.15f:.65f)){motion_=Motion::None;pending_card_=-1;}
     }
+    if(!Busy())ObserveCombat(run,state);
     if(Cinematic()){
         cinematic_age_+=dt;
         visual.zoom_age+=dt;

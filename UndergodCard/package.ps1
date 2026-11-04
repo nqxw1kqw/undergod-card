@@ -1,4 +1,4 @@
-param([switch]$SkipBuild,[string]$DxLibDir='C:\DxLib')
+﻿param([switch]$SkipBuild,[string]$DxLibDir='C:\DxLib')
 $ErrorActionPreference='Stop'
 if(!$SkipBuild) { & (Join-Path $PSScriptRoot 'build.ps1') -Configuration Release -DxLibDir $DxLibDir }
 $nativeRoot=(Resolve-Path -LiteralPath $PSScriptRoot).Path
@@ -21,17 +21,19 @@ Copy-Item -LiteralPath (Join-Path $nativeRoot 'THIRD_PARTY.md') -Destination $li
 @'
 UNDERGOD CARD QUEST - C++17 / DxLib / Windows x64
 
-Run UndergodCard.exe. Keep assets, data and licenses folders next to the EXE.
-No Node.js, Electron or web server is required.
+Chạy UndergodCard.exe. Giữ các thư mục assets, data và licenses cạnh EXE.
+Không cần Node.js, Electron hay server web.
 
-Mouse or 1-5: play cards. E: end turn. U: ultimate at 100 rage.
-Space / Esc: skip cinematic. R / Enter: restart when input is unlocked.
+Chuột hoặc 1–9: chơi thẻ. E: hết lượt. U: Sao Rơi khi đủ 100 Nộ.
+Sau trận, 1–3 chọn một lá thưởng. HP và Nộ được giữ sang trận sau.
+Space / Esc: bỏ qua cinematic. R / Enter: chơi lại từ đầu khi không bị khóa.
 
-Built from UndergodCard.sln with MSVC v143 and static runtime.
-Assets: 50 pastel PNGs. Data: editable JSON.
-Speed: click x1/x2/x3 or use F1/F2/F3. New runs start at slow x1.
-Ultimate: the chick throws its spear into the sky; it falls onto the boss.
-Third-party notices: see licenses/.
+Hành trình: Ếch Con, Cóc Canh, Ếch Tinh Anh, rồi Ếch Vương hai giai đoạn.
+Build từ UndergodCard.sln bằng MSVC v143 và static runtime.
+Asset: 50 PNG pastel. Dữ liệu: JSON sửa được.
+Tốc độ: nút x1/x2/x3 hoặc F1/F2/F3. Run mới bắt đầu ở x1 chậm.
+Sao Rơi: gà phóng lao lên trời, lao rơi xuống địch.
+Thông báo bên thứ ba: xem thư mục licenses/.
 '@ | Set-Content -LiteralPath (Join-Path $bundle 'README.txt') -Encoding UTF8
 $archive=Join-Path $nativeRoot 'release/UndergodCard-DxLib-Windows-x64.zip'
 $files=@((Join-Path $bundle 'UndergodCard.exe'),(Join-Path $bundle 'assets'),(Join-Path $bundle 'data'),(Join-Path $bundle 'licenses'),(Join-Path $bundle 'README.txt'))

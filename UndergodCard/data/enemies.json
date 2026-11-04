@@ -1,1 +1,67 @@
-[{"id":"frog","name":"Ếch Vương","maxHp":120,"attackChance":0.7,"minDamage":8,"maxDamage":13,"block":6,"openingAttack":true,"maxConsecutiveGuards":1}]
+[
+  {
+    "id": "froglet",
+    "name": "Ếch Con",
+    "role": "combat",
+    "maxHp": 22,
+    "attackChance": 0.75,
+    "minDamage": 6,
+    "maxDamage": 8,
+    "block": 3,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1
+  },
+  {
+    "id": "toad",
+    "name": "Cóc Canh",
+    "role": "combat",
+    "maxHp": 32,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {"kind": "attack", "minDamage": 6, "maxDamage": 9, "weight": 3},
+      {"kind": "attack", "minDamage": 5, "maxDamage": 7, "status": "weak", "amount": 1, "weight": 2},
+      {"kind": "defend", "block": 5, "weight": 1}
+    ]
+  },
+  {
+    "id": "elite_frog",
+    "name": "Ếch Tinh Anh",
+    "role": "elite",
+    "maxHp": 36,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {"kind": "attack", "minDamage": 7, "maxDamage": 10, "weight": 3},
+      {"kind": "attack", "minDamage": 5, "maxDamage": 7, "status": "poison", "amount": 2, "weight": 2},
+      {"kind": "defend", "block": 6, "weight": 1}
+    ]
+  },
+  {
+    "id": "frog",
+    "name": "Ếch Vương",
+    "role": "boss",
+    "maxHp": 46,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {"kind": "attack", "minDamage": 8, "maxDamage": 11, "weight": 3},
+      {"kind": "defend", "block": 8, "weight": 1},
+      {"kind": "attack", "minDamage": 6, "maxDamage": 9, "status": "vulnerable", "amount": 1, "weight": 2}
+    ],
+    "phases": [
+      {
+        "name": "Ếch Vương Cuồng Nộ",
+        "maxHp": 42,
+        "strength": 2,
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1,
+        "patterns": [
+          {"kind": "attack", "minDamage": 8, "maxDamage": 12, "weight": 3},
+          {"kind": "attack", "minDamage": 7, "maxDamage": 10, "status": "weak", "amount": 2, "weight": 2},
+          {"kind": "buff", "status": "strength", "amount": 2, "block": 6, "weight": 1}
+        ]
+      }
+    ]
+  }
+]
