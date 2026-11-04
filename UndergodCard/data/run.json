@@ -1,0 +1,9 @@
+{
+  "rewardChoices": 3,
+  "nodes": [
+    {"kind": "combat", "enemy": "froglet"},
+    {"kind": "combat", "enemy": "toad"},
+    {"kind": "elite", "enemy": "elite_frog"},
+    {"kind": "boss", "enemy": "frog"}
+  ]
+}
