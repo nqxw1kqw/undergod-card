@@ -1,0 +1,36 @@
+UNDERGOD CARD QUEST v0.3 — C++17 / DxLib / Windows x64
+
+Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
+Không cần cài Visual Studio, Node.js hay DxLib để chơi gói đã build.
+
+BẢN ĐỒ VÀ HÀNH TRÌNH
+Một hồi 13 tầng, 3 cột phân nhánh: trận thường, tinh anh, sự kiện,
+cửa hàng, chỗ nghỉ rồi Ếch Vương hai giai đoạn.
+Chuột hoặc phím 1–9 chọn lối đang mở. Lăn chuột / Page Up / Page Down
+để xem các tầng. HP và Nộ giữ sang trận sau; giáp/trạng thái được xóa.
+
+CHIẾN ĐẤU
+Chuột hoặc 1–9: chơi thẻ. E: hết lượt. U: Sao Rơi khi đủ 100 Nộ.
+Z / X / C: dùng ba ô thuốc; V dùng ô thứ tư nếu có di vật mở thêm ô.
+F1 / F2 / F3 hoặc nút x1 / x2 / x3: tốc độ; run mới bắt đầu chậm ở x1.
+Space / Esc: bỏ qua cinematic, sát thương vẫn chỉ áp một lần.
+Sau trận, chuột hoặc 1–3 chọn một trong ba lá thưởng.
+
+CỬA HÀNG / NGHỈ / SỰ KIỆN
+Cửa hàng: chuột hoặc 1–7 mua. Bấm lá trong phần bộ bài để gỡ (75 vàng).
+Nghỉ: H hồi HP (đã tính di vật), hoặc 1–8 nâng cấp lá trên trang hiện tại.
+Page Up / Page Down hoặc hai nút trang để xem toàn bộ bộ bài.
+E / Esc rời cửa hàng. Trong sự kiện, chuột hoặc 1–2 chọn; lựa chọn
+không đủ vàng sẽ bị khóa.
+
+LƯU VÀ TIẾP TỤC
+Game tự lưu vào save.json cạnh EXE sau hành động đã kết thúc.
+F6 / nút Lưu: lưu ngay. F9 / nút Tiếp tục: tải bản lưu hiện tại.
+Mở lại game tự tiếp tục cả khi đang ở giữa một lượt chiến đấu.
+Trong lúc đòn đánh/cinematic còn chạy, lưu và tải tạm bị khóa.
+R / Enter / Chơi lại: bắt đầu hành trình mới với seed mới.
+Khi mang bản lưu sang máy khác, chép save.json sang cạnh EXE.
+
+Bản thử nghiệm chưa có âm thanh, lớp nhân vật khác hay ba hồi.
+Địch mới dùng chung bộ sprite ếch; lá mới chưa có ảnh riêng sẽ hiện ký hiệu.
+Thông tin bên thứ ba nằm trong licenses/.

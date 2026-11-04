@@ -1,22 +1,43 @@
-# Kiểm chứng
+# Kiểm chứng v0.3 — 2026-11-05
 
-## Hành trình v0.2
+## Môi trường và cách chạy lại
 
-- Logic combat nằm ngoài DxLib. `make -C UndergodCard core` chạy 134 kiểm tra trên máy không có Visual Studio. Seed 1337 thắng bốn trận, HP mang sang trận sau là 47, 40 và 40, kết thúc 21/50 ở giai đoạn 2 của Ếch Vương.
-- `verify.ps1` trên Windows build solution, chạy cùng `CoreChecks.exe`, rồi smoke DxLib. Smoke tự chơi hành trình và dừng lỗi nếu thiếu `playthrough_victory=1` hoặc `boss_phase=2`.
-- Bộ kiểm tra cũ của giáp, Nộ, timeline, tốc độ và RNG Mulberry32 vẫn còn. Công thức legacy của ý định được giữ khi địch không có `patterns`, để đối chiếu chuỗi TypeScript.
+Windows x64, Visual Studio 2022 / MSVC v143 / C++17 / DxLib ở C:\DxLib.
 
-## Nhịp chậm, tốc độ và lao rơi — 2026-11-04
+    .\UndergodCard\verify.ps1 -Configuration Release
+    .\UndergodCard\verify.ps1 -Configuration Debug
+    .\UndergodCard\bin\Release\CoreChecks.exe --simulate 1000
+    .\UndergodCard\package.ps1 -SkipBuild
 
-- C++17 / MSVC v143 / DxLib / Windows x64, project UndergodCard.sln. Ghi chép dưới đây là lần kiểm cinematic trước v0.2. Số kiểm tra và kết quả một trận 27/50 HP không còn là kết quả hiện tại; xem mục v0.2 ở trên. Renderer smoke vẫn yêu cầu 50/50 PNG. Header DxLib ngoài project còn cảnh báo C4010.
-- x1 mặc định mỗi run dùng playback rate 0,65: thẻ khoảng 1 giây, lượt địch khoảng 1,77 giây; x2/x3 nhanh tương ứng. Nút và F1/F2/F3 hoạt động cả khi input gameplay bị khóa/cinematic đang chạy.
-- Unit test đo thời gian thực cho cả ba tốc độ, kiểm tra HP, damage, năng lượng, tay rút tiếp và RNG intent giống nhau sau một lượt đầy đủ. Thay speed giữa flight không làm nhảy vị trí hoặc gây damage ngay. Toast dùng thời gian thực riêng.
-- Timeline khai báo: pose ném tại 250ms, thả 750ms, bay lên tới 1450ms, rơi vào boss và áp damage tại 2600ms, kết thúc 3600ms của đồng hồ gameplay. x1 cinematic khoảng 5,54 giây. Loader từ chối quỹ đạo rơi không khớp mốc impact.
-- Ba ảnh gốc mới do công cụ sinh ảnh tích hợp tạo: sheet ult_throw, lao riêng, impact. Hậu xử lý xuất 6 PNG mới, tách alpha/căn chân/làm sạch viền; thay sheet ngôi sao cũ nên runtime có 50 PNG. Pose throw giữ body scale theo vùng lông/chân (383–384px so với idle 376px), không thu nhỏ thân theo spear giơ cao. Ảnh gốc và công cụ hậu xử lý được lưu riêng ngoài repo.
-- Cả ba speed: trước contact boss vẫn 120 HP, sau contact với 6 giáp còn 86 HP, sát thương đúng 40 qua giáp. Skip trước phóng, đang bay, trước contact và sau contact đều resolve một lần; hết/skip/reset dọn projectile/camera và trả lại input.
-- Smoke DxLib kiểm tra click ba nút tốc độ, đổi speed trong cinematic, windup/rise/fall/contact, boss phản công, thẻ, kết quả trận, restart. Ảnh: 05-spear-windup.png, 05-spear-rise.png, 05-spear-fall.png, 06-impact.png. Không còn ngôi sao xuất hiện trong cinematic.
-- Trước v0.2, trận đơn seed 1337 thắng ở lượt 7 với 27/50 HP. Hành trình hiện tại dùng cùng API và đồng hồ Update; kết quả mới nằm ở mục trên.
-- Chạy verify.ps1 -Configuration Release hoặc Debug để sinh báo cáo/ảnh ở bin/<cấu hình>/artifacts. Hai ảnh minh họa giữ tại docs/images; assets/manifest.json ghi hash của toàn bộ PNG hiện dùng. Các đầu ra build/smoke được sinh lại và không commit lên Git.
-- Gói release chạy --smoke PASS; 50 PNG ở source, Debug, Release và gói đều khớp SHA-256 trong manifest. Đã xem ảnh render giai đoạn lao rơi trên boss; không còn starfall.png trong các bộ runtime.
+Bộ core không gọi DxLib. Lần này kiểm tra bằng MSVC; chưa chạy lại Makefile/g++ sau thay đổi persistence.
 
-Giới hạn: smoke gọi handler UI theo tọa độ, chưa thay thế một lượt chơi tay dài hạn trên thiết bị nhập Windows. Chưa có âm thanh, lưu run hoặc phát MP4. Gói native cần giữ EXE, assets và data cạnh nhau.
+## Kết quả đã xác nhận
+
+- Debug và Release: **191 kiểm tra, 0 lỗi**; renderer smoke **PASS**, nạp đúng **50/50 PNG**. C4010 còn đến từ header SDK ngoài project.
+- Bản ZIP đã giải nén sang một thư mục mới và chạy --smoke PASS. 50 PNG khớp SHA-256 manifest, 10 JSON khớp source; có guide UTF-8 và giấy phép, không kèm save của người chơi.
+- Seed 1337 đi hết 13 tầng, thắng boss phase 2, còn **22/50 HP**, **8 lần chọn thưởng**, bộ **18 lá**, **85 vàng**, **1 di vật**. Driver hành trình không ép HP/hand/rage.
+- Map 300 seed: lặp đúng cùng seed, đổi nội dung giữa seed, không nút cụt/không tới được, có boss cuối, nghỉ trước boss và chặn tinh anh quá sớm. Trọng số đo ở các nút ngẫu nhiên đủ điều kiện nằm trong 3,5 điểm phần trăm so với JSON; không tính hàng mở đầu/nghỉ bắt buộc.
+- Pool sinh đủ 6 địch thường và 2 tinh anh. Vàng trong khoảng, di vật tinh anh chỉ thưởng một lần. Bộ di vật hiện tại có 12 loại, thuốc có 6.
+- Smoke click shop mua/gỡ lá ở trang 3; nghỉ nâng cấp lá ở trang 3; hồi HP khớp nhãn có Bình Nước; sử dụng ô thuốc thứ tư; sự kiện, cuộn map tới boss, thưởng, restart và hai nút lưu/tải.
+- Lưu/tải round trip các màn Map/Event/Shop/Rest/Reward và kết quả; phục hồi giữa lượt và boss phase 2, giữ RNG/deck/intent/potions. Tự chơi tiếp sau load cho ra cùng JSON session.
+- Lưu/tải trong motion/cinematic bị khóa; autosave thực hiện sau khi ổn định. Ghi temp thất bại giữ file trước; version sai, JSON cụt, RNG/HP/gold/node sai, map khác, enemy/card sai hoặc deck không bảo toàn đều không thay run hiện tại.
+- Sao Rơi vẫn resolve đúng một lần khi skip nhiều thời điểm. Mốc impact 2600ms gameplay; x1 khoảng 5,54 giây, speed không thay kết quả combat.
+
+## Bot 1.000 seed
+
+Chạy seed 0–999 qua public API, tối đa 4.000 quyết định mỗi run:
+
+- Thắng 983, thua 17; **không run nào kẹt**.
+- Tỉ lệ thắng bot **98,3%**, HP trung bình khi thắng khoảng **24,95**.
+- Tổng 105.687 quyết định; có sử dụng thuốc, shop, nghỉ, sự kiện và phần thưởng.
+- Chế độ simulation thêm một kiểm tra không bị kẹt: tổng **192 kiểm tra, 0 lỗi**.
+
+Báo cáo máy sinh ở bin/Release/artifacts/simulation.json. Đây là bot có chính sách chọn lá/lối đi, không phải số liệu người chơi mới. Chưa đạt mục tiêu đánh giá cân bằng bằng người chơi thật; tỉ lệ thắng bot hiện cao, cần chỉnh độ khó ở đợt cân bằng sau.
+
+## Bằng chứng và giới hạn
+
+Báo cáo/ảnh smoke sinh trong bin/<cấu hình>/artifacts. Ảnh hiện tại được giữ ở docs/images: map, trận đầu, shop và lao rơi. Artifact đầy đủ có ảnh các trang cuối, thuốc, sự kiện, phần thưởng và boss phase 2.
+
+Đã xem ảnh render thật từ DxLib. Thử điều khiển cửa sổ qua computer-use hai lần đều lỗi kết nối native pipe (os error 2); chưa hoàn thành chơi tay bằng chuột/phím Windows hoặc phiên mở/đóng GUI tiếp tục thật. Smoke gọi handler theo tọa độ và core test kiểm tra persistence; không coi hai loại kiểm tra này là chứng minh hoàn tất chơi tay.
+
+Chưa có âm thanh, ba hồi, lớp nhân vật/meta, nhiều địch một trận, art riêng cho các địch mới và 15 lá thưởng. Chưa đo CPU/GPU hoặc FPS.

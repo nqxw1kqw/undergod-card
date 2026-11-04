@@ -2,11 +2,10 @@
   "rewardChoices": 3,
   "goldStart": 50,
   "healPercent": 30,
-  "removePrice": 70,
-  "potionSlots": 2,
-  "columns": 3,
-  "floors": 5,
+  "removePrice": 75,
+  "potionSlots": 3,
   "boss": "frog",
   "elite": "elite_frog",
-  "combats": ["froglet", "toad"]
+  "combats": ["froglet", "toad", "reed_frog", "moss_toad", "marsh_guard", "poison_frog"],
+  "elites": ["elite_frog", "elder_toad"]
 }

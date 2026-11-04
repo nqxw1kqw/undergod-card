@@ -40,6 +40,20 @@ void Ui::Button(Rect r,const std::string& text,bool active,int mx,int my)const{
     const bool hover=active&&r.Contains(mx,my);Box(r,active?(hover?C(93,125,105):C(79,106,91)):C(223,225,216));
     Center(r.x+r.w/2,r.y+(r.h-18)/2,text,active?C(255,255,246):C(151,159,147),small_);
 }
+void Ui::Wrapped(Rect r,const std::string& text,unsigned color,int font)const{
+    if(font<0)font=small_;const int step=font==font_?24:19;
+    std::string line,word;std::vector<std::string> lines;
+    auto width=[&](const std::string& s){return GetDrawStringWidthToHandle(s.c_str(),int(s.size()),font);};
+    auto push=[&](){if(word.empty())return;const auto next=line.empty()?word:line+" "+word;if(!line.empty()&&width(next)>r.w){lines.push_back(line);line=word;}else line=next;word.clear();};
+    for(char ch:text){if(ch==' '||ch=='\n'){push();if(ch=='\n'){lines.push_back(line);line.clear();}}else word+=ch;}
+    push();if(!line.empty())lines.push_back(line);
+    const int limit=std::max(1,r.h/step);
+    for(int i=0;i<std::min(limit,int(lines.size()));++i)Text(r.x,r.y+i*step,lines[i],color,font);
+}
+void Ui::Page(const Game& game,int direction){
+    if(game.Map())map_scroll_=std::clamp(map_scroll_+direction*3,0,std::max(0,game.state.config.map_floors-6));
+    else if(game.Shop()||game.Rest())deck_page_=std::clamp(deck_page_+direction,0,std::max(0,(int(game.run.deck.size())-1)/8));
+}
 void Ui::Actor(const Game& game,bool enemy)const{
     const auto& pose=game.poses[enemy?1:0];const std::string id=enemy?"frog":game.state.config.player_id;
     const float fps=pose.name=="ult_throw"?4.f:8.f;
@@ -91,8 +105,9 @@ void Ui::Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,i
     DrawBox(r.x+18,r.y+12,r.x+r.w-18,r.y+16,stripe,TRUE);
     DrawCircle(r.x+21,r.y+28,15,C(255,255,255),TRUE);Center(r.x+21,r.y+18,std::to_string(card.cost),C(123,91,153),small_);
     if(index>=0)Text(r.x+r.w-20,r.y+16,std::to_string(index+1),Muted,small_);
-    Text(r.x+12,r.y+r.h-75,card.name,affordable&&!locked?Ink:Muted,small_);
-    if(!card.keywords.empty())Text(r.x+12,r.y+r.h-57,card.keywords.front(),C(123,91,153),small_);
+    const int title_y=r.y+std::min(126,r.h-75);
+    Wrapped({r.x+12,title_y,r.w-24,20},card.name,affordable&&!locked?Ink:Muted);
+    if(!card.keywords.empty())Text(r.x+12,title_y+18,card.keywords.front(),C(123,91,153),small_);
     const int max_w=r.w-24;
     std::string line,word;
     std::vector<std::string> lines;
@@ -107,13 +122,22 @@ void Ui::Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,i
     for(unsigned char ch:card.description){if(ch==' ')push();else word.push_back(char(ch));}
     push();
     if(!line.empty())lines.push_back(line);
-    if(lines.size()>2)lines.resize(2);
-    if(lines.size()<=1)Text(r.x+12,r.y+r.h-36,lines.empty()?card.description:lines[0],Muted,small_);
-    else{Text(r.x+12,r.y+r.h-40,lines[0],Muted,small_);Text(r.x+12,r.y+r.h-22,lines[1],Muted,small_);}
+    const int text_y=title_y+(card.keywords.empty()?23:38),limit=std::max(1,(r.y+r.h-14-text_y)/18+1);
+    for(int i=0;i<std::min(limit,int(lines.size()));++i)Text(r.x+12,text_y+i*18,lines[i],Muted,small_);
 }
 void Ui::Draw(const Game& game,int mx,int my){
     const auto& s=game.state;
-    auto backdrop=[&](){DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);Button(RestartButton(),"Chơi lại ↻",true,mx,my);Text(980,78,"Vàng: "+std::to_string(game.run.gold),C(146,112,48),small_);};
+    if(screen_place_!=game.run.place||screen_node_!=game.run.node){deck_page_=0;screen_place_=game.run.place;screen_node_=game.run.node;}
+    deck_page_=std::clamp(deck_page_,0,std::max(0,(int(game.run.deck.size())-1)/8));
+    if(map_node_!=game.run.node){map_node_=game.run.node;const int floor=game.run.node>=0?game.run.map[game.run.node].floor:0;map_scroll_=std::clamp(floor-2,0,std::max(0,s.config.map_floors-6));}
+    auto backdrop=[&](){
+        DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
+        Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);
+        Button(RestartButton(),"Chơi lại ↻",!game.Busy(),mx,my);Button(SaveButton(),"F6 · Lưu",!game.Busy(),mx,my);Button(LoadButton(),"F9 · Tiếp tục",!game.Busy(),mx,my);
+        Text(1160,87,"Vàng: "+std::to_string(game.run.gold),C(146,112,48),small_);Text(430,53,"Tốc độ",Muted,small_);
+        for(int speed=1;speed<=3;++speed){const Rect r=SpeedButton(speed);const bool selected=game.Speed()==speed;Box(r,selected?C(79,106,91):(r.Contains(mx,my)?C(226,229,218):C(239,237,229)));Center(r.x+r.w/2,r.y+11,"x"+std::to_string(speed),selected?C(255,255,246):Ink,small_);}
+        if(game.toast_age>0){Box({420,902,680,32},C(55,72,62));Wrapped({435,908,650,22},game.toast,C(255,255,246));}
+    };
     if(game.Result()){
         backdrop();Box({440,305,560,330},C(252,249,239),24);Center(720,338,"✦",C(174,144,199),brand_);
         Center(720,395,game.run.victory?"Khu vườn nở hoa!":"Nghỉ một chút nhé!",Ink,brand_);
@@ -122,28 +146,37 @@ void Ui::Draw(const Game& game,int mx,int my){
     }
     if(game.Map()){
         backdrop();Center(720,120,"Bản đồ đồng cỏ",Ink,brand_);Center(720,158,"Chọn lối đi. HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp)+".",Muted,font_);
+        Text(65,210,"HÀNH TRÌNH",Ink,heading_);Text(65,250,"Tầng "+std::to_string(game.run.node<0?1:game.run.map[game.run.node].floor+1)+" / "+std::to_string(s.config.map_floors+1),Muted,font_);
+        Text(65,282,"Bộ bài: "+std::to_string(game.run.deck.size())+" lá",Muted,font_);Text(65,326,"DI VẬT",Ink,font_);
+        for(int i=0;i<int(game.run.relics.size());++i)Wrapped({65,357+i*25,250,24},FindRelic(s.config,game.run.relics[i]).name,Muted);
+        Text(65,700,"THUỐC "+std::to_string(game.run.potions.size())+" / "+std::to_string(game.run.potion_slots),Ink,font_);
+        for(int i=0;i<int(game.run.potions.size());++i)Text(65,732+i*22,FindPotion(s.config,game.run.potions[i]).name,Muted,small_);
+        SetDrawArea(330,195,1110,806);
         for(const auto& node:game.run.map)for(int next:node.next){
-            const bool boss=game.run.map[next].kind==NodeKind::Boss;const Rect a=MapNodeRect(node.floor,node.column,node.kind==NodeKind::Boss),b=MapNodeRect(game.run.map[next].floor,game.run.map[next].column,boss);
+            const bool boss=game.run.map[next].kind==NodeKind::Boss;const Rect a=MapNodeRect(node.floor-map_scroll_,node.column,node.kind==NodeKind::Boss,s.config.map_columns),b=MapNodeRect(game.run.map[next].floor-map_scroll_,game.run.map[next].column,boss,s.config.map_columns);
             DrawLine(a.x+a.w/2,a.y+a.h/2,b.x+b.w/2,b.y+b.h/2,C(186,196,176));
         }
         for(const auto& node:game.run.map){
-            const bool boss=node.kind==NodeKind::Boss;const Rect r=MapNodeRect(node.floor,node.column,boss);
+            const bool boss=node.kind==NodeKind::Boss;const Rect r=MapNodeRect(node.floor-map_scroll_,node.column,boss,s.config.map_columns);
             const bool open=std::find(game.run.options.begin(),game.run.options.end(),int(&node-&game.run.map[0]))!=game.run.options.end();
             const unsigned fill=node.kind==NodeKind::Elite?C(184,112,112):(node.kind==NodeKind::Boss?C(126,96,150):(node.kind==NodeKind::Shop?C(196,164,92):(node.kind==NodeKind::Rest?C(116,158,124):(node.kind==NodeKind::Event?C(120,146,176):C(206,164,132)))));
             Box(r,open?fill:C(214,216,206),18);Center(r.x+r.w/2,r.y+14,NodeKindName(node.kind),open?C(255,252,246):Muted,small_);
             if(node.visited)Center(r.x+r.w/2,r.y+36,"xong",open?C(255,252,246):Muted,small_);
         }
+        SetDrawArea(0,0,Width,Height);
+        Button(MapUpButton(),"Tầng cao hơn ↑",map_scroll_<s.config.map_floors-6,mx,my);Button(MapDownButton(),"Tầng thấp hơn ↓",map_scroll_>0,mx,my);
+        Wrapped({1150,370,215,130},"Lăn chuột hoặc Page Up / Page Down để xem bản đồ. Chỉ nút có màu là đi được.",Muted);
         for(int i=0;i<int(game.run.options.size());++i){const auto& node=game.run.map[game.run.options[i]];Button(MapChoiceRect(i,int(game.run.options.size())),std::to_string(i+1)+" · "+NodeKindName(node.kind),true,mx,my);}
-        Text(55,922,"1–9 chọn lối trên bản đồ.",Muted,small_);return;
+        Text(55,922,"1–9 chọn lối. F6 lưu / F9 tiếp tục.",Muted,small_);return;
     }
     if(game.Event()){
         backdrop();Box({280,180,880,620},C(252,249,239),24);Center(720,220,game.run.event_title,Ink,brand_);
-        Center(720,280,game.run.event_text,Muted,font_);
+        Wrapped({345,285,750,150},game.run.event_text,Muted,font_);
         for(int i=0;i<int(game.run.event_choices.size());++i){
             const Rect r=EventChoiceRect(i);const bool hover=r.Contains(mx,my);
-            Box(r,hover?C(93,125,105):C(79,106,91),14);
-            Center(r.x+r.w/2,r.y+14,std::to_string(i+1)+" · "+game.run.event_choices[i].label,C(255,255,246),font_);
-            Center(r.x+r.w/2,r.y+48,game.run.event_choices[i].outcome,C(226,232,220),small_);
+            const bool active=CanChooseEvent(game.run,i);Box(r,active?(hover?C(93,125,105):C(79,106,91)):C(215,216,205),14);
+            Wrapped({r.x+20,r.y+10,r.w-40,25},std::to_string(i+1)+" · "+game.run.event_choices[i].label,active?C(255,255,246):Muted,font_);
+            Wrapped({r.x+20,r.y+43,r.w-40,40},active?game.run.event_choices[i].outcome:"Không đủ vàng.",active?C(226,232,220):Muted);
         }
         return;
     }
@@ -153,34 +186,41 @@ void Ui::Draw(const Game& game,int mx,int my){
             const auto& item=game.run.shop[i];
             std::string name=item.id;
             if(item.ware==Ware::Card)name=s.Definition(item.id).name;else if(item.ware==Ware::Relic)name=FindRelic(s.config,item.id).name;else name=FindPotion(s.config,item.id).name;
-            Button(ShopRect(i),std::to_string(i+1)+" · "+name+"  ·  "+std::to_string(item.price)+" vàng"+(item.sold?"  ·  đã bán":""),!item.sold&&game.run.gold>=item.price,mx,my);
+            const bool fits=item.ware!=Ware::Potion||int(game.run.potions.size())<game.run.potion_slots;
+            Button(ShopRect(i),std::to_string(i+1)+" · "+name+"  ·  "+std::to_string(item.price)+" vàng"+(item.sold?"  ·  đã bán":(!fits?"  ·  đầy thuốc":"")),!item.sold&&game.run.gold>=item.price&&fits,mx,my);
+            if(ShopRect(i).Contains(mx,my)){
+                const auto description=item.ware==Ware::Card?s.Definition(item.id).description:(item.ware==Ware::Relic?FindRelic(s.config,item.id).description:FindPotion(s.config,item.id).description);
+                Wrapped({1000,170,330,65},name,Ink,font_);Wrapped({1000,250,330,230},description,Muted,font_);
+            }
         }
-        Text(80,748,"Gỡ một lá · "+std::to_string(s.config.remove_price)+" vàng. Bộ còn "+std::to_string(game.run.deck.size())+" lá.",Muted,small_);
-        for(int i=0;i<std::min(8,int(game.run.deck.size()));++i)Button(DeckRect(i),s.Definition(game.run.deck[i]).name,game.run.gold>=s.config.remove_price&&int(game.run.deck.size())>5,mx,my);
+        Text(80,656,"Gỡ một lá · "+std::to_string(s.config.remove_price)+" vàng. Bộ còn "+std::to_string(game.run.deck.size())+" lá.",Muted,small_);
+        for(int i=0;i<8&&deck_page_*8+i<int(game.run.deck.size());++i)Button(DeckRect(i),s.Definition(game.run.deck[deck_page_*8+i]).name,game.run.gold>=s.config.remove_price&&int(game.run.deck.size())>5,mx,my);
+        Button(DeckPrevButton(),"← Trang trước",deck_page_>0,mx,my);Button(DeckNextButton(),"Trang sau →",(deck_page_+1)*8<int(game.run.deck.size()),mx,my);
+        Text(450,862,"Trang "+std::to_string(deck_page_+1)+" / "+std::to_string((game.run.deck.size()+7)/8),Muted,small_);
         Button(LeaveButton(),"Rời cửa hàng",true,mx,my);return;
     }
     if(game.Rest()){
-        const int heal=std::max(8,game.run.max_hp*s.config.heal_percent/100);
+        const int heal=RestHealAmount(game.run,s.config);
         backdrop();Text(120,120,"Chỗ nghỉ",Ink,heading_);
-        Button(HealButton(),"Nghỉ: hồi "+std::to_string(heal)+" HP",!game.run.rest_used,mx,my);
-        Text(120,270,"Hoặc cường hóa một lá. Chỉ làm một trong hai.",Muted,font_);
-        for(int i=0;i<std::min(10,int(game.run.deck.size()));++i){
-            const auto& card=s.Definition(game.run.deck[i]);
-            Button({120+(i%5)*240,330+(i/5)*70,220,56},std::to_string(i+1)+" · "+card.name,!card.upgraded&&!card.upgrade_id.empty(),mx,my);
+        Button(HealButton(),"H · Nghỉ: hồi "+std::to_string(heal)+" HP",!game.run.rest_used,mx,my);
+        Text(120,270,"Hoặc bấm 1–8 để cường hóa một lá trên trang. Chỉ chọn một việc.",Muted,font_);
+        for(int i=0;i<8&&deck_page_*8+i<int(game.run.deck.size());++i){
+            const auto& card=s.Definition(game.run.deck[deck_page_*8+i]);
+            Button(UpgradeRect(i),std::to_string(i+1)+" · "+card.name,!card.upgraded&&!card.upgrade_id.empty(),mx,my);
+            if(UpgradeRect(i).Contains(mx,my)&&!card.upgrade_id.empty())Wrapped({120,570,1100,120},s.Definition(card.upgrade_id).name+": "+s.Definition(card.upgrade_id).description,Ink,font_);
         }
+        Button(DeckPrevButton(),"← Trang trước",deck_page_>0,mx,my);Button(DeckNextButton(),"Trang sau →",(deck_page_+1)*8<int(game.run.deck.size()),mx,my);
+        Text(450,862,"Trang "+std::to_string(deck_page_+1)+" / "+std::to_string((game.run.deck.size()+7)/8),Muted,small_);
         return;
     }
-    DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
-    Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);
+    backdrop();
     std::string progress="Hành trình";
     if(!game.run.map.empty()){
-        const int node=std::min(game.run.index,int(game.run.map.size())-1);
-        progress=std::string(NodeKindName(game.run.map[node].kind))+" "+std::to_string(node+1)+"/"+std::to_string(game.run.map.size());
+        const int node=std::clamp(game.run.index,0,int(game.run.map.size())-1);
+        progress=std::string(NodeKindName(game.run.map[node].kind))+" · Tầng "+std::to_string(game.run.map[node].floor+1)+"/"+std::to_string(s.config.map_floors+1);
         if(s.PhaseCount()>1)progress+=" · Giai đoạn "+std::to_string(s.PhaseIndex()+1)+"/"+std::to_string(s.PhaseCount());
     }
-    Text(760,53,progress,Muted,small_);Button(RestartButton(),"Chơi lại ↻",!game.Busy()||game.Reward()||game.Result(),mx,my);Text(980,78,"Vàng: "+std::to_string(game.run.gold),C(146,112,48),small_);
-    Text(430,53,"Tốc độ",Muted,small_);
-    for(int speed=1;speed<=3;++speed){const Rect r=SpeedButton(speed);const bool selected=game.Speed()==speed;Box(r,selected?C(79,106,91):(r.Contains(mx,my)?C(226,229,218):C(239,237,229)));Center(r.x+r.w/2,r.y+11,"x"+std::to_string(speed),selected?C(255,255,246):Ink,small_);}
+    Text(760,87,progress,Muted,small_);
     DrawBox(20,110,Width-20,250,C(227,240,237),TRUE);
     auto health=[&](bool enemy){const auto& actor=enemy?s.enemy:s.player;int x=enemy?1100:80;
         Text(x,123,enemy?"NGƯỜI GIỮ KHU VƯỜN":"NGƯỜI LỮ HÀNH",Muted,small_);
@@ -188,9 +228,9 @@ void Ui::Draw(const Game& game,int mx,int my){
         const int ratio=actor.max_hp>0?std::max(0,260*actor.hp/actor.max_hp):0;
         Box({x,185,260,22},C(203,214,200),8);if(ratio>0)Box({x,185,std::max(1,ratio),22},enemy?C(157,187,131):C(237,159,166),8);
         Center(x+130,187,std::to_string(actor.hp)+" / "+std::to_string(actor.max_hp)+" HP",Ink,small_);
-        Text(x,212,s.StatusText(actor),Muted,small_);
+        Wrapped({x,212,280,40},s.StatusText(actor),Muted,small_);
     };health(false);health(true);
-    Box({80,239,260,5},C(209,215,210),2);if(s.rage>0)Box({80,239,260*s.rage/s.config.balance.rage_max,5},C(173,146,212),2);
+    Box({80,245,260,5},C(209,215,210),2);if(s.rage>0)Box({80,245,260*s.rage/s.config.balance.rage_max,5},C(173,146,212),2);
     Text(360,232,"Nộ "+std::to_string(s.rage)+" / "+std::to_string(s.config.balance.rage_max),C(123,91,153),small_);
     Center(720,131,"LƯỢT "+std::to_string(s.turn),Muted,small_);Center(720,162,game.Cinematic()?"Sao Rơi":(game.Busy()?"Đang hành động…":"Lượt của bạn"),Ink,font_);
     Center(720,198,"Lá nhỏ, chuyến phiêu lưu lớn.",Muted,small_);
@@ -206,9 +246,15 @@ void Ui::Draw(const Game& game,int mx,int my){
     Text(55,922,"Đọc ý định của địch. Z/X uống thuốc. HP được giữ giữa các trận.",Muted,small_);Text(1090,922,"HÀNH TRÌNH v0.3",Muted,small_);
     if(game.toast_age>0){Box({420,570,600,43},C(55,72,62));Center(720,581,game.toast,C(255,255,246),small_);}
     if(game.Cinematic())Button(SkipButton(),"Bỏ qua · Space / Esc",true,mx,my);
-    for(int i=0;i<int(game.run.potions.size())&&i<3;++i)Button(PotionRect(i),FindPotion(s.config,game.run.potions[i]).name,game.CanAct(),mx,my);
+    const char* potion_keys[]={"Z","X","C","V"};
+    for(int i=0;i<int(game.run.potions.size())&&i<4;++i)Button(PotionRect(i),std::string(potion_keys[i])+" · "+FindPotion(s.config,game.run.potions[i]).name,game.CanAct(),mx,my);
+    if(game.CanAct())for(int i=0;i<int(s.hand.size());++i)if(CardRect(int(s.hand.size()),i).Contains(mx,my)){
+        const auto& card=s.Definition(s.hand[i]);const int x=std::clamp(CardRect(int(s.hand.size()),i).x,30,Width-400);
+        Box({x,475,370,128},C(255,252,246));Wrapped({x+16,489,338,105},card.name+": "+card.description,Ink);break;
+    }
     if(game.Reward()){
         Blend(210);DrawBox(0,0,Width,Height,C(38,57,44),TRUE);Blend(255);
+        Box({260,205,920,470},C(251,249,243),24);
         Center(720,250,"Chiến lợi phẩm",Ink,brand_);
         Center(720,300,"Chọn 1 trong 3 lá. HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp)+" được giữ sang bản đồ.",Muted,font_);
         for(int i=0;i<int(game.run.rewards.size());++i){
@@ -221,35 +267,39 @@ void Ui::Draw(const Game& game,int mx,int my){
 void Ui::Click(Game& game,int mx,int my){
     for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
     if(game.Cinematic()){if(SkipButton().Contains(mx,my))game.SkipCinematic();return;}
+    if(SaveButton().Contains(mx,my)){game.Save();return;}if(LoadButton().Contains(mx,my)){game.Load();map_node_=-999;screen_node_=-999;return;}
     if(game.Reward()){
-        if(RestartButton().Contains(mx,my)){game.NewRun();return;}
+        if(RestartButton().Contains(mx,my)){game.NewRun(unsigned(GetNowHiPerformanceCount()));ResetView();return;}
         for(int i=0;i<int(game.run.rewards.size());++i)if(RewardRect(i).Contains(mx,my)){game.ChooseReward(i);return;}
         return;
     }
-    if(game.Result()){if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewRun();return;}
-    if(RestartButton().Contains(mx,my)){game.NewRun();return;}
+    if(game.Result()){if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my)){game.NewRun(unsigned(GetNowHiPerformanceCount()));ResetView();}return;}
+    if(RestartButton().Contains(mx,my)&&!game.Busy()){game.NewRun(unsigned(GetNowHiPerformanceCount()));ResetView();return;}
     if(game.Map()){
+        if(MapUpButton().Contains(mx,my)){Page(game,1);return;}if(MapDownButton().Contains(mx,my)){Page(game,-1);return;}
         for(int i=0;i<int(game.run.options.size());++i)if(MapChoiceRect(i,int(game.run.options.size())).Contains(mx,my)){game.ChooseNode(i);return;}
-        for(int i=0;i<int(game.run.map.size());++i){const auto& node=game.run.map[i];if(!MapNodeRect(node.floor,node.column,node.kind==NodeKind::Boss).Contains(mx,my))continue;for(int option=0;option<int(game.run.options.size());++option)if(game.run.options[option]==i){game.ChooseNode(option);return;}}
+        for(int i=0;i<int(game.run.map.size());++i){const auto& node=game.run.map[i];if(node.floor-map_scroll_<0||node.floor-map_scroll_>6||!MapNodeRect(node.floor-map_scroll_,node.column,node.kind==NodeKind::Boss,game.state.config.map_columns).Contains(mx,my))continue;for(int option=0;option<int(game.run.options.size());++option)if(game.run.options[option]==i){game.ChooseNode(option);return;}}
         return;
     }
     if(game.Event()){for(int i=0;i<int(game.run.event_choices.size());++i)if(EventChoiceRect(i).Contains(mx,my)){game.ChooseEvent(i);return;}return;}
     if(game.Shop()){
+        if(DeckPrevButton().Contains(mx,my)){Page(game,-1);return;}if(DeckNextButton().Contains(mx,my)){Page(game,1);return;}
         if(LeaveButton().Contains(mx,my)){game.LeaveShop();return;}
         for(int i=0;i<int(game.run.shop.size());++i)if(ShopRect(i).Contains(mx,my)){game.Buy(i);return;}
-        for(int i=0;i<std::min(8,int(game.run.deck.size()));++i)if(DeckRect(i).Contains(mx,my)){game.RemoveCard(i);return;}
+        for(int i=0;i<8&&deck_page_*8+i<int(game.run.deck.size());++i)if(DeckRect(i).Contains(mx,my)){game.RemoveCard(deck_page_*8+i);return;}
         return;
     }
     if(game.Rest()){
+        if(DeckPrevButton().Contains(mx,my)){Page(game,-1);return;}if(DeckNextButton().Contains(mx,my)){Page(game,1);return;}
         if(HealButton().Contains(mx,my)){game.RestHeal();return;}
-        for(int i=0;i<std::min(10,int(game.run.deck.size()));++i){const Rect r={120+(i%5)*240,330+(i/5)*70,220,56};if(r.Contains(mx,my)){game.UpgradeCard(i);return;}}
+        for(int i=0;i<8&&deck_page_*8+i<int(game.run.deck.size());++i)if(UpgradeRect(i).Contains(mx,my)){game.UpgradeCard(deck_page_*8+i);return;}
         return;
     }
     if(game.Busy())return;
-    if(RestartButton().Contains(mx,my)){game.NewRun();return;}
+    if(RestartButton().Contains(mx,my)){game.NewRun(unsigned(GetNowHiPerformanceCount()));ResetView();return;}
     if(EndButton().Contains(mx,my)){game.EndTurn();return;}
     if(UltimateButton().Contains(mx,my)){game.Ultimate();return;}
-    for(int i=0;i<int(game.run.potions.size())&&i<3;++i)if(PotionRect(i).Contains(mx,my)){game.DrinkPotion(i);return;}
+    for(int i=0;i<int(game.run.potions.size())&&i<4;++i)if(PotionRect(i).Contains(mx,my)){game.DrinkPotion(i);return;}
     const int count=int(game.state.hand.size());for(int i=0;i<count;++i)if(CardRect(count,i).Contains(mx,my)){game.Play(i);return;}
 }
 }

@@ -3,7 +3,7 @@
     "id": "froglet",
     "name": "Ếch Con",
     "role": "combat",
-    "maxHp": 22,
+    "maxHp": 25,
     "attackChance": 0.75,
     "minDamage": 6,
     "maxDamage": 8,
@@ -25,10 +25,35 @@
     ]
   },
   {
+    "id": "reed_frog", "name": "Ếch Lau", "role": "combat", "maxHp": 28, "minFloor": 1,
+    "openingAttack": true, "maxConsecutiveGuards": 1,
+    "patterns": [{"kind": "attack", "minDamage": 5, "maxDamage": 8, "weight": 3}, {"kind": "buff", "status": "strength", "amount": 1, "weight": 1}]
+  },
+  {
+    "id": "moss_toad", "name": "Cóc Rêu", "role": "combat", "maxHp": 36, "minFloor": 2,
+    "openingAttack": true, "maxConsecutiveGuards": 1,
+    "patterns": [{"kind": "attack", "minDamage": 6, "maxDamage": 8, "weight": 3}, {"kind": "defend", "block": 9, "weight": 2}]
+  },
+  {
+    "id": "marsh_guard", "name": "Cóc Đầm Lầy", "role": "combat", "maxHp": 40, "minFloor": 4,
+    "openingAttack": true, "maxConsecutiveGuards": 1,
+    "patterns": [{"kind": "attack", "minDamage": 7, "maxDamage": 9, "weight": 3}, {"kind": "debuff", "status": "vulnerable", "amount": 1, "weight": 1}]
+  },
+  {
+    "id": "poison_frog", "name": "Ếch Bùn Độc", "role": "combat", "maxHp": 32, "minFloor": 3,
+    "openingAttack": true, "maxConsecutiveGuards": 1,
+    "patterns": [{"kind": "attack", "minDamage": 5, "maxDamage": 7, "status": "poison", "amount": 1, "weight": 3}, {"kind": "defend", "block": 4, "weight": 1}]
+  },
+  {
+    "id": "elder_toad", "name": "Cóc Trưởng Lão", "role": "elite", "maxHp": 68,
+    "openingAttack": true, "maxConsecutiveGuards": 1,
+    "patterns": [{"kind": "attack", "minDamage": 9, "maxDamage": 13, "weight": 3}, {"kind": "buff", "status": "strength", "amount": 2, "block": 5, "weight": 1}]
+  },
+  {
     "id": "elite_frog",
     "name": "Ếch Tinh Anh",
     "role": "elite",
-    "maxHp": 36,
+    "maxHp": 60,
     "openingAttack": true,
     "maxConsecutiveGuards": 1,
     "patterns": [
@@ -41,7 +66,7 @@
     "id": "frog",
     "name": "Ếch Vương",
     "role": "boss",
-    "maxHp": 46,
+    "maxHp": 80,
     "openingAttack": true,
     "maxConsecutiveGuards": 1,
     "patterns": [
@@ -52,7 +77,7 @@
     "phases": [
       {
         "name": "Ếch Vương Cuồng Nộ",
-        "maxHp": 42,
+        "maxHp": 70,
         "strength": 2,
         "openingAttack": true,
         "maxConsecutiveGuards": 1,

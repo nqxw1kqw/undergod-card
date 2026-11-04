@@ -48,6 +48,8 @@ bool BuyItem(RunState& run,const Config& config,int index);
 bool RemoveCard(RunState& run,const Config& config,int index);
 void LeaveShop(RunState& run);
 bool RestHeal(RunState& run,const Config& config);
+int RestHealAmount(const RunState& run,const Config& config);
+bool CanChooseEvent(const RunState& run,int index);
 bool UpgradeCard(RunState& run,const Config& config,int index);
 bool DrinkPotion(RunState& run,Combat& combat,int index);
 int SuggestCard(const Combat& combat);

@@ -2,7 +2,21 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed){cinematic_.Cancel();StartRun(run,state,seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();}
+void Game::NewRun(unsigned seed){cinematic_.Cancel();StartRun(run,state,seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();save_dirty_=true;}
+bool Game::Save(bool notify){
+    if(Busy()){if(notify)Toast("Chờ hành động kết thúc để lưu nhé.");return false;}
+    if(save_file_.empty())return false;
+    std::string error;const bool saved=SaveSession(save_file_,run,state,speed_,error);save_dirty_=false;
+    if(!saved)Toast("Không lưu được hành trình. Kiểm tra thư mục lưu.");else if(notify)Toast("Đã lưu hành trình.");
+    return saved;
+}
+bool Game::Load(){
+    if(Busy()){Toast("Chờ hành động kết thúc để tải nhé.");return false;}
+    std::string error;
+    if(save_file_.empty()||!LoadSession(save_file_,run,state,speed_,error)){Toast("Không đọc được bản lưu. Hành trình hiện tại vẫn được giữ.");return false;}
+    cinematic_.Cancel();motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;
+    poses={};popups.clear();visual={};time=0;save_dirty_=false;Toast("Đã tiếp tục hành trình.");return true;
+}
 void Game::ConsumeEvents(){
     for(const auto& event:state.events){
         if(event.type==EventType::Damage){const bool blocked=event.amount==0&&event.blocked>0;poses[event.enemy?1:0]={blocked?"defend":"hit",0};popups.push_back({event.enemy,event.amount?event.amount:event.blocked,EventType::Damage,0,blocked});}
@@ -13,7 +27,7 @@ void Game::ConsumeEvents(){
     }
     state.events.clear();
 }
-void Game::AfterResolve(){ConsumeEvents();ObserveCombat(run,state);}
+void Game::AfterResolve(){ConsumeEvents();ObserveCombat(run,state);save_dirty_=true;}
 void Game::Play(int index){
     if(!CanAct()||index<0||index>=int(state.hand.size()))return;
     if(!state.CanPlay(index)){Toast("Không đủ năng lượng cho lá bài này.");return;}
@@ -31,6 +45,7 @@ void Game::ApplyMotion(){
 void Game::ChooseNode(int option){
     if(!Map())return;
     if(!undergod::ChooseNode(run,state,option))return;
+    save_dirty_=true;
     motion_=Motion::None;pending_card_=-1;motion_age_=0;motion_impact_=false;poses={};popups.clear();visual={};
     if(run.place==Place::Fight)Toast(state.PhaseName());
     else if(run.place==Place::Event)Toast(run.event_title);
@@ -41,16 +56,22 @@ void Game::ChooseReward(int index){
     if(choice<0||choice>=int(run.rewards.size()))return;
     const auto id=run.rewards[choice];
     if(!undergod::ChooseReward(run,state,choice))return;
+    save_dirty_=true;
     motion_=Motion::None;pending_card_=-1;motion_age_=0;motion_impact_=false;poses={};popups.clear();visual={};
     Toast("Nhận: "+state.Definition(id).name);
 }
-void Game::ChooseEvent(int index){if(Event())undergod::ChooseEvent(run,state.config,index);}
-bool Game::Buy(int index){return Shop()&&undergod::BuyItem(run,state.config,index);}
-bool Game::RemoveCard(int index){return Shop()&&undergod::RemoveCard(run,state.config,index);}
-void Game::LeaveShop(){if(Shop())undergod::LeaveShop(run);}
-bool Game::RestHeal(){return Rest()&&undergod::RestHeal(run,state.config);}
-bool Game::UpgradeCard(int index){return Rest()&&undergod::UpgradeCard(run,state.config,index);}
-bool Game::DrinkPotion(int index){if(!CanAct())return false;const bool drank=undergod::DrinkPotion(run,state,index);if(drank)ConsumeEvents();return drank;}
+void Game::ChooseEvent(int index){
+    if(!Event()||index<0||index>=int(run.event_choices.size()))return;
+    const auto outcome=run.event_choices[index].outcome;
+    if(undergod::ChooseEvent(run,state.config,index)){save_dirty_=true;Toast(outcome);}
+    else Toast("Không đủ vàng cho lựa chọn này.");
+}
+bool Game::Buy(int index){const bool changed=Shop()&&undergod::BuyItem(run,state.config,index);save_dirty_|=changed;return changed;}
+bool Game::RemoveCard(int index){const bool changed=Shop()&&undergod::RemoveCard(run,state.config,index);save_dirty_|=changed;return changed;}
+void Game::LeaveShop(){if(Shop()){undergod::LeaveShop(run);save_dirty_=true;}}
+bool Game::RestHeal(){const bool changed=Rest()&&undergod::RestHeal(run,state.config);save_dirty_|=changed;return changed;}
+bool Game::UpgradeCard(int index){const bool changed=Rest()&&undergod::UpgradeCard(run,state.config,index);save_dirty_|=changed;return changed;}
+bool Game::DrinkPotion(int index){if(!CanAct())return false;const bool drank=undergod::DrinkPotion(run,state,index);if(drank){ConsumeEvents();save_dirty_=true;}return drank;}
 bool Game::Act(const AutoStep& step){
     switch(step.kind){
     case AutoKind::Node: ChooseNode(step.index); return true;
@@ -112,6 +133,7 @@ void Game::Update(float real_dt){
         visual.shake_left=std::max(0.f,visual.shake_left-dt);visual.flash_left=std::max(0.f,visual.flash_left-dt);
         cinematic_.Advance(cinematic_age_*1000.f);
     }else cinematic_age_=0;
+    if(save_dirty_&&!save_file_.empty()&&!Busy())Save(false);
 }
 std::pair<float,float> Game::SpearTip()const{
     const auto& s=visual.spear;const float t=std::clamp(s.age/std::max(.001f,s.duration),0.f,1.f);

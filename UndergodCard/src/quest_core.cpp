@@ -159,6 +159,9 @@ void Combat::ApplyOne(const Effect& effect,bool from_card){
     case EffectOp::Energy:
         energy=std::min(10,energy+scaled.amount);
         break;
+    case EffectOp::Rage:
+        rage=std::min(config.balance.rage_max,rage+scaled.amount);
+        break;
     }
 }
 
@@ -193,6 +196,7 @@ void Combat::ResolveIntent(){
 
 void Combat::BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck,CombatMods mods){
     mods_=std::move(mods);
+    enemy_id_=enemy_def.id;
     shuffle_rng_.Seed(seed);
     intent_rng_.Seed(seed^0x19ABCu);
     ultimate_pending_=false;
@@ -368,7 +372,34 @@ std::string Combat::StatusText(const Fighter& fighter) const {
     add(fighter.status.strength,"Sức Mạnh");
     add(fighter.status.poison,"Độc");
     add(fighter.status.weak,"Suy Yếu");
-    add(fighter.status.vulnerable,"Dễ Thương");
+    add(fighter.status.vulnerable,"Dễ Vỡ");
     return text;
+}
+
+CombatSnapshot Combat::Snapshot()const{
+    CombatSnapshot s;
+    s.enemy_id=enemy_id_;s.player=player;s.enemy=enemy;s.phase=phase;s.intent=intent;
+    s.energy=energy;s.rage=rage;s.turn=turn;s.guard_streak=guard_streak_;s.phase_index=phase_index_;
+    s.shuffle_rng=shuffle_rng_.State();s.intent_rng=intent_rng_.State();s.phase_opening=phase_opening_;
+    s.draw=draw;s.hand=hand;s.discard=discard;
+    return s;
+}
+
+void Combat::Restore(const CombatSnapshot& s,CombatMods mods){
+    const EnemyDef* found=nullptr;
+    for(const auto& definition:config.bestiary)if(definition.id==s.enemy_id)found=&definition;
+    if(!found)throw std::runtime_error("Unknown saved enemy");
+    std::vector<PhaseDef> phases={BasePhase(*found)};
+    phases.insert(phases.end(),found->phases.begin(),found->phases.end());
+    auto valid_fighter=[](const Fighter& f){return f.max_hp>0&&f.max_hp<=100000&&f.hp>=0&&f.hp<=f.max_hp&&f.block>=0&&f.block<=100000&&f.status.poison>=0&&f.status.poison<=10000&&f.status.weak>=0&&f.status.weak<=10000&&f.status.vulnerable>=0&&f.status.vulnerable<=10000&&f.status.strength>=0&&f.status.strength<=10000;};
+    const bool stable=s.phase==Phase::Player||s.phase==Phase::Won||s.phase==Phase::Lost;
+    if(!stable||!valid_fighter(s.player)||!valid_fighter(s.enemy)||s.phase_index<0||s.phase_index>=int(phases.size())||s.energy<0||s.energy>100||s.rage<0||s.rage>config.balance.rage_max||s.turn<1||s.turn>100000||s.guard_streak<0||s.guard_streak>100000)throw std::runtime_error("Invalid saved combat");
+    if((s.phase==Phase::Player&&(s.player.hp==0||s.enemy.hp==0))||(s.phase==Phase::Won&&(s.enemy.hp!=0||s.phase_index+1!=int(phases.size())))||(s.phase==Phase::Lost&&s.player.hp!=0))throw std::runtime_error("Invalid saved combat result");
+    if(s.enemy.max_hp!=phases[s.phase_index].hp||s.intent.value<0||s.intent.value>100000||s.intent.status_amount<0||s.intent.status_amount>10000||int(s.intent.kind)<0||int(s.intent.kind)>int(IntentKind::Debuff)||int(s.intent.status)<0||int(s.intent.status)>int(StatusId::Strength)||s.intent.attack!=(s.intent.kind==IntentKind::Attack))throw std::runtime_error("Invalid saved intent");
+    for(const auto* pile:{&s.draw,&s.hand,&s.discard}){if(pile->size()>1000)throw std::runtime_error("Saved deck too large");for(const auto& id:*pile)Definition(id);}
+    phases_=std::move(phases);enemy_id_=s.enemy_id;role_=found->role;mods_=std::move(mods);
+    player=s.player;enemy=s.enemy;phase=s.phase;intent=s.intent;energy=s.energy;rage=s.rage;turn=s.turn;
+    guard_streak_=s.guard_streak;phase_index_=s.phase_index;phase_opening_=s.phase_opening;ultimate_pending_=false;
+    shuffle_rng_.Seed(s.shuffle_rng);intent_rng_.Seed(s.intent_rng);draw=s.draw;hand=s.hand;discard=s.discard;events.clear();
 }
 }

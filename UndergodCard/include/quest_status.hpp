@@ -35,7 +35,7 @@ inline const char* StatusName(StatusId id){
     case StatusId::Block: return "Giáp";
     case StatusId::Poison: return "Độc";
     case StatusId::Weak: return "Suy Yếu";
-    case StatusId::Vulnerable: return "Dễ Thương";
+    case StatusId::Vulnerable: return "Dễ Vỡ";
     case StatusId::Strength: return "Sức Mạnh";
     }
     return "";

@@ -123,13 +123,6 @@ CombatMods ModsFor(const RunState& run,const Config& config){
 
 std::vector<MapNode> GenerateMap(const Config& config,unsigned seed){
     const int columns=std::max(1,config.map_columns),floors=std::max(1,config.map_floors);
-    const NodeKind pattern[5][3]={
-        {NodeKind::Combat,NodeKind::Combat,NodeKind::Combat},
-        {NodeKind::Event,NodeKind::Combat,NodeKind::Shop},
-        {NodeKind::Rest,NodeKind::Event,NodeKind::Combat},
-        {NodeKind::Combat,NodeKind::Elite,NodeKind::Rest},
-        {NodeKind::Shop,NodeKind::Event,NodeKind::Rest}
-    };
     std::vector<int> event_order(config.events.size());
     for(int i=0;i<int(event_order.size());++i)event_order[i]=i;
     Rng rng;rng.Seed(seed^0xE11Eu);
@@ -137,11 +130,23 @@ std::vector<MapNode> GenerateMap(const Config& config,unsigned seed){
     int event_cursor=0;
     std::vector<MapNode> map;
     for(int floor=0;floor<floors;++floor)for(int column=0;column<columns;++column){
-        MapNode node;node.floor=floor;node.column=column;node.kind=floor<5&&column<3?pattern[floor][column]:NodeKind::Combat;
+        MapNode node;node.floor=floor;node.column=column;
+        if(floor==0)node.kind=NodeKind::Combat;
+        else if(floor==floors-1)node.kind=NodeKind::Rest;
+        else{
+            int total=0;for(int kind=0;kind<5;++kind)if(kind!=int(NodeKind::Elite)||floor>=config.elite_min_floor)total+=config.map_weights[kind];
+            const double roll=rng.Next()*total;int sum=0;
+            for(int kind=0;kind<5;++kind){if(kind==int(NodeKind::Elite)&&floor<config.elite_min_floor)continue;sum+=config.map_weights[kind];if(roll<sum){node.kind=NodeKind(kind);break;}}
+        }
         if(node.kind==NodeKind::Combat){
-            node.encounter_id=config.combat_ids.empty()?"froglet":(floor==0?config.combat_ids.front():config.combat_ids[column%int(config.combat_ids.size())]);
-            node.reward_gold=node.encounter_id=="toad"?18:15;
-        }else if(node.kind==NodeKind::Elite){node.encounter_id=config.elite_id;node.reward_gold=32;}
+            std::vector<std::string> pool;for(const auto& id:config.combat_ids)if(FindEnemy(config,id).min_floor<=floor)pool.push_back(id);
+            if(pool.empty())throw std::runtime_error("No enemy available at this floor");
+            node.encounter_id=floor==0?config.combat_ids.front():pool[std::min(int(pool.size())-1,int(rng.Next()*pool.size()))];
+            node.reward_gold=config.combat_gold_min+int(rng.Next()*(config.combat_gold_max-config.combat_gold_min+1));
+        }else if(node.kind==NodeKind::Elite){
+            node.encounter_id=config.elite_ids[std::min(int(config.elite_ids.size())-1,int(rng.Next()*config.elite_ids.size()))];
+            node.reward_gold=config.elite_gold_min+int(rng.Next()*(config.elite_gold_max-config.elite_gold_min+1));
+        }
         else if(node.kind==NodeKind::Event&&!config.events.empty()){node.event_id=config.events[event_order[event_cursor%int(event_order.size())]].id;++event_cursor;}
         map.push_back(node);
     }
@@ -158,6 +163,7 @@ std::vector<MapNode> GenerateMap(const Config& config,unsigned seed){
 
 void StartRun(RunState& run,Combat& combat,unsigned seed){
     run=RunState{};
+    combat.Reset(seed);
     run.seed=seed;run.hp=run.max_hp=combat.config.balance.player_hp;run.gold=combat.config.gold_start;run.potion_slots=combat.config.potion_slots;
     run.class_id=combat.config.player_id;run.deck=StartingDeck(combat.config);run.map=GenerateMap(combat.config,seed);
     if(run.map.empty())throw std::runtime_error("Run map is empty");
@@ -173,11 +179,17 @@ void ObserveCombat(RunState& run,Combat& combat){
     if(run.fight_resolved||run.victory||run.defeat||run.place!=Place::Fight)return;
     if(combat.phase!=Phase::Won&&combat.phase!=Phase::Lost)return;
     run.fight_resolved=true;
-    if(combat.phase==Phase::Lost){run.defeat=true;return;}
+    if(combat.phase==Phase::Lost){run.hp=0;run.rage=combat.rage;run.defeat=true;return;}
     run.hp=combat.player.hp;run.rage=combat.rage;
     if(run.node>=0&&run.map[run.node].kind==NodeKind::Boss){run.victory=true;return;}
     int bonus=0;for(const auto& id:run.relics)bonus+=FindRelic(combat.config,id).gold_bonus;
     if(run.node>=0)run.gold+=std::max(0,run.map[run.node].reward_gold+bonus);
+    if(run.node>=0&&run.map[run.node].kind==NodeKind::Elite){
+        std::vector<std::string> available;for(const auto& relic:combat.config.relics)if(!Owned(run.relics,relic.id))available.push_back(relic.id);
+        if(!available.empty()){Rng rng;rng.Seed(run.seed^uint32_t(run.node+1)*0x6C8E9CF5u);GiveRelic(run,combat.config,available[std::min(int(available.size())-1,int(rng.Next()*available.size()))]);}
+        else run.gold+=25;
+        combat.player.max_hp=run.max_hp;combat.player.hp=run.hp;
+    }
     OfferRewards(run,combat.config);
 }
 
@@ -206,8 +218,12 @@ bool ChooseReward(RunState& run,Combat&,int index){
     run.deck.push_back(run.rewards[index]);run.rewards.clear();run.pending_reward=false;run.fight_resolved=false;ShowMap(run);return true;
 }
 
+bool CanChooseEvent(const RunState& run,int index){
+    return run.place==Place::Event&&!run.defeat&&index>=0&&index<int(run.event_choices.size())&&run.gold>=std::max(0,-run.event_choices[index].gold);
+}
+
 bool ChooseEvent(RunState& run,const Config& config,int index){
-    if(run.place!=Place::Event||index<0||index>=int(run.event_choices.size())||run.defeat)return false;
+    if(!CanChooseEvent(run,index))return false;
     const auto choice=run.event_choices[index];
     const bool paid=choice.gold<0?Pay(run,choice.gold):(choice.gold>0?(run.gold+=choice.gold,true):true);
     if(paid)HealTo(run,choice.heal);
@@ -243,10 +259,13 @@ bool RemoveCard(RunState& run,const Config& config,int index){
 
 void LeaveShop(RunState& run){if(run.place==Place::Shop)ShowMap(run);}
 
+int RestHealAmount(const RunState& run,const Config& config){
+    int bonus=0;for(const auto& id:run.relics)bonus+=FindRelic(config,id).rest_bonus;
+    return std::min(run.max_hp-run.hp,std::max(8,run.max_hp*config.heal_percent/100)+bonus);
+}
 bool RestHeal(RunState& run,const Config& config){
     if(run.place!=Place::Rest||run.rest_used)return false;
-    int bonus=0;for(const auto& id:run.relics)bonus+=FindRelic(config,id).rest_bonus;
-    HealTo(run,std::max(8,run.max_hp*config.heal_percent/100)+bonus);
+    HealTo(run,RestHealAmount(run,config));
     run.rest_used=true;ShowMap(run);return true;
 }
 
@@ -305,7 +324,7 @@ AutoStep SuggestAuto(const RunState& run,const Combat& combat){
     if(run.place==Place::Reward)return {AutoKind::Reward,SuggestReward(run,combat.config)};
     if(run.place==Place::Event){
         int best=0,score=-999;
-        for(int i=0;i<int(run.event_choices.size());++i){const int value=ChoiceScore(run,run.event_choices[i],combat.config);if(value>score){score=value;best=i;}}
+        for(int i=0;i<int(run.event_choices.size());++i){if(!CanChooseEvent(run,i))continue;const int value=ChoiceScore(run,run.event_choices[i],combat.config);if(value>score){score=value;best=i;}}
         return {AutoKind::Event,best};
     }
     if(run.place==Place::Shop){
@@ -338,6 +357,12 @@ AutoStep SuggestAuto(const RunState& run,const Combat& combat){
         const auto& potion=FindPotion(combat.config,run.potions[i]);
         if(PotionHeal(potion)>0&&(combat.player.hp*2<combat.player.max_hp||(combat.IncomingDamage()>=combat.player.hp&&combat.player.block<combat.IncomingDamage())))return {AutoKind::Potion,i};
         if(PotionHarm(potion)>0&&combat.enemy.hp>18&&combat.player.hp>16)return {AutoKind::Potion,i};
+        for(const auto& effect:potion.effects){
+            if(effect.op==EffectOp::Block&&combat.IncomingDamage()>combat.player.block+3)return {AutoKind::Potion,i};
+            if(effect.op==EffectOp::Rage&&combat.rage<combat.config.balance.rage_max&&combat.rage+effect.amount>=combat.config.balance.rage_max&&combat.enemy.hp>20)return {AutoKind::Potion,i};
+            if(effect.op==EffectOp::Energy&&combat.energy<2&&!combat.hand.empty())return {AutoKind::Potion,i};
+            if(effect.op==EffectOp::Draw&&combat.energy>0&&combat.hand.size()<3)return {AutoKind::Potion,i};
+        }
     }
     if(combat.rage>=combat.config.balance.rage_max&&combat.enemy.hp+combat.enemy.block>14)return {AutoKind::Ultimate,0};
     const int card=SuggestCard(combat);

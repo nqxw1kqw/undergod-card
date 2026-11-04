@@ -26,6 +26,7 @@ Effect ParseEffect(const Json& j){
     else if(op=="apply")effect.op=EffectOp::Apply;
     else if(op=="draw")effect.op=EffectOp::Draw;
     else if(op=="energy")effect.op=EffectOp::Energy;
+    else if(op=="rage")effect.op=EffectOp::Rage;
     else throw std::runtime_error("Unknown effect: "+op);
     effect.amount=j.at("amount");
     effect.times=j.value("times",1);
@@ -95,9 +96,10 @@ EnemyDef ParseEnemy(const Json& j){
     EnemyDef enemy;
     enemy.id=j.at("id");enemy.name=j.at("name");enemy.role=j.value("role","combat");
     enemy.hp=j.at("maxHp");
+    enemy.min_floor=j.value("minFloor",0);
     enemy.opening_attack=j.value("openingAttack",true);
     enemy.max_guards=j.value("maxConsecutiveGuards",1);
-    if(!Ident(enemy.id)||enemy.name.empty()||enemy.hp<1||enemy.max_guards<0)throw std::runtime_error("Invalid enemy definition");
+    if(!Ident(enemy.id)||enemy.name.empty()||enemy.hp<1||enemy.max_guards<0||enemy.min_floor<0)throw std::runtime_error("Invalid enemy definition");
     if(enemy.role!="combat"&&enemy.role!="elite"&&enemy.role!="boss")throw std::runtime_error("Invalid enemy role");
     if(j.contains("patterns"))enemy.patterns=ParsePatterns(j.at("patterns"));
     else ReadLegacyStats(j,enemy.min_damage,enemy.max_damage,enemy.block,enemy.attack_chance);
@@ -112,7 +114,7 @@ std::string Describe(const CardDef& card){
     if(card.heal)text+="Hồi "+std::to_string(card.heal)+" HP. ";
     if(card.poison)text+="Gây "+std::to_string(card.poison)+" Độc. ";
     if(card.weak)text+="Gây "+std::to_string(card.weak)+" Suy Yếu. ";
-    if(card.vulnerable)text+="Gây "+std::to_string(card.vulnerable)+" Dễ Thương. ";
+    if(card.vulnerable)text+="Gây "+std::to_string(card.vulnerable)+" Dễ Vỡ. ";
     if(card.strength)text+="Nhận "+std::to_string(card.strength)+" Sức Mạnh. ";
     if(card.cards_drawn)text+="Rút "+std::to_string(card.cards_drawn)+" lá. ";
     if(card.energy_gain)text+="Nhận "+std::to_string(card.energy_gain)+" năng lượng. ";
@@ -146,12 +148,25 @@ Config LoadConfig(const std::string& directory){
     const auto route=Read(directory+"/run.json");
     c.reward_choices=route.value("rewardChoices",3);
     c.gold_start=route.value("goldStart",50);c.heal_percent=route.value("healPercent",30);c.remove_price=route.value("removePrice",70);c.potion_slots=route.value("potionSlots",2);
-    c.map_columns=route.value("columns",3);c.map_floors=route.value("floors",5);
+    const auto map=Read(directory+"/map.json");
+    c.map_columns=map.at("columns");c.map_floors=map.at("floors");c.elite_min_floor=map.at("eliteMinFloor");
+    const auto weights=map.at("weights");const char* names[]={"combat","elite","event","shop","rest"};
+    int total_weight=0;for(int i=0;i<5;++i){c.map_weights[i]=weights.at(names[i]);if(c.map_weights[i]<0||c.map_weights[i]>1000)throw std::runtime_error("Invalid map weight");total_weight+=c.map_weights[i];}
+    c.combat_gold_min=map.at("combatGold").at(0);c.combat_gold_max=map.at("combatGold").at(1);
+    c.elite_gold_min=map.at("eliteGold").at(0);c.elite_gold_max=map.at("eliteGold").at(1);
+    if(total_weight<1||total_weight-c.map_weights[int(NodeKind::Elite)]<1||c.elite_min_floor<1||c.elite_min_floor>=c.map_floors||c.combat_gold_min<0||c.combat_gold_max<c.combat_gold_min||c.elite_gold_min<0||c.elite_gold_max<c.elite_gold_min)throw std::runtime_error("Invalid map configuration");
     c.boss_id=route.value("boss","frog");c.elite_id=route.value("elite","elite_frog");
     if(route.contains("combats"))for(const auto& id:route.at("combats"))c.combat_ids.push_back(id.get<std::string>());
+    if(route.contains("elites"))for(const auto& id:route.at("elites"))c.elite_ids.push_back(id.get<std::string>());
+    if(c.elite_ids.empty())c.elite_ids.push_back(c.elite_id);
     auto known=[&](const std::string& id){for(const auto& enemy:c.bestiary)if(enemy.id==id)return true;return false;};
-    if(c.combat_ids.empty()||!known(c.boss_id)||!known(c.elite_id)||c.map_columns<2||c.map_floors<3||c.gold_start<0||c.heal_percent<1||c.heal_percent>100||c.remove_price<1||c.potion_slots<1)throw std::runtime_error("Invalid run configuration");
+    if(c.combat_ids.empty()||!known(c.boss_id)||!known(c.elite_id)||c.map_columns<2||c.map_columns>4||c.map_floors<3||c.map_floors>15||c.gold_start<0||c.heal_percent<1||c.heal_percent>100||c.remove_price<1||c.potion_slots<1||c.potion_slots>4)throw std::runtime_error("Invalid run configuration");
     for(const auto& id:c.combat_ids)if(!known(id))throw std::runtime_error("Unknown combat enemy: "+id);
+    for(const auto& id:c.elite_ids)if(!known(id))throw std::runtime_error("Unknown elite enemy: "+id);
+    auto role_of=[&](const std::string& id)->const EnemyDef&{for(const auto& enemy:c.bestiary)if(enemy.id==id)return enemy;throw std::runtime_error("Unknown enemy: "+id);};
+    for(const auto& id:c.combat_ids)if(role_of(id).role!="combat")throw std::runtime_error("Combat pool has non-combat enemy");
+    for(const auto& id:c.elite_ids)if(role_of(id).role!="elite")throw std::runtime_error("Elite pool has non-elite enemy");
+    if(role_of(c.boss_id).role!="boss"||role_of(c.combat_ids.front()).min_floor!=0)throw std::runtime_error("Invalid opening enemy or boss");
     for(const auto& enemy:c.bestiary)if(enemy.id==c.combat_ids.front())c.enemy=enemy;
     for(const auto& j:Read(directory+"/events.json")){
         EventDef event;event.id=j.at("id");event.title=j.at("title");event.text=j.at("text");
@@ -213,7 +228,7 @@ Config LoadConfig(const std::string& directory){
         if(!choice.relic.empty()&&!has_relic(choice.relic))throw std::runtime_error("Event relic was not defined: "+choice.relic);
         if(!choice.potion.empty()&&!has_potion(choice.potion))throw std::runtime_error("Event potion was not defined: "+choice.potion);
     }
-    if(copies<1||copies>1000||rewardable<c.reward_choices||c.reward_choices<1||c.reward_choices>5||c.balance.player_hp<1||c.enemy.hp<1||c.balance.draw<1||c.balance.draw>10||c.balance.energy<1||c.balance.rage_max<1||c.balance.rage_attack<0||c.balance.rage_block<0||c.balance.ultimate_damage<1)throw std::runtime_error("Invalid balance configuration");
+    if(copies<1||copies>1000||rewardable<c.reward_choices||c.reward_choices<1||c.reward_choices>3||c.balance.player_hp<1||c.enemy.hp<1||c.balance.draw<1||c.balance.draw>10||c.balance.energy<1||c.balance.rage_max<1||c.balance.rage_attack<0||c.balance.rage_block<0||c.balance.ultimate_damage<1)throw std::runtime_error("Invalid balance configuration");
     return c;
 }
 Timeline LoadTimeline(const std::string& file){

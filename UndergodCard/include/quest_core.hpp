@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <array>
 
 namespace undergod {
 enum class NodeKind { Combat, Elite, Event, Shop, Rest, Boss };
@@ -45,7 +46,7 @@ struct EnemyDef {
     std::string id="frog";
     std::string name="Ếch Vương";
     std::string role="combat";
-    int hp=120,min_damage=8,max_damage=13,block=6;
+    int hp=120,min_damage=8,max_damage=13,block=6,min_floor=0;
     double attack_chance=.7;
     bool opening_attack=true;
     int max_guards=1;
@@ -80,9 +81,12 @@ struct Config {
     std::vector<EnemyDef> bestiary;
     std::vector<RouteNode> route;
     int reward_choices=3;
-    int gold_start=50,heal_percent=30,remove_price=70,potion_slots=2,map_columns=3,map_floors=5;
+    int gold_start=50,heal_percent=30,remove_price=75,potion_slots=3,map_columns=3,map_floors=12;
+    int elite_min_floor=2,combat_gold_min=15,combat_gold_max=25,elite_gold_min=30,elite_gold_max=40;
+    std::array<int,5> map_weights={45,12,22,8,13};
     std::string boss_id="frog",elite_id="elite_frog";
     std::vector<std::string> combat_ids;
+    std::vector<std::string> elite_ids;
     std::vector<EventDef> events;
     std::vector<RelicDef> relics;
     std::vector<PotionDef> potions;
@@ -111,6 +115,7 @@ class Rng {
     uint32_t value_=0;
 public:
     void Seed(uint32_t seed){value_=seed;}
+    uint32_t State()const{return value_;}
     double Next(){uint32_t t=(value_+=0x6D2B79F5u);t=(t^(t>>15))*(t|1u);t^=t+((t^(t>>7))*(t|61u));return double(t^(t>>14))/4294967296.0;}
 };
 
@@ -140,11 +145,23 @@ struct Intent {
     int status_amount=0;
 };
 
+struct CombatSnapshot {
+    std::string enemy_id;
+    Fighter player,enemy;
+    Phase phase=Phase::Player;
+    Intent intent;
+    int energy=0,rage=0,turn=1,guard_streak=0,phase_index=0;
+    uint32_t shuffle_rng=0,intent_rng=0;
+    bool phase_opening=false;
+    std::vector<std::string> draw,hand,discard;
+};
+
 class Combat {
     Rng shuffle_rng_,intent_rng_;
     bool ultimate_pending_=false,phase_opening_=false;
     int guard_streak_=0,phase_index_=0;
     std::string role_="combat";
+    std::string enemy_id_;
     std::vector<PhaseDef> phases_;
     void Shuffle(std::vector<std::string>& pile);
     void RollIntent();
@@ -170,6 +187,8 @@ public:
     void Reset(uint32_t seed=1337);
     void BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck,CombatMods mods={});
     void Cast(const std::vector<Effect>& effects);
+    CombatSnapshot Snapshot()const;
+    void Restore(const CombatSnapshot& snapshot,CombatMods mods);
     const CardDef& Definition(const std::string& id) const;
     void Draw(int count);
     bool CanPlay(int index) const;

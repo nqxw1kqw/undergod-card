@@ -1,54 +1,34 @@
-# undergod-card
+# undergod-card — v0.3
 
-Game thẻ bài theo lượt với **C++17, DxLib, Visual Studio 2022 và Windows x64**. Gà Chiến Binh dùng giáo, khiên và thẻ bài để đấu với Ếch Vương.
+Game thẻ bài roguelike theo lượt bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Gà Chiến Binh đi qua một hồi phân nhánh rồi đấu Ếch Vương hai giai đoạn.
 
-![Trận đấu Gà Chiến Binh và Ếch Vương](UndergodCard/docs/images/battle.png)
+![Bản đồ một hồi](UndergodCard/docs/images/map.png)
 
-- Hành trình ngắn bốn trận, kết bằng Ếch Vương hai giai đoạn. HP và Nộ được giữ; giáp và trạng thái xóa khi sang trận mới.
-- Bộ khởi đầu 10 lá, rút 5, 3 năng lượng. Sau mỗi trận trước trùm, chọn 1 trong 3 lá thưởng. Bộ thưởng có 15 lá, chia độ hiếm và từ khóa.
-- Hiệu ứng đọc từ JSON: sát thương, giáp, hồi máu, Độc, Suy Yếu, Dễ Thương, Sức Mạnh, rút bài. Ý định địch hiện sát thương đã tính các trạng thái đó.
-- Chiêu **Sao Rơi**: gà phóng lao lên trời, lao rơi xuống địch và gây sát thương lúc chạm.
-- Nhịp x1 chậm mặc định; nút x1/x2/x3 hoặc F1/F2/F3 đổi tốc độ cả giữa đòn đánh.
-- 50 PNG pastel, UI tiếng Việt; chạy trực tiếp bằng DxLib. Lá mới chưa có ảnh riêng thì hiện ký hiệu dự phòng.
+- Một hồi 13 tầng, 3 cột: trận, tinh anh, sự kiện, cửa hàng, nghỉ và trùm. Sinh từ seed, tỉ lệ nút đọc từ map.json.
+- 6 địch thường, 2 tinh anh, 12 di vật, 6 thuốc và 10 sự kiện. HP/Nộ, vàng, bộ bài và đồ mang theo được giữ giữa các nút.
+- 19 loại bài gốc và 19 bản nâng cấp; chọn 1/3 lá sau trận. Cửa hàng gỡ được mọi lá, chỗ nghỉ hồi HP hoặc nâng cấp một lá.
+- Tự lưu sau hành động; **F6 lưu / F9 tiếp tục**, giữ cả tay bài, hiệu ứng và RNG giữa trận.
+- **Sao Rơi**: phóng lao lên trời rồi rơi vào địch. x1 chậm mặc định, x2/x3 tăng tốc.
+- 50 PNG pastel và UI tiếng Việt. Địch hiện dùng chung sprite ếch; bài mới dùng ký hiệu khi chưa có ảnh riêng.
 
-## Chơi ngay
+## Build và chạy nhánh này
 
-Tải `UndergodCard-DxLib-Windows-x64.zip` trong [Releases](https://github.com/nqxw1kqw/undergod-card/releases), giải nén và chạy `UndergodCard.exe`. Giữ các thư mục `assets`, `data`, `licenses` cạnh EXE.
+Cài Visual Studio 2022 với bộ công cụ C++ cho desktop, MSVC v143, Windows SDK và bộ DxLib Visual C++ x64 ở C:\DxLib. Mở [UndergodCard.sln](UndergodCard/UndergodCard.sln), chọn UndergodCard, Release | x64 và nhấn F5.
 
-Chuột hoặc **1–9** chơi thẻ, **E** hết lượt, **U** dùng Sao Rơi khi đủ Nộ. Sau trận, **1–3** hoặc chuột chọn một lá thưởng. **Space / Esc** bỏ qua cinematic. **R / Enter** chơi lại từ trận đầu.
+    .\UndergodCard\verify.ps1 -Configuration Release
+    .\UndergodCard\verify.ps1 -Configuration Debug
+    .\UndergodCard\package.ps1 -SkipBuild
 
-## Mở và build
+Các script nhận -DxLibDir để đổi đường dẫn SDK. EXE nằm ở UndergodCard/bin/Release; ZIP ở UndergodCard/release. Bản v0.3 hiện được tiếp tục tại [PR #2](https://github.com/nqxw1kqw/undergod-card/pull/2); [Releases](https://github.com/nqxw1kqw/undergod-card/releases) vẫn là bản v0.1 trước đó.
 
-1. Cài Visual Studio 2022 với bộ công cụ C++ cho desktop, MSVC v143 và Windows SDK.
-2. Cài bộ DxLib cho Visual C++ x64 tại `C:\DxLib`, hoặc chỉ định `DxLibDir` khi build.
-3. Mở [UndergodCard.sln](UndergodCard/UndergodCard.sln), chọn `UndergodCard`, `Release | x64` và nhấn F5.
+## Điều khiển
 
-Từ thư mục gốc repo:
+Chuột / 1–9 chọn lối và chơi thẻ; E hết lượt, U Sao Rơi, F1/F2/F3 tốc độ, Space/Esc bỏ qua cinematic. Trong cửa hàng, E/Esc rời đi; tại chỗ nghỉ, H hồi HP hoặc 1–8 nâng cấp lá trên trang. Page Up/Page Down hoặc các nút trang/cuộn bản đồ. Z/X/C/V dùng thuốc. Mở lại tự tiếp tục save.json; R/Enter bắt đầu seed mới.
 
-```powershell
-.\UndergodCard\build.ps1 -Configuration Release
-.\UndergodCard\verify.ps1 -Configuration Release
-.\UndergodCard\package.ps1 -SkipBuild
-```
+## Kiểm chứng và lộ trình
 
-Với SDK ở vị trí khác:
+MSVC Debug/Release chạy cùng bộ logic và smoke DxLib. Bot có chế độ chạy 1.000 seed; báo cáo ghi rõ tỉ lệ thắng của bot, không coi đó là số liệu người chơi mới.
 
-```powershell
-.\UndergodCard\build.ps1 -DxLibDir 'D:\Libraries\DxLib'
-```
+Xem [hướng dẫn native](UndergodCard/README.md), [kiểm chứng](UndergodCard/docs/VALIDATION.md), [kế hoạch gameplay](UndergodCard/docs/GAMEPLAY_PLAN.md) và [bàn giao v0.3](UndergodCard/docs/V0.3_WIP_NOTES.md).
 
-EXE sinh tại `UndergodCard/bin/Release/UndergodCard.exe`; ZIP sinh tại `UndergodCard/release/`. SDK DxLib được cài riêng, không kèm trong repo.
-
-## Cấu trúc và kiểm chứng
-
-`UndergodCard/` chứa solution, source, JSON, 50 asset runtime và bộ kiểm tra. Core combat tách khỏi renderer; tốc độ và animation không đổi kết quả damage hay RNG. Logic chạy không cần DxLib:
-
-```bash
-make -C UndergodCard core
-```
-
-Bộ đó có **134 kiểm tra**, gồm seed 1337 tự đi hết bốn trận, giữ HP 47/40/40 rồi thắng trùm ở giai đoạn 2 với 21 HP. Trên Windows, `verify.ps1` build solution, chạy cùng bộ kiểm tra, rồi smoke DxLib tự chơi hành trình và yêu cầu `boss_phase=2`.
-
-Xem [hướng dẫn gameplay và source](UndergodCard/README.md), [kiểm chứng](UndergodCard/docs/VALIDATION.md) và [thành phần bên ngoài](UndergodCard/THIRD_PARTY.md).
-
-Repo chỉ chứa project native hiện tại. Bản web, kho RE, ảnh gốc sinh asset và công cụ hậu xử lý được lưu riêng tại máy phát triển; build và chạy game không phụ thuộc các bản tham khảo đó. File build, cache và gói EXE được bỏ qua bởi Git.
+SDK DxLib cài riêng. Repo không chứa bản web, kho RE, ảnh nguồn hay file build/cache.

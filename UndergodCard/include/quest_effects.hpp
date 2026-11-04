@@ -3,7 +3,7 @@
 #include <vector>
 
 namespace undergod {
-enum class EffectOp { Damage, Block, Heal, Apply, Draw, Energy };
+enum class EffectOp { Damage, Block, Heal, Apply, Draw, Energy, Rage };
 enum class EffectTarget { Self, Enemy };
 
 // `times` repeats the effect. Strength is added per hit, so two hits of 4 with

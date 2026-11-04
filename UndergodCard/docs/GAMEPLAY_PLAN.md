@@ -2,7 +2,11 @@
 
 Đưa game từ 1 trận Gà Chiến Binh đấu Ếch Vương thành chế độ roguelike nhiều tầng: bản đồ phân nhánh, 5 boss, khoảng 50 lá bài, sự kiện, lớp nhân vật và thánh vật, tất cả nạp từ JSON.
 
-## Hiện trạng
+## Cập nhật thực hiện 2026-11-05
+
+Nhánh draft/v0.3-wip đã tiếp tục mốc một hồi roguelike: map theo seed/JSON, 6 địch thường, 2 tinh anh, 12 di vật, 6 thuốc, shop/nghỉ phân trang và lưu/tải cả trạng thái combat. Chi tiết và giới hạn trong [V0.3_WIP_NOTES.md](V0.3_WIP_NOTES.md), số liệu kiểm chứng trong [VALIDATION.md](VALIDATION.md). Chưa merge vào main. Các bảng dưới đây là thiết kế đích dài hạn; không phải mọi cơ chế đã có trong v0.3.
+
+## Hiện trạng lúc lập kế hoạch
 
 Nền tảng tốt: logic tách khỏi giao diện và đã dùng JSON, nên mở rộng chủ yếu là thêm dữ liệu và một lớp Run bao quanh Combat.
 

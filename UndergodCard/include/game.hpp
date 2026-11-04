@@ -1,6 +1,7 @@
 #pragma once
 #include "quest_run.hpp"
 #include "quest_timeline.hpp"
+#include "quest_save.hpp"
 #include <array>
 #include <utility>
 
@@ -16,6 +17,8 @@ class Game {
     float motion_age_=0,cinematic_age_=0;
     bool motion_impact_=false;
     int speed_=1;
+    std::filesystem::path save_file_;
+    bool save_dirty_=false;
     Timeline timeline_;
     TimelinePlayer cinematic_;
     void ConsumeEvents();
@@ -34,6 +37,9 @@ public:
     std::string toast;
     explicit Game(Config config,Timeline timeline):timeline_(std::move(timeline)),state(std::move(config)){}
     void NewRun(unsigned seed=1337);
+    void SetSaveFile(std::filesystem::path file){save_file_=std::move(file);save_dirty_=false;}
+    bool Save(bool notify=true);
+    bool Load();
     bool CanAct()const{return motion_==Motion::None&&!cinematic_.Active()&&run.place==Place::Fight&&state.phase==Phase::Player&&!run.victory&&!run.defeat;}
     bool Busy()const{return motion_!=Motion::None||cinematic_.Active();}
     bool Cinematic()const{return cinematic_.Active();}
@@ -63,7 +69,7 @@ public:
     void Update(float dt);
     int Speed()const{return speed_;}
     float PlaybackRate()const{return BasePlaybackRate*speed_;}
-    bool SetSpeed(int multiplier){if(multiplier<1||multiplier>3)return false;speed_=multiplier;return true;}
+    bool SetSpeed(int multiplier){if(multiplier<1||multiplier>3)return false;speed_=multiplier;save_dirty_=true;return true;}
     std::pair<float,float> SpearTip()const;
     float ActorOffset(bool enemy)const;
     void Toast(const std::string& text){toast=text;toast_age=1.8f;}
