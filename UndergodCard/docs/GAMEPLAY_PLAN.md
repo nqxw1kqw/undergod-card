@@ -4,7 +4,7 @@
 
 ## Cập nhật thực hiện 2026-11-05
 
-Nhánh draft/v0.3-wip hiện có ba hồi, năm boss, 50 lá gốc, ba lớp, meta, Thử Thách, thành tựu, asset và audio. Xem [COMPLETION.md](COMPLETION.md), [VALIDATION.md](VALIDATION.md) và [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md). Đây là v1.0.0-preview; thời lượng và tỉ lệ thắng người chơi mới còn cần đo bằng chơi thực. Các bảng dưới giữ nguyên thiết kế và mốc lịch sử.
+Nhánh draft/v0.3-wip hiện có ba hồi, sáu boss, 50 lá gốc, ba lớp, meta, Thử Thách, thành tựu, asset và audio. Xem [COMPLETION.md](COMPLETION.md), [VALIDATION.md](VALIDATION.md) và [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md). Đây là v1.0.1-preview; thời lượng và tỉ lệ thắng người chơi mới còn cần đo bằng chơi thực. Các bảng dưới giữ nguyên thiết kế và mốc lịch sử.
 
 ## Hiện trạng lúc lập kế hoạch
 
@@ -53,6 +53,8 @@ Mỗi hồi 12–15 tầng, 3–4 cột song song; nút sinh từ seed để ch�
 | Diều Hâu Bão | Hồi 2 (thay) | 160 | Bay: miễn 50% cận chiến, phải dùng Lao/Gió. Đáp đất khi nhận 20 dmg | Né tránh, Nhiều đòn |
 | Cáo Thầy Phù | Hồi 3 | 220 | Xào lá: biến 1 lá thành Lời nguyền. P2: tạo 2 phân thân, chỉ 1 thật | Phép, Ảo ảnh |
 | Undergod | Trùm cuối | 300 | P1 bắt chước lá bạn chơi lượt trước. P2 hút Nộ. P3: đếm ngược 5 lượt Tận Thế | Sao chép, Hút, Đếm ngược |
+
+Boss bổ sung theo ảnh Shin gửi: [Hổ Vương Xích Diệm](TIGER_BOSS.md), 200 HP, hai pha, xuất hiện ở Hồi 2; tổng hiện tại sáu boss.
 
 ## Lá bài
 

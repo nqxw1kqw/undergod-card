@@ -1,6 +1,6 @@
 {
   "player": "chick",
-  "runtime_pngs": 190,
+  "runtime_pngs": 202,
   "files": [
     {
       "path": "assets/pastel/cards/arcane_storm.png",
@@ -1233,6 +1233,102 @@
         512
       ],
       "sha256": "5aed6e7923bce96371efad218c21c4a06e7c52d366f38a07087e67cf59faa33c"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_attack_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "aca53bb624e55598d46f05250f0d571a07f9e3f7a4b8d064f22499295b4cc05a"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "63b6451d634bd056ae509290c8a9ecc683f0564d3f1af363d41435930ff96d7c"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9d6c9ca215ead7511e79826606bf8bbf9198c41b56030035858a4544cf99b3af"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e8391673fe65e10bb25b9e31508c4d9cfe18c3319749500b3309fc2ce7ec6f7d"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3983745d6ca706ccbf2a1f0fe2a9b177b5842f2a196a3f4425432cf030a5c672"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c1d960c427f3656fd2dd11a5f0f4d516d6b36c993395552952895dee7bde5c3c"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "da30de58dbf22f274a6d06f011ce5ca6ebc8e5c42ba439b30f95d88cb31295ad"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2a7c783df2430ca4ed0c2178cf0eba727db77da81cfb196280eb4c020208b393"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_ult_charge_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "8d8bcceb7310c664dbc858b53a583e4ade9bdb0fcbf1634d4786095d49d85028"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_ult_charge_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1aac8f889b0ed5b4a00610ba6ec69c4ea333fd167d57d96502079a4b2ed07930"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_ult_charge_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "540519c699a2da53a379a53a3277e1234f947e2194ffecfabe52f0f15276885c"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_ult_charge_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ce5aa6635c35ba2a54e2e8fb38fa5aa6655ffe46b1695fa3594f1e510576af30"
     },
     {
       "path": "assets/pastel/characters/char_toad_idle_0.png",

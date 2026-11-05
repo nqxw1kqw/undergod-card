@@ -1,4 +1,4 @@
-UNDERGOD CARD QUEST v1.0.0-preview — C++17 / DxLib / Windows x64
+UNDERGOD CARD QUEST v1.0.1-preview — C++17 / DxLib / Windows x64
 
 Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
 Không cần Visual Studio, DxLib, Python hay Node.js để chơi gói này.
@@ -11,9 +11,14 @@ Ninja: 45 HP, rút 5; lá miễn phí; Ảnh Phân lặp tối đa ba lá gần 
 Kỹ năng dùng Lông Vũ và có hiệu lực từ hành trình mới.
 
 Ba hồi 13 / 13 / 15 tầng: trận, tinh anh, sự kiện, shop, nghỉ rồi trùm.
-Hồi hai gặp Rắn hoặc Diều Hâu; hồi ba có Cáo và Undergod.
+Hồi hai gặp Rắn, Diều Hâu hoặc Hổ Vương; hồi ba có Cáo và Undergod.
 Boss hồi hồi 50% HP tối đa và cho chọn di vật.
 Chuột/1–9 chọn lối. Bánh xe, Page Up/Down hoặc nút cuộn xem map.
+
+ĐẤU THỬ HỔ VƯƠNG
+Nút Đấu thử Hổ Vương ở menu lớp mở ngay trận, cấp bài nâng cấp và hai thuốc.
+Không ghi đè save/profile và không nhận thưởng meta; F9 tiếp tục bản lưu cũ.
+Cũng có thể chạy UndergodCard.exe --boss tiger --seed 1337.
 
 COMBAT
 Chuột/1–9 chơi bài. E hết lượt. U tuyệt kỹ khi đủ Nộ.

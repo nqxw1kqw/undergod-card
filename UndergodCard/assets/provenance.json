@@ -369,6 +369,42 @@
         "potions/holy_water.png",
         "potions/weak_brew.png"
       ]
+    },
+    {
+      "group": "tiger_idle",
+      "source_file": "exec-c58e5896-e59b-4259-b74b-6410ff8719b6.png",
+      "source_sha256": "274dc482620a745b2042ee60914e66d124ae7cf6bedfe40c17a3c9c097e25dc0",
+      "prompt": "Use case: stylized-concept. Asset type: production 2D side-view boss sprite animation for an existing hand-inked pastel fantasy card game.\nImage 1 is the SUBJECT IDENTITY reference supplied by the user. Preserve its recognizable orange tiger face with black stripes, yellow eyes, white muzzle/chest/toes, dark swept-up forelock, attached red-orange flame-shaped mane, muscular anthropomorphic build, silver segmented chest plate and large grey metal bracers, red-orange belt armour with small turquoise accent. It is a tiger warrior, not a lion, not a bird, no weapon.\nImage 2 is ONLY the project's line-art / gentle cel-shading / rendering-style reference. Do not borrow the fox body, clothing, colours or props. Bring the tiger into that warm charcoal-outlined game illustration style while keeping the identity and imposing muscular proportions from image 1. Crisp readable painted shapes, no pixel art, no photo or 3D.\nGenerate ONE IDLE breathing loop as exactly a 2-column by 2-row grid, FOUR equal square cells, row-major animation order. Entire sheet background is absolutely uniform pure #FF00FF magenta with no shadows on it. Each cell contains exactly one full-body tiger, stable feet baseline and stable body centre/scale, body occupies only the central 60-65 percent including the mane, generous magenta padding all around. All paws, toes, flame mane, shoulders and armour entirely contained in each cell. Three-quarter SIDE view facing LEFT, ready to fight a smaller hero on the left. Stance legs apart and fists raised near waist, relaxed breathing then slight fist/shoulder motion, tiny controlled attached mane motion and a subtle blink. Frames are a coherent breathing cycle, same camera and character body height. No forward motion, no detached flame particles, no broad aura, no trails, no floor, no scene, no text, labels, grid lines or UI. Do not make him a small baby/chibi, preserve the formidable tiger-warrior silhouette.",
+      "exports": [
+        "characters/char_tiger_idle_0.png",
+        "characters/char_tiger_idle_1.png",
+        "characters/char_tiger_idle_2.png",
+        "characters/char_tiger_idle_3.png"
+      ]
+    },
+    {
+      "group": "tiger_attack",
+      "source_file": "exec-c2087509-222c-4b0c-8d82-ad04bd05f07b.png",
+      "source_sha256": "c19cef2d51fee58d8cd27c5ca0f24cdad067ba2e3993f226618bfef24cc15a2f",
+      "prompt": "Use the supplied accepted idle tiger sheet as the EXACT character design, palette, armour, proportions, camera and line-art reference. Generate a new separate action animation sheet for that same tiger warrior, exactly 2 columns by 2 rows, four equal square cells, one complete tiger per cell, row-major sequence. ONE ATTACK action: frame 1 draws the front fist back with shoulders coiled; frame 2 a short forward-left step and fist extension; frame 3 powerful leftward claw/punch contact with the lead arm extended but contained; frame 4 recover to ready stance. Slight knee compression only, keep body height within 10 percent of the reference. No detached slash, no trails, no impact or fire particles. The character faces LEFT in three-quarter SIDE view. Preserve orange/black stripes, white muzzle and chest, dark forelock, yellow eyes, red-orange flame mane, silver chest armour/bracers, orange-red belt armour and turquoise belt detail. No redesign or other animals. Warm charcoal ink outlines, clean soft cel shading matching the reference. Full body and the entire mane/limbs remain in central 60-65 percent of EVERY cell with generous pure #FF00FF magenta padding; stable feet baseline, stable body centre and scale between frames; never let a fist or mane cross any cell edge. Same body size as the idle reference, not a smaller character to fit effects. Entire background solid uniform pure #FF00FF magenta. No floor, shadows, scenery, detached FX, text, labels, grids or UI.",
+      "exports": [
+        "characters/char_tiger_attack_0.png",
+        "characters/char_tiger_attack_1.png",
+        "characters/char_tiger_attack_2.png",
+        "characters/char_tiger_attack_3.png"
+      ]
+    },
+    {
+      "group": "tiger_ult_charge",
+      "source_file": "exec-3d69e0ca-c3b4-46df-94a2-74be09f4337c.png",
+      "source_sha256": "9484fd7e27fdd08d688fdb7086b4d7dfe100ffb0db69255825f1b0b628c755c1",
+      "prompt": "Use the supplied accepted idle tiger sheet as the EXACT character design, palette, armour, proportions, camera and line-art reference. Generate a new separate action animation sheet for that same tiger warrior, exactly 2 columns by 2 rows, four equal square cells, one complete tiger per cell, row-major sequence. ONE CHARGE/ROAR action: frame 1 crouch very slightly and hold both fists near chest; frame 2 lift chest and open mouth showing a tiger roar; frame 3 sustain the roar with a firmer stance and gently lifted attached flame-shaped mane; frame 4 fists coiled ready to spring, mouth partly closed. The warm orange mane remains attached and compact, no detached flames or expanding aura. Keep body height within 10 percent of idle. The character faces LEFT in three-quarter SIDE view. Preserve orange/black stripes, white muzzle and chest, dark forelock, yellow eyes, red-orange flame mane, silver chest armour/bracers, orange-red belt armour and turquoise belt detail. No redesign or other animals. Warm charcoal ink outlines, clean soft cel shading matching the reference. Full body and the entire mane/limbs remain in central 60-65 percent of EVERY cell with generous pure #FF00FF magenta padding; stable feet baseline, stable body centre and scale between frames; never let a fist or mane cross any cell edge. Same body size as the idle reference, not a smaller character to fit effects. Entire background solid uniform pure #FF00FF magenta. No floor, shadows, scenery, detached FX, text, labels, grids or UI.",
+      "exports": [
+        "characters/char_tiger_ult_charge_0.png",
+        "characters/char_tiger_ult_charge_1.png",
+        "characters/char_tiger_ult_charge_2.png",
+        "characters/char_tiger_ult_charge_3.png"
+      ]
     }
   ]
 }

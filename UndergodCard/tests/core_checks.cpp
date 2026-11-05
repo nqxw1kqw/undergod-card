@@ -12,6 +12,7 @@ void Drain(Game& game){for(int i=0;i<100&&game.Busy();++i)game.Update(.1f);Check
 void Settle(Game& game){for(int i=0;i<120&&game.Busy();++i)game.Update(.1f);}
 void RunChecks(const Config&,const Timeline&);
 void WorldChecks(const Config&,const Timeline&);
+void TigerChecks(const Config&,const Timeline&);
 void SimulateRuns(const Config&,const Timeline&,int);
 int main(int argc,char** argv){
     std::filesystem::current_path(std::filesystem::absolute(argv[0]).parent_path());
@@ -214,6 +215,7 @@ int main(int argc,char** argv){
     }
     RunChecks(config,timeline);
     WorldChecks(config,timeline);
+    TigerChecks(config,timeline);
     if(argc==3&&std::string(argv[1])=="--simulate")SimulateRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

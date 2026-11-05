@@ -463,6 +463,57 @@
     ]
   },
   {
+    "id": "tiger",
+    "name": "Hổ Vương Xích Diệm",
+    "role": "boss",
+    "sprite": "tiger",
+    "mechanic": "tiger",
+    "maxHp": 200,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 10,
+        "maxDamage": 13,
+        "weight": 3
+      },
+      {
+        "kind": "multi",
+        "minDamage": 4,
+        "maxDamage": 6,
+        "hits": 2,
+        "weight": 2
+      },
+      {
+        "kind": "buff",
+        "status": "strength",
+        "amount": 2,
+        "block": 6,
+        "weight": 1
+      }
+    ],
+    "phases": [
+      {
+        "name": "Hổ Vương Bùng Lửa",
+        "maxHp": 200,
+        "threshold": 50,
+        "patterns": [
+          {
+            "kind": "charge",
+            "minDamage": 25,
+            "maxDamage": 28,
+            "chargeTurns": 2,
+            "weight": 1
+          }
+        ],
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1,
+        "strength": 2
+      }
+    ]
+  },
+  {
     "id": "tadpole",
     "name": "Nòng Nọc",
     "role": "summon",

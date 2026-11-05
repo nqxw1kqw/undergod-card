@@ -2,15 +2,26 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed,const std::string& class_id,int challenge){cinematic_.Cancel();StartRun(run,state,seed,class_id,challenge,profile.skills);run.run_id=std::to_string(seed)+":"+std::to_string(profile.next_run++);profile.selected_class=class_id;profile_dirty_=true;menu_=0;motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();sound_events.clear();save_dirty_=true;}
+void Game::NewRun(unsigned seed,std::string class_id,int challenge){if(practice_)profile=practice_profile_;practice_=false;cinematic_.Cancel();StartRun(run,state,seed,class_id,challenge,profile.skills);run.run_id=std::to_string(seed)+":"+std::to_string(profile.next_run++);profile.selected_class=class_id;profile_dirty_=true;menu_=0;motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();sound_events.clear();save_dirty_=true;}
+void Game::StartBossPractice(std::string enemy_id,unsigned seed,std::string class_id){
+    const auto& boss=FindEnemy(state.config,enemy_id);if(boss.role!="boss")throw std::runtime_error("Practice needs a boss");
+    const auto kept_profile=profile;const auto baseline=practice_?practice_profile_:profile;NewRun(seed,class_id);profile=kept_profile;practice_profile_=baseline;profile_dirty_=false;
+    practice_=true;save_dirty_=false;run.act=1;run.map=GenerateMap(state.config,seed,run.act);run.node=run.index=int(run.map.size())-1;
+    run.map.back().encounter_id=enemy_id;run.map.back().visited=true;run.options.clear();run.place=Place::Fight;run.active_encounter_id=enemy_id;
+    for(auto& id:run.deck){const auto upgrade=FindCard(state.config,id).upgrade_id;if(!upgrade.empty())id=upgrade;}
+    run.potions={"serum","smoke_shield"};
+    state.BeginEncounter(boss,seed,run.hp,run.max_hp,0,run.deck,ModsFor(run,state.config));Toast("Đấu thử · Bộ bài nâng cấp và hai thuốc · F9 trở về bản lưu.");
+}
 bool Game::SetProfileFile(std::filesystem::path file){profile_file_=std::move(file);if(!std::filesystem::exists(profile_file_))return true;std::string error;const bool loaded=LoadProfile(profile_file_,profile,state.config,error);if(!loaded)Toast("Không đọc được hồ sơ tiến trình.");return loaded;}
 void Game::SelectClass(int index){if(index<0||index>=int(state.config.classes.size()))return;profile.selected_class=state.config.classes[index].id;profile_dirty_=true;}
 bool Game::BuySkill(const std::string& id){
+    if(practice_){Toast("Đấu thử không mua kỹ năng hoặc thay đổi tiến trình.");return false;}
     const auto old=profile;if(!UnlockSkill(profile,state.config,id)){Toast("Chưa đủ Lông Vũ hoặc chưa mở nút trước.");return false;}
     std::string error;if(!profile_file_.empty()&&!SaveProfile(profile_file_,profile,error)){profile=old;Toast("Không ghi được hồ sơ; Lông Vũ được giữ nguyên.");return false;}
     profile_dirty_=true;sound_events.push_back("reward");Toast("Đã mở kỹ năng. Áp dụng từ hành trình mới.");return true;
 }
 bool Game::Save(bool notify){
+    if(practice_){if(notify)Toast("Đấu thử không ghi đè hành trình hoặc tiến trình.");return false;}
     if(Busy()||Menu()){if(notify)Toast("Chờ hành động kết thúc và đóng menu để lưu nhé.");return false;}
     if(save_file_.empty())return false;
     std::string error;if(!profile_file_.empty()&&!SaveProfile(profile_file_,profile,error)){Toast("Không ghi được hồ sơ tiến trình.");return false;}profile_dirty_=false;
@@ -23,7 +34,7 @@ bool Game::Load(){
     std::string error;
     if(save_file_.empty()||!LoadSession(save_file_,run,state,speed_,error)){Toast("Không đọc được bản lưu. Hành trình hiện tại vẫn được giữ.");return false;}
     cinematic_.Cancel();motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;
-    poses={};popups.clear();visual={};time=0;menu_=0;save_dirty_=false;sound_events.clear();Toast("Đã tiếp tục hành trình.");return true;
+    poses={};popups.clear();visual={};time=0;menu_=0;if(practice_){profile=practice_profile_;profile_dirty_=false;}practice_=false;save_dirty_=false;sound_events.clear();Toast("Đã tiếp tục hành trình.");return true;
 }
 void Game::ConsumeEvents(){
     for(const auto& event:state.events){
@@ -42,7 +53,11 @@ void Game::ConsumeEvents(){
     state.events.clear();
     if(sound_events.size()>64)sound_events.erase(sound_events.begin(),sound_events.end()-64);
 }
-void Game::AfterResolve(){ConsumeEvents();ObserveCombat(run,state);if(SettleProfile(profile,run,state.config)){profile_dirty_=true;sound_events.push_back(run.victory?"victory":"defeat");}save_dirty_=true;}
+void Game::AfterResolve(){
+    ConsumeEvents();
+    if(practice_){run.hp=state.player.hp;run.rage=state.rage;run.victory=state.phase==Phase::Won;run.defeat=state.phase==Phase::Lost;if(run.victory||run.defeat)sound_events.push_back(run.victory?"victory":"defeat");return;}
+    ObserveCombat(run,state);if(SettleProfile(profile,run,state.config)){profile_dirty_=true;sound_events.push_back(run.victory?"victory":"defeat");}save_dirty_=true;
+}
 void Game::Play(int index){
     if(!CanAct()||index<0||index>=int(state.hand.size()))return;
     if(!state.CanPlay(index)){Toast(index==state.live.locked?"Lưỡi Quấn: lá bài này bị khóa trong lượt.":(state.Definition(state.hand[index]).unplayable?"Lời nguyền này không chơi được.":"Không đủ năng lượng cho lá bài này."));return;}
@@ -141,12 +156,12 @@ void Game::Update(float real_dt){
     if(motion_!=Motion::None){
         const bool enemy=motion_==Motion::EnemyAttack||motion_==Motion::EnemyOther;
         const float before=motion_age_;motion_age_+=dt;
-        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={state.intent.attack?"attack":"defend",motion_age_-.45f};
+        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={state.intent.attack?"attack":(state.intent.kind==IntentKind::Charge?"ult_charge":"defend"),motion_age_-.45f};
         const float impact=enemy?(motion_==Motion::EnemyAttack?.77f:.45f):.32f;
         if(motion_age_>=impact)ApplyMotion();
         if(motion_age_>=(enemy?1.15f:.65f)){motion_=Motion::None;pending_card_=-1;}
     }
-    if(!Busy()){ObserveCombat(run,state);if(SettleProfile(profile,run,state.config)){profile_dirty_=true;save_dirty_=true;}}
+    if(!Busy()&&!practice_){ObserveCombat(run,state);if(SettleProfile(profile,run,state.config)){profile_dirty_=true;save_dirty_=true;}}
     if(Cinematic()){
         cinematic_age_+=dt;
         visual.zoom_age+=dt;
@@ -157,8 +172,8 @@ void Game::Update(float real_dt){
         visual.shake_left=std::max(0.f,visual.shake_left-dt);visual.flash_left=std::max(0.f,visual.flash_left-dt);
         cinematic_.Advance(cinematic_age_*1000.f);
     }else cinematic_age_=0;
-    if(save_dirty_&&!save_file_.empty()&&!Busy()&&!Menu())Save(false);
-    if(profile_dirty_&&!profile_file_.empty()){std::string error;if(SaveProfile(profile_file_,profile,error))profile_dirty_=false;}
+    if(save_dirty_&&!save_file_.empty()&&!Busy()&&!Menu()&&!practice_)Save(false);
+    if(profile_dirty_&&!profile_file_.empty()&&!practice_){std::string error;if(SaveProfile(profile_file_,profile,error))profile_dirty_=false;}
 }
 std::pair<float,float> Game::SpearTip()const{
     const auto& s=visual.spear;const float t=std::clamp(s.age/std::max(.001f,s.duration),0.f,1.f);

@@ -90,9 +90,9 @@
   {
     "id": "all_bosses",
     "name": "Biết Mọi Kẻ Thù",
-    "description": "Hạ đủ năm loại trùm qua các hành trình.",
+    "description": "Hạ đủ sáu loại trùm qua các hành trình.",
     "metric": "unique_bosses",
-    "threshold": 5,
+    "threshold": 6,
     "feathers": 15
   },
   {

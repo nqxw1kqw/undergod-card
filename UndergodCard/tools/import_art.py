@@ -27,15 +27,16 @@ def export(source, destination, feet=False):
     destination.parent.mkdir(parents=True, exist_ok=True)
     image.save(destination)
 
-def normalize_actors():
+def normalize_actors(selected=None):
     report={}
     def body_height(image):
         rows=(np.array(image.getchannel('A'))>128).sum(axis=1)
         visible=np.flatnonzero(rows>=max(24,int(rows.max()*.20)))
         return int(visible[-1]-visible[0]+1)
-    for actor in ['mage','ninja','frog_king','snake','hawk','fox','undergod']:
+    for actor in ['mage','ninja','frog_king','snake','hawk','fox','undergod','tiger']:
+        if selected is not None and actor not in selected:continue
         actions={}
-        for action in ['idle','attack','hit','defend','ult_throw']:
+        for action in ['idle','attack','hit','defend','ult_throw','ult_charge']:
             paths=list((ASSETS/'characters').glob(f'char_{actor}_{action}_*.png'))
             if not paths: continue
             images=[Image.open(p).convert('RGBA') for p in paths]
@@ -43,6 +44,7 @@ def normalize_actors():
             width=max(im.getbbox()[2]-im.getbbox()[0] for im in images)
             full_height=max(im.getbbox()[3]-im.getbbox()[1] for im in images)
             actions[action]=(paths,images,height,min(488/width,444/full_height)*height)
+        if 'idle' not in actions:continue
         target=min(actions['idle'][2],min(item[3] for item in actions.values()))
         report[actor]={'body_height':round(target,2),'actions':{}}
         for action,(paths,images,height,_) in actions.items():
@@ -56,6 +58,7 @@ def normalize_actors():
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--processor', type=Path, default=Path.home()/'.codex/skills/generate2dsprite/scripts/generate2dsprite.py')
+    parser.add_argument('--only',nargs='+',help='Import only these source groups; leave other runtime PNGs intact')
     args = parser.parse_args()
     specs = json.loads((WORK/'inputs.json').read_text(encoding='utf-8'))
     cards = read('cards.json')
@@ -69,11 +72,12 @@ def main():
         'relic_atlas_0': (4,4,256,[f'relics/{r["id"]}.png' for r in relics[:16]]),
         'relic_atlas_1': (3,3,256,['relics/war_drum.png']+[f'potions/{p["id"]}.png' for p in potions]),
     }
-    for actor in ['mage','ninja','frog_king','snake','hawk','fox','undergod']:
-        for action in ['idle','attack','hit','defend','ult_throw']:
+    for actor in ['mage','ninja','frog_king','snake','hawk','fox','undergod','tiger']:
+        for action in ['idle','attack','hit','defend','ult_throw','ult_charge']:
             groups[f'{actor}_{action}']=(2,2,512,[f'characters/char_{actor}_{action}_{n}.png' for n in range(4)])
     for key,spec in specs.items():
         if key not in groups: continue
+        if args.only and key not in args.only:continue
         rows,cols,size,targets = groups[key]
         out=WORK/'processed'/key
         raw=WORK/'raw'/f'{key}.png'; raw.parent.mkdir(parents=True,exist_ok=True)
@@ -114,7 +118,8 @@ def main():
         if meta['edge_touch_frames']: raise ValueError(f'{key}: clipped raw cells')
         for label,target in zip(meta['frame_labels'],targets): export(out/f'{label}.png',ASSETS/target,size==512)
         print(f'{key}: {len(targets)} imported')
-    normalize_actors()
+    selected=None if not args.only else [actor for actor in ['mage','ninja','frog_king','snake','hawk','fox','undergod','tiger'] if any(key.startswith(actor+'_') for key in args.only)]
+    normalize_actors(selected)
     files=[]
     for path in sorted(ASSETS.rglob('*.png')):
         with Image.open(path) as im:

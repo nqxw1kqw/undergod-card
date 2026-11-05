@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <fstream>
 #include <cmath>
+#include <sstream>
 
 namespace {
 std::filesystem::path ExeDirectory(){wchar_t path[32768]{};GetModuleFileNameW(nullptr,path,32768);return std::filesystem::path(path).parent_path();}
@@ -104,7 +105,7 @@ int Smoke(undergod::Game& game,undergod::Ui& ui,undergod::Audio& audio){
         check(game.Cinematic()&&!game.visual.spear.visible,"class_ultimate_has_own_visual");game.SkipCinematic();check(game.CanAct()&&game.state.enemy.hp==hp-(character=="mage"?48:6),"class_ultimate_resolves_once");
     }
     // Renderer fixtures for boss mechanics; logic assertions live in WorldChecks.
-    for(const std::string boss:{"frog","snake","hawk","fox","undergod"}){
+    for(const std::string boss:{"frog","snake","hawk","fox","undergod","tiger"}){
         game.NewRun(1337);game.ChooseNode(0);game.run.active_encounter_id=boss;
         game.state.BeginEncounter(FindEnemy(game.state.config,boss),42,50,50,0,game.run.deck,ModsFor(game.run,game.state.config));
         if(boss=="frog"||boss=="fox"||boss=="undergod"){game.state.enemy.hp=game.state.enemy.max_hp/2+1;game.state.hand={"punch","shield"};game.state.energy=3;game.Play(0);Drain(game);}
@@ -112,6 +113,11 @@ int Smoke(undergod::Game& game,undergod::Ui& ui,undergod::Audio& audio){
         if(game.state.Targets().size()>1){const int target=game.state.Targets().back();ui.Click(game,int(game.TargetX(target)),420);check(game.state.live.target==target,"target_mouse_button");}
         game.EndTurn();Tick(game,.69f);capture(("26-attack-"+boss+".png").c_str());Drain(game);
     }
+    game.OpenClasses();click(Ui::PracticeButton());check(game.Practice()&&game.state.EnemyId()=="tiger","tiger_practice_button");
+    game.StartBossPractice("tiger",1337);capture("27-tiger-practice.png");check(game.Practice()&&game.state.enemy.hp==200,"tiger_practice_opens");
+    game.state.hand={"punch"};game.state.energy=1;game.state.enemy.hp=101;game.Play(0);Drain(game);capture("28-tiger-enraged.png");check(game.state.PhaseIndex()==1&&game.state.live.charge_left==2,"tiger_phase_charge");
+    const int charge_hp=game.state.player.hp;game.EndTurn();Tick(game,.72f);capture("29-tiger-charge.png");check(game.poses[1].name=="ult_charge"&&game.state.player.hp==charge_hp,"tiger_charge_has_pose_and_no_early_hit");Drain(game);
+    game.EndTurn();Tick(game,.69f);capture("30-tiger-pounce.png");Drain(game);check(game.state.player.hp<charge_hp,"tiger_pounce_deals_damage");
     report<<"PASS="<<okay<<"\n";return okay?0:3;
 }
 }
@@ -123,9 +129,13 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
     try{
         const auto config=LoadConfig();Game game(config,LoadTimeline());
         const std::string arguments=args?args:"";const auto seed_at=arguments.find("--seed ");
+        const auto boss_at=arguments.find("--boss ");
         const unsigned seed=seed_at==std::string::npos?unsigned(GetNowHiPerformanceCount()):unsigned(std::stoul(arguments.substr(seed_at+7)));
         if(smoke)game.NewRun();
-        else{
+        else if(boss_at!=std::string::npos){
+            std::string boss_id;std::istringstream(arguments.substr(boss_at+7))>>boss_id;
+            game.SetSaveFile("save.json");game.SetProfileFile("profile.json");game.StartBossPractice(boss_id,seed,game.profile.selected_class);
+        }else{
             game.SetSaveFile("save.json");
             if(!game.SetProfileFile("profile.json"))std::filesystem::copy_file("profile.json","profile.json.invalid."+std::to_string(GetNowHiPerformanceCount()));
             if(seed_at!=std::string::npos||!std::filesystem::exists("save.json")){game.NewRun(seed,game.profile.selected_class);if(seed_at==std::string::npos)game.OpenClasses();}

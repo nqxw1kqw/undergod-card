@@ -35,7 +35,9 @@ void ValidateRun(RunState& run,const Config& config){
     Require(run.node>=-1&&run.node<int(run.map.size())&&run.index==run.node,"Invalid map cursor");
     int previous=-1;
     for(int i=0;i<int(run.map.size());++i){const auto& e=expected[i];const auto& n=run.map[i];
-        Require(e.kind==n.kind&&e.floor==n.floor&&e.column==n.column&&e.encounter_id==n.encounter_id&&e.event_id==n.event_id&&e.reward_gold==n.reward_gold&&e.next==n.next,"Map data changed");
+        const auto& chapter=config.acts.at(run.act);
+        const bool old_boss_choice=e.kind==NodeKind::Boss&&e.floor==(run.act==0?config.map_floors:chapter.floors)&&std::find(chapter.bosses.begin(),chapter.bosses.end(),n.encounter_id)!=chapter.bosses.end();
+        Require(e.kind==n.kind&&e.floor==n.floor&&e.column==n.column&&(e.encounter_id==n.encounter_id||old_boss_choice)&&e.event_id==n.event_id&&e.reward_gold==n.reward_gold&&e.next==n.next,"Map data changed");
         if(!n.visited)continue;
         if(previous<0)Require(n.floor==0,"Saved path has no entrance");else Require(std::find(run.map[previous].next.begin(),run.map[previous].next.end(),i)!=run.map[previous].next.end(),"Invalid saved path");previous=i;
     }

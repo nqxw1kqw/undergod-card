@@ -27,7 +27,8 @@
     "biome": "marsh",
     "bosses": [
       "snake",
-      "hawk"
+      "hawk",
+      "tiger"
     ],
     "combats": [
       "froglet",

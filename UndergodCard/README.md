@@ -1,6 +1,6 @@
 # Undergod Card Quest — C++17 / DxLib
 
-Bản v1.0.0-preview triển khai ba hồi, ba lớp và meta trên cùng nhánh draft/v0.3-wip. Đối chiếu thiết kế tại docs/GAMEPLAY_PLAN.md, phạm vi tại docs/COMPLETION.md, bằng chứng tại docs/VALIDATION.md.
+Bản v1.0.1-preview triển khai ba hồi, ba lớp và meta trên cùng nhánh draft/v0.3-wip. Đối chiếu thiết kế tại docs/GAMEPLAY_PLAN.md, phạm vi tại docs/COMPLETION.md, bằng chứng tại docs/VALIDATION.md.
 
 ## Build, chạy và đóng gói
 
@@ -18,13 +18,14 @@ Core không dùng DxLib. Makefile hỗ trợ g++ C++17 cho CoreChecks; kiểm ch
 
 ## Hành trình và nhân vật
 
-Ba hồi 13 / 13 / 15 tầng, tính cả trùm/nghỉ cuối. Hồi đầu đọc tầng/cột từ map.json, hai hồi sau từ campaign.json. Hồi hai chọn Rắn hoặc Diều Hâu theo seed. Hồi ba có Cáo, nghỉ rồi Undergod. Boss hồi hồi 50% HP tối đa và cho chọn di vật boss; hết pool sẽ đổi thành vàng. Tinh anh thường cho một di vật, tinh anh Cầu Gãy thưởng hai di vật và vàng gấp đôi.
+Ba hồi 13 / 13 / 15 tầng, tính cả trùm/nghỉ cuối. Hồi đầu đọc tầng/cột từ map.json, hai hồi sau từ campaign.json. Hồi hai chọn Rắn, Diều Hâu hoặc Hổ Vương theo seed. Hồi ba có Cáo, nghỉ rồi Undergod. Boss hồi hồi 50% HP tối đa và cho chọn di vật boss; hết pool sẽ đổi thành vàng. Tinh anh thường cho một di vật, tinh anh Cầu Gãy thưởng hai di vật và vàng gấp đôi.
 
 | Boss | HP | Cơ chế |
 | --- | --- | --- |
 | Ếch Vương | 150 | Dưới 50% gọi hai Nòng Nọc, khóa một lá mỗi lượt |
 | Rắn Bùn Mẹ | 180 | Lột da ở 65%, siết ba lượt dưới 25%, charge báo trước |
 | Diều Hâu Bão | 160 | Bay giảm nửa sát thương cận chiến; nhận 20 sát thương HP sẽ đáp hai lượt |
+| Hổ Vương Xích Diệm | 200 | Song trảo/gầm; dưới 50% HP tăng Sức Mạnh và vồ sau hai lượt tụ lực |
 | Cáo Thầy Phù | 220 | Biến bài thành Bùn Lầy, dưới 50% tạo hai ảo ảnh/xáo vị trí |
 | Undergod | 300 | Sao chép lá cuối lượt trước; hút Nộ ở 66%; Tận Thế năm lượt ở 33% |
 
@@ -36,6 +37,7 @@ Mỗi lớp có ba nhánh × năm kỹ năng; mua tuần tự bằng Lông Vũ v
 
 ## Điều khiển
 
+- Nút Đấu thử Hổ Vương ở menu lớp mở ngay boss với bài nâng cấp/hai thuốc; không ghi đè bản lưu hoặc thưởng meta. Cũng có thể chạy --boss tiger --seed 1337; xem docs/TIGER_BOSS.md.
 - Chọn lớp: 1–3 hoặc chuột; Enter bắt đầu. Chuột mua kỹ năng/chọn Thử Thách.
 - Map: chuột/1–9 chọn lối; bánh xe, Page Up/Page Down hoặc nút cuộn.
 - Combat: chuột/1–9 chơi bài; Tab/bấm địch chọn mục tiêu; E hết lượt; U tuyệt kỹ.
@@ -53,7 +55,7 @@ Mỗi lớp có ba nhánh × năm kỹ năng; mua tuần tự bằng Lông Vũ v
 | Tệp trong data | Nội dung |
 | --- | --- |
 | cards | 50 lá gốc, type/rarity/class/effects/keywords, exhaust/power/ranged |
-| enemies | Sáu địch thường, hai tinh anh, năm boss, triệu hồi và đối thủ sự kiện |
+| enemies | Sáu địch thường, hai tinh anh, sáu boss, triệu hồi và đối thủ sự kiện |
 | campaign / map / run | Hồi, pool boss/địch, tầng/cột, trọng số, kinh tế |
 | events | 12 sự kiện với đánh đổi, chọn bài/đổi đồ hoặc mở trận thực |
 | relics / potions | 17 di vật, sáu thuốc dùng chung resolver |

@@ -57,6 +57,7 @@ public:
     static Rect PotionRect(int index){return {36,300+index*54,168,46};}
     static Rect ClassRect(int index){return {120+index*410,190,380,420};}
     static Rect StartButton(){return {940,800,360,60};}
+    static Rect PracticeButton(){return {120,720,300,48};}
     static Rect BackButton(){return {80,840,220,52};}
     static Rect SkillsButton(){return {120,650,300,55};}
     static Rect AchievementsButton(){return {440,650,300,55};}

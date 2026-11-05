@@ -6,6 +6,7 @@ Phạm vi được Shin xác nhận: toàn bộ lộ trình còn lại, cùng nh
 
 - [x] Ba hồi, hồi phục/phần thưởng boss và trận cuối Undergod.
 - [x] Đủ năm boss: Frog summon/khóa bài, Snake lột da/siết, Hawk bay/đáp, Fox nguyền/ảo ảnh, Undergod sao chép/hút Nộ/Tận Thế.
+- [x] Boss bổ sung Hổ Vương Xích Diệm từ ảnh Shin gửi: 12 frame, hai pha, pool Hồi 2 và đấu thử riêng.
 - [x] Nhiều mục tiêu, chọn mục tiêu, AOE/ngẫu nhiên; ý định nhiều hit, triệu hồi và charge báo trước.
 - [x] Tiêu hao, giữ giáp, xuyên giáp, năng lực, hồi sinh, lặp bài, lời nguyền.
 - [x] Khoảng 50 lá gốc (không tính bản nâng cấp), đủ các lá trong bảng thiết kế.

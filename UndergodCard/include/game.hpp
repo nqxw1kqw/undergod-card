@@ -18,6 +18,8 @@ class Game {
     float motion_age_=0,cinematic_age_=0;
     bool motion_impact_=false;
     int speed_=1;
+    bool practice_=false;
+    Profile practice_profile_;
     std::filesystem::path save_file_;
     bool save_dirty_=false;
     std::filesystem::path profile_file_;
@@ -42,10 +44,12 @@ public:
     float time=0,toast_age=0;
     std::string toast;
     explicit Game(Config config,Timeline timeline):timeline_(std::move(timeline)),state(std::move(config)){}
-    void NewRun(unsigned seed=1337,const std::string& class_id="chick",int challenge=0);
+    void NewRun(unsigned seed=1337,std::string class_id="chick",int challenge=0);
+    void StartBossPractice(std::string enemy_id,unsigned seed=1337,std::string class_id="chick");
+    bool Practice()const{return practice_;}
     bool SetProfileFile(std::filesystem::path file);
     void OpenClasses(){if(!Busy()){menu_=1;selected_challenge_=std::min(selected_challenge_,std::clamp(profile.highest_challenge+1,0,10));}}
-    void OpenSkills(){if(!Busy())menu_=2;}
+    void OpenSkills(){if(!Busy()&&!practice_)menu_=2;}
     void OpenAchievements(){if(!Busy())menu_=3;}
     void BackMenu(){menu_=menu_>1?1:0;}
     int MenuPage()const{return menu_;}
@@ -56,6 +60,7 @@ public:
     void SetChallenge(int value){selected_challenge_=std::clamp(value,0,std::clamp(profile.highest_challenge+1,0,10));}
     int SelectedChallenge()const{return selected_challenge_;}
     void BeginSelected(unsigned seed){NewRun(seed,profile.selected_class,selected_challenge_);}
+    void PracticeSelected(unsigned seed){StartBossPractice("tiger",seed,profile.selected_class);}
     void ToggleAudio(){profile.muted=!profile.muted;profile_dirty_=true;}
     void SetSaveFile(std::filesystem::path file){save_file_=std::move(file);save_dirty_=false;}
     bool Save(bool notify=true);

@@ -1,18 +1,18 @@
 {
-  "actions": 286039,
-  "averageWinningHp": 24.546474358974358,
+  "actions": 287671,
+  "averageWinningHp": 24.146031746031746,
   "classes": {
     "chick": {
-      "losses": 184,
+      "losses": 182,
       "runs": 334,
       "stalled": 0,
-      "wins": 150
+      "wins": 152
     },
     "mage": {
-      "losses": 107,
+      "losses": 103,
       "runs": 333,
       "stalled": 0,
-      "wins": 226
+      "wins": 230
     },
     "ninja": {
       "losses": 85,
@@ -22,7 +22,7 @@
     }
   },
   "difficulty": 0,
-  "losses": 376,
+  "losses": 370,
   "lossesByAct": [
     [
       1,
@@ -30,17 +30,17 @@
     ],
     [
       2,
-      59
+      49
     ],
     [
       3,
-      119
+      123
     ]
   ],
   "metaSkills": false,
   "policy": "greedy heuristic; not a human win rate",
   "runs": 1000,
   "stalled": 0,
-  "winPercent": 62.4,
-  "wins": 624
+  "winPercent": 63.0,
+  "wins": 630
 }

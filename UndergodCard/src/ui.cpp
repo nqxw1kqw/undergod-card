@@ -68,7 +68,8 @@ void Ui::Actor(const Game& game,bool enemy,int target)const{
     const int frame=pose.name=="idle"?int(pose.age*4)%4:std::min(3,int(pose.age*fps));
     int graph=Image(id+"_"+pose.name+"_"+std::to_string(frame));if(graph<0)graph=Image(id+"_idle_0");
     const float x=(enemy?game.TargetX(target):Game::PlayerHome)+game.ActorOffset(enemy,target),y=320-std::sin(game.time*3.14f)*2;
-    const float scale=enemy&&!game.state.adds.empty()?(target==0||game.state.adds[target-1].illusion?.4f:.27f):.5f;
+    const float base_scale=enemy&&id=="tiger"?.65f:.5f;
+    const float scale=enemy&&!game.state.adds.empty()?(target==0||game.state.adds[target-1].illusion?.4f:.27f):base_scale;
     Blend(38);DrawOval(int(x),324,enemy?70:46,9,C(80,107,76),TRUE);Blend(255);
     if(graph>=0){
         DrawRotaGraph3F(x,y,256,456,scale,scale,0,graph,TRUE,FALSE);
@@ -153,7 +154,7 @@ void Ui::Draw(const Game& game,int mx,int my){
     auto backdrop=[&](){
         DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
         Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);
-        Button(RestartButton(),"Chơi lại ↻",!game.Busy(),mx,my);Button(SaveButton(),"F6 · Lưu",!game.Busy(),mx,my);Button(LoadButton(),"F9 · Tiếp tục",!game.Busy(),mx,my);
+        Button(RestartButton(),"Chơi lại ↻",!game.Busy(),mx,my);Button(SaveButton(),"F6 · Lưu",!game.Busy()&&!game.Practice(),mx,my);Button(LoadButton(),"F9 · Tiếp tục",!game.Busy(),mx,my);
         Button(AudioButton(),game.profile.muted?"Tắt ♪":"Bật ♪",true,mx,my);
         Text(1160,87,"Vàng: "+std::to_string(game.run.gold),C(146,112,48),small_);Text(430,53,"Tốc độ",Muted,small_);
         for(int speed=1;speed<=3;++speed){const Rect r=SpeedButton(speed);const bool selected=game.Speed()==speed;Box(r,selected?C(79,106,91):(r.Contains(mx,my)?C(226,229,218):C(239,237,229)));Center(r.x+r.w/2,r.y+11,"x"+std::to_string(speed),selected?C(255,255,246):Ink,small_);}
@@ -161,9 +162,9 @@ void Ui::Draw(const Game& game,int mx,int my){
     };
     if(game.Result()){
         backdrop();Box({440,305,560,330},C(252,249,239),24);Center(720,338,"✦",C(174,144,199),brand_);
-        Center(720,395,game.run.victory?"Khu vườn nở hoa!":"Nghỉ một chút nhé!",Ink,brand_);
-        Center(720,454,game.run.victory?"Bạn đã vượt qua ba hồi và Undergod.":"Hành trình dừng trước khi hạ được trùm.",Muted,font_);
-        Center(720,491,"Lông Vũ: "+std::to_string(game.profile.feathers)+" · Hồi "+std::to_string(game.run.act+1)+" / 3",Muted,small_);Button(ResultButton(),"Chọn lớp / Chơi lại ↻",true,mx,my);return;
+        Center(720,395,game.Practice()?(game.run.victory?"Đã hạ trùm!":"Thử lại một lần nhé!"):(game.run.victory?"Khu vườn nở hoa!":"Nghỉ một chút nhé!"),Ink,brand_);
+        Center(720,454,game.Practice()?FindEnemy(s.config,s.EnemyId()).name:(game.run.victory?"Bạn đã vượt qua ba hồi và Undergod.":"Hành trình dừng trước khi hạ được trùm."),Muted,font_);
+        Center(720,491,game.Practice()?"Đấu thử · Không nhận thưởng hoặc thay đổi bản lưu":"Lông Vũ: "+std::to_string(game.profile.feathers)+" · Hồi "+std::to_string(game.run.act+1)+" / 3",Muted,small_);Button(ResultButton(),game.Practice()?"Chọn lớp / Đấu lại ↻":"Chọn lớp / Chơi lại ↻",true,mx,my);return;
     }
     if(game.Map()){
         backdrop();Center(720,120,s.config.acts[game.run.act].name,Ink,brand_);Center(720,158,"Hồi "+std::to_string(game.run.act+1)+" / 3 · HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp),Muted,font_);
@@ -242,7 +243,7 @@ void Ui::Draw(const Game& game,int mx,int my){
     std::string progress="Hành trình";
     if(!game.run.map.empty()){
         const int node=std::clamp(game.run.index,0,int(game.run.map.size())-1);
-        progress="Hồi "+std::to_string(game.run.act+1)+" · Tầng "+std::to_string(game.run.map[node].floor+1)+"/"+std::to_string(game.run.map.back().floor+1);
+        progress=game.Practice()?"ĐẤU THỬ TRÙM":"Hồi "+std::to_string(game.run.act+1)+" · Tầng "+std::to_string(game.run.map[node].floor+1)+"/"+std::to_string(game.run.map.back().floor+1);
         if(s.PhaseCount()>1)progress+=" · Giai đoạn "+std::to_string(s.PhaseIndex()+1)+"/"+std::to_string(s.PhaseCount());
     }
     Text(760,87,progress,Muted,small_);
@@ -304,6 +305,7 @@ void Ui::Click(Game& game,int mx,int my){
             if(AchievementsButton().Contains(mx,my)){game.OpenAchievements();return;}
             if(ChallengeMinus().Contains(mx,my)){game.SetChallenge(game.SelectedChallenge()-1);return;}
             if(ChallengePlus().Contains(mx,my)){game.SetChallenge(game.SelectedChallenge()+1);return;}
+            if(PracticeButton().Contains(mx,my)){game.PracticeSelected(unsigned(GetNowHiPerformanceCount()));ResetView();return;}
         }else if(game.MenuPage()==2){
             std::vector<std::string> branches;for(const auto& s:game.state.config.skills)if(s.class_id==game.profile.selected_class&&std::find(branches.begin(),branches.end(),s.branch)==branches.end())branches.push_back(s.branch);
             for(int b=0;b<int(branches.size());++b)for(const auto& s:game.state.config.skills)if(s.class_id==game.profile.selected_class&&s.branch==branches[b]&&SkillRect(b,s.tier-1).Contains(mx,my)){game.BuySkill(s.id);return;}

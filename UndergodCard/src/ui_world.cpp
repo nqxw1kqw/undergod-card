@@ -25,13 +25,14 @@ bool Ui::DrawExtensions(const Game& game,int mx,int my){
             Center(r.x+r.w/2,r.y+295,"HP "+std::to_string(c.hp)+" · Năng lượng "+std::to_string(c.energy)+" · Rút "+std::to_string(c.draw),Muted,small_);
             Wrapped({r.x+22,r.y+332,r.w-44,76},c.description,Muted,font_);
         }
-        Button(SkillsButton(),"Cây kỹ năng",true,mx,my);Button(AchievementsButton(),"Thành tựu",true,mx,my);
+        Button(SkillsButton(),"Cây kỹ năng",!game.Practice(),mx,my);Button(AchievementsButton(),"Thành tựu",true,mx,my);
         Button(ChallengeMinus(),"−",game.SelectedChallenge()>0,mx,my);Button(ChallengePlus(),"+",game.SelectedChallenge()<std::clamp(game.profile.highest_challenge+1,0,10),mx,my);
         Center(1030,668,"Thử Thách "+std::to_string(game.SelectedChallenge()),Ink,font_);
         std::string description="Độ khó chuẩn. Thắng chiến dịch để mở Thử Thách tiếp theo.";
         if(game.SelectedChallenge()>0)description="Bất lợi cộng dồn: "+config.challenges[game.SelectedChallenge()-1].description;
         Wrapped({790,726,510,65},description,Muted);
-        Button(StartButton(),"Bắt đầu hành trình →",true,mx,my);Text(120,772,"1–3 chọn lớp. Enter bắt đầu. Esc trở về.",Muted,small_);
+        Button(PracticeButton(),"Đấu thử Hổ Vương",true,mx,my);
+        Button(StartButton(),"Bắt đầu hành trình →",true,mx,my);Text(120,790,"1–3 chọn lớp. Enter bắt đầu hành trình. Esc trở về.",Muted,small_);
     }else if(game.MenuPage()==2){
         Center(720,110,"Cây kỹ năng · "+game.SelectedClass().name,Ink,brand_);
         std::vector<std::string> branches;for(const auto& s:config.skills)if(s.class_id==game.profile.selected_class&&std::find(branches.begin(),branches.end(),s.branch)==branches.end())branches.push_back(s.branch);

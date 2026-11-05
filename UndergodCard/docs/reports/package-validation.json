@@ -1,11 +1,11 @@
 {
-  "files": 226,
-  "pngs": 190,
+  "files": 238,
+  "pngs": 202,
   "wavs": 12,
   "data_files": 16,
   "crc": true,
   "exact_manifest": true,
-  "exe_sha256": "92ecb46f538af520b99e42782f5650b0f7fcaa2fc56cf4ae6deedfefd78233f6",
-  "zip_sha256": "7c3aae9ded7ff8638ede108947fab528d254052cbb278dbd92a53e5154850dbc",
-  "zip_bytes": 31408140
+  "exe_sha256": "614370a4f8880828da073db00a2bb65074fa48ab30c0de70e672025dff0b0921",
+  "zip_sha256": "917a1b4ae7b9af937e9d45ed3f84d21ab1393397bf4a4c28589ce4cd1945e746",
+  "zip_bytes": 33788725
 }
