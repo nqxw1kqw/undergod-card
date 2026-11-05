@@ -11,6 +11,7 @@ void Open(Game& game,unsigned seed=1337){game.NewRun(seed);game.ChooseNode(0);}
 void Drain(Game& game){for(int i=0;i<100&&game.Busy();++i)game.Update(.1f);Check(!game.Busy(),"controller settles");}
 void Settle(Game& game){for(int i=0;i<120&&game.Busy();++i)game.Update(.1f);}
 void RunChecks(const Config&,const Timeline&);
+void WorldChecks(const Config&,const Timeline&);
 void SimulateRuns(const Config&,const Timeline&,int);
 int main(int argc,char** argv){
     std::filesystem::current_path(std::filesystem::absolute(argv[0]).parent_path());
@@ -19,7 +20,7 @@ int main(int argc,char** argv){
         Combat c(config);Check(c.player.hp==50&&c.enemy.hp==config.enemy.hp&&config.enemy.hp>0,"requested HP");Check(c.energy==3&&c.hand.size()==5&&c.draw.size()==5,"opening resources and piles");
         Check(c.hand==std::vector<std::string>({"punch","cookie","shield","punch","punch"}),"opening hand matches TypeScript seed 1337");
         int base_cards=0;for(const auto& card:config.cards)if(!card.upgraded)++base_cards;
-        Check(base_cards==19&&config.cards.size()==38&&StartingDeck(config).size()==10&&config.events.size()>=10&&config.relics.size()>=10&&config.potions.size()>=5&&c.config.balance.ultimate_damage==40,"JSON definitions");
+        Check(base_cards==50&&config.cards.size()==98&&StartingDeck(config).size()==10&&config.events.size()>=10&&config.relics.size()>=10&&config.potions.size()>=5&&c.config.balance.ultimate_damage==40,"JSON definitions");
         Rng r;r.Seed(42);const double expected[]={.6011037519201636,.44829055899754167,.8524657934904099,.6697340414393693};for(double value:expected)Check(std::abs(r.Next()-value)<1e-12,"RNG matches TypeScript golden values");
         auto legacy=config;legacy.enemy=EnemyDef{};legacy.enemy.opening_attack=false;legacy.enemy.max_guards=100;Combat original(legacy);
         const bool attacks[]={false,false,false,false,false,true,false,false};for(bool attack:attacks){Check(original.intent.attack==attack,"legacy intent RNG matches TypeScript");if(attack)Check(original.intent.value==8,"legacy intent damage golden value");original.EndPlayer();original.ActEnemy();}
@@ -124,8 +125,8 @@ int main(int argc,char** argv){
         Combat c(config);c.player.status.weak=1;c.hand={"punch"};c.energy=1;const int max_hp=c.enemy.max_hp;c.Play(0);Check(c.enemy.hp==max_hp-4&&c.player.status.weak==1,"weak card damage and the stack stays through the player turn");
         c.Reset();c.enemy.status.vulnerable=1;c.hand={"punch"};c.energy=1;c.Play(0);Check(c.enemy.hp==c.enemy.max_hp-9,"vulnerable boosts a later hit in the same turn");
         c.Reset();c.player.status.strength=2;c.hand={"punch"};c.energy=1;c.Play(0);Check(c.enemy.hp==c.enemy.max_hp-8,"strength boosts the starter attack");
-        c.Reset();c.enemy.block=5;c.hand={"double_peck"};c.energy=1;c.Play(0);Check(c.enemy.hp==c.enemy.max_hp-3&&c.enemy.block==0,"multi-hit spends block one strike at a time");
-        c.Reset();c.hand={"venom_beak"};c.energy=1;c.Play(0);Check(c.enemy.status.poison==3&&c.enemy.hp==c.enemy.max_hp-4,"poison card deals damage and a stack");
+        c.Reset();c.enemy.block=5;c.hand={"double_peck"};c.energy=1;c.Play(0);Check(c.enemy.hp==c.enemy.max_hp-4&&c.enemy.block==0,"multi-hit spends block one strike at a time");
+        c.Reset();c.hand={"venom_beak"};c.energy=1;c.Play(0);Check(c.enemy.status.poison==3&&c.enemy.hp==c.enemy.max_hp-5,"poison card deals damage and a stack");
         c.enemy.hp=20;c.enemy.block=8;c.EndPlayer();c.ActEnemy();Check(c.enemy.status.poison==2&&c.enemy.hp==17,"poison ticks at the start of the enemy turn and then decays");
         c.Reset();c.player.hp=40;c.enemy.status.weak=1;c.intent={true,8};c.EndPlayer();c.ActEnemy();Check(c.player.hp==34&&c.enemy.status.weak==0,"enemy weak reduces the shown attack and then expires");
         c.Reset();c.player.status.vulnerable=1;c.intent={true,8};c.EndPlayer();c.ActEnemy();Check(c.player.hp==50-12&&c.player.status.vulnerable==0,"vulnerable already on the player boosts the enemy hit");
@@ -135,7 +136,7 @@ int main(int argc,char** argv){
         StatusSet decay;decay.weak=2;decay.vulnerable=1;decay.strength=3;decay.DecayDebuffs();Check(decay.weak==1&&decay.vulnerable==0&&decay.strength==3,"only weak and vulnerable decay");
     }
     {
-        const EnemyDef* boss=nullptr;for(const auto& enemy:config.bestiary)if(enemy.role=="boss")boss=&enemy;
+        EnemyDef old_boss=FindEnemy(config,"frog");old_boss.phases[0].threshold=0;old_boss.phases[0].summon_count=0;old_boss.phases[0].lock_card=false;const EnemyDef* boss=&old_boss;
         Check(boss&&boss->phases.size()==1,"boss definition carries a second phase");
         Combat c(config);c.BeginEncounter(*boss,7,50,50,0,StartingDeck(config));
         Check(c.PhaseCount()==2&&c.PhaseIndex()==0&&c.PhaseName()=="Ếch Vương","boss starts in phase one");
@@ -157,7 +158,7 @@ int main(int argc,char** argv){
             }}
         Check(bounded,"boss intents stay inside the active phase table");
         Combat spill(config);spill.BeginEncounter(*boss,3,50,50,0,StartingDeck(config));spill.enemy.hp=1;spill.hand={"double_peck"};spill.energy=1;spill.Play(0);
-        Check(spill.PhaseIndex()==1&&spill.phase==Phase::Player&&spill.enemy.hp==boss->phases[0].hp-4,"the hit after a phase change strikes the new phase");
+        Check(spill.PhaseIndex()==1&&spill.phase==Phase::Player&&spill.enemy.hp==boss->phases[0].hp-6,"the hit after a phase change strikes the new phase");
     }
     {
         auto corridor=config;corridor.map_weights={100,0,0,0,0};
@@ -183,7 +184,7 @@ int main(int argc,char** argv){
     }
     {
         Game g(config,timeline);g.NewRun(1);g.run.hp=20;g.run.gold=30;g.run.place=Place::Event;g.run.event_choices=config.events[0].choices;
-        g.ChooseEvent(0);Check(g.Map()&&g.run.hp==28,"the well heals when you drink");
+        g.ChooseEvent(1);Check(g.Map()&&g.run.hp==35,"the well heals when you drink");
         g.NewRun(1);g.run.place=Place::Shop;g.run.gold=200;g.run.shop.push_back({Ware::Card,"peck",50,false});
         Check(g.Buy(0)&&g.run.gold==150&&g.run.deck.back()=="peck"&&g.run.shop[0].sold,"the shop sells a card");
         const int before=int(g.run.deck.size());g.run.gold=config.remove_price;Check(g.RemoveCard(0)&&int(g.run.deck.size())==before-1,"the shop can remove a card");
@@ -206,12 +207,13 @@ int main(int argc,char** argv){
             if(animated)Settle(g);
         }
         std::cout<<"RUN victory="<<g.run.victory<<" hp="<<g.run.hp<<" rewards="<<rewards<<" deck="<<g.run.deck.size()<<" gold="<<g.run.gold<<" relics="<<g.run.relics.size()<<" phase="<<(g.state.PhaseIndex()+1)<<" node="<<g.run.node<<"\n";
-        Check(g.run.victory&&g.run.hp>0&&g.run.hp<=g.run.max_hp,"seed 1337 clears the complete act with surviving HP");
-        Check(g.state.PhaseCount()==2&&g.state.PhaseIndex()==1,"the winning blow lands in phase two");
+        Check(g.run.victory&&g.run.hp>0&&g.run.hp<=g.run.max_hp,"seed 1337 clears all three acts with surviving HP");
+        Check(g.state.PhaseCount()==3&&g.state.PhaseIndex()==2&&g.run.act==2,"the final blow lands on Undergod phase three in act three");
         Check(rewards>=4&&g.run.deck.size()>=StartingDeck(config).size()&&g.run.relics.size()>=1,"rewards, deck growth and a relic happened");
         Check(!carried.empty(),"hp is banked on the reward screen");
     }
     RunChecks(config,timeline);
+    WorldChecks(config,timeline);
     if(argc==3&&std::string(argv[1])=="--simulate")SimulateRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

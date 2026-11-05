@@ -1,9 +1,41 @@
 {
   "player": "chick",
-  "runtime_pngs": 50,
+  "runtime_pngs": 190,
   "files": [
     {
-      "path": "assets\\pastel\\cards\\cookie.png",
+      "path": "assets/pastel/cards/arcane_storm.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2db9b0d7c3c5600251afb52f3fc1c1ca449b3c318dffd383c844443ec76bf935"
+    },
+    {
+      "path": "assets/pastel/cards/assassinate.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2923903dbedb064cfafe4fa10c962f689bebd735d7cf0a2145f3cd46629228a5"
+    },
+    {
+      "path": "assets/pastel/cards/blade_rain.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "40f3311a90220071b6f139c8e6ba9e897e7fe9b3b1dc9e229883b8044e1ed09b"
+    },
+    {
+      "path": "assets/pastel/cards/comet_lance.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "a28ac1be98463350cbbd9e51e70602313b6d8dc4bf0555d9c9c676e646acd1e0"
+    },
+    {
+      "path": "assets/pastel/cards/cookie.png",
       "size": [
         256,
         256
@@ -11,7 +43,111 @@
       "sha256": "7bc004db0db22be3b988c41a36d63d3ded38409e5c506c53dc4fa55f65f7f597"
     },
     {
-      "path": "assets\\pastel\\cards\\heavy.png",
+      "path": "assets/pastel/cards/counter.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "5b2cdd38c225abf1b333f597f279cfbb5f7c8d9770add4e42bf118fa553cdc0a"
+    },
+    {
+      "path": "assets/pastel/cards/crow.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1e56d8b2e21edfba85ab7688f7eee958c5b095d36508dbfc2d3f1a32bcb3f15f"
+    },
+    {
+      "path": "assets/pastel/cards/dagger.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1a6ec0221706f7c40b9533a530b7e274f48fae7b10e71dc12742ef12f8e90a27"
+    },
+    {
+      "path": "assets/pastel/cards/double_peck.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "5288d6dc896b92aa37517fcc2124a25e9a3d8fd6de291ddc62b8657bca2f7795"
+    },
+    {
+      "path": "assets/pastel/cards/fatigue.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "46dbd71695ee8e756a522cfe70a1ef91d80e89c239c6a9dfd034ac7249a1fa46"
+    },
+    {
+      "path": "assets/pastel/cards/feather.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "48ce3822f78770d4c94d6278c42ae6e29f21d39712512671f0d99bbc9bb51c1c"
+    },
+    {
+      "path": "assets/pastel/cards/feather_rain.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "b5883095ceeabe555a3550dbac5028da79f9a2058b068dbf303715eb409246ee"
+    },
+    {
+      "path": "assets/pastel/cards/feather_shield.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1e342d90b0504f843032eaa926894252198f125b50904eb19aa21a4b71af881d"
+    },
+    {
+      "path": "assets/pastel/cards/fortress.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f7cfd6ae50a204ee1d7805427f143cc6ded7b5cb62779d2d5b52066fc5b7757f"
+    },
+    {
+      "path": "assets/pastel/cards/golden_egg.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "b25bf52da6ac6ff5c35ca50586fa10d247255867bf38970d0a7bc33633fe17af"
+    },
+    {
+      "path": "assets/pastel/cards/grub.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "9f333c2c1d58598cd41e543aad1f481d860891d350a0c4149fa31b581df4520b"
+    },
+    {
+      "path": "assets/pastel/cards/guard_stance.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "806b7277ddcf483edda7858609f211280f4d7c2ab32c5395c55d2251f5c11ca0"
+    },
+    {
+      "path": "assets/pastel/cards/guard_up.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "18817fd7d0b031f5cdc40402cf300b6243dbca5edcb30559a0b50003dc930832"
+    },
+    {
+      "path": "assets/pastel/cards/heavy.png",
       "size": [
         256,
         256
@@ -19,7 +155,103 @@
       "sha256": "2caa077952d101d650db1c4d711d50c80d313dc1e1ca3579a298dbf35ee6124b"
     },
     {
-      "path": "assets\\pastel\\cards\\punch.png",
+      "path": "assets/pastel/cards/holy_spear.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "0262df0a77fe644c3d8b9f4d7f599091852d8db38a9acbf9d4a335a9dae84132"
+    },
+    {
+      "path": "assets/pastel/cards/lotus_guard.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "fc755e45d8d5824883b4a5e47494c81428ad3961193efbbf7d7d8ecd435e517a"
+    },
+    {
+      "path": "assets/pastel/cards/mana_barrier.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "78aa0023ec60cde276d839084d973d5a7d578a906597f65ab142f09f00ae03e9"
+    },
+    {
+      "path": "assets/pastel/cards/mana_focus.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f72ec1b4e5a8d85b8088b4d66d9ca2a5faaf814c3c941d7b9896ad4c11ff0a88"
+    },
+    {
+      "path": "assets/pastel/cards/mark_prey.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "27cd4ed8ff1a1627fd96d7074dbcf175d27a84655f8a0c02bbc01ddf826af2ff"
+    },
+    {
+      "path": "assets/pastel/cards/meteor_rain.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "35d51029f7cfd98393e8ecfb0313cdd06cfe3f93d9afe2690d514ef97a8f354e"
+    },
+    {
+      "path": "assets/pastel/cards/millet.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "7c73fae51cd868ded2667c88d7175957c2118bcdc8abd789ccc702d191a33ddd"
+    },
+    {
+      "path": "assets/pastel/cards/mud.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ddefbd747215951f1f3c8b5f087d049a4a94a9f57886922c898163573a28bcdf"
+    },
+    {
+      "path": "assets/pastel/cards/peck.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d275732166a3bb1cf7229d575ff91e545425549a60fa2f29e72ae92b2dad8bcf"
+    },
+    {
+      "path": "assets/pastel/cards/phantom_guard.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "19708079182f9138a316f270f97c905783c0793b09c893b979cebef43dbba3fc"
+    },
+    {
+      "path": "assets/pastel/cards/phoenix.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "a5a09f66d1f4f3fc49727256ca3d42920a306b3e715ebee0c974b04617dcda14"
+    },
+    {
+      "path": "assets/pastel/cards/piercing_spear.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "0764876dfcae4eac38700b5b43fe5610edfb368ff35e167aecba0e2157e31eb7"
+    },
+    {
+      "path": "assets/pastel/cards/punch.png",
       "size": [
         256,
         256
@@ -27,7 +259,39 @@
       "sha256": "9dcae715e48feed0854e31a99cd6960d294d684201dc7bc7832c83382ba0336a"
     },
     {
-      "path": "assets\\pastel\\cards\\shield.png",
+      "path": "assets/pastel/cards/rage_fire.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ad10f39476a834d268c89a7d9826114ee0daea137d5a715d2a2feb9fa922b981"
+    },
+    {
+      "path": "assets/pastel/cards/resonance.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "180789d13df6185100031f5e2c82e967ca5a4ded7b6e7506814c8994a9a8381b"
+    },
+    {
+      "path": "assets/pastel/cards/returning_spear.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "cbee304c6b468daba06762d9d7d68320fbf002499afa089e82600e89f44ac37d"
+    },
+    {
+      "path": "assets/pastel/cards/shadow_dance.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "5cf4847870cbc9864b7027295eb4ae02302479c1e93d293b2ed04fb17e204d43"
+    },
+    {
+      "path": "assets/pastel/cards/shield.png",
       "size": [
         256,
         256
@@ -35,7 +299,111 @@
       "sha256": "17c914addadb62fd2ca76964efc5789de836a35bde572d85767fe90aa833ecd1"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_attack_0.png",
+      "path": "assets/pastel/cards/smoke_step.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "4d09e53235a7dd5e51b5c04c97556674c6b99f6dc6ae7cd0648dc0202657cab6"
+    },
+    {
+      "path": "assets/pastel/cards/snare.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "fb01a6ccd096bcbac755b9cc770194f1846fc07293f4e9e1ff192038d9930d7a"
+    },
+    {
+      "path": "assets/pastel/cards/spellbolt.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ab0e938c3d8bfdbe7dfb69933b40bce1abb6a3fef0f98ce6799a6cd58e618dbc"
+    },
+    {
+      "path": "assets/pastel/cards/star_orbit.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "53cae2c2b47f4d5c199bc1b98096cd74a7825e9c7f12dcce6982b94fbbe479b7"
+    },
+    {
+      "path": "assets/pastel/cards/star_tip.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "b1cc45daa69077137c3feae9b43cb81259ebe09d3edea72b7d269a0a0551862a"
+    },
+    {
+      "path": "assets/pastel/cards/stomp.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c8f2a032a711e7e6130baebd80386078fa05728ece3f51ee8fc01cddd03c97dd"
+    },
+    {
+      "path": "assets/pastel/cards/storm_spear.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "919e5801654deefbdf46f5c1f6b4b9c3f0b3641dd696fd5bdfdbd40c389a31de"
+    },
+    {
+      "path": "assets/pastel/cards/toxin.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "974fdc7f16662d100208e73c9e3051610bf9cfa02e9c6986d8eb23f5d86ba977"
+    },
+    {
+      "path": "assets/pastel/cards/venom_beak.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "7dc33baa5a435cc55202c50ac90ebd267c378b611cbeda476555d5fe9c383398"
+    },
+    {
+      "path": "assets/pastel/cards/venom_orb.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "3312aa9a58f6744b3c1475313f2eb6c6287afb08aef8e7bf2f62449f0e7aa136"
+    },
+    {
+      "path": "assets/pastel/cards/whirlwind.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "120f691686304d33ae085e636a5db5de12fda7f72400de8f7aba50fd464dfb8c"
+    },
+    {
+      "path": "assets/pastel/cards/wing.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "424fe2f9e3e48a1c665de03d232f34f3659605909fe53a2598afab2085d6bdda"
+    },
+    {
+      "path": "assets/pastel/cards/wingbeat.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "b26dfddc2d5611b02df0838ade31e04147dc001062a99256e0641aaff8c5de43"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_attack_0.png",
       "size": [
         512,
         512
@@ -43,7 +411,7 @@
       "sha256": "585872c1c7b6cc06584278311330d393e13159773e1c7dedd5736ba116f8d1f4"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_attack_1.png",
+      "path": "assets/pastel/characters/char_chick_attack_1.png",
       "size": [
         512,
         512
@@ -51,7 +419,7 @@
       "sha256": "a60f50da082a49c9ac36e606b945fa15d2334c4ba68f38cbab1b23508f82e214"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_attack_2.png",
+      "path": "assets/pastel/characters/char_chick_attack_2.png",
       "size": [
         512,
         512
@@ -59,7 +427,7 @@
       "sha256": "28e934f0529ab5bf83c862eedcb12281258013ad7bd166ee55dc1d1eea2680bf"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_attack_3.png",
+      "path": "assets/pastel/characters/char_chick_attack_3.png",
       "size": [
         512,
         512
@@ -67,7 +435,7 @@
       "sha256": "92a50c78ad4d5cfbe225fd7ea496e260cb2abe5a2d60b49772909cd160eba981"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_defend_0.png",
+      "path": "assets/pastel/characters/char_chick_defend_0.png",
       "size": [
         512,
         512
@@ -75,7 +443,7 @@
       "sha256": "23668153de93642618856279d2eee550fde94e50e9fb245b18170ddde8658c3b"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_defend_1.png",
+      "path": "assets/pastel/characters/char_chick_defend_1.png",
       "size": [
         512,
         512
@@ -83,7 +451,7 @@
       "sha256": "afe31c0001170b2711546d8c841e704d930db0bcd6592bcebdba54e714925227"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_defend_2.png",
+      "path": "assets/pastel/characters/char_chick_defend_2.png",
       "size": [
         512,
         512
@@ -91,7 +459,7 @@
       "sha256": "c014d0871e93db48f714ffb3559a11f994c264176494204ce1b5925217032ee8"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_defend_3.png",
+      "path": "assets/pastel/characters/char_chick_defend_3.png",
       "size": [
         512,
         512
@@ -99,7 +467,7 @@
       "sha256": "578b9b9baf1dc68e9cec210f8cc455c31715f5a2fc274d4f0713cf7b372cae28"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_hit_0.png",
+      "path": "assets/pastel/characters/char_chick_hit_0.png",
       "size": [
         512,
         512
@@ -107,7 +475,7 @@
       "sha256": "a45f6de61f8e48aae43e7fc47dcb04ada8b22298152e23c0b269c7fe6fc1fdba"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_hit_1.png",
+      "path": "assets/pastel/characters/char_chick_hit_1.png",
       "size": [
         512,
         512
@@ -115,7 +483,7 @@
       "sha256": "a68fc14827ee71a10eda0183f04abe53d4e6d5d490824f758218bfedc5987512"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_hit_2.png",
+      "path": "assets/pastel/characters/char_chick_hit_2.png",
       "size": [
         512,
         512
@@ -123,7 +491,7 @@
       "sha256": "0f168618b68874fb256cf344f9dea6dc1813285d51323bd3d949d9da3425b3e7"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_hit_3.png",
+      "path": "assets/pastel/characters/char_chick_hit_3.png",
       "size": [
         512,
         512
@@ -131,7 +499,7 @@
       "sha256": "7a2cece6f79b2ebf35ed3fbe372f9bc30d16007d847b07c6969043b2241b3b94"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_idle_0.png",
+      "path": "assets/pastel/characters/char_chick_idle_0.png",
       "size": [
         512,
         512
@@ -139,7 +507,7 @@
       "sha256": "4e534f2f0fcc7a0cd927e82fef0a6f1f9421ebb9eb92540323c464822f4cd7b6"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_idle_1.png",
+      "path": "assets/pastel/characters/char_chick_idle_1.png",
       "size": [
         512,
         512
@@ -147,7 +515,7 @@
       "sha256": "c80ea666b11852ba2937b543ee9adb83b484858f10f48c8f3ea507a653b5ca2a"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_idle_2.png",
+      "path": "assets/pastel/characters/char_chick_idle_2.png",
       "size": [
         512,
         512
@@ -155,7 +523,7 @@
       "sha256": "09c6ce103f5c622cef5c785b4d79c3be0130ef0e6cec08f0f3403625408e2e29"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_idle_3.png",
+      "path": "assets/pastel/characters/char_chick_idle_3.png",
       "size": [
         512,
         512
@@ -163,7 +531,7 @@
       "sha256": "b315055113db03b222bfe59fb37c42466c506588f06fc543d7b62ff0c1b2ec43"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_charge_0.png",
+      "path": "assets/pastel/characters/char_chick_ult_charge_0.png",
       "size": [
         512,
         512
@@ -171,7 +539,7 @@
       "sha256": "0f5af23c22f838befc95ea5883e08640cc5521427d2318afa99e20251a7c1a43"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_charge_1.png",
+      "path": "assets/pastel/characters/char_chick_ult_charge_1.png",
       "size": [
         512,
         512
@@ -179,7 +547,7 @@
       "sha256": "ccbed5fa2eee17dfa72da6f4858c45bffd113a5d3721d730b5198790463376fc"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_charge_2.png",
+      "path": "assets/pastel/characters/char_chick_ult_charge_2.png",
       "size": [
         512,
         512
@@ -187,7 +555,7 @@
       "sha256": "7eed0b35e1d356197f5e4f6a706c852dd2dc3b5db52a1f058910eee1b19cf45a"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_charge_3.png",
+      "path": "assets/pastel/characters/char_chick_ult_charge_3.png",
       "size": [
         512,
         512
@@ -195,7 +563,7 @@
       "sha256": "33b9edd3dec35140e4078f1bb5a8a6515c2bcd4388e84c2b9ee0a47463ca908a"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_throw_0.png",
+      "path": "assets/pastel/characters/char_chick_ult_throw_0.png",
       "size": [
         512,
         512
@@ -203,7 +571,7 @@
       "sha256": "b71f2eb639bde20705d1ae51b337a84e666781357e8ea87ece397a246bcdf3ff"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_throw_1.png",
+      "path": "assets/pastel/characters/char_chick_ult_throw_1.png",
       "size": [
         512,
         512
@@ -211,7 +579,7 @@
       "sha256": "59441d1df5dad637fc1f7084c06311f06aecabb5c8ff5e6aa681480e348f1906"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_throw_2.png",
+      "path": "assets/pastel/characters/char_chick_ult_throw_2.png",
       "size": [
         512,
         512
@@ -219,7 +587,7 @@
       "sha256": "5e7aecc14bd42006758996c38164a1b3704bd7138d881898dd6262fa789ce2c8"
     },
     {
-      "path": "assets\\pastel\\characters\\char_chick_ult_throw_3.png",
+      "path": "assets/pastel/characters/char_chick_ult_throw_3.png",
       "size": [
         512,
         512
@@ -227,167 +595,919 @@
       "sha256": "42305300e98c4dbbba81ac9ae0834490311b2624aecd124c4953391ea4b5c75e"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_attack_0.png",
+      "path": "assets/pastel/characters/char_elder_toad_idle_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "edd66726217cf5a2c04a1926c57a2972eeb71500c114299b12d7343b3f21b1f3"
+      "sha256": "3109fac0e64bfbb1ab8095d4ce98fb5f482290ef06b0064a465638cba87a261c"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_attack_1.png",
+      "path": "assets/pastel/characters/char_elite_frog_idle_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "f9b3dad1de99e37d7d72f13bd72bd8fa5ae90400540e20c46cfe409a600f9af0"
+      "sha256": "255286ffd9a0c6629a56049980bb35e92ded2da3499e1762129bec95ea91af57"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_attack_2.png",
+      "path": "assets/pastel/characters/char_fox_attack_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "a317ae8e9ca89216cce4ab700758f796e3a593745a2ddce6d4f49542020a2747"
+      "sha256": "0c512072f46b7f1c309cd284697617e588d275205ee5dd699a44934778393be4"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_attack_3.png",
+      "path": "assets/pastel/characters/char_fox_attack_1.png",
       "size": [
         512,
         512
       ],
-      "sha256": "910430ad4e7f98789b651c736e5f34685bc977f3b139f37eee1b2835e333405d"
+      "sha256": "337dabfe856863046760df5a32c293cd854bb3d0a2d4e178812d8f24bd4eaaa0"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_defend_0.png",
+      "path": "assets/pastel/characters/char_fox_attack_2.png",
       "size": [
         512,
         512
       ],
-      "sha256": "6b3b9e94bfeb39242c360bc1217f2e0c986609bf33cbe908c29d9385cf890523"
+      "sha256": "936fb0cd937f00775907b66bcccd85306402638f50627cd24b59e98e246dfa88"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_defend_1.png",
+      "path": "assets/pastel/characters/char_fox_attack_3.png",
       "size": [
         512,
         512
       ],
-      "sha256": "509e4f16d5833cd1ae12ecdd620ec10a3232bcf3b1314e252847e3f90d7f122d"
+      "sha256": "74c19753665956985b5a0bdfd1e13fb9684953ede7faab33e67f4344f068dfcf"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_defend_2.png",
+      "path": "assets/pastel/characters/char_fox_idle_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "ea7de61a067d6a9a4c0c86d76f48b2b33918483e52cf98982c9f28ee4df7c7c7"
+      "sha256": "97fd62903c9bbba122ad89fe89a8083ddbc8d16c66ef5b38022f96f6e85cc862"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_defend_3.png",
+      "path": "assets/pastel/characters/char_fox_idle_1.png",
       "size": [
         512,
         512
       ],
-      "sha256": "1857a6e8b14fe273981e0f67ee2460ce99dc85183e6001b5b0ae8ad1eaeb08f9"
+      "sha256": "a17951d6952187ae48905aaea7842b91640dc01987c50b6846f4fb4c647a198b"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_hit_0.png",
+      "path": "assets/pastel/characters/char_fox_idle_2.png",
       "size": [
         512,
         512
       ],
-      "sha256": "536b000bff6f3cb7d72b2503c18ea8e47e4e206d671db8d07181426cdf3e8786"
+      "sha256": "1f93cd5c19536736e71659a233a444bfcdd2ebc7f11305450faba08c3f574e59"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_hit_1.png",
+      "path": "assets/pastel/characters/char_fox_idle_3.png",
       "size": [
         512,
         512
       ],
-      "sha256": "5dbf6199c1859f5d7456aa98af91b1499cc1892fc887ee81d0afc1025919022d"
+      "sha256": "a7bf1b73875e6bcec17a6b510507d0dacce27c2c195416137e4bc17b0541a4be"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_hit_2.png",
+      "path": "assets/pastel/characters/char_frog_king_attack_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "871d42099546d581d39ff6092a6ed8d3b8fc124dba6ba8a85b8955b451581475"
+      "sha256": "cf574352dfd233ec55e9d2a8175837b83280a6d44a8c4a6fc5f7fbd7934350cb"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_hit_3.png",
+      "path": "assets/pastel/characters/char_frog_king_attack_1.png",
       "size": [
         512,
         512
       ],
-      "sha256": "ab206bbf26a40b0ac26621c393f3a02db0831f93106a8e4a2e935b10ade43e0d"
+      "sha256": "efda2ca778bd03fdd7e6cba32900e4f208ff44902f9e8c4a92fdc70dd44ab442"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_idle_0.png",
+      "path": "assets/pastel/characters/char_frog_king_attack_2.png",
       "size": [
         512,
         512
       ],
-      "sha256": "4729a4a9a71a6171055c8831b0f1c913e4b98ac166f3bef54e09dc0bec92d458"
+      "sha256": "b6feeedce0069da5387103e6e19b5bea3053072b3d9c262fdb978630c0bd4be6"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_idle_1.png",
+      "path": "assets/pastel/characters/char_frog_king_attack_3.png",
       "size": [
         512,
         512
       ],
-      "sha256": "1876b6e5a716bb6d585055f64af4424103d27fea6450368735638f5a5cbb1e04"
+      "sha256": "ac4134bebd8460a32eb1399a8c0e2ad2240f6f5dbfe6a747541f9c602de4dd28"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_idle_2.png",
+      "path": "assets/pastel/characters/char_frog_king_idle_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "0e68798776e67a42426ce0180774b596d2ac8fece1a9eaa72d76987bfefac6ad"
+      "sha256": "2393d70ec4168c616c1b52717d24b81f28bf51d7c22ea25190983ee2e3e68d76"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_idle_3.png",
+      "path": "assets/pastel/characters/char_frog_king_idle_1.png",
       "size": [
         512,
         512
       ],
-      "sha256": "72875a86c80f661957cde90ff9363504bbfd2819855390335ad5541ca0d0504f"
+      "sha256": "c816b8365ad819a90cd836a6ccd34f7b07e4d29eaf9716739f785d80722313d3"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_ult_charge_0.png",
+      "path": "assets/pastel/characters/char_frog_king_idle_2.png",
       "size": [
         512,
         512
       ],
-      "sha256": "413c49b6aca42d402cff96824a813963189d5efb0bde99bd5b1cb10285f5e862"
+      "sha256": "940bc49e0b649de393015ffa7dcccaa51b61386bcb770a94e4c195a58c0222a9"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_ult_charge_1.png",
+      "path": "assets/pastel/characters/char_frog_king_idle_3.png",
       "size": [
         512,
         512
       ],
-      "sha256": "28bd4297ad3991b882513a44c2feab49327c833ad021b62f939a86944354e32d"
+      "sha256": "13d7ad6d36a303314aed2f0368435e6d34d663def8990c249dd2eb21ef827c86"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_ult_charge_2.png",
+      "path": "assets/pastel/characters/char_froglet_idle_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "3f77f29750b3d6fa8292470cb839795ba53fe7793ad8a1bbcbb8defc51ecd8d7"
+      "sha256": "e267450b9097626a4a8779665eec794aac8b051984d152797a48868fda1dba36"
     },
     {
-      "path": "assets\\pastel\\characters\\char_frog_ult_charge_3.png",
+      "path": "assets/pastel/characters/char_hawk_attack_0.png",
       "size": [
         512,
         512
       ],
-      "sha256": "10d8242bed95f1a3cde113415785226667624f53316b1018ced8e59b7467a397"
+      "sha256": "3b0ba2c5ff1242773db0e48eb5f4cf2d2666291c796b58d196060dc7f352cd08"
     },
     {
-      "path": "assets\\pastel\\vfx\\spear.png",
+      "path": "assets/pastel/characters/char_hawk_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e7bb8b7a9f8cd41d73ef1a43201757ff2fa9c640c88361b009822b182fafc876"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "813cba108ec710bd3b61dcadef16d93366f853116ff03cd4109b707ffe25594e"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2f4d7289722b6d534ef14a0c4b9ced109f026f3ddeeb6ac5e8f7acd069057501"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3fadfd71dea1225afb7218eb1f4daf48d7557f9e9c03b5523a5db36b19eff9a5"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "eecd9f3347560006accac322fdf1e087c6468b9e42c0eb2858b0c21578689bad"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f2261bd5a343413e548279ef60531a58480be7a4aa0c852ad7bcddf543ba7f2c"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "45ea8d37e4c00b1f4e9c967994897a7c57e9017491d4b827e97dfe7921be714d"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_attack_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e519b81f88ab0f37f54652039392ca583e1e265f4b7b8dfe48bcbc168d977bb8"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e26f4839792edc6163daf5b6388ea18bac62eeddbc469037680819e3d9241a25"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "882d59a862dfa458b7c1213363b8b2ceb6612a513f3e297e1bf1a7c2dd2bb24a"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a3a637b60833e2e158677ff8967d49c436339866ca7fc2ec6f3e87e093bd0904"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_defend_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1d0ddae74029ada0a64e47c36e8434fcdc97385ced90a487d71dad7d164f5e4d"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_defend_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1f3f1831bfbad77da284fc7a2c865f87160c1c1caa88634fa149e98ce6a93a9f"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_defend_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c68adc9e941bdc29f86f6b72c77f6fce778325a23973f6657e5cf12f5a011183"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_defend_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "80854fee4d7cab3ba021ffeb208799298c92c04a8315c2c0801c599f34ac7608"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_hit_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "bc9c217b38e14c4126ce1cad62afdf4b6032766d79869b2c96a41d986a62087d"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_hit_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "83038aa53bdc3e4d10f095c70210872faf065c815dce516b07183c732adde5fe"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_hit_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a860a8f8bd18a05a8c8b12ea82463a8ac98bfee033e16f42fbdedaa02466f0ab"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_hit_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "6411cb2d2d99cd8ad0cbbf2d34361ef6ffe49c875ca5e0bb743568cd43273d41"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "04f3a8d007b0704f33eda29edf9c8fc0a8eda4617bf46d55fbb3849fa14d63a4"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "bce4cab0a377d7db1ede21fd48bebacd28e404ada6970a2ee18218b1c4e04173"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f189fb2b71681edcc535b01d6ae635fc54e196ea794d8e1f5c31e719861b67b6"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "0f12f8923975eb1f23e601501c0c0352ebd9064569f192c930d6450fbc8f8176"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_ult_throw_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "990d48658ae1ac0182d3467160a8455ffbc1d43ff300d9342650a23f355eab06"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_ult_throw_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1df078e8e888d26b2936f6e8425fa7be000ab9c29c6db5a97229c50ce6e30284"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_ult_throw_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "710f5ba3035cc216eb09b6db2a26810a868feed933e81c4f5028387addf44f25"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_ult_throw_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b7dc282ff48b8a93ea648ad5a6a6ff037ceae1f86609c32ddabacdd24ae33587"
+    },
+    {
+      "path": "assets/pastel/characters/char_marsh_guard_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c1deed8b2a20e8dc6aa832099fefe3a89f51429ac44a37ae37675ea02d5c690a"
+    },
+    {
+      "path": "assets/pastel/characters/char_moss_toad_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "42627cd6de443ecc4035e5b772304533082f70093f522223ff3ee13cd66009fc"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_attack_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "91791fe0c6015e60a086d4f8c6f05fe8c673cace8fbcf69c9e2596d0e08b27e4"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b02b2c376878cfbec302474b2e5b12d9d676da2d9685332bb369d004e7317a5f"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2d5b330c1bf9ce8f7ad5c9feab354cd0372e3413bc22c37f8c2ab80abc0c9d25"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a9e78b39d573def3d461dceeb78f53ba83abe38030935cacfbbdf9be98a98767"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_defend_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c8fc9bf4f78a4288d2a500cc64f221965a019df4d208cdaf7cd648ac92551ee9"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_defend_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a7a6243df1133cc229127f69d3897e001dc9dc0f56a337f4fd3dbe4644e13c16"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_defend_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d20ff5453323e21bce351abececab660af2a9011b2de431ca932dfb0bd89741d"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_defend_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e6d0ac27050cff156cccf27b8d770c36ed5225a1522ef5f80c5e41c762d21782"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_hit_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d8915b064de7f802241f447fcad125b1db2533ec723c233db335678035868705"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_hit_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "943b52abf78b09a8ace1667c1b61520c10a0f94ad613b7f3a52ff4675fd13c80"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_hit_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "af1b6f05f0ec36fe8072b998d7b3e5410012aa94e77a094d170bc33c5b8e3d6f"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_hit_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "eff3161361d7f5e02062a0b19db7fed078e145a633a014ad696dccb8c3e104e2"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4249d0969a7b9a064359450450ab03562517d7742aca7c6b3a85bfd772f277c2"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "63b2aa1e99b24ec03db773a97d7b6a99f5fad71dc845052415e532b64617bcdf"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9c19d9f615d77d49ac04e1cf4c66f9e08c4dfecce2434be8b4f58176b6dada98"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c2db97e772c78fb81c361d79386cbc00314b5bbe4e4b6f52cd630450eb7847f5"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_ult_throw_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ebae99ecf18b54db26a8d87b3e39b51fd01e6336cbd6ee75e71b2d81bfaef1ac"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_ult_throw_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "103334d0e47151bd76f9031c24e905067a7cba843553f420ecb983a7c53d5792"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_ult_throw_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f00f0f5efa13d5b5c8e2eab26c19f9b1dd4ccaa9ddd6d65413d27ce80c772423"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_ult_throw_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "43ffb9a3b3c444e1b767bf79ff503657e4be20b9083417d890a61d582622e377"
+    },
+    {
+      "path": "assets/pastel/characters/char_poison_frog_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "00724e269f704fa60faeceb31aa963298d0d1de76f51ff47474cddf68ebf10e0"
+    },
+    {
+      "path": "assets/pastel/characters/char_reed_frog_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9ba25538af27d996bf8cede3a33eba9b9c332ec3cb9fc639bf7a59a357a565d5"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_attack_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c8573e8eb48c4626d1ca6f0d8156005b6e06cd942fdddf2ff99ff5679d04bb30"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "59da1acf6089ad2b58d3b7016feafde1e9ef044a75f7c9c22ae54e5f33b3d757"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3fac66fd2a9cb2192756fbdb7dcc46b50c10b2feb0e1f6675fec14053d5fd514"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1c568145092c6198bfbfee9c10926e0a1e90ff486fac30b4e211b80d9d4dfbff"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "490a113a51658b8648da45bf1864285663990e0c9ecf40364df828825bc6081c"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a0d070717260f1185d5d907864176f4e796fca6a5c0409825fd731629152a8a6"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "aa839aa373d2ecf3dfb47959194b302dd5a48fda1b425c4ea847174a73308a8d"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "0aea19ed5a9aaa454c98b9f080f6547170e728ecafb1775964d01b41b975c40c"
+    },
+    {
+      "path": "assets/pastel/characters/char_tadpole_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5aed6e7923bce96371efad218c21c4a06e7c52d366f38a07087e67cf59faa33c"
+    },
+    {
+      "path": "assets/pastel/characters/char_toad_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e3e44c5788723019c342edd6bc4a614f53fec700955dc0289f615aa15a0203c1"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_attack_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "200c2bbb69c45d0f68a9af4d0db2aefbbc527f486be5c49b7068ff445946602f"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_attack_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3fc11f461616d4dabd6ecac5f3ff9b8aa212d3ffa9e5e02d7acd007e75220028"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_attack_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "84c1238669e024ee6bd8aacc8d972141a0dc3bf7556e6b1d8d278b0b7ee6579e"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_attack_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "82b8bfb3b1e3c41560890e333d33fa8f4cf33baee9d2c521923c514cf2ed650c"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_idle_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "65908d060da9c56892b15cad0456bbfbf9d0dad19d243f2b11736161dd452fd8"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_idle_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2ec64cac0f78e8ea74d3478bb02f67b76de2fb93ccc8ea7dfb10956bf4c09b21"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_idle_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "cd8187647bedf9b2b08f84bdf2e787f3d5647d81c21a4cda14de5263b0ce7c37"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_idle_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "13b2a1dabed43d4c4589943533efbe7c8cc05c25b39f34fc5a59ff2321c5f2e2"
+    },
+    {
+      "path": "assets/pastel/potions/holy_water.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f111ef99abf931a433349a76e6b487d1a6f3381206f8ae079dd708d42e161059"
+    },
+    {
+      "path": "assets/pastel/potions/poison_vial.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2dd2719075b560aaeb206026934c456111090075a9e9a72ecf5f071615ad32b6"
+    },
+    {
+      "path": "assets/pastel/potions/serum.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f2f28d9b2c7ff3af5ab8568d4fc8c0b19f259f31851955354c0539e57dd3698f"
+    },
+    {
+      "path": "assets/pastel/potions/smoke_shield.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "3ed7c26c2c3196179e0e1a9544932066857c4a958a2a7023933fb80a3b354038"
+    },
+    {
+      "path": "assets/pastel/potions/strength_tonic.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "41518e569c66a567b485b18f70c509837cadeeea013671b29f0fdb42853f9215"
+    },
+    {
+      "path": "assets/pastel/potions/weak_brew.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c4368a6e8a39af554536c4b9ea4da23f2564cc0f754878dc36733c107c5c08ab"
+    },
+    {
+      "path": "assets/pastel/relics/bandolier.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c36342bc81d9cb41a1a1b3c45ef660d148e59d1d1d22e61878218f386b38622d"
+    },
+    {
+      "path": "assets/pastel/relics/bargain.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "742820ff407d3ed4c198eab5eaaa5968743700b41753f21088e278e7266cfb19"
+    },
+    {
+      "path": "assets/pastel/relics/brave_heart.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "bd51172dc4457f22153cba1810d13cc0c4ab89b1c26a055c124166ed24f9cdac"
+    },
+    {
+      "path": "assets/pastel/relics/coin_pouch.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f68f4a79a805afafc7487b9942d35d1bb820dc05684c7b28b205a9d110451d06"
+    },
+    {
+      "path": "assets/pastel/relics/down_feather.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ac4deb4354d51194948ca44091e745fe200ce9ba6fa7210173e70419c9666030"
+    },
+    {
+      "path": "assets/pastel/relics/frog_crown.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "3474347381a11f3b52348bd6beb5728b363821d8ae42af4c461c0c049e0b5304"
+    },
+    {
+      "path": "assets/pastel/relics/hawk_eye.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "b69cbffa43e29821b7ebf4fb061631813473bf7479d79742e529dce4537bbda9"
+    },
+    {
+      "path": "assets/pastel/relics/lucky_spur.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "20227ff98b6d6acd103d9483cbc8b010ad9f57a6258896bec6dca406bc9d6a71"
+    },
+    {
+      "path": "assets/pastel/relics/meteor_spear.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "159b6f384ba1182fa347e9697d02de333c1b2e0769cb34ce846a49b6b54c2970"
+    },
+    {
+      "path": "assets/pastel/relics/rage_pearl.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "7174dfc8e48d5c01d2115e823b0856c84c05ba159a0e60d268c5e7c3de0eb089"
+    },
+    {
+      "path": "assets/pastel/relics/shell_shield.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "bb479ee8f4278f752e892c02e84d7ec06c33c15f510be93b0308575b8dc5a09d"
+    },
+    {
+      "path": "assets/pastel/relics/steel_beak.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "0c9510265b9f578dc83cb84dc1e85e5c9360bcdf821b1f4b5a6dcd169440479e"
+    },
+    {
+      "path": "assets/pastel/relics/thorn_shield.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "989a0fbf4b657d7d3739b18580a549fea13a0ce61fc699e3e2aa55882d7343f9"
+    },
+    {
+      "path": "assets/pastel/relics/venom_vial.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "a34e586c02dcb358d87805693cd66088367606e01ea27bf877c0c76b9f3ed618"
+    },
+    {
+      "path": "assets/pastel/relics/war_drum.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c11ca2cb94fadf4fde65fea34a528f5c6939d60829b8d0bce03f9be61538d162"
+    },
+    {
+      "path": "assets/pastel/relics/warm_egg.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f13a88ed2dd5b040af10da29a1aade4e7d2df0ebddb0792fea67cae119787b96"
+    },
+    {
+      "path": "assets/pastel/relics/water_jar.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "1ffdf46fbfb01471b50c04f69d1ca2aab8f9a5e843435e03476e63f001bd5570"
+    },
+    {
+      "path": "assets/pastel/vfx/feather.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2d76a3e5713c77d357c81909bf87eea8ba2c0cab54ed85b34223cc4d2a72d4ad"
+    },
+    {
+      "path": "assets/pastel/vfx/kunai.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "0cd6586e5cba8498d5de3603bcb38bc1fe68d630cea609c9e93b0d9db648f5b1"
+    },
+    {
+      "path": "assets/pastel/vfx/spear.png",
       "size": [
         512,
         512
@@ -395,12 +1515,62 @@
       "sha256": "176a5d18cb4c986930e0c1329659e52021f18e96bd3f274d1c8c8b9e213f7160"
     },
     {
-      "path": "assets\\pastel\\vfx\\spear_impact.png",
+      "path": "assets/pastel/vfx/spear_impact.png",
       "size": [
         512,
         512
       ],
       "sha256": "09895d7e5a0259185ca3bd97ac425be7fa3c7f6742d12d422dc5667bf7d267ef"
+    }
+  ],
+  "audio_files": [
+    {
+      "path": "assets/audio/block.wav",
+      "sha256": "0357bcc4fd74ba22d339d899956d1a4dad2e006b43a41b7d4c27325058d9fd87"
+    },
+    {
+      "path": "assets/audio/boss.wav",
+      "sha256": "43308f5ba9d546a15e8df070c3aec243adec6be5ba791d4a722db5dd513cf110"
+    },
+    {
+      "path": "assets/audio/defeat.wav",
+      "sha256": "28a16ec77eec435bf4787a3a324681f53c3f9eed9c8b01fc7f457ffd6b83973c"
+    },
+    {
+      "path": "assets/audio/heal.wav",
+      "sha256": "e48be23ab048c04c57e05ffe4eb602b54a4daf098db9340e7a99db4b603884f9"
+    },
+    {
+      "path": "assets/audio/hit.wav",
+      "sha256": "3e73b105ec007f1baec9d1f57c5c261ac962a93a4178f70380695dbc41a0e5c8"
+    },
+    {
+      "path": "assets/audio/music_0.wav",
+      "sha256": "dd233bd916c037fffffa309ae0d21594c1e31df4f0fc50808154d663f5ead6d1"
+    },
+    {
+      "path": "assets/audio/music_1.wav",
+      "sha256": "76cae0a551c6a3eabfb0e8c9fa1e277a9eabf922641dc8493e2570224d7c3814"
+    },
+    {
+      "path": "assets/audio/music_2.wav",
+      "sha256": "491c509789abdddce48161f7b8037212aba049c7ba5fe885a88ba78a76ea5528"
+    },
+    {
+      "path": "assets/audio/reward.wav",
+      "sha256": "c27c3e9b863360c4201f7dd2c7bdc1ebe0d25e4a96cdc032413d8ba6be7de3ea"
+    },
+    {
+      "path": "assets/audio/select.wav",
+      "sha256": "dd77b0c0094b882e11582364766779a5602dd68b41bc5c002e3f83fe8ef4bbf6"
+    },
+    {
+      "path": "assets/audio/ultimate.wav",
+      "sha256": "eeb0c98a958052beeac416236e657354a068c529176de19d7172c1904c00c212"
+    },
+    {
+      "path": "assets/audio/victory.wav",
+      "sha256": "5bb3c3233e1b0c8c59ada0f1366ce1021826b982130e13295a7175682d11f106"
     }
   ]
 }

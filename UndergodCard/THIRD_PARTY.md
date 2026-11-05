@@ -7,6 +7,6 @@
 
   zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
 
-- **Asset runtime**: 50 PNG được tạo bằng công cụ sinh ảnh và hậu xử lý alpha/căn frame. Nhân vật gà dựa theo ảnh tham khảo Shin cung cấp. Manifest kích thước/SHA-256 ở `assets/manifest.json`; quy cách ở `assets/pastel/STYLE.md`. Ảnh gốc, prompt và công cụ xuất ảnh được lưu riêng tại máy phát triển.
+- **Asset runtime**: 190 PNG được tạo bằng công cụ sinh ảnh và hậu xử lý alpha/căn frame. Nhân vật gà dựa theo ảnh tham khảo Shin cung cấp. Manifest kích thước/SHA-256 ở `assets/manifest.json`; quy cách ở `assets/pastel/STYLE.md`. Provenance ở `assets/provenance.json`; raw/QC giữ ngoài Git. Nhạc ba hồi và chín cue WAV được tổng hợp bằng `tools/synth_audio.py`, không dùng bản thu bên ngoài.
 
 Gói EXE chép các thông báo và giấy phép trên vào thư mục `licenses/`. Repo không kèm mã nguồn hoặc tài nguyên trích xuất từ Slay the Spire.

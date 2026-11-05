@@ -1,7 +1,7 @@
 CXX ?= g++
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wno-unused-parameter -Wno-misleading-indentation -Iinclude
 OUT := bin/linux/core_checks
-SRCS := src/game.cpp src/quest_core.cpp src/quest_data.cpp src/quest_run.cpp src/quest_save.cpp tests/core_checks.cpp tests/run_checks.cpp
+SRCS := src/game.cpp src/quest_core.cpp src/quest_battle.cpp src/quest_world.cpp src/quest_storage.cpp src/quest_meta.cpp src/quest_data.cpp src/quest_run.cpp src/quest_save.cpp tests/core_checks.cpp tests/run_checks.cpp tests/world_checks.cpp
 
 .PHONY: core
 core: $(OUT)

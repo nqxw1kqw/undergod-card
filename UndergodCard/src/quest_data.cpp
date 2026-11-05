@@ -27,14 +27,25 @@ Effect ParseEffect(const Json& j){
     else if(op=="draw")effect.op=EffectOp::Draw;
     else if(op=="energy")effect.op=EffectOp::Energy;
     else if(op=="rage")effect.op=EffectOp::Rage;
+    else if(op=="retain")effect.op=EffectOp::Retain;
+    else if(op=="thorns")effect.op=EffectOp::Thorns;
+    else if(op=="revive")effect.op=EffectOp::Revive;
+    else if(op=="double_attack")effect.op=EffectOp::DoubleAttack;
+    else if(op=="end_block")effect.op=EffectOp::EndBlock;
+    else if(op=="ult_discount")effect.op=EffectOp::UltDiscount;
+    else if(op=="temp_strength")effect.op=EffectOp::TempStrength;
+    else if(op=="next_energy")effect.op=EffectOp::NextEnergy;
     else throw std::runtime_error("Unknown effect: "+op);
     effect.amount=j.at("amount");
     effect.times=j.value("times",1);
     const std::string target=j.value("target",effect.op==EffectOp::Damage||effect.op==EffectOp::Apply?"enemy":"self");
     if(target=="enemy")effect.target=EffectTarget::Enemy;
     else if(target=="self")effect.target=EffectTarget::Self;
+    else if(target=="all")effect.target=EffectTarget::AllEnemies;
+    else if(target=="random")effect.target=EffectTarget::RandomEnemy;
     else throw std::runtime_error("Unknown effect target");
     if(effect.op==EffectOp::Apply)effect.status=ParseStatus(j.at("status"));
+    effect.pierce=j.value("pierce",false);effect.ranged=j.value("ranged",false);
     if(effect.amount<0||effect.times<1||effect.times>8)throw std::runtime_error("Invalid effect magnitude");
     return effect;
 }
@@ -42,11 +53,12 @@ void Summarize(CardDef& card){
     card.damage=card.block=card.heal=card.poison=card.strength=card.weak=card.vulnerable=card.cards_drawn=card.energy_gain=0;
     for(const auto& effect:card.effects){
         const int total=effect.amount*std::max(1,effect.times);
-        if(effect.op==EffectOp::Damage&&effect.target==EffectTarget::Enemy)card.damage+=total;
+        if(effect.op==EffectOp::Damage&&effect.target!=EffectTarget::Self)card.damage+=total;
         else if(effect.op==EffectOp::Block&&effect.target==EffectTarget::Self)card.block+=total;
         else if(effect.op==EffectOp::Heal&&effect.target==EffectTarget::Self)card.heal+=total;
         else if(effect.op==EffectOp::Apply&&effect.target==EffectTarget::Enemy&&effect.status==StatusId::Poison)card.poison+=total;
         else if(effect.op==EffectOp::Apply&&effect.target==EffectTarget::Self&&effect.status==StatusId::Strength)card.strength+=total;
+        else if(effect.op==EffectOp::TempStrength)card.strength+=total;
         else if(effect.op==EffectOp::Apply&&effect.target==EffectTarget::Enemy&&effect.status==StatusId::Weak)card.weak+=total;
         else if(effect.op==EffectOp::Apply&&effect.target==EffectTarget::Enemy&&effect.status==StatusId::Vulnerable)card.vulnerable+=total;
         else if(effect.op==EffectOp::Draw)card.cards_drawn+=total;
@@ -61,12 +73,20 @@ std::vector<IntentPattern> ParsePatterns(const Json& list){
         else if(kind=="defend"||kind=="block")pattern.kind=IntentKind::Defend;
         else if(kind=="buff")pattern.kind=IntentKind::Buff;
         else if(kind=="debuff")pattern.kind=IntentKind::Debuff;
+        else if(kind=="multi")pattern.kind=IntentKind::MultiAttack;
+        else if(kind=="summon")pattern.kind=IntentKind::Summon;
+        else if(kind=="charge")pattern.kind=IntentKind::Charge;
+        else if(kind=="curse")pattern.kind=IntentKind::Curse;
+        else if(kind=="mimic")pattern.kind=IntentKind::Mimic;
+        else if(kind=="drain")pattern.kind=IntentKind::Drain;
         else throw std::runtime_error("Unknown intent kind: "+kind);
         pattern.min_damage=j.value("minDamage",0);
         pattern.max_damage=j.value("maxDamage",pattern.min_damage);
         pattern.block=j.value("block",0);
         pattern.weight=j.value("weight",1);
         pattern.status_amount=j.value("amount",0);
+        pattern.hits=j.value("hits",1);pattern.charge_turns=j.value("chargeTurns",0);pattern.summon_id=j.value("summon","");
+        if(pattern.hits<1||pattern.hits>8||pattern.charge_turns<0||pattern.charge_turns>3)throw std::runtime_error("Invalid intent repetition");
         if(j.contains("status"))pattern.status=ParseStatus(j.at("status"));
         if(pattern.weight<1||pattern.min_damage<0||pattern.max_damage<pattern.min_damage||pattern.block<0||pattern.status_amount<0)throw std::runtime_error("Invalid intent pattern");
         if(pattern.kind==IntentKind::Attack&&pattern.max_damage<1)throw std::runtime_error("Attack pattern needs damage");
@@ -87,6 +107,9 @@ PhaseDef ParsePhase(const Json& j){
     phase.opening_attack=j.value("openingAttack",true);
     phase.max_guards=j.value("maxConsecutiveGuards",1);
     phase.strength=j.value("strength",0);
+    phase.threshold=j.value("threshold",0);phase.cleanse=j.value("cleanse",false);phase.lock_card=j.value("lockCard",false);
+    phase.summon_id=j.value("summon","");phase.summon_count=j.value("summonCount",0);phase.constrict=j.value("constrict",0);phase.doom=j.value("doom",0);
+    if(phase.threshold<0||phase.threshold>=100||phase.summon_count<0||phase.summon_count>4||phase.constrict<0||phase.constrict>10||phase.doom<0||phase.doom>10)throw std::runtime_error("Invalid boss mechanic");
     if(phase.name.empty()||phase.hp<1||phase.max_guards<0||phase.strength<0)throw std::runtime_error("Invalid enemy phase");
     if(j.contains("patterns"))phase.patterns=ParsePatterns(j.at("patterns"));
     else ReadLegacyStats(j,phase.min_damage,phase.max_damage,phase.block,phase.attack_chance);
@@ -97,10 +120,11 @@ EnemyDef ParseEnemy(const Json& j){
     enemy.id=j.at("id");enemy.name=j.at("name");enemy.role=j.value("role","combat");
     enemy.hp=j.at("maxHp");
     enemy.min_floor=j.value("minFloor",0);
+    enemy.sprite=j.value("sprite","frog");enemy.mechanic=j.value("mechanic","");enemy.airborne=j.value("airborne",false);
     enemy.opening_attack=j.value("openingAttack",true);
     enemy.max_guards=j.value("maxConsecutiveGuards",1);
     if(!Ident(enemy.id)||enemy.name.empty()||enemy.hp<1||enemy.max_guards<0||enemy.min_floor<0)throw std::runtime_error("Invalid enemy definition");
-    if(enemy.role!="combat"&&enemy.role!="elite"&&enemy.role!="boss")throw std::runtime_error("Invalid enemy role");
+    if(enemy.role!="combat"&&enemy.role!="elite"&&enemy.role!="boss"&&enemy.role!="summon")throw std::runtime_error("Invalid enemy role");
     if(j.contains("patterns"))enemy.patterns=ParsePatterns(j.at("patterns"));
     else ReadLegacyStats(j,enemy.min_damage,enemy.max_damage,enemy.block,enemy.attack_chance);
     if(j.contains("phases"))for(const auto& phase:j.at("phases"))enemy.phases.push_back(ParsePhase(phase));
@@ -109,16 +133,32 @@ EnemyDef ParseEnemy(const Json& j){
 std::vector<Effect> EffectList(const Json& j,const char* key){std::vector<Effect> effects;if(!j.contains(key))return effects;for(const auto& effect:j.at(key))effects.push_back(ParseEffect(effect));return effects;}
 std::string Describe(const CardDef& card){
     std::string text;
-    if(card.damage)text+="Gây "+std::to_string(card.damage)+" sát thương. ";
-    if(card.block)text+="Nhận "+std::to_string(card.block)+" giáp. ";
-    if(card.heal)text+="Hồi "+std::to_string(card.heal)+" HP. ";
-    if(card.poison)text+="Gây "+std::to_string(card.poison)+" Độc. ";
-    if(card.weak)text+="Gây "+std::to_string(card.weak)+" Suy Yếu. ";
-    if(card.vulnerable)text+="Gây "+std::to_string(card.vulnerable)+" Dễ Vỡ. ";
-    if(card.strength)text+="Nhận "+std::to_string(card.strength)+" Sức Mạnh. ";
-    if(card.cards_drawn)text+="Rút "+std::to_string(card.cards_drawn)+" lá. ";
-    if(card.energy_gain)text+="Nhận "+std::to_string(card.energy_gain)+" năng lượng. ";
-    if(text.empty())text="Đã cường hóa.";
+    for(const auto& effect:card.effects){
+        const auto amount=std::to_string(effect.amount);std::string line;
+        switch(effect.op){
+        case EffectOp::Damage:line="Gây "+amount+" sát thương";if(effect.times>1)line+=" ×"+std::to_string(effect.times);if(effect.pierce)line+=", xuyên giáp";break;
+        case EffectOp::Block:line="Nhận "+amount+" giáp";break;
+        case EffectOp::Heal:line="Hồi "+amount+" HP";break;
+        case EffectOp::Apply:line=std::string(effect.target==EffectTarget::Self?"Nhận ":"Gây ")+amount+" "+StatusName(effect.status);break;
+        case EffectOp::Draw:line="Rút "+amount+" lá";break;
+        case EffectOp::Energy:line="Nhận "+amount+" năng lượng";break;
+        case EffectOp::Rage:line="Nhận "+amount+" Nộ";break;
+        case EffectOp::Retain:line="Giữ giáp "+amount+" lượt";break;
+        case EffectOp::Thorns:line="Lượt này, phản "+amount+" sát thương mỗi khi bị đánh";break;
+        case EffectOp::Revive:line="Hồi sinh với 30% HP, một lần trong hành trình";break;
+        case EffectOp::DoubleAttack:line="Mỗi lượt, lá tấn công đầu tiên gây gấp "+amount+" sát thương";break;
+        case EffectOp::EndBlock:line="Cuối mỗi lượt nhận "+amount+" giáp";break;
+        case EffectOp::UltDiscount:line="Tuyệt kỹ cần ít hơn "+amount+" Nộ";break;
+        case EffectOp::TempStrength:line="Nhận "+amount+" Sức Mạnh trong lượt này";break;
+        case EffectOp::NextEnergy:line="Nhận "+amount+" năng lượng lượt sau";break;
+        }
+        if(effect.target==EffectTarget::AllEnemies)line+=" lên mọi địch";
+        else if(effect.target==EffectTarget::RandomEnemy)line+=" lên địch ngẫu nhiên";
+        text+=line+". ";
+    }
+    if(card.return_on_kill)text+="Trở về tay nếu kết liễu. ";
+    if(card.power)text+="Năng lực. ";
+    if(card.exhaust)text+="Tiêu hao.";
     return text;
 }
 CardDef UpgradeOf(CardDef card){
@@ -130,7 +170,9 @@ CardDef UpgradeOf(CardDef card){
         else if(effect.op==EffectOp::Apply){effect.amount+=2;boosted=true;}
     }
     if(!boosted&&card.cost>0){--card.cost;boosted=true;}
-    Summarize(card);card.description=Describe(card);return card;
+    if(!boosted&&!card.effects.empty())++card.effects.front().amount;
+    Summarize(card);card.description=Describe(card);
+    return card;
 }
 }
 Config LoadConfig(const std::string& directory){
@@ -175,6 +217,7 @@ Config LoadConfig(const std::string& directory){
             EventChoice entry;entry.label=choice.at("label");entry.outcome=choice.at("outcome");
             entry.heal=choice.value("heal",0);entry.damage=choice.value("damage",0);entry.gold=choice.value("gold",0);entry.max_hp=choice.value("maxHp",0);
             entry.card=choice.value("card","");entry.relic=choice.value("relic","");entry.potion=choice.value("potion","");entry.upgrade=choice.value("upgrade",false);
+            entry.action=choice.value("action","");entry.amount=choice.value("amount",0);entry.chance=choice.value("chance",.5);
             if(entry.label.empty()||entry.outcome.empty())throw std::runtime_error("Invalid event choice");
             event.choices.push_back(entry);
         }
@@ -186,6 +229,8 @@ Config LoadConfig(const std::string& directory){
         relic.bonus_damage=j.value("bonusDamage",0);relic.bonus_block=j.value("bonusBlock",0);relic.gold_bonus=j.value("goldBonus",0);
         relic.rest_bonus=j.value("restBonus",0);relic.shop_discount=j.value("shopDiscount",0);relic.max_hp=j.value("maxHp",0);relic.potion_slot=j.value("potionSlot",0);
         relic.combat_start=EffectList(j,"onCombatStart");relic.turn_start=EffectList(j,"onTurnStart");
+        relic.rarity=j.value("rarity","common");relic.rest_percent=j.value("restPercent",0);relic.first_attack=j.value("firstAttack",0);relic.retain_block=j.value("retainBlock",0);
+        relic.energy=j.value("energy",0);relic.draw=j.value("draw",0);relic.start_rage=j.value("startRage",0);relic.ultimate_bonus=j.value("ultimateBonus",0);relic.preview=j.value("preview",false);relic.comet=j.value("comet",false);
         if(!Ident(relic.id)||relic.name.empty()||relic.price<1)throw std::runtime_error("Invalid relic");
         c.relics.push_back(std::move(relic));
     }
@@ -200,6 +245,8 @@ Config LoadConfig(const std::string& directory){
         CardDef card;
         card.id=j.at("id");card.name=j.at("name");card.description=j.at("description");card.cost=j.at("cost");card.copies=j.value("copies",0);
         card.rarity=j.value("rarity",card.copies>0?"starter":"common");
+        card.type=j.value("type","attack");card.class_id=j.value("class","any");card.requires_skill=j.value("requiresSkill","");
+        card.exhaust=j.value("exhaust",false);card.power=j.value("power",false);card.unplayable=j.value("unplayable",false);card.return_on_kill=j.value("returnOnKill",false);card.ranged=j.value("ranged",false);
         if(j.contains("keywords"))for(const auto& word:j.at("keywords"))card.keywords.push_back(word.get<std::string>());
         if(j.contains("effects"))for(const auto& effect:j.at("effects"))card.effects.push_back(ParseEffect(effect));
         else{
@@ -210,16 +257,16 @@ Config LoadConfig(const std::string& directory){
             if(heal>0)card.effects.push_back({EffectOp::Heal,EffectTarget::Self,StatusId::Poison,heal,1});
         }
         Summarize(card);
-        const bool useful=card.damage||card.block||card.heal||card.poison||card.strength||card.weak||card.vulnerable||card.cards_drawn||card.energy_gain;
+        const bool useful=!card.effects.empty()||card.rarity=="curse";
         if(!Ident(card.id)||!ids.insert(card.id).second||card.name.empty()||card.cost<0||card.cost>10||card.copies<0||!useful)throw std::runtime_error("Invalid card definition");
-        if(card.rarity!="starter"&&card.rarity!="common"&&card.rarity!="uncommon"&&card.rarity!="rare")throw std::runtime_error("Invalid card rarity");
+        if(card.rarity!="starter"&&card.rarity!="common"&&card.rarity!="uncommon"&&card.rarity!="rare"&&card.rarity!="legendary"&&card.rarity!="curse")throw std::runtime_error("Invalid card rarity");
         if(card.keywords.size()>4)throw std::runtime_error("Too many keywords");
         for(const auto& word:card.keywords)if(word.empty())throw std::runtime_error("Empty keyword");
         if(card.rarity!="starter"&&card.copies==0)++rewardable;
         copies+=card.copies;c.cards.push_back(std::move(card));
     }
     const int base_count=int(c.cards.size());
-    for(int i=0;i<base_count;++i){CardDef upgraded=UpgradeOf(c.cards[i]);c.cards[i].upgrade_id=upgraded.id;c.cards.push_back(std::move(upgraded));}
+    for(int i=0;i<base_count;++i){if(c.cards[i].rarity=="curse")continue;CardDef upgraded=UpgradeOf(c.cards[i]);c.cards[i].upgrade_id=upgraded.id;c.cards.push_back(std::move(upgraded));}
     auto has_card=[&](const std::string& id){for(const auto& card:c.cards)if(card.id==id)return true;return false;};
     auto has_relic=[&](const std::string& id){for(const auto& relic:c.relics)if(relic.id==id)return true;return false;};
     auto has_potion=[&](const std::string& id){for(const auto& potion:c.potions)if(potion.id==id)return true;return false;};
@@ -229,6 +276,7 @@ Config LoadConfig(const std::string& directory){
         if(!choice.potion.empty()&&!has_potion(choice.potion))throw std::runtime_error("Event potion was not defined: "+choice.potion);
     }
     if(copies<1||copies>1000||rewardable<c.reward_choices||c.reward_choices<1||c.reward_choices>3||c.balance.player_hp<1||c.enemy.hp<1||c.balance.draw<1||c.balance.draw>10||c.balance.energy<1||c.balance.rage_max<1||c.balance.rage_attack<0||c.balance.rage_block<0||c.balance.ultimate_damage<1)throw std::runtime_error("Invalid balance configuration");
+    LoadWorld(c,directory);
     return c;
 }
 Timeline LoadTimeline(const std::string& file){

@@ -22,5 +22,7 @@ Copy-Item -LiteralPath (Join-Path $nativeRoot 'docs/PLAYER_GUIDE.txt') -Destinat
 $archive=Join-Path $nativeRoot 'release/UndergodCard-DxLib-Windows-x64.zip'
 $files=@((Join-Path $bundle 'UndergodCard.exe'),(Join-Path $bundle 'assets'),(Join-Path $bundle 'data'),(Join-Path $bundle 'licenses'),(Join-Path $bundle 'README.txt'))
 Compress-Archive -LiteralPath $files -DestinationPath $archive -Force
+$checksum=(Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()+'  '+[IO.Path]::GetFileName($archive)+[Environment]::NewLine
+[IO.File]::WriteAllText($archive+'.sha256',$checksum,[Text.UTF8Encoding]::new($false))
 Write-Output $bundle
 Write-Output $archive

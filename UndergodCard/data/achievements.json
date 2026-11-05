@@ -1,0 +1,122 @@
+[
+  {
+    "id": "first_boss",
+    "name": "Ngôi Sao Đầu Tiên",
+    "description": "Hạ một trùm.",
+    "metric": "bosses",
+    "threshold": 1,
+    "feathers": 5
+  },
+  {
+    "id": "campaign",
+    "name": "Bình Minh Trở Lại",
+    "description": "Hoàn tất cả ba hồi.",
+    "metric": "wins",
+    "threshold": 1,
+    "feathers": 15
+  },
+  {
+    "id": "warrior_win",
+    "name": "Chiến Binh Bất Khuất",
+    "description": "Thắng chiến dịch với Gà Chiến Binh.",
+    "metric": "win_chick",
+    "threshold": 1,
+    "feathers": 8
+  },
+  {
+    "id": "mage_win",
+    "name": "Bão Lông",
+    "description": "Thắng chiến dịch với Gà Pháp Sư.",
+    "metric": "win_mage",
+    "threshold": 1,
+    "feathers": 8
+  },
+  {
+    "id": "ninja_win",
+    "name": "Ảnh Qua Đêm",
+    "description": "Thắng chiến dịch với Gà Ninja.",
+    "metric": "win_ninja",
+    "threshold": 1,
+    "feathers": 8
+  },
+  {
+    "id": "poison",
+    "name": "Màu Xanh Nguy Hiểm",
+    "description": "Tích lũy 100 Độc gây lên địch.",
+    "metric": "poison",
+    "threshold": 100,
+    "feathers": 5
+  },
+  {
+    "id": "meteor",
+    "name": "Sao Không Tắt",
+    "description": "Thi triển tổng cộng 10 tuyệt kỹ.",
+    "metric": "ultimates",
+    "threshold": 10,
+    "feathers": 5
+  },
+  {
+    "id": "revival",
+    "name": "Từ Tro Tàn",
+    "description": "Hồi sinh bằng Tái Sinh Phượng.",
+    "metric": "revives",
+    "threshold": 1,
+    "feathers": 8
+  },
+  {
+    "id": "challenge1",
+    "name": "Bước Vào Thử Thách",
+    "description": "Thắng Thử Thách 1.",
+    "metric": "challenge",
+    "threshold": 1,
+    "feathers": 8
+  },
+  {
+    "id": "challenge5",
+    "name": "Vượt Giông",
+    "description": "Thắng Thử Thách 5.",
+    "metric": "challenge",
+    "threshold": 5,
+    "feathers": 15
+  },
+  {
+    "id": "challenge10",
+    "name": "Chạm Đỉnh",
+    "description": "Thắng Thử Thách 10.",
+    "metric": "challenge",
+    "threshold": 10,
+    "feathers": 25
+  },
+  {
+    "id": "all_bosses",
+    "name": "Biết Mọi Kẻ Thù",
+    "description": "Hạ đủ năm loại trùm qua các hành trình.",
+    "metric": "unique_bosses",
+    "threshold": 5,
+    "feathers": 15
+  },
+  {
+    "id": "damage",
+    "name": "Mũi Giáo Sắc",
+    "description": "Gây tổng cộng 1.000 sát thương.",
+    "metric": "damage",
+    "threshold": 1000,
+    "feathers": 5
+  },
+  {
+    "id": "collector",
+    "name": "Kho Báu",
+    "description": "Thu thập 10 di vật khác nhau.",
+    "metric": "unique_relics",
+    "threshold": 10,
+    "feathers": 8
+  },
+  {
+    "id": "skill",
+    "name": "Học Một Điều Mới",
+    "description": "Mở một nút kỹ năng.",
+    "metric": "skills",
+    "threshold": 1,
+    "feathers": 3
+  }
+]

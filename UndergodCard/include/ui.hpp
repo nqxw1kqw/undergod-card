@@ -14,12 +14,14 @@ class Ui {
     void Button(Rect r,const std::string& text,bool active,int mx,int my)const;
     void Wrapped(Rect r,const std::string& text,unsigned color,int font=-1)const;
     void World(const Game& game);
-    void Actor(const Game& game,bool enemy)const;
+    void Actor(const Game& game,bool enemy,int target=0)const;
+    bool DrawExtensions(const Game& game,int mx,int my);
+    void DrawTargets(const Game& game,int mx,int my)const;
     void Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const;
     int Image(const std::string& key)const;
 public:
-    static constexpr int Width=1440,Height=960,ExpectedAssets=50;
-    int loaded=0;
+    static constexpr int Width=1440,Height=960;
+    int loaded=0,expected=0;
     bool Init(const Config& config);
     void Shutdown();
     void Draw(const Game& game,int mx,int my);
@@ -28,6 +30,8 @@ public:
     void ResetView(){map_node_=screen_node_=-999;deck_page_=map_scroll_=0;}
     void ChooseUpgrade(Game& game,int local_index){game.UpgradeCard(deck_page_*8+local_index);}
     int DeckPage()const{return deck_page_;}
+    void ChooseSelection(Game& game,int index){game.ChooseCard(deck_page_*8+index);}
+    void ChooseTrade(Game& game,int index){game.TradeRelic(deck_page_*8+index);}
     static Rect CardRect(int count,int index){const int w=std::min(176,(1300-12*(count-1))/std::max(1,count)),total=count*w+(count-1)*12;return {(Width-total)/2+index*(w+12),710,w,195};}
     static Rect EndButton(){return {1220,635,170,48};}
     static Rect UltimateButton(){return {1040,635,160,48};}
@@ -51,5 +55,14 @@ public:
     static Rect HealButton(){return {120,180,420,64};}
     static Rect EventChoiceRect(int index){return {320,480+index*110,800,88};}
     static Rect PotionRect(int index){return {36,300+index*54,168,46};}
+    static Rect ClassRect(int index){return {120+index*410,190,380,420};}
+    static Rect StartButton(){return {940,800,360,60};}
+    static Rect BackButton(){return {80,840,220,52};}
+    static Rect SkillsButton(){return {120,650,300,55};}
+    static Rect AchievementsButton(){return {440,650,300,55};}
+    static Rect ChallengeMinus(){return {790,650,60,55};}
+    static Rect ChallengePlus(){return {1240,650,60,55};}
+    static Rect SkillRect(int branch,int tier){return {80+branch*430,210+tier*78,400,66};}
+    static Rect AudioButton(){return {1150,42,60,40};}
 };
 }

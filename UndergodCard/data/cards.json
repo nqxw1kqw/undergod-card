@@ -1,21 +1,984 @@
 [
-  {"id":"punch","name":"Chọc Giáo","cost":1,"damage":6,"description":"Gây 6 sát thương.","copies":5,"rarity":"starter","keywords":["Tấn Công"]},
-  {"id":"shield","name":"Khiên Gỗ","cost":1,"block":5,"description":"Nhận 5 giáp.","copies":3,"rarity":"starter","keywords":["Giáp"]},
-  {"id":"heavy","name":"Đâm Mạnh","cost":2,"damage":12,"description":"Gây 12 sát thương.","copies":1,"rarity":"starter","keywords":["Tấn Công"]},
-  {"id":"cookie","name":"Bánh Quy","cost":2,"heal":8,"description":"Hồi 8 HP.","copies":1,"rarity":"starter","keywords":["Hồi Máu"]},
-  {"id":"peck","name":"Mổ Nhanh","cost":0,"rarity":"common","keywords":["Nhanh"],"description":"Gây 3 sát thương.","copies":0,"effects":[{"op":"damage","amount":3,"target":"enemy"}]},
-  {"id":"double_peck","name":"Mổ Kép","cost":1,"rarity":"common","keywords":["Liên Kích"],"description":"Gây 4 sát thương, hai lần.","copies":0,"effects":[{"op":"damage","amount":4,"times":2,"target":"enemy"}]},
-  {"id":"feather","name":"Lông Vàng","cost":1,"rarity":"common","keywords":["Rút"],"description":"Nhận 4 giáp. Rút 1 lá.","copies":0,"effects":[{"op":"block","amount":4,"target":"self"},{"op":"draw","amount":1,"target":"self"}]},
-  {"id":"millet","name":"Hạt Kê","cost":1,"rarity":"common","keywords":["Hồi Máu"],"description":"Hồi 5 HP.","copies":0,"effects":[{"op":"heal","amount":5,"target":"self"}]},
-  {"id":"stomp","name":"Dậm Chân","cost":1,"rarity":"common","keywords":["Dễ Vỡ"],"description":"Gây 5 sát thương. Gây 1 Dễ Vỡ.","copies":0,"effects":[{"op":"damage","amount":5,"target":"enemy"},{"op":"apply","status":"vulnerable","amount":1,"target":"enemy"}]},
-  {"id":"crow","name":"Gáy Vang","cost":1,"rarity":"common","keywords":["Sức Mạnh"],"description":"Nhận 2 Sức Mạnh.","copies":0,"effects":[{"op":"apply","status":"strength","amount":2,"target":"self"}]},
-  {"id":"wing","name":"Cánh Che","cost":1,"rarity":"common","keywords":["Giáp"],"description":"Nhận 7 giáp.","copies":0,"effects":[{"op":"block","amount":7,"target":"self"}]},
-  {"id":"venom_beak","name":"Mỏ Độc","cost":1,"rarity":"uncommon","keywords":["Độc"],"description":"Gây 4 sát thương. Gây 3 Độc.","copies":0,"effects":[{"op":"damage","amount":4,"target":"enemy"},{"op":"apply","status":"poison","amount":3,"target":"enemy"}]},
-  {"id":"snare","name":"Đòn Trói","cost":1,"rarity":"uncommon","keywords":["Suy Yếu"],"description":"Gây 6 sát thương. Gây 2 Suy Yếu.","copies":0,"effects":[{"op":"damage","amount":6,"target":"enemy"},{"op":"apply","status":"weak","amount":2,"target":"enemy"}]},
-  {"id":"feather_rain","name":"Mưa Lông","cost":1,"rarity":"uncommon","keywords":["Liên Kích"],"description":"Gây 2 sát thương, ba lần.","copies":0,"effects":[{"op":"damage","amount":2,"times":3,"target":"enemy"}]},
-  {"id":"guard_up","name":"Thế Thủ","cost":2,"rarity":"uncommon","keywords":["Sức Mạnh"],"description":"Nhận 8 giáp. Nhận 1 Sức Mạnh.","copies":0,"effects":[{"op":"block","amount":8,"target":"self"},{"op":"apply","status":"strength","amount":1,"target":"self"}]},
-  {"id":"grub","name":"Ăn Sâu","cost":1,"rarity":"uncommon","keywords":["Hồi Máu"],"description":"Hồi 6 HP. Rút 1 lá.","copies":0,"effects":[{"op":"heal","amount":6,"target":"self"},{"op":"draw","amount":1,"target":"self"}]},
-  {"id":"storm_spear","name":"Giáo Bão","cost":2,"rarity":"rare","keywords":["Liên Kích"],"description":"Gây 7 sát thương, hai lần.","copies":0,"effects":[{"op":"damage","amount":7,"times":2,"target":"enemy"}]},
-  {"id":"star_tip","name":"Mũi Sao","cost":2,"rarity":"rare","keywords":["Dễ Vỡ"],"description":"Gây 15 sát thương. Gây 2 Dễ Vỡ.","copies":0,"effects":[{"op":"damage","amount":15,"target":"enemy"},{"op":"apply","status":"vulnerable","amount":2,"target":"enemy"}]},
-  {"id":"toxin","name":"Bình Độc","cost":1,"rarity":"rare","keywords":["Độc"],"description":"Gây 5 Độc.","copies":0,"effects":[{"op":"apply","status":"poison","amount":5,"target":"enemy"}]}
+  {
+    "id": "punch",
+    "name": "Chọc Giáo",
+    "cost": 1,
+    "damage": 6,
+    "description": "Gây 6 sát thương.",
+    "copies": 5,
+    "rarity": "starter",
+    "keywords": [
+      "Tấn Công"
+    ],
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "shield",
+    "name": "Khiên Gỗ",
+    "cost": 1,
+    "block": 5,
+    "description": "Nhận 5 giáp.",
+    "copies": 3,
+    "rarity": "starter",
+    "keywords": [
+      "Giáp"
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "heavy",
+    "name": "Đâm Mạnh",
+    "cost": 2,
+    "damage": 12,
+    "description": "Gây 12 sát thương.",
+    "copies": 1,
+    "rarity": "starter",
+    "keywords": [
+      "Tấn Công"
+    ],
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "cookie",
+    "name": "Bánh Quy",
+    "cost": 2,
+    "heal": 8,
+    "description": "Hồi 8 HP. Tiêu hao.",
+    "copies": 1,
+    "rarity": "starter",
+    "keywords": [
+      "Hồi Máu"
+    ],
+    "type": "skill",
+    "ranged": false,
+    "exhaust": true
+  },
+  {
+    "id": "peck",
+    "name": "Mổ Nhanh",
+    "cost": 0,
+    "rarity": "common",
+    "keywords": [
+      "Nhanh"
+    ],
+    "description": "Gây 3 sát thương.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 3,
+        "target": "enemy"
+      }
+    ],
+    "type": "attack",
+    "ranged": false
+  },
+  {
+    "id": "double_peck",
+    "name": "Mổ Liên Hoàn",
+    "cost": 1,
+    "rarity": "common",
+    "keywords": [
+      "Liên Kích"
+    ],
+    "description": "Gây 3 sát thương ×3.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 3,
+        "target": "enemy",
+        "times": 3
+      }
+    ],
+    "type": "attack",
+    "ranged": false
+  },
+  {
+    "id": "feather",
+    "name": "Lông Vàng",
+    "cost": 1,
+    "rarity": "common",
+    "keywords": [
+      "Rút"
+    ],
+    "description": "Nhận 4 giáp. Rút 1 lá.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "block",
+        "amount": 4,
+        "target": "self"
+      },
+      {
+        "op": "draw",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "millet",
+    "name": "Hạt Kê",
+    "cost": 1,
+    "rarity": "common",
+    "keywords": [
+      "Hồi Máu"
+    ],
+    "description": "Hồi 5 HP.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "heal",
+        "amount": 5,
+        "target": "self"
+      }
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "stomp",
+    "name": "Dậm Chân",
+    "cost": 1,
+    "rarity": "common",
+    "keywords": [
+      "Dễ Vỡ"
+    ],
+    "description": "Gây 5 sát thương. Gây 1 Dễ Vỡ.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5,
+        "target": "enemy"
+      },
+      {
+        "op": "apply",
+        "status": "vulnerable",
+        "amount": 1,
+        "target": "enemy"
+      }
+    ],
+    "type": "attack",
+    "ranged": false
+  },
+  {
+    "id": "crow",
+    "name": "Gáy Sáng",
+    "cost": 1,
+    "rarity": "common",
+    "keywords": [
+      "Sức Mạnh"
+    ],
+    "description": "Nhận 2 Sức Mạnh trong lượt này.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "temp_strength",
+        "amount": 2,
+        "target": "self"
+      }
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "wing",
+    "name": "Cánh Che",
+    "cost": 1,
+    "rarity": "common",
+    "keywords": [
+      "Giáp"
+    ],
+    "description": "Nhận 7 giáp.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "block",
+        "amount": 7,
+        "target": "self"
+      }
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "venom_beak",
+    "name": "Cú Mổ Độc",
+    "cost": 1,
+    "rarity": "rare",
+    "keywords": [
+      "Độc"
+    ],
+    "description": "Gây 5 sát thương và 3 Độc.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5,
+        "target": "enemy"
+      },
+      {
+        "op": "apply",
+        "amount": 3,
+        "target": "enemy",
+        "status": "poison"
+      }
+    ],
+    "type": "attack",
+    "ranged": false
+  },
+  {
+    "id": "snare",
+    "name": "Đòn Trói",
+    "cost": 1,
+    "rarity": "rare",
+    "keywords": [
+      "Suy Yếu"
+    ],
+    "description": "Gây 6 sát thương. Gây 2 Suy Yếu.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 6,
+        "target": "enemy"
+      },
+      {
+        "op": "apply",
+        "status": "weak",
+        "amount": 2,
+        "target": "enemy"
+      }
+    ],
+    "type": "attack",
+    "ranged": false
+  },
+  {
+    "id": "feather_rain",
+    "name": "Mưa Lông",
+    "cost": 1,
+    "rarity": "rare",
+    "keywords": [
+      "Liên Kích"
+    ],
+    "description": "Gây 2 sát thương, ba lần.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 2,
+        "times": 3,
+        "target": "enemy"
+      }
+    ],
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "guard_up",
+    "name": "Thế Thủ",
+    "cost": 2,
+    "rarity": "rare",
+    "keywords": [
+      "Sức Mạnh"
+    ],
+    "description": "Nhận 8 giáp. Nhận 1 Sức Mạnh.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "block",
+        "amount": 8,
+        "target": "self"
+      },
+      {
+        "op": "apply",
+        "status": "strength",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "grub",
+    "name": "Ăn Sâu",
+    "cost": 1,
+    "rarity": "rare",
+    "keywords": [
+      "Hồi Máu"
+    ],
+    "description": "Hồi 6 HP. Rút 1 lá.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "heal",
+        "amount": 6,
+        "target": "self"
+      },
+      {
+        "op": "draw",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "storm_spear",
+    "name": "Giáo Bão",
+    "cost": 2,
+    "rarity": "rare",
+    "keywords": [
+      "Liên Kích"
+    ],
+    "description": "Gây 7 sát thương, hai lần.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 7,
+        "times": 2,
+        "target": "enemy"
+      }
+    ],
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "star_tip",
+    "name": "Mũi Sao",
+    "cost": 2,
+    "rarity": "rare",
+    "keywords": [
+      "Dễ Vỡ"
+    ],
+    "description": "Gây 15 sát thương. Gây 2 Dễ Vỡ.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 15,
+        "target": "enemy"
+      },
+      {
+        "op": "apply",
+        "status": "vulnerable",
+        "amount": 2,
+        "target": "enemy"
+      }
+    ],
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "toxin",
+    "name": "Bình Độc",
+    "cost": 1,
+    "rarity": "rare",
+    "keywords": [
+      "Độc"
+    ],
+    "description": "Gây 5 Độc.",
+    "copies": 0,
+    "effects": [
+      {
+        "op": "apply",
+        "status": "poison",
+        "amount": 5,
+        "target": "enemy"
+      }
+    ],
+    "type": "skill",
+    "ranged": false
+  },
+  {
+    "id": "wingbeat",
+    "name": "Vỗ Cánh",
+    "cost": 0,
+    "description": "Rút 1 lá, nhận 5 Nộ.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 1,
+        "target": "self"
+      },
+      {
+        "op": "rage",
+        "amount": 5,
+        "target": "self"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "skill"
+  },
+  {
+    "id": "feather_shield",
+    "name": "Khiên Lông Vũ",
+    "cost": 1,
+    "description": "Nhận 4 giáp. Giữ giáp một lượt.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 4,
+        "target": "self"
+      },
+      {
+        "op": "retain",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "skill"
+  },
+  {
+    "id": "piercing_spear",
+    "name": "Lao Xuyên",
+    "cost": 2,
+    "description": "Gây 10 sát thương xuyên giáp.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 10,
+        "target": "enemy",
+        "pierce": true
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "counter",
+    "name": "Phản Đòn",
+    "cost": 1,
+    "description": "Nhận 6 giáp. Mỗi lần bị đánh trong lượt địch, phản 4.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 6,
+        "target": "self"
+      },
+      {
+        "op": "thorns",
+        "amount": 4,
+        "target": "self"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill"
+  },
+  {
+    "id": "golden_egg",
+    "name": "Trứng Vàng",
+    "cost": 1,
+    "description": "Nhận 1 năng lượng lượt sau. Tiêu hao.",
+    "effects": [
+      {
+        "op": "next_energy",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill",
+    "exhaust": true
+  },
+  {
+    "id": "whirlwind",
+    "name": "Gió Xoáy",
+    "cost": 2,
+    "description": "Gây 8 sát thương lên mọi địch.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 8,
+        "target": "all"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "guard_stance",
+    "name": "Thủ Thế",
+    "cost": 2,
+    "description": "Nhận 12 giáp và rút 1 lá.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 12,
+        "target": "self"
+      },
+      {
+        "op": "draw",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill"
+  },
+  {
+    "id": "rage_fire",
+    "name": "Nộ Hỏa",
+    "cost": 1,
+    "description": "Nhận 25 Nộ và 1 Suy Yếu.",
+    "effects": [
+      {
+        "op": "rage",
+        "amount": 25,
+        "target": "self"
+      },
+      {
+        "op": "apply",
+        "amount": 1,
+        "target": "self",
+        "status": "weak"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill"
+  },
+  {
+    "id": "mark_prey",
+    "name": "Đánh Dấu Mồi",
+    "cost": 1,
+    "description": "Gây 2 Dễ Vỡ cho mục tiêu.",
+    "effects": [
+      {
+        "op": "apply",
+        "amount": 2,
+        "target": "enemy",
+        "status": "vulnerable"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill"
+  },
+  {
+    "id": "returning_spear",
+    "name": "Lao Hồi Mã",
+    "cost": 1,
+    "description": "Gây 7 sát thương. Trở về tay nếu kết liễu.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 7,
+        "target": "enemy"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "attack",
+    "ranged": true,
+    "returnOnKill": true
+  },
+  {
+    "id": "holy_spear",
+    "name": "Thánh Giáo",
+    "cost": 3,
+    "description": "Mỗi lượt, lá tấn công đầu tiên gây gấp đôi sát thương.",
+    "effects": [
+      {
+        "op": "double_attack",
+        "amount": 2,
+        "target": "self"
+      }
+    ],
+    "rarity": "legendary",
+    "copies": 0,
+    "type": "skill",
+    "power": true,
+    "requiresSkill": "chick_spear_5",
+    "class": "chick"
+  },
+  {
+    "id": "fortress",
+    "name": "Pháo Đài Gà",
+    "cost": 2,
+    "description": "Cuối mỗi lượt nhận 4 giáp.",
+    "effects": [
+      {
+        "op": "end_block",
+        "amount": 4,
+        "target": "self"
+      }
+    ],
+    "rarity": "legendary",
+    "copies": 0,
+    "type": "skill",
+    "power": true,
+    "requiresSkill": "chick_shield_5",
+    "class": "chick"
+  },
+  {
+    "id": "meteor_rain",
+    "name": "Mưa Sao Băng",
+    "cost": 3,
+    "description": "Gây 4 sát thương ×6 lên địch ngẫu nhiên.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 4,
+        "target": "random",
+        "times": 6
+      }
+    ],
+    "rarity": "legendary",
+    "copies": 0,
+    "type": "attack",
+    "ranged": true
+  },
+  {
+    "id": "phoenix",
+    "name": "Tái Sinh Phượng",
+    "cost": 2,
+    "description": "Lần chết đầu trong run, hồi sinh với 30% HP. Tiêu hao.",
+    "effects": [
+      {
+        "op": "revive",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "rarity": "legendary",
+    "copies": 0,
+    "type": "skill",
+    "exhaust": true
+  },
+  {
+    "id": "resonance",
+    "name": "Cộng Hưởng Sao",
+    "cost": 1,
+    "description": "Tuyệt kỹ cần ít hơn 20 Nộ trong trận này.",
+    "effects": [
+      {
+        "op": "ult_discount",
+        "amount": 20,
+        "target": "self"
+      }
+    ],
+    "rarity": "legendary",
+    "copies": 0,
+    "type": "skill",
+    "power": true,
+    "requiresSkill": "chick_star_5",
+    "class": "chick"
+  },
+  {
+    "id": "mud",
+    "name": "Bùn Lầy",
+    "cost": 0,
+    "description": "Không chơi được. Chiếm một chỗ trên tay.",
+    "effects": [],
+    "rarity": "curse",
+    "copies": 0,
+    "type": "skill",
+    "unplayable": true
+  },
+  {
+    "id": "fatigue",
+    "name": "Mệt Mỏi",
+    "cost": 1,
+    "description": "Không có hiệu ứng. Tiêu hao.",
+    "effects": [],
+    "rarity": "curse",
+    "copies": 0,
+    "type": "skill",
+    "exhaust": true
+  },
+  {
+    "id": "spellbolt",
+    "name": "Tia Phép",
+    "cost": 1,
+    "description": "Gây 7 sát thương phép.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 7,
+        "target": "enemy"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "attack",
+    "class": "mage",
+    "ranged": true
+  },
+  {
+    "id": "venom_orb",
+    "name": "Cầu Độc",
+    "cost": 1,
+    "description": "Gây 4 Độc cho mục tiêu.",
+    "effects": [
+      {
+        "op": "apply",
+        "amount": 4,
+        "target": "enemy",
+        "status": "poison"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "skill",
+    "class": "mage",
+    "ranged": true
+  },
+  {
+    "id": "mana_barrier",
+    "name": "Màn Mana",
+    "cost": 0,
+    "description": "Nhận 4 giáp.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 4,
+        "target": "self"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "skill",
+    "class": "mage"
+  },
+  {
+    "id": "mana_focus",
+    "name": "Tụ Mana",
+    "cost": 0,
+    "description": "Nhận 1 năng lượng. Tiêu hao.",
+    "effects": [
+      {
+        "op": "energy",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "skill",
+    "class": "mage",
+    "exhaust": true
+  },
+  {
+    "id": "arcane_storm",
+    "name": "Bão Phép",
+    "cost": 2,
+    "description": "Gây 5 sát thương và 2 Độc lên mọi địch.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5,
+        "target": "all"
+      },
+      {
+        "op": "apply",
+        "amount": 2,
+        "target": "all",
+        "status": "poison"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "attack",
+    "class": "mage",
+    "ranged": true
+  },
+  {
+    "id": "star_orbit",
+    "name": "Quỹ Đạo Sao",
+    "cost": 1,
+    "description": "Rút 2 lá và nhận 10 Nộ.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 2,
+        "target": "self"
+      },
+      {
+        "op": "rage",
+        "amount": 10,
+        "target": "self"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill",
+    "class": "mage"
+  },
+  {
+    "id": "dagger",
+    "name": "Dao Lông",
+    "cost": 0,
+    "description": "Gây 3 sát thương.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 3,
+        "target": "enemy"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "attack",
+    "class": "ninja"
+  },
+  {
+    "id": "smoke_step",
+    "name": "Bước Khói",
+    "cost": 1,
+    "description": "Nhận 7 giáp và rút 1 lá.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 7,
+        "target": "self"
+      },
+      {
+        "op": "draw",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "skill",
+    "class": "ninja"
+  },
+  {
+    "id": "shadow_dance",
+    "name": "Vũ Ảnh",
+    "cost": 0,
+    "description": "Rút 2 lá. Tiêu hao.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 2,
+        "target": "self"
+      }
+    ],
+    "rarity": "common",
+    "copies": 0,
+    "type": "skill",
+    "class": "ninja",
+    "exhaust": true
+  },
+  {
+    "id": "blade_rain",
+    "name": "Mưa Dao",
+    "cost": 1,
+    "description": "Gây 3 sát thương ×3 lên địch ngẫu nhiên.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 3,
+        "target": "random",
+        "times": 3
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "attack",
+    "class": "ninja",
+    "ranged": true
+  },
+  {
+    "id": "assassinate",
+    "name": "Ám Sát",
+    "cost": 2,
+    "description": "Gây 14 sát thương xuyên giáp.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 14,
+        "target": "enemy",
+        "pierce": true
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "attack",
+    "class": "ninja"
+  },
+  {
+    "id": "phantom_guard",
+    "name": "Ảnh Khiên",
+    "cost": 1,
+    "description": "Nhận 5 giáp và giữ giáp một lượt.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 5,
+        "target": "self"
+      },
+      {
+        "op": "retain",
+        "amount": 1,
+        "target": "self"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill",
+    "class": "ninja"
+  },
+  {
+    "id": "comet_lance",
+    "name": "Lao Sao Chổi",
+    "cost": 2,
+    "description": "Gây 18 sát thương. Tiêu hao.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 18,
+        "target": "enemy"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "attack",
+    "ranged": true,
+    "exhaust": true
+  },
+  {
+    "id": "lotus_guard",
+    "name": "Khiên Liên Hoa",
+    "cost": 1,
+    "description": "Nhận 8 giáp và hồi 3 HP. Tiêu hao.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 8,
+        "target": "self"
+      },
+      {
+        "op": "heal",
+        "amount": 3,
+        "target": "self"
+      }
+    ],
+    "rarity": "rare",
+    "copies": 0,
+    "type": "skill",
+    "exhaust": true
+  }
 ]

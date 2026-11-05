@@ -81,7 +81,7 @@ void RunChecks(const Config& config,const Timeline& timeline){
         Check(g.Event()&&g.run.hp==before.hp&&g.run.gold==before.gold&&g.run.event_choices.size()==2,"unaffordable event choices do not charge, heal or leave");
         g.ChooseEvent(1);Check(g.Map(),"a free event exit remains available");
         g.run.place=Place::Rest;g.run.hp=10;g.run.relics={"water_jar"};const int amount=RestHealAmount(g.run,config);
-        g.RestHeal();Check(amount==23&&g.run.hp==33,"rest preview and healing include the relic bonus");
+        g.RestHeal();Check(amount==20&&g.run.hp==30,"rest preview and healing include the relic bonus");
         Check(!g.RestHeal(),"rest cannot be used twice");
         Game elite(config,timeline);const bool found=Reach(elite,NodeKind::Elite);Check(found,"a legal path reaches an elite");
         if(found){elite.state.enemy.hp=1;elite.state.hand={"punch"};elite.state.energy=3;elite.Play(0);Settle(elite);const auto count=elite.run.relics.size();elite.Update(1);Check(elite.Reward()&&count==1&&elite.run.relics.size()==count,"an elite grants one relic exactly once");}
@@ -114,8 +114,11 @@ void RunChecks(const Config& config,const Timeline& timeline){
         const auto old_hand=receiver.state.hand;const auto old_seed=receiver.run.seed;
         auto reject=[&](Json data,const char* name){Write(bad,data);Check(!receiver.Load()&&receiver.run.seed==old_seed&&receiver.state.hand==old_hand,name);};
         auto broken=good;broken["version"]=99;reject(broken,"unknown save versions leave the running session untouched");
-        broken=good;broken["combat"]["shuffleRng"]=-1;reject(broken,"negative RNG state is rejected");
-        broken=good;broken["combat"]["enemyId"]="missing";reject(broken,"unknown saved enemies are rejected");
+        broken=good;broken["combat"]["shuffle_rng"]=-1;reject(broken,"negative RNG state is rejected");
+        broken=good;broken["combat"]["enemy_id"]="missing";reject(broken,"unknown saved enemies are rejected");
+        broken=good;broken["combat"]["live"]["history"]=Json::array({"missing"});reject(broken,"unknown replay card history is rejected");
+        broken=good;broken["combat"]["live"]["slots"]=Json::array({99});reject(broken,"invalid visual target permutation is rejected");
+        broken=good;broken["combat"]["live"]["end_block"]=-1;reject(broken,"negative power counters are rejected");
         broken=good;broken["run"]["deck"].push_back("punch");reject(broken,"a saved combat must conserve the run deck");
         broken=good;broken["run"]["map"][0]["next"]=Json::array({999});reject(broken,"tampered map links are rejected");
         broken=good;broken["run"]["gold"]=-4;reject(broken,"negative saved gold is rejected");
@@ -148,14 +151,19 @@ void RunChecks(const Config& config,const Timeline& timeline){
 
 void SimulateRuns(const Config& config,const Timeline& timeline,int count){
     int wins=0,stalled=0,total_hp=0,actions=0;
+    Json classes=Json::object();std::map<int,int> failures_by_act;
     for(int seed=0;seed<count;++seed){
-        Game g(config,timeline);g.NewRun(unsigned(seed));int n=0;
+        const auto& character=config.classes[seed%config.classes.size()].id;
+        auto& result=classes[character];if(result.is_null())result={{"runs",0},{"wins",0},{"losses",0},{"stalled",0}};
+        result["runs"]=result["runs"].get<int>()+1;
+        Game g(config,timeline);g.NewRun(unsigned(seed),character);int n=0;
         for(;n<4000&&!g.Result();++n)if(!AdvanceAuto(g))break;
-        if(!g.Result())++stalled;
-        if(g.run.victory){++wins;total_hp+=g.run.hp;}
+        if(!g.Result()){++stalled;result["stalled"]=result["stalled"].get<int>()+1;}
+        if(g.run.victory){++wins;total_hp+=g.run.hp;result["wins"]=result["wins"].get<int>()+1;}
+        else if(g.Result()){result["losses"]=result["losses"].get<int>()+1;++failures_by_act[g.run.act+1];}
         actions+=n;
     }
-    const Json report={{"runs",count},{"wins",wins},{"losses",count-wins-stalled},{"stalled",stalled},{"winPercent",100.0*wins/count},{"averageWinningHp",wins?double(total_hp)/wins:0},{"actions",actions}};
+    const Json report={{"runs",count},{"wins",wins},{"losses",count-wins-stalled},{"stalled",stalled},{"winPercent",100.0*wins/count},{"averageWinningHp",wins?double(total_hp)/wins:0},{"actions",actions},{"classes",classes},{"lossesByAct",failures_by_act},{"difficulty",0},{"metaSkills",false},{"policy","greedy heuristic; not a human win rate"}};
     Write("artifacts/simulation.json",report);std::cout<<"SIMULATION "<<report.dump()<<"\n";
     Check(stalled==0,"autoplay never stalls across the requested seeds");
 }

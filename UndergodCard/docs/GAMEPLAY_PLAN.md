@@ -4,7 +4,7 @@
 
 ## Cập nhật thực hiện 2026-11-05
 
-Nhánh draft/v0.3-wip đã tiếp tục mốc một hồi roguelike: map theo seed/JSON, 6 địch thường, 2 tinh anh, 12 di vật, 6 thuốc, shop/nghỉ phân trang và lưu/tải cả trạng thái combat. Chi tiết và giới hạn trong [V0.3_WIP_NOTES.md](V0.3_WIP_NOTES.md), số liệu kiểm chứng trong [VALIDATION.md](VALIDATION.md). Chưa merge vào main. Các bảng dưới đây là thiết kế đích dài hạn; không phải mọi cơ chế đã có trong v0.3.
+Nhánh draft/v0.3-wip hiện có ba hồi, năm boss, 50 lá gốc, ba lớp, meta, Thử Thách, thành tựu, asset và audio. Xem [COMPLETION.md](COMPLETION.md), [VALIDATION.md](VALIDATION.md) và [IMPLEMENTATION_CHECKLIST.md](IMPLEMENTATION_CHECKLIST.md). Đây là v1.0.0-preview; thời lượng và tỉ lệ thắng người chơi mới còn cần đo bằng chơi thực. Các bảng dưới giữ nguyên thiết kế và mốc lịch sử.
 
 ## Hiện trạng lúc lập kế hoạch
 

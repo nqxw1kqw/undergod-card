@@ -1,10 +1,10 @@
-# Undergod Card Quest — v0.3 / C++17 / DxLib
+# Undergod Card Quest — C++17 / DxLib
 
-Một hồi roguelike 13 tầng, 3 cột phân nhánh. Gà Chiến Binh khởi đầu với 50 HP, 3 năng lượng, rút 5 lá; vượt trận thường, tinh anh, sự kiện, cửa hàng, nghỉ rồi Ếch Vương có hai thanh máu 80 + 70 HP.
+Bản v1.0.0-preview triển khai ba hồi, ba lớp và meta trên cùng nhánh draft/v0.3-wip. Đối chiếu thiết kế tại docs/GAMEPLAY_PLAN.md, phạm vi tại docs/COMPLETION.md, bằng chứng tại docs/VALIDATION.md.
 
-## Chạy, build và đóng gói
+## Build, chạy và đóng gói
 
-Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x64. MSVC v143 và Windows SDK cần được cài. DxLib mặc định ở C:\DxLib.
+Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x64. Cần MSVC v143, Windows SDK và DxLib Visual C++ x64; mặc định C:\DxLib.
 
     .\build.ps1 -Configuration Release
     .\verify.ps1 -Configuration Release
@@ -12,55 +12,73 @@ Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x
     .\bin\Release\CoreChecks.exe --simulate 1000
     .\package.ps1 -SkipBuild
 
-Cả ba script nhận -DxLibDir để đổi vị trí SDK. EXE sinh tại bin/Release/UndergodCard.exe; ZIP tại release/UndergodCard-DxLib-Windows-x64.zip. Giữ assets, data và licenses cạnh EXE. Bản đã build không cần cài SDK để chơi.
+Các script nhận -DxLibDir. EXE ở bin/Release/UndergodCard.exe; ZIP ở release/UndergodCard-DxLib-Windows-x64.zip. Giữ assets/data/licenses cạnh EXE. Bản đóng gói không cần SDK, Python hay Node.js.
 
-Core không dùng DxLib; Makefile được giữ để build bằng g++ với C++17. Phần lưu dùng thay file nguyên tử theo nền tảng. Kiểm chứng của đợt này chạy bằng MSVC trên Windows.
+Core không dùng DxLib. Makefile hỗ trợ g++ C++17 cho CoreChecks; kiểm chứng lần này dùng MSVC trên Windows.
+
+## Hành trình và nhân vật
+
+Ba hồi 13 / 13 / 15 tầng, tính cả trùm/nghỉ cuối. Hồi đầu đọc tầng/cột từ map.json, hai hồi sau từ campaign.json. Hồi hai chọn Rắn hoặc Diều Hâu theo seed. Hồi ba có Cáo, nghỉ rồi Undergod. Boss hồi hồi 50% HP tối đa và cho chọn di vật boss; hết pool sẽ đổi thành vàng. Tinh anh thường cho một di vật, tinh anh Cầu Gãy thưởng hai di vật và vàng gấp đôi.
+
+| Boss | HP | Cơ chế |
+| --- | --- | --- |
+| Ếch Vương | 150 | Dưới 50% gọi hai Nòng Nọc, khóa một lá mỗi lượt |
+| Rắn Bùn Mẹ | 180 | Lột da ở 65%, siết ba lượt dưới 25%, charge báo trước |
+| Diều Hâu Bão | 160 | Bay giảm nửa sát thương cận chiến; nhận 20 sát thương HP sẽ đáp hai lượt |
+| Cáo Thầy Phù | 220 | Biến bài thành Bùn Lầy, dưới 50% tạo hai ảo ảnh/xáo vị trí |
+| Undergod | 300 | Sao chép lá cuối lượt trước; hút Nộ ở 66%; Tận Thế năm lượt ở 33% |
+
+Ảo ảnh che tên/HP thật; hạ Cáo làm tan bóng. Nòng Nọc còn sống tiếp tục trận sau khi Ếch Vương chết. HP/Nộ và đồ giữ giữa trận; giáp/trạng thái/năng lực trận reset, cờ hồi sinh đã dùng giữ cả run.
+
+Chiến Binh 50 HP/rút 5, Sao Rơi 40 sát thương. Pháp Sư 40 HP/rút 6, giữ tối đa ba Mana, Bão Lông 12 ×4 ngẫu nhiên. Ninja 45 HP/rút 5, nhiều lá miễn phí; Ảnh Phân lặp hiệu ứng tối đa ba lá gần nhất và cần có lịch sử bài.
+
+Mỗi lớp có ba nhánh × năm kỹ năng; mua tuần tự bằng Lông Vũ và áp dụng từ run mới. Thắng độ khó hiện tại mở Thử Thách kế tiếp tới 10. Sổ run đã nhận thưởng ngăn nhận Lông Vũ/thành tựu trùng khi tải lại.
 
 ## Điều khiển
 
-- Chuột hoặc 1–9: chọn lối đang mở / chơi lá bài. 1–3 chọn thưởng.
-- E hết lượt; U Sao Rơi đủ 100 Nộ; Space/Esc bỏ qua cinematic.
-- F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ. x1 mặc định chậm, khoảng 1 giây mỗi đòn thẻ.
-- Bản đồ: nút cuộn, bánh xe chuột hoặc Page Up/Page Down; tự cuộn tới vị trí hiện tại.
-- Cửa hàng: 1–7 mua, bấm lá để gỡ với giá 75 vàng; E/Esc rời cửa hàng.
-- Nghỉ: H hồi HP (đã tính di vật và giới hạn HP), hoặc 1–8 nâng cấp lá trên trang. Chỉ được chọn một việc.
-- Bộ bài trong cửa hàng/nghỉ có 8 lá mỗi trang; mọi lá đều thao tác được qua nút trang, bánh xe hoặc Page Up/Page Down.
-- Z/X/C dùng ba ô thuốc; V dùng ô thứ tư khi di vật mở thêm ô.
-- F6 / Lưu: ghi checkpoint. F9 / Tiếp tục: tải checkpoint. Khi mở lại game, tự tiếp tục save.json.
-- R/Enter/Chơi lại bắt đầu hành trình mới với seed mới. Chạy EXE với --seed 1337 để bắt đầu seed cụ thể.
+- Chọn lớp: 1–3 hoặc chuột; Enter bắt đầu. Chuột mua kỹ năng/chọn Thử Thách.
+- Map: chuột/1–9 chọn lối; bánh xe, Page Up/Page Down hoặc nút cuộn.
+- Combat: chuột/1–9 chơi bài; Tab/bấm địch chọn mục tiêu; E hết lượt; U tuyệt kỹ.
+- Z/X/C dùng ba ô thuốc, V dùng ô thứ tư nếu di vật mở thêm.
+- F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ; run mới bắt đầu chậm ở x1.
+- Space/Esc bỏ cinematic, damage chỉ áp một lần. F10 bật/tắt âm thanh.
+- Shop: 1–7 mua; bấm lá trong bộ để gỡ (75 vàng); E/Esc rời.
+- Nghỉ: H hồi HP hoặc 1–8 nâng cấp trên trang hiện tại. Chỉ chọn một việc.
+- Bộ bài/màn chọn bài/đổi đồ có nút trang, bánh xe, Page Up/Page Down.
+- F6 lưu, F9 tiếp tục. R/Enter/Chơi lại mở menu lớp; Esc từ menu về run đang có.
+- Tham số --seed 1337 khởi tạo run có seed cố định.
 
-## Gameplay và dữ liệu
+## Dữ liệu và thêm nội dung
 
-Bộ khởi đầu: 5 Chọc Giáo, 3 Khiên Gỗ, 1 Đâm Mạnh, 1 Bánh Quy. Có 15 lá thưởng thêm, cùng bản nâng cấp sinh từ dữ liệu. Sức Mạnh cộng từng nhát, Suy Yếu nhân 3/4, Dễ Vỡ nhân 3/2, làm tròn xuống. Độc xuyên giáp đầu lượt rồi giảm một tầng. HP và Nộ giữ giữa các trận; giáp và trạng thái trận được xóa.
+| Tệp trong data | Nội dung |
+| --- | --- |
+| cards | 50 lá gốc, type/rarity/class/effects/keywords, exhaust/power/ranged |
+| enemies | Sáu địch thường, hai tinh anh, năm boss, triệu hồi và đối thủ sự kiện |
+| campaign / map / run | Hồi, pool boss/địch, tầng/cột, trọng số, kinh tế |
+| events | 12 sự kiện với đánh đổi, chọn bài/đổi đồ hoặc mở trận thực |
+| relics / potions | 17 di vật, sáu thuốc dùng chung resolver |
+| classes / skills | Bộ khởi đầu, tuyệt kỹ, 45 kỹ năng và điều kiện mở bài |
+| challenges / achievements | Bất lợi cộng dồn và mốc tiến trình |
+| cinematic / audio | Timeline và danh sách âm thanh/nhạc |
 
-- map.json: số tầng/cột, tầng sớm nhất có tinh anh, trọng số Trận/Tinh anh/Sự kiện/Shop/Nghỉ 45/12/22/8/13, khoảng vàng. Tầng đầu luôn là trận thường; tầng ngay trước trùm luôn nghỉ. Hai hàng bắt buộc và hạn chế tinh anh sớm là ngoại lệ có chủ ý của trọng số.
-- run.json: các pool địch thường/tinh anh, boss, vàng đầu, số ô thuốc, giá gỡ và mức hồi khi nghỉ.
-- enemies.json: 6 địch thường, 2 tinh anh, boss hai giai đoạn, minFloor (đánh số từ 0), bảng ý định. Mỗi trận vẫn đối đầu một địch.
-- cards.json: effects damage/block/heal/apply/draw/energy/rage, rarity và keywords. Ảnh cards/id.png là tùy chọn; chưa có ảnh dùng ký hiệu. Thêm hiệu ứng mới cần mở rộng resolver.
-- relics.json / potions.json: 12 di vật và 6 thuốc. Di vật tinh anh chỉ thưởng một lần, không trùng; khi đã sở hữu hết thì đổi thành vàng.
-- events.json: 10 sự kiện, mỗi lựa chọn có kết quả. Lựa chọn không đủ vàng giữ nguyên màn và tài nguyên.
-- cinematic.json: pose, quỹ đạo lao và impact tại 2600ms của đồng hồ gameplay; speed không đổi damage/RNG.
+Thêm một id duy nhất trong cards.json, effects và icon assets/pastel/cards/id.png (RGBA 256×256). Loader sinh bản nâng cấp; lời nguyền không có nâng cấp. Effect mới cần thêm parser/resolver/kiểm thử. Loader kiểm tra tham chiếu bài/lớp/địch/kỹ năng.
+
+Nhân vật: char_<sprite>_<pose>_<frame>.png, RGBA 512×512. Đổi ảnh cần cập nhật assets/manifest.json. tools/validate_assets.py kiểm tra hash, kích thước, tham chiếu và WAV. tools/expand_content.py biên tập JSON, không cần chạy khi build.
 
 ## Lưu game
 
-save.json nằm cạnh EXE, tự ghi sau hành động ổn định và chuyển màn. Có version, đường đi, HP/Nộ/vàng, bộ bài, di vật, thuốc, hàng đã mua, phần thưởng chưa nhận, trạng thái combat, phase boss và cả hai RNG.
+save.json schema v2 giữ đường map, hồi/lớp/độ khó, tài nguyên, deck, các pile gồm Tiêu hao, lời nguyền sinh ra, triệu hồi, mục tiêu, năng lực, lịch sử bài, hệ số trận và ba RNG. profile.json schema v1 giữ Lông Vũ, kỹ năng, thành tựu, Thử Thách và sổ nhận thưởng.
 
-Trong animation/cinematic, lưu và tải bị khóa để tránh nửa impact. Ghi ra save.json.tmp rồi thay file; lỗi ghi không phá checkpoint trước. Tải qua đối tượng tạm; file sai, khác layout map hay phiên bản không được áp vào run hiện tại. Nếu bản lưu tự mở bị hỏng, game giữ một bản save.json.invalid.* trước khi tạo run mới.
+Ghi .tmp rồi thay nguyên tử; lỗi giữ checkpoint cũ. Tải qua đối tượng tạm và kiểm tra đường map, tham chiếu, pile bài bảo toàn và trạng thái trận. Khóa lưu/tải trong animation/cinematic. Bản v1/không hợp lệ giữ thành .invalid.* khi tự mở.
 
-Muốn mang hành trình sang máy khác, chép save.json cạnh EXE cùng phiên bản dữ liệu. Không đưa bản lưu vào Git hoặc ZIP phát hành.
+Chép cả save.json và profile.json cùng phiên bản data để chuyển máy; không đưa chúng vào Git hoặc ZIP.
 
-## Cấu trúc
+## Cấu trúc và giới hạn
 
-- quest_core / quest_effects / quest_status: luật combat và snapshot; không phụ thuộc renderer.
-- quest_run: map, chuyển nút, sự kiện, shop, nghỉ, di vật/thuốc và bot.
-- quest_save: JSON checkpoint, kiểm tra dữ liệu và thay file.
-- game: animation/contact, khóa input, autosave khi ổn định.
-- ui: DxLib, hit-test cùng hình vẽ, phân trang, cuộn và chữ Việt.
-- tests/core_checks.cpp và tests/run_checks.cpp: logic cũ, map theo seed, lưu/tải, tệp lỗi và hành trình.
-- assets/manifest.json: SHA-256 của 50 PNG; third_party giữ giấy phép.
+quest_core/effects/status/battle: combat. quest_run: chiến dịch, sự kiện, kinh tế, bot. quest_world: dữ liệu. quest_meta: tiến trình. quest_save/storage/json: persistence. game: contact/animation/khóa input. ui/ui_world/audio: DxLib.
 
-## Kiểm chứng và giới hạn
+Undergod sao chép sát thương/giáp/hồi máu/trạng thái/năng lực về phía địch. Tài nguyên riêng của người chơi (rút bài/năng lượng/giảm giá tuyệt kỹ) đổi thành Sức Mạnh; Nộ đổi thành hút Nộ. Mắt Diều Hâu dự báo trên bản sao hai lượt nếu không chơi thêm bài; hành động có thể đổi dự báo.
 
-Xem docs/VALIDATION.md để lấy số liệu lần chạy hiện tại. verify.ps1 yêu cầu đủ 50 PNG, chiến thắng cả hồi và boss_phase=2; ảnh/báo cáo sinh tại bin/<cấu hình>/artifacts.
+CoreChecks kiểm tra boss, effect, map, checkpoint mỗi quyết định, meta và Thử Thách. --smoke chạy renderer thật, handler UI/audio API và một chiến dịch. SDK ngoài repo có cảnh báo C4010 trong DxFunctionWin.h.
 
-Chưa có ba hồi, lớp Pháp Sư/Ninja, cây kỹ năng, nhiều địch cùng trận, âm thanh, save tương thích mọi phiên bản hoặc cân bằng theo người chơi thật. Nhiều địch dùng chung sprite và 15 lá thưởng chưa có ảnh riêng. Header ngoài C:\DxLib có thể báo C4010.
+Mục tiêu thời lượng/tỉ lệ thắng người chơi mới và chơi tay qua chuột/phím Windows còn cần xác nhận; đọc VALIDATION.md.

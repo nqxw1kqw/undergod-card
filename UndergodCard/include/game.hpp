@@ -2,13 +2,14 @@
 #include "quest_run.hpp"
 #include "quest_timeline.hpp"
 #include "quest_save.hpp"
+#include "quest_meta.hpp"
 #include <array>
 #include <utility>
 
 namespace undergod {
 enum class Motion { None,PlayerAttack,PlayerOther,EnemyAttack,EnemyOther };
 struct Pose { std::string name="idle"; float age=0; };
-struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; StatusId status=StatusId::Poison; };
+struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; StatusId status=StatusId::Poison; int target=0; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
 struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
 class Game {
@@ -19,6 +20,9 @@ class Game {
     int speed_=1;
     std::filesystem::path save_file_;
     bool save_dirty_=false;
+    std::filesystem::path profile_file_;
+    bool profile_dirty_=false;
+    int menu_=0,selected_challenge_=0;
     Timeline timeline_;
     TimelinePlayer cinematic_;
     void ConsumeEvents();
@@ -30,30 +34,54 @@ public:
     static constexpr float BasePlaybackRate=.65f;
     Combat state;
     RunState run;
+    Profile profile;
+    std::vector<std::string> sound_events;
     std::array<Pose,2> poses;
     std::vector<Popup> popups;
     CinematicVisual visual;
     float time=0,toast_age=0;
     std::string toast;
     explicit Game(Config config,Timeline timeline):timeline_(std::move(timeline)),state(std::move(config)){}
-    void NewRun(unsigned seed=1337);
+    void NewRun(unsigned seed=1337,const std::string& class_id="chick",int challenge=0);
+    bool SetProfileFile(std::filesystem::path file);
+    void OpenClasses(){if(!Busy()){menu_=1;selected_challenge_=std::min(selected_challenge_,std::clamp(profile.highest_challenge+1,0,10));}}
+    void OpenSkills(){if(!Busy())menu_=2;}
+    void OpenAchievements(){if(!Busy())menu_=3;}
+    void BackMenu(){menu_=menu_>1?1:0;}
+    int MenuPage()const{return menu_;}
+    bool Menu()const{return menu_>0;}
+    const ClassDef& SelectedClass()const{return FindClass(state.config,profile.selected_class);}
+    void SelectClass(int index);
+    bool BuySkill(const std::string& id);
+    void SetChallenge(int value){selected_challenge_=std::clamp(value,0,std::clamp(profile.highest_challenge+1,0,10));}
+    int SelectedChallenge()const{return selected_challenge_;}
+    void BeginSelected(unsigned seed){NewRun(seed,profile.selected_class,selected_challenge_);}
+    void ToggleAudio(){profile.muted=!profile.muted;profile_dirty_=true;}
     void SetSaveFile(std::filesystem::path file){save_file_=std::move(file);save_dirty_=false;}
     bool Save(bool notify=true);
     bool Load();
-    bool CanAct()const{return motion_==Motion::None&&!cinematic_.Active()&&run.place==Place::Fight&&state.phase==Phase::Player&&!run.victory&&!run.defeat;}
+    bool CanAct()const{return !Menu()&&motion_==Motion::None&&!cinematic_.Active()&&run.place==Place::Fight&&state.phase==Phase::Player&&!run.victory&&!run.defeat;}
     bool Busy()const{return motion_!=Motion::None||cinematic_.Active();}
     bool Cinematic()const{return cinematic_.Active();}
-    bool Map()const{return !Busy()&&run.place==Place::Map&&!run.victory&&!run.defeat;}
+    bool Map()const{return !Menu()&&!Busy()&&run.place==Place::Map&&!run.victory&&!run.defeat;}
     bool Reward()const{return !Busy()&&run.place==Place::Reward;}
     bool Event()const{return !Busy()&&run.place==Place::Event;}
     bool Shop()const{return !Busy()&&run.place==Place::Shop;}
     bool Rest()const{return !Busy()&&run.place==Place::Rest;}
+    bool RelicReward()const{return !Menu()&&!Busy()&&run.place==Place::RelicReward;}
+    bool CardSelection()const{return !Menu()&&!Busy()&&run.place==Place::CardSelect;}
+    bool RelicSelection()const{return !Menu()&&!Busy()&&run.place==Place::RelicSelect;}
     bool Result()const{return !Busy()&&(run.victory||run.defeat);}
     void Play(int index);
     void EndTurn();
     void Ultimate();
     void ChooseNode(int option);
     void ChooseReward(int index);
+    bool ChooseRelic(int index);
+    bool ChooseCard(int index);
+    bool TradeRelic(int index);
+    void CancelSelection(){undergod::CancelSelection(run);save_dirty_=true;}
+    bool SelectTarget(int index){if(!CanAct())return false;const bool changed=state.SelectTarget(index);save_dirty_|=changed;return changed;}
     void ChooseEvent(int index);
     bool Buy(int index);
     bool RemoveCard(int index);
@@ -71,7 +99,9 @@ public:
     float PlaybackRate()const{return BasePlaybackRate*speed_;}
     bool SetSpeed(int multiplier){if(multiplier<1||multiplier>3)return false;speed_=multiplier;save_dirty_=true;return true;}
     std::pair<float,float> SpearTip()const;
-    float ActorOffset(bool enemy)const;
+    float ActorOffset(bool enemy,int target=0)const;
+    float TargetX(int target)const;
+    float CinematicTime()const{return cinematic_age_;}
     void Toast(const std::string& text){toast=text;toast_age=1.8f;}
 };
 }

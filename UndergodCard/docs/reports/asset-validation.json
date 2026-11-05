@@ -1,0 +1,10 @@
+{
+  "pngs": 190,
+  "cards": 50,
+  "relics": 17,
+  "potions": 6,
+  "audio": 12,
+  "hashes": true,
+  "references": true,
+  "pcm": true
+}

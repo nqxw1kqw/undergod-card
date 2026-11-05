@@ -1,0 +1,72 @@
+[
+  {
+    "level": 1,
+    "description": "Địch +10% HP.",
+    "penalties": {
+      "enemy_hp": 10
+    }
+  },
+  {
+    "level": 2,
+    "description": "Địch gây thêm 1 sát thương mỗi hit.",
+    "penalties": {
+      "enemy_damage": 1
+    }
+  },
+  {
+    "level": 3,
+    "description": "Nghỉ hồi ít hơn 5% HP tối đa.",
+    "penalties": {
+      "rest_penalty": 5
+    }
+  },
+  {
+    "level": 4,
+    "description": "Tinh anh +15% HP.",
+    "penalties": {
+      "elite_hp": 15
+    }
+  },
+  {
+    "level": 5,
+    "description": "Bắt đầu ít hơn 25 vàng.",
+    "penalties": {
+      "start_gold": -25
+    }
+  },
+  {
+    "level": 6,
+    "description": "Địch gây thêm 1 sát thương mỗi hit.",
+    "penalties": {
+      "enemy_damage": 1
+    }
+  },
+  {
+    "level": 7,
+    "description": "Mất 5 HP tối đa.",
+    "penalties": {
+      "player_hp": -5
+    }
+  },
+  {
+    "level": 8,
+    "description": "Ít hơn một ô thuốc.",
+    "penalties": {
+      "potion_slots": -1
+    }
+  },
+  {
+    "level": 9,
+    "description": "Boss gây thêm 2 sát thương mỗi hit.",
+    "penalties": {
+      "boss_damage": 2
+    }
+  },
+  {
+    "level": 10,
+    "description": "Boss +25% HP.",
+    "penalties": {
+      "boss_hp": 25
+    }
+  }
+]

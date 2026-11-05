@@ -2,9 +2,9 @@
 #include "quest_core.hpp"
 
 namespace undergod {
-enum class Place { Map, Fight, Reward, Event, Shop, Rest };
+enum class Place { Map, Fight, Reward, Event, Shop, Rest, RelicReward, CardSelect, RelicSelect };
 enum class Ware { Card, Relic, Potion };
-enum class AutoKind { None, Node, Reward, Event, Buy, Remove, Leave, Heal, Upgrade, Potion, Play, EndTurn, Ultimate };
+enum class AutoKind { None, Node, Reward, Event, Buy, Remove, Leave, Heal, Upgrade, Potion, Play, EndTurn, Ultimate, Relic, SelectCard, TradeRelic, Target };
 
 struct MapNode {
     NodeKind kind=NodeKind::Combat;
@@ -30,20 +30,32 @@ struct RunState {
     std::vector<ShopItem> shop;
     Place place=Place::Fight;
     bool pending_reward=false,victory=false,defeat=false,fight_resolved=false,rest_used=false;
+    int act=0,challenge=0,trial_limit=0,reward_multiplier=1,fog_until=-1,sequence_gold=0;
+    bool advance_act=false,reward_from_event=false,sequence_relic=false,meta_claimed=false,phoenix_spent=false;
+    std::string run_id,active_encounter_id,selection,last_outcome;
+    std::vector<std::string> skills,relic_rewards,sequence,defeated_bosses;
+    std::map<std::string,int> bonuses,metrics;
 };
 
-std::vector<MapNode> GenerateMap(const Config& config,unsigned seed);
+std::vector<MapNode> GenerateMap(const Config& config,unsigned seed,int act=0);
 const EnemyDef& FindEnemy(const Config& config,const std::string& id);
 const CardDef& FindCard(const Config& config,const std::string& id);
 const RelicDef& FindRelic(const Config& config,const std::string& id);
 const PotionDef& FindPotion(const Config& config,const std::string& id);
 uint32_t EncounterSeed(unsigned seed,int index);
 CombatMods ModsFor(const RunState& run,const Config& config);
-void StartRun(RunState& run,Combat& combat,unsigned seed);
+void StartRun(RunState& run,Combat& combat,unsigned seed,const std::string& class_id="chick",int challenge=0,const std::vector<std::string>& skills={});
+int RunBonus(const RunState& run,const std::string& key);
+std::map<std::string,int> ChallengeBonuses(const Config& config,int level);
+bool ChooseRelicReward(RunState& run,const Config& config,int index);
+bool ChooseSelectedCard(RunState& run,const Config& config,int index);
+bool ChooseTradeRelic(RunState& run,const Config& config,int index);
+void CancelSelection(RunState& run);
 void ObserveCombat(RunState& run,Combat& combat);
 bool ChooseNode(RunState& run,Combat& combat,int option);
 bool ChooseReward(RunState& run,Combat& combat,int index);
 bool ChooseEvent(RunState& run,const Config& config,int index);
+bool ChooseEvent(RunState& run,Combat& combat,int index);
 bool BuyItem(RunState& run,const Config& config,int index);
 bool RemoveCard(RunState& run,const Config& config,int index);
 void LeaveShop(RunState& run);
