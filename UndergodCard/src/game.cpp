@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed,std::string class_id,int challenge){if(practice_)profile=practice_profile_;practice_=false;cinematic_.Cancel();StartRun(run,state,seed,class_id,challenge,profile.skills);run.run_id=std::to_string(seed)+":"+std::to_string(profile.next_run++);profile.selected_class=class_id;profile_dirty_=true;menu_=0;motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();sound_events.clear();save_dirty_=true;}
+void Game::NewRun(unsigned seed,std::string class_id,int challenge){if(practice_)profile=practice_profile_;practice_=false;cinematic_.Cancel();StartRun(run,state,seed,class_id,challenge,profile.skills);run.run_id=std::to_string(seed)+":"+std::to_string(profile.next_run++);profile.selected_class=class_id;profile_dirty_=true;menu_=0;motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();sound_events.clear();save_dirty_=true;arrival_=Arrival::None;arrival_age_=0;star_sequence_=false;active_card_={};active_actor_=-1;travel_from_=travel_to_=pending_option_=-1;}
 void Game::StartBossPractice(std::string enemy_id,unsigned seed,std::string class_id){
     const auto& boss=FindEnemy(state.config,enemy_id);if(boss.role!="boss")throw std::runtime_error("Practice needs a boss");
     const auto kept_profile=profile;const auto baseline=practice_?practice_profile_:profile;NewRun(seed,class_id);profile=kept_profile;practice_profile_=baseline;profile_dirty_=false;
@@ -11,6 +11,7 @@ void Game::StartBossPractice(std::string enemy_id,unsigned seed,std::string clas
     for(auto& id:run.deck){const auto upgrade=FindCard(state.config,id).upgrade_id;if(!upgrade.empty())id=upgrade;}
     run.potions={"serum","smoke_shield"};
     state.BeginEncounter(boss,seed,run.hp,run.max_hp,0,run.deck,ModsFor(run,state.config));Toast("Đấu thử · Bộ bài nâng cấp và hai thuốc · F9 trở về bản lưu.");
+    if(turn_stars_){state.EnableTurnStars();ConsumeEvents();BeginArrival();}
 }
 bool Game::SetProfileFile(std::filesystem::path file){profile_file_=std::move(file);if(!std::filesystem::exists(profile_file_))return true;std::string error;const bool loaded=LoadProfile(profile_file_,profile,state.config,error);if(!loaded)Toast("Không đọc được hồ sơ tiến trình.");return loaded;}
 void Game::SelectClass(int index){if(index<0||index>=int(state.config.classes.size()))return;profile.selected_class=state.config.classes[index].id;profile_dirty_=true;}
@@ -34,7 +35,7 @@ bool Game::Load(){
     std::string error;
     if(save_file_.empty()||!LoadSession(save_file_,run,state,speed_,error)){Toast("Không đọc được bản lưu. Hành trình hiện tại vẫn được giữ.");return false;}
     cinematic_.Cancel();motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;
-    poses={};popups.clear();visual={};time=0;menu_=0;if(practice_){profile=practice_profile_;profile_dirty_=false;}practice_=false;save_dirty_=false;sound_events.clear();Toast("Đã tiếp tục hành trình.");return true;
+    poses={};popups.clear();visual={};time=0;menu_=0;arrival_=Arrival::None;star_sequence_=false;active_card_={};active_actor_=-1;if(turn_stars_&&run.place==Place::Fight)state.EnableTurnStars();if(practice_){profile=practice_profile_;profile_dirty_=false;}practice_=false;save_dirty_=false;sound_events.clear();Toast("Đã tiếp tục hành trình.");return true;
 }
 void Game::ConsumeEvents(){
     for(const auto& event:state.events){
@@ -56,24 +57,40 @@ void Game::ConsumeEvents(){
 void Game::AfterResolve(){
     ConsumeEvents();
     if(practice_){run.hp=state.player.hp;run.rage=state.rage;run.victory=state.phase==Phase::Won;run.defeat=state.phase==Phase::Lost;if(run.victory||run.defeat)sound_events.push_back(run.victory?"victory":"defeat");return;}
-    ObserveCombat(run,state);if(SettleProfile(profile,run,state.config)){profile_dirty_=true;sound_events.push_back(run.victory?"victory":"defeat");}save_dirty_=true;
+    ObserveCombat(run,state);
+    if(turn_stars_&&run.place==Place::Fight&&!state.stars.enabled){
+        cinematic_.Cancel(false);state.EnableTurnStars();star_sequence_=false;motion_=Motion::None;motion_age_=0;pending_card_=-1;active_actor_=-1;poses={};visual={};BeginArrival();ConsumeEvents();
+    }
+    if(SettleProfile(profile,run,state.config)){profile_dirty_=true;sound_events.push_back(run.victory?"victory":"defeat");}save_dirty_=true;
 }
 void Game::Play(int index){
     if(!CanAct()||index<0||index>=int(state.hand.size()))return;
+    if(turn_stars_){
+        if(!state.QueueStar(index)){Toast(state.IsQueuedStar(index)?"Lá này đã nằm trong hàng chờ.":(state.stars.player.size()>=3?"Đã đủ ba sao. Bấm Attack hoặc gỡ một lá.":"Lá này bị khóa hoặc không thể chơi."));return;}
+        save_dirty_=true;sound_events.push_back("select");return;
+    }
     if(!state.CanPlay(index)){Toast(index==state.live.locked?"Lưỡi Quấn: lá bài này bị khóa trong lượt.":(state.Definition(state.hand[index]).unplayable?"Lời nguyền này không chơi được.":"Không đủ năng lượng cho lá bài này."));return;}
     pending_card_=index;const bool attack=state.Definition(state.hand[index]).damage>0;
     motion_=attack?Motion::PlayerAttack:Motion::PlayerOther;motion_age_=0;motion_impact_=false;
     if(attack)poses[0]={"attack",0};else ApplyMotion();
 }
-void Game::EndTurn(){if(!CanAct()||!state.EndPlayer())return;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();}
+void Game::EndTurn(){
+    if(turn_stars_){if(!CanAct())return;if(!state.BeginStarAttack()){Toast("Chọn đủ ba lá trước khi Attack. Có thể dùng Chờ nếu thiếu bài.");return;}star_sequence_=true;BeginStarMotion();return;}
+    if(!CanAct()||!state.EndPlayer())return;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();
+}
 void Game::ApplyMotion(){
     if(motion_impact_)return;motion_impact_=true;
-    if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther)state.Play(pending_card_);
+    if(star_sequence_)state.ResolveStarAction();
+    else if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther)state.Play(pending_card_);
     else state.ActEnemy();
     AfterResolve();
 }
 void Game::ChooseNode(int option){
     if(!Map())return;
+    if(turn_stars_){
+        if(option<0||option>=int(run.options.size()))return;
+        pending_option_=option;travel_from_=run.node;travel_to_=run.options[option];arrival_=Arrival::Travel;arrival_age_=0;return;
+    }
     if(!undergod::ChooseNode(run,state,option))return;
     save_dirty_=true;
     motion_=Motion::None;pending_card_=-1;motion_age_=0;motion_impact_=false;poses={};popups.clear();visual={};
@@ -86,6 +103,7 @@ void Game::ChooseReward(int index){
     if(choice<0||choice>=int(run.rewards.size()))return;
     const auto id=run.rewards[choice];
     if(!undergod::ChooseReward(run,state,choice))return;
+    if(turn_stars_&&run.place==Place::Fight){state.EnableTurnStars();BeginArrival();}
     save_dirty_=true;
     motion_=Motion::None;pending_card_=-1;motion_age_=0;motion_impact_=false;poses={};popups.clear();visual={};
     Toast("Nhận: "+state.Definition(id).name);
@@ -97,7 +115,7 @@ bool Game::TradeRelic(int index){const bool changed=RelicSelection()&&ChooseTrad
 void Game::ChooseEvent(int index){
     if(!Event()||index<0||index>=int(run.event_choices.size()))return;
     const auto outcome=run.event_choices[index].outcome;
-    if(undergod::ChooseEvent(run,state,index)){save_dirty_=true;Toast(run.last_outcome.empty()?outcome:run.last_outcome);}
+    if(undergod::ChooseEvent(run,state,index)){save_dirty_=true;Toast(run.last_outcome.empty()?outcome:run.last_outcome);if(turn_stars_&&run.place==Place::Fight){state.EnableTurnStars();BeginArrival();}}
     else Toast("Không đủ vàng cho lựa chọn này.");
 }
 bool Game::Buy(int index){const bool changed=Shop()&&undergod::BuyItem(run,state.config,index);save_dirty_|=changed;return changed;}
@@ -105,7 +123,7 @@ bool Game::RemoveCard(int index){const bool changed=Shop()&&undergod::RemoveCard
 void Game::LeaveShop(){if(Shop()){undergod::LeaveShop(run);save_dirty_=true;}}
 bool Game::RestHeal(){const bool changed=Rest()&&undergod::RestHeal(run,state.config);save_dirty_|=changed;return changed;}
 bool Game::UpgradeCard(int index){const bool changed=Rest()&&undergod::UpgradeCard(run,state.config,index);save_dirty_|=changed;return changed;}
-bool Game::DrinkPotion(int index){if(!CanAct())return false;const bool drank=undergod::DrinkPotion(run,state,index);if(drank){ConsumeEvents();save_dirty_=true;}return drank;}
+bool Game::DrinkPotion(int index){if(!CanAct())return false;const bool drank=undergod::DrinkPotion(run,state,index);if(drank){AfterResolve();save_dirty_=true;}return drank;}
 bool Game::Act(const AutoStep& step){
     switch(step.kind){
     case AutoKind::Node: ChooseNode(step.index); return true;
@@ -124,6 +142,7 @@ bool Game::Act(const AutoStep& step){
     case AutoKind::SelectCard:if(step.index<0){CancelSelection();return true;}return ChooseCard(step.index);
     case AutoKind::TradeRelic:return TradeRelic(step.index);
     case AutoKind::Target:return SelectTarget(step.index);
+    case AutoKind::Wait:return QueueWait();
     default: return false;
     }
 }
@@ -150,16 +169,17 @@ void Game::SkipCinematic(){cinematic_.Skip();}
 void Game::Update(float real_dt){
     real_dt=std::max(0.f,real_dt);toast_age=std::max(0.f,toast_age-real_dt);
     const float dt=real_dt*PlaybackRate();time+=dt;
+    UpdateArrival(dt);
     for(auto& p:poses){p.age+=dt;const bool held=p.name=="ult_throw"&&Cinematic();if(!held&&p.name!="idle"&&p.age>(p.name=="ult_charge"?2.f:.65f))p={};}
     for(auto& p:popups)p.age+=dt;
     popups.erase(std::remove_if(popups.begin(),popups.end(),[](const auto& p){return p.age>.95f;}),popups.end());
     if(motion_!=Motion::None){
         const bool enemy=motion_==Motion::EnemyAttack||motion_==Motion::EnemyOther;
         const float before=motion_age_;motion_age_+=dt;
-        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={state.intent.attack?"attack":(state.intent.kind==IntentKind::Charge?"ult_charge":"defend"),motion_age_-.45f};
+        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={motion_==Motion::EnemyAttack?"attack":((star_sequence_?active_card_.id=="comet_lance":state.intent.kind==IntentKind::Charge)?"ult_charge":"defend"),motion_age_-.45f};
         const float impact=enemy?(motion_==Motion::EnemyAttack?.77f:.45f):.32f;
         if(motion_age_>=impact)ApplyMotion();
-        if(motion_age_>=(enemy?1.15f:.65f)){motion_=Motion::None;pending_card_=-1;}
+        if(motion_age_>=(enemy?1.15f:.65f)){motion_=Motion::None;pending_card_=-1;if(star_sequence_)FinishStarMotion();}
     }
     if(!Busy()&&!practice_){ObserveCombat(run,state);if(SettleProfile(profile,run,state.config)){profile_dirty_=true;save_dirty_=true;}}
     if(Cinematic()){
@@ -187,7 +207,7 @@ float Game::TargetX(int target)const{
 }
 float Game::ActorOffset(bool enemy,int target)const{
     const auto& p=poses[enemy?1:0];float recoil=p.name=="hit"?std::sin(p.age*60.f)*12.f*std::max(0.f,1-p.age/.3f)*(enemy?1.f:-1.f):0;
-    if((enemy&&motion_!=Motion::EnemyAttack)||(!enemy&&motion_!=Motion::PlayerAttack))return recoil;
+    if((enemy&&motion_!=Motion::EnemyAttack)||(!enemy&&motion_!=Motion::PlayerAttack)||(enemy&&star_sequence_&&target!=active_actor_))return recoil;
     const float t=motion_age_-(enemy?.45f:0.f);float f=0;
     if(t>0&&t<.22f)f=(t/.22f)*(t/.22f);else if(t>=.22f&&t<.32f)f=1;else if(t>=.32f&&t<.54f)f=1-(t-.32f)/.22f;
     const float contact_travel=TargetX(enemy?target:state.live.target)-PlayerHome-(enemy?170.f:160.f);

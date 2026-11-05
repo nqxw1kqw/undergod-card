@@ -21,7 +21,11 @@ int Combat::UltimateCost()const{return std::max(40,config.balance.rage_max-mods_
 
 void Combat::LockCard(){
     live.locked=-1;
-    if(CurrentPhase().lock_card&&!hand.empty())live.locked=std::min(int(hand.size())-1,int(target_rng_.Next()*hand.size()));
+    if(stars.resolving)return;
+    if(CurrentPhase().lock_card&&!hand.empty()){
+        if(!stars.enabled)live.locked=std::min(int(hand.size())-1,int(target_rng_.Next()*hand.size()));
+        else{std::vector<int> candidates;for(int i=0;i<int(hand.size());++i)if(!IsQueuedStar(i))candidates.push_back(i);if(!candidates.empty())live.locked=candidates[std::min(int(candidates.size())-1,int(target_rng_.Next()*candidates.size()))];}
+    }
 }
 
 Intent Combat::PickIntent(const EnemyDef& def){
@@ -35,7 +39,7 @@ Intent Combat::PickIntent(const EnemyDef& def){
     const double roll=intent_rng_.Next()*total;int sum=0;const IntentPattern* choice=&def.patterns.back();
     for(const auto& pattern:def.patterns){sum+=pattern.weight;if(roll<sum){choice=&pattern;break;}}
     result.kind=choice->kind;result.hits=choice->hits;result.status=choice->status;result.status_amount=choice->status_amount;result.summon_id=choice->summon_id;
-    result.attack=result.kind==IntentKind::Attack||result.kind==IntentKind::MultiAttack;
+    result.attack=result.kind==IntentKind::Attack||result.kind==IntentKind::MultiAttack||result.kind==IntentKind::Mimic||result.kind==IntentKind::Drain;
     result.value=result.attack?choice->min_damage+int(intent_rng_.Next()*(choice->max_damage-choice->min_damage+1)):choice->block;
     return result;
 }
@@ -87,6 +91,20 @@ void Combat::ResolveAdd(int index){
 
 std::string Combat::PreviewIntentText()const{
     if(!mods_.preview||phase!=Phase::Player)return "";
+    if(stars.enabled){
+        if(stars.resolving)return "";
+        Combat future=*this;future.player.hp=future.player.max_hp=100000;future.player.block=100000;
+        std::string text;
+        for(int round=1;round<=2;++round){
+            while(future.stars.player.size()<TurnStars)future.QueueWait();
+            if(!future.BeginStarAttack())break;
+            for(int action=0;action<6&&future.stars.resolving;++action)future.ResolveStarAction();
+            future.FinishStarRound();if(future.phase!=Phase::Player)break;
+            if(!text.empty())text+=" | ";text+="Vòng +"+std::to_string(round)+": ";
+            for(int slot=0;slot<3;++slot){if(slot)text+=" → ";text+=future.EnemyStarView(slot).name;}
+        }
+        return text;
+    }
     Combat future=*this;future.player.hp=future.player.max_hp=100000;future.player.block=100000;
     future.EndPlayer();future.ActEnemy();
     const auto next=future.IntentText();

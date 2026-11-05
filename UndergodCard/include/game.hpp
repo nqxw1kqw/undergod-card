@@ -8,11 +8,24 @@
 
 namespace undergod {
 enum class Motion { None,PlayerAttack,PlayerOther,EnemyAttack,EnemyOther };
+enum class Arrival { None,Travel,FadeOut,BlackHold,FadeIn,Fight,Deal };
 struct Pose { std::string name="idle"; float age=0; };
 struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; StatusId status=StatusId::Poison; int target=0; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
 struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
 class Game {
+    bool turn_stars_=true;
+    bool star_sequence_=false;
+    CardDef active_card_;
+    int active_actor_=-1;
+    Arrival arrival_=Arrival::None;
+    bool arrival_banner_=true;
+    float arrival_age_=0;
+    int travel_from_=-1,travel_to_=-1,pending_option_=-1;
+    void BeginArrival(bool banner=true);
+    void UpdateArrival(float dt);
+    void BeginStarMotion();
+    void FinishStarMotion();
     Motion motion_=Motion::None;
     int pending_card_=-1;
     float motion_age_=0,cinematic_age_=0;
@@ -43,7 +56,7 @@ public:
     CinematicVisual visual;
     float time=0,toast_age=0;
     std::string toast;
-    explicit Game(Config config,Timeline timeline):timeline_(std::move(timeline)),state(std::move(config)){}
+    explicit Game(Config config,Timeline timeline,bool turn_stars=true):turn_stars_(turn_stars),timeline_(std::move(timeline)),state(std::move(config)){}
     void NewRun(unsigned seed=1337,std::string class_id="chick",int challenge=0);
     void StartBossPractice(std::string enemy_id,unsigned seed=1337,std::string class_id="chick");
     bool Practice()const{return practice_;}
@@ -65,8 +78,26 @@ public:
     void SetSaveFile(std::filesystem::path file){save_file_=std::move(file);save_dirty_=false;}
     bool Save(bool notify=true);
     bool Load();
-    bool CanAct()const{return !Menu()&&motion_==Motion::None&&!cinematic_.Active()&&run.place==Place::Fight&&state.phase==Phase::Player&&!run.victory&&!run.defeat;}
-    bool Busy()const{return motion_!=Motion::None||cinematic_.Active();}
+    bool CanAct()const{return !Menu()&&!Busy()&&run.place==Place::Fight&&state.phase==Phase::Player&&!run.victory&&!run.defeat;}
+    bool Busy()const{return motion_!=Motion::None||cinematic_.Active()||arrival_!=Arrival::None||star_sequence_;}
+    bool TurnStarRules()const{return turn_stars_;}
+    Arrival ArrivalStage()const{return arrival_;}
+    float ArrivalTime()const{return arrival_age_;}
+    bool ShowingMap()const{return !Menu()&&run.place==Place::Map&&!run.victory&&!run.defeat;}
+    bool Traveling()const{return arrival_==Arrival::Travel;}
+    int TravelFrom()const{return travel_from_;}
+    int TravelTo()const{return travel_to_;}
+    float TravelProgress()const{return std::clamp(arrival_age_/.85f,0.f,1.f);}
+    float FadeOpacity()const;
+    float FightBannerX()const;
+    float DealtCards()const;
+    bool ResolvingStars()const{return star_sequence_;}
+    const CardDef& ActiveCard()const{return active_card_;}
+    int ActiveActor()const{return active_actor_;}
+    int ActiveSlot()const{return std::max(0,(state.stars.cursor-(motion_impact_?1:0))/2);}
+    bool CanAttack()const{return CanAct()&&(!turn_stars_||state.CanAttackStars());}
+    bool QueueWait();
+    bool UnqueueCard(int slot);
     bool Cinematic()const{return cinematic_.Active();}
     bool Map()const{return !Menu()&&!Busy()&&run.place==Place::Map&&!run.victory&&!run.defeat;}
     bool Reward()const{return !Busy()&&run.place==Place::Reward;}
@@ -95,9 +126,9 @@ public:
     bool UpgradeCard(int index);
     bool DrinkPotion(int index);
     bool Act(const AutoStep& step);
-    int SuggestCard()const{return undergod::SuggestCard(state);}
+    int SuggestCard()const;
     int SuggestReward()const{return undergod::SuggestReward(run,state.config);}
-    AutoStep Suggest()const{return SuggestAuto(run,state);}
+    AutoStep Suggest()const;
     void SkipCinematic();
     void Update(float dt);
     int Speed()const{return speed_;}

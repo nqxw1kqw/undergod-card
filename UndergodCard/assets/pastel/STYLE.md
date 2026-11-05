@@ -2,7 +2,9 @@
 
 Dựa trên gà vàng Shin cung cấp: dáng tròn cute, mắt đen, khăn đỏ, khiên gỗ/giáo; pastel ấm, viền than mềm, highlight kem. Pháp Sư tím, Ninja chàm/đỏ; boss và địch có thiết kế riêng cùng nét vẽ.
 
-202 PNG: 24 frame Chiến Binh, 20 Pháp Sư, 20 Ninja; 52 frame cho sáu boss (Hổ Vương có thêm action tụ lực); chín ảnh địch thường/tinh anh/Nòng Nọc; 50 icon bài; 17 di vật; sáu thuốc; bốn VFX.
+203 PNG: 24 frame Chiến Binh, 20 Pháp Sư, 20 Ninja; 52 frame cho sáu boss (Hổ Vương có thêm action tụ lực); chín ảnh địch thường/tinh anh/Nòng Nọc; 50 icon bài; 17 di vật; sáu thuốc; bốn VFX; một banner FIGHT.
+
+Banner `ui/fight.png` là ảnh ImageGen RGBA8 2172×724, nền trong suốt, chữ kem/vàng viền xanh; giữ nguyên đầu ra và render theo tỉ lệ. Banner vào từ phải, dừng giữa rồi ra trái trước khi chia bài. Không thay các asset cũ.
 
 Nhân vật RGBA 512×512, chân y=456. Icon/feather/kunai RGBA 256×256. spear.png/impact 512×512; sheet impact 2×2 phát 8 fps. Mũi lao neo (256,56), xoay khi rơi. ult_throw Chiến Binh 4 fps, hai frame cuối tay trống.
 

@@ -1,6 +1,8 @@
-# Hoàn thiện kế hoạch — v1.0.1-preview
+# Hoàn thiện kế hoạch — v1.1.0-preview
 
-2026-11-05. Giữ nhánh draft/v0.3-wip và PR #2; chưa merge main/PR #1. Các hệ thống trong mốc v0.4/v0.5/v1.0 đã có triển khai. Hai tiêu chí cần chơi thực để mở trong IMPLEMENTATION_CHECKLIST.
+Cập nhật theo yêu cầu mới: avatar đi tới điểm trên map, giữ màn đen khi đổi khu vực, ảnh FIGHT và chia bài; mỗi phe ba Turn Star, xếp ba lá rồi Attack luân phiên, xem trước bài địch bằng tooltip. Luật, chuyển đổi năng lượng/nâng cấp và tương thích bản lưu ở [TURN_STARS.md](TURN_STARS.md). Bản HTML/website giữ độc lập.
+
+2026-11-06. Giữ nhánh draft/v0.3-wip và PR #2; chưa merge main/PR #1. Các hệ thống trong mốc v0.4/v0.5/v1.0 và yêu cầu Turn Star đã có triển khai. Hai tiêu chí cần chơi thực để mở trong IMPLEMENTATION_CHECKLIST.
 
 - Ba hồi phân nhánh 13/13/15 tầng, phần thưởng/hồi HP boss, sáu boss với ngưỡng HP và cơ chế riêng.
 - Nhiều mục tiêu, chọn mục tiêu, AOE/ngẫu nhiên, summon, multi-hit và charge.
@@ -9,9 +11,9 @@
 - 17 di vật gồm đủ mười cơ chế thiết kế; sáu thuốc; thưởng 60/33/7 theo tầng hiếm, tinh anh Hiếm+, di vật không trùng.
 - Ba lớp/bộ khởi đầu/tuyệt kỹ; 45 kỹ năng; tiền meta; Thử Thách cộng dồn 1–10; 15 thành tựu.
 - Session v2/profile v1, ba RNG, sổ nhận thưởng chống trùng, ghi nguyên tử, kiểm tra đường map/pile/tham chiếu.
-- 202 PNG: ảnh riêng cho 50 bài, ba lớp, sáu boss, địch thường/tinh anh và đồ. Giữ gà Chiến Binh đã được Shin duyệt làm chuẩn; bộ ếch dùng chung cũ đã ra khỏi runtime.
+- 203 PNG: ảnh riêng cho 50 bài, ba lớp, sáu boss, địch thường/tinh anh, đồ và banner FIGHT. Giữ gà Chiến Binh đã được Shin duyệt làm chuẩn; bộ ếch dùng chung cũ đã ra khỏi runtime.
 - Bão Lông/Ảnh Phân có cinematic riêng; Sao Rơi giữ phóng lao lên trời/rơi đúng contact. Nhạc ba hồi, chín cue PCM gốc và tắt/bật lưu trong profile.
-- UI lớp/kỹ năng/thành tựu/Thử Thách/mục tiêu/khóa bài/Mana/dự báo/thưởng boss.
+- UI lớp/kỹ năng/thành tựu/Thử Thách/mục tiêu/khóa bài/dự báo/thưởng boss; hàng chờ Turn Star thay thanh năng lượng/Mana.
 
 ## Quyết định cụ thể
 
@@ -25,7 +27,7 @@ Raw/QC ở artifacts/art-v1 ngoài Git. Công cụ import chỉ tách grid/chrom
 
 ## Cần chơi thực để xác nhận
 
-Helper Computer Use vẫn lỗi native pipe, os error 2 (không tìm thấy tệp), nên chưa hoàn tất chơi tay một chiến dịch bằng chuột/phím Windows. Smoke đã chạy renderer DxLib, handler UI và audio API thật; đó là bằng chứng khác với nhập liệu hệ điều hành.
+Chưa hoàn tất chơi tay một chiến dịch bằng chuột/phím Windows. Lần kiểm tra v1.0.1 ghi nhận helper Computer Use lỗi native pipe, os error 2 (không tìm thấy tệp); lần này không kiểm tra lại helper. Smoke đã chạy renderer DxLib, handler UI và audio API thật; đó là bằng chứng khác với nhập liệu hệ điều hành.
 
 Thời lượng 25–35 phút và tỉ lệ thắng 40–50% của người mới cần mẫu chơi thực. Bot không chứng minh hai con số đó. Đọc VALIDATION.md để xem số liệu theo lớp và điều kiện đo.
 

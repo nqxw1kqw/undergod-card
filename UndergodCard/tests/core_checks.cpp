@@ -13,8 +13,11 @@ void Settle(Game& game){for(int i=0;i<120&&game.Busy();++i)game.Update(.1f);}
 void RunChecks(const Config&,const Timeline&);
 void WorldChecks(const Config&,const Timeline&);
 void TigerChecks(const Config&,const Timeline&);
+void StarChecks(const Config&,const Timeline&);
+void SimulateStarRuns(const Config&,const Timeline&,int);
 void SimulateRuns(const Config&,const Timeline&,int);
 int main(int argc,char** argv){
+    std::cout<<std::unitbuf;
     std::filesystem::current_path(std::filesystem::absolute(argv[0]).parent_path());
     const auto config=LoadConfig();const auto timeline=LoadTimeline();
     {
@@ -56,15 +59,15 @@ int main(int argc,char** argv){
         for(float t:{0.f,900.f,2600.f,3400.f}){hits=ends=0;player.Start(timeline,[](const Step&){},[&]{++hits;},[&]{++ends;});player.Advance(t);player.Skip();player.Advance(9999);Check(hits==1&&ends==1,"skip before or after impact is idempotent");}
     }
     {
-        Game g(config,timeline);Open(g);const int opening_hp=g.state.enemy.hp;g.Play(0);Check(g.Busy()&&g.state.enemy.hp==opening_hp,"lunge defers resolution");Tick(g,.24f);Check(g.state.enemy.hp==opening_hp,"windup has no damage");Tick(g,.11f);Check(g.state.enemy.hp==opening_hp-6&&g.state.energy==2,"contact applies card");g.Play(0);Check(g.state.enemy.hp==opening_hp-6,"animation locks input");Drain(g);
+        Game g(config,timeline,false);Open(g);const int opening_hp=g.state.enemy.hp;g.Play(0);Check(g.Busy()&&g.state.enemy.hp==opening_hp,"lunge defers resolution");Tick(g,.24f);Check(g.state.enemy.hp==opening_hp,"windup has no damage");Tick(g,.11f);Check(g.state.enemy.hp==opening_hp-6&&g.state.energy==2,"contact applies card");g.Play(0);Check(g.state.enemy.hp==opening_hp-6,"animation locks input");Drain(g);
         g.EndTurn();Tick(g,.8f);Check(g.Busy()&&g.state.turn==2,"controller holds lock through enemy recovery");Drain(g);
         Open(g);g.state.rage=100;g.state.enemy.hp=120;g.state.enemy.block=6;g.Ultimate();Tick(g,2.59f);Check(g.state.enemy.hp==120&&g.Cinematic(),"cinematic delay");Tick(g,.02f);Check(g.state.enemy.hp==86,"cinematic callback applies damage");g.SkipCinematic();Check(g.CanAct()&&g.visual.zoom==1&&g.visual.dim==0&&g.state.enemy.hp==86,"skip cleans camera and unlocks once");
         Open(g);g.state.rage=100;g.state.enemy.hp=10;g.Ultimate();g.SkipCinematic();Check(g.Reward()&&!g.Result()&&g.state.phase==Phase::Won,"skipped lethal ultimate opens a card reward");
         Open(g);g.state.rage=100;g.Ultimate();Open(g);Tick(g,5);Check(g.state.enemy.hp==g.state.enemy.max_hp&&g.CanAct()&&g.state.rage==0,"reset cancels pending cinematic safely");
-        Game a(config,timeline),b(config,timeline);a.Play(0);b.Play(0);Tick(a,10);for(int i=0;i<100;++i)Tick(b,.1f);Check(a.state.enemy.hp==b.state.enemy.hp&&a.state.energy==b.state.energy,"frame cadence does not alter card outcome");
+        Game a(config,timeline,false),b(config,timeline,false);a.Play(0);b.Play(0);Tick(a,10);for(int i=0;i<100;++i)Tick(b,.1f);Check(a.state.enemy.hp==b.state.enemy.hp&&a.state.energy==b.state.energy,"frame cadence does not alter card outcome");
     }
     {
-        Game g(config,timeline);g.state.rage=100;g.Ultimate();Tick(g,1.5f);
+        Game g(config,timeline,false);g.state.rage=100;g.Ultimate();Tick(g,1.5f);
         Check(g.visual.spear.visible&&g.visual.spear.falling&&std::abs(g.visual.spear.age-.05f)<.001f&&std::abs(g.poses[0].age-1.25f)<.001f,"skipped frames sample spear trajectory and throw pose at absolute time");
         g.SkipCinematic();Open(g);const int blocked_hp=g.state.enemy.hp;g.state.enemy.block=10;g.Play(0);Tick(g,.4f);
         Check(g.state.enemy.hp==blocked_hp&&!g.popups.empty()&&g.popups.back().blocked&&g.popups.back().amount==6,"fully blocked attack shows absorbed damage instead of HP loss");
@@ -75,7 +78,7 @@ int main(int argc,char** argv){
         for(unsigned seed=0;seed<100;++seed){Combat c(legacy_policy);c.player.hp=c.player.max_hp=10000;opening&=c.intent.attack;int guards=0;
             for(int turn=0;turn<20;++turn){guards=c.intent.attack?0:guards+1;streak_ok&=guards<=1;if(c.intent.attack)range_ok&=c.intent.value>=8&&c.intent.value<=13;c.EndPlayer();c.ActEnemy();}}
         Check(opening,"legacy boss opens with attack across seeds");Check(streak_ok,"legacy boss never spends consecutive turns guarding");Check(range_ok,"legacy boss attack damage stays within configured range");
-        Game g(config,timeline);const int incoming=g.state.intent.value;g.EndTurn();Tick(g,.69f);
+        Game g(config,timeline,false);const int incoming=g.state.intent.value;g.EndTurn();Tick(g,.69f);
         Check(g.poses[1].name=="attack"&&Game::EnemyHome+g.ActorOffset(true)-Game::PlayerHome<=175,"boss moves into contact range");
         Check(g.state.player.hp==50,"boss windup does not apply damage early");Tick(g,.09f);
         Check(g.state.player.hp==50-incoming&&g.poses[0].name=="hit","boss impact damages player and starts hit reaction");Tick(g,.6f);
@@ -85,7 +88,7 @@ int main(int argc,char** argv){
     }
     {
         float durations[3]{};bool same_turn=true;Combat turn_reference(config);
-        for(int speed=1;speed<=3;++speed){Game g(config,timeline);Open(g);g.SetSpeed(speed);g.Play(0);
+        for(int speed=1;speed<=3;++speed){Game g(config,timeline,false);Open(g);g.SetSpeed(speed);g.Play(0);
             for(int i=0;i<300&&g.Busy();++i){g.Update(.01f);durations[speed-1]+=.01f;}
             Check(!g.Busy()&&g.state.enemy.hp==g.state.enemy.max_hp-6&&g.state.energy==2,"speed changes duration without altering card result");
             g.EndTurn();for(int i=0;i<500&&g.Busy();++i)g.Update(.01f);
@@ -95,12 +98,12 @@ int main(int argc,char** argv){
         Check(same_turn,"all speeds preserve boss damage, next hand, energy and RNG intent");
         Check(durations[0]>.95f&&durations[0]<1.05f,"default x1 has a slower readable action");
         Check(std::abs(durations[0]-durations[1]*2)<.035f&&std::abs(durations[0]-durations[2]*3)<.04f,"x2 and x3 scale the whole action clock");
-        Game g(config,timeline);Check(g.Speed()==1&&!g.SetSpeed(0)&&!g.SetSpeed(4)&&g.Speed()==1,"speed defaults to x1 and rejects invalid values");
+        Game g(config,timeline,false);Check(g.Speed()==1&&!g.SetSpeed(0)&&!g.SetSpeed(4)&&g.Speed()==1,"speed defaults to x1 and rejects invalid values");
         g.SetSpeed(3);Open(g);Check(g.Speed()==1,"new run starts at slow x1");
     }
     {
         bool flight=true,impact=true,cleanup=true,skips=true;
-        for(int speed=1;speed<=3;++speed){Game g(config,timeline);g.SetSpeed(speed);g.state.rage=100;g.state.enemy.hp=120;g.state.enemy.block=6;g.Ultimate();
+        for(int speed=1;speed<=3;++speed){Game g(config,timeline,false);g.SetSpeed(speed);g.state.rage=100;g.state.enemy.hp=120;g.state.enemy.block=6;g.Ultimate();
             Tick(g,.7f);flight&=!g.visual.spear.visible&&g.poses[0].name=="ult_throw";
             Tick(g,.1f);flight&=g.visual.spear.visible&&!g.visual.spear.falling&&g.SpearTip().second<110;
             Tick(g,1.f);flight&=g.visual.spear.falling&&std::abs(g.SpearTip().first-Game::EnemyHome)<.01f;
@@ -112,7 +115,7 @@ int main(int argc,char** argv){
         Check(flight,"throw releases spear, rises into sky then falls over boss at every speed");
         Check(impact,"damage occurs exactly at spear contact at every speed");
         Check(cleanup&&skips,"normal end and all skip phases clean spear and resolve once");
-        Game g(config,timeline);g.state.rage=100;g.state.enemy.hp=120;g.Ultimate();Tick(g,2.f);const auto before=g.SpearTip();g.SetSpeed(3);
+        Game g(config,timeline,false);g.state.rage=100;g.state.enemy.hp=120;g.Ultimate();Tick(g,2.f);const auto before=g.SpearTip();g.SetSpeed(3);
         Check(g.SpearTip()==before&&g.state.enemy.hp==120,"changing speed mid-flight causes no teleport or damage");
         Tick(g,.61f);Check(g.state.enemy.hp==80,"changed speed still reaches the single impact");
         Open(g);Check(!g.visual.spear.visible&&g.Speed()==1&&g.CanAct(),"reset cancels projectile and restores default speed");
@@ -163,7 +166,7 @@ int main(int argc,char** argv){
     }
     {
         auto corridor=config;corridor.map_weights={100,0,0,0,0};
-        Game g(corridor,timeline);Open(g,1337);g.state.player.hp=37;g.state.player.block=9;g.state.rage=40;g.state.enemy.hp=1;g.state.hand={"punch"};g.state.energy=1;g.Play(0);Drain(g);
+        Game g(corridor,timeline,false);Open(g,1337);g.state.player.hp=37;g.state.player.block=9;g.state.rage=40;g.state.enemy.hp=1;g.state.hand={"punch"};g.state.energy=1;g.Play(0);Drain(g);
         Check(g.Reward()&&g.run.rewards.size()==3&&g.run.hp==37&&g.run.rage==48,"winning a fight offers three cards and banks hp");
         std::set<std::string> offer(g.run.rewards.begin(),g.run.rewards.end());Check(offer.size()==3,"reward choices are distinct");
         bool reward_cards=true;for(const auto& id:g.run.rewards){const auto& card=g.state.Definition(id);reward_cards&=card.rarity!="starter"&&!card.upgraded;}Check(reward_cards,"starter cards stay out of the reward pool");
@@ -184,7 +187,7 @@ int main(int argc,char** argv){
         Check(map.front().kind==NodeKind::Combat&&map.front().encounter_id=="froglet","the first path starts with Ếch Con");
     }
     {
-        Game g(config,timeline);g.NewRun(1);g.run.hp=20;g.run.gold=30;g.run.place=Place::Event;g.run.event_choices=config.events[0].choices;
+        Game g(config,timeline,false);g.NewRun(1);g.run.hp=20;g.run.gold=30;g.run.place=Place::Event;g.run.event_choices=config.events[0].choices;
         g.ChooseEvent(1);Check(g.Map()&&g.run.hp==35,"the well heals when you drink");
         g.NewRun(1);g.run.place=Place::Shop;g.run.gold=200;g.run.shop.push_back({Ware::Card,"peck",50,false});
         Check(g.Buy(0)&&g.run.gold==150&&g.run.deck.back()=="peck"&&g.run.shop[0].sold,"the shop sells a card");
@@ -196,7 +199,7 @@ int main(int argc,char** argv){
         Check(FindCard(config,"punch+").damage==9&&FindCard(config,"shield+").block==8,"upgrades raise the printed numbers");
     }
     {
-        Game g(config,timeline);g.NewRun(1337);int rewards=0;std::vector<int> carried;
+        Game g(config,timeline,false);g.NewRun(1337);int rewards=0;std::vector<int> carried;
         for(int step=0;step<900&&!g.Result();++step){
             if(g.Busy()){Settle(g);continue;}
             if(g.Reward())carried.push_back(g.state.player.hp);
@@ -216,6 +219,8 @@ int main(int argc,char** argv){
     RunChecks(config,timeline);
     WorldChecks(config,timeline);
     TigerChecks(config,timeline);
+    try{StarChecks(config,timeline);}catch(const std::exception& error){std::cout<<"TURN_STAR_EXCEPTION "<<error.what()<<"\n";Check(false,"Turn Star tests must not throw");}
     if(argc==3&&std::string(argv[1])=="--simulate")SimulateRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));
+    if(argc==3&&std::string(argv[1])=="--simulate-stars")try{SimulateStarRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));}catch(const std::exception& error){std::cout<<"STAR_CAMPAIGN_EXCEPTION "<<error.what()<<"\n";Check(false,"Turn Star campaign must not throw");}
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

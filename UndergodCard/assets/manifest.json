@@ -1,6 +1,6 @@
 {
   "player": "chick",
-  "runtime_pngs": 202,
+  "runtime_pngs": 203,
   "files": [
     {
       "path": "assets/pastel/cards/arcane_storm.png",
@@ -1617,6 +1617,14 @@
         512
       ],
       "sha256": "09895d7e5a0259185ca3bd97ac425be7fa3c7f6742d12d422dc5667bf7d267ef"
+    },
+    {
+      "path": "assets/pastel/ui/fight.png",
+      "size": [
+        2172,
+        724
+      ],
+      "sha256": "9910e2a6e40ce997d79cf77eeebf471a1b4cf507342f743bdee028c239d54c7b"
     }
   ],
   "audio_files": [

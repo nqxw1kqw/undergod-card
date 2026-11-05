@@ -88,8 +88,9 @@ void Combat::BeginPlayer(){
     bool phased=false;
     TickPoison(false,phased);
     CheckEnd();if(phase==Phase::Lost||phase==Phase::Won)return;
-    energy=std::clamp(config.balance.energy+mods_.energy+live.next_energy,0,10);live.next_energy=0;
-    Draw(std::clamp(config.balance.draw+mods_.draw,1,10));
+    const int prepared=live.next_energy;
+    energy=std::clamp(config.balance.energy+mods_.energy+prepared,0,10);live.next_energy=0;
+    Draw(std::clamp(config.balance.draw+mods_.draw+(stars.enabled?prepared+mods_.energy*3+(mods_.mana?std::max(0,mods_.max_mana-3):0):0),1,10));
     if(turn==1) Cast(mods_.combat_start);
     if(phase==Phase::Player) Cast(mods_.turn_start);
     if(live.curse_next&&!hand.empty()){
@@ -193,7 +194,7 @@ void Combat::ApplyOne(const Effect& effect,bool from_card){
         Draw(scaled.amount);
         break;
     case EffectOp::Energy:
-        energy=std::min(10,energy+scaled.amount);
+        if(stars.enabled)Draw(scaled.amount);else energy=std::min(10,energy+scaled.amount);
         break;
     case EffectOp::Rage:
         rage=std::min(config.balance.rage_max,rage+scaled.amount);
@@ -229,7 +230,7 @@ void Combat::ResolveIntent(){
     if(action.kind==IntentKind::Summon){Summon(action.summon_id,std::max(1,action.hits));return;}
     if(action.kind==IntentKind::Curse){live.curse_next=true;return;}
     if(action.kind==IntentKind::Mimic&&!action.card_id.empty()){
-        const auto& card=Definition(action.card_id);
+        const auto card=StarCardView(Definition(action.card_id));
         for(const auto& effect:card.effects)for(int n=0;n<effect.times&&player.hp>0&&enemy.hp>0;++n){
             if(effect.op==EffectOp::Damage)Hit(false,ScaleDamage(effect.amount*multiplier,enemy.status,player.status),effect.pierce);
             else if(effect.op==EffectOp::Block)enemy.block+=effect.amount;
@@ -268,7 +269,7 @@ void Combat::ResolveIntent(){
 
 void Combat::BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck,CombatMods mods){
     mods_=std::move(mods);
-    definition_=Scaled(enemy_def,mods_);live={};adds.clear();exhaust.clear();created.clear();attacker_=0;
+    definition_=Scaled(enemy_def,mods_);live={};stars={};reserved_play_=false;adds.clear();exhaust.clear();created.clear();attacker_=0;
     live.airborne=enemy_def.airborne;
     enemy_id_=enemy_def.id;
     shuffle_rng_.Seed(seed);
@@ -310,6 +311,7 @@ const CardDef& Combat::Definition(const std::string& id) const {
 
 void Combat::Draw(int count){
     for(int i=0;i<count;++i){
+        if(stars.enabled&&hand.size()>=10)break;
         if(draw.empty()){draw=std::move(discard); discard.clear(); Shuffle(draw);}
         if(draw.empty()) break;
         hand.push_back(draw.back());
@@ -318,16 +320,16 @@ void Combat::Draw(int count){
 }
 
 bool Combat::CanPlay(int index) const {
-    return phase==Phase::Player&&index>=0&&index<int(hand.size())&&index!=live.locked&&!Definition(hand[index]).unplayable&&energy+live.mana>=Definition(hand[index]).cost;
+    return phase==Phase::Player&&(!stars.enabled||reserved_play_)&&index>=0&&index<int(hand.size())&&index!=live.locked&&!Definition(hand[index]).unplayable&&(reserved_play_||energy+live.mana>=Definition(hand[index]).cost);
 }
 
 bool Combat::Play(int index){
     if(!CanPlay(index)) return false;
     const auto id=hand[index];
-    const auto& card=Definition(id);
+    const auto card=StarCardView(Definition(id));
     hand.erase(hand.begin()+index);
     if(live.locked>index)--live.locked;
-    const int normal=std::min(energy,card.cost);energy-=normal;live.mana-=card.cost-normal;
+    if(!reserved_play_){const int normal=std::min(energy,card.cost);energy-=normal;live.mana-=card.cost-normal;}
     ++live.played_turn;live.card_bonus=0;live.card_multiplier=1;
     if(card.damage>0){
         ++live.attacks_turn;++live.attack_count;
@@ -361,6 +363,7 @@ bool Combat::Play(int index){
 }
 
 bool Combat::EndPlayer(){
+    if(stars.enabled)return false;
     if(phase!=Phase::Player) return false;
     if(mods_.mana)live.mana=std::min(mods_.max_mana,live.mana+energy);
     player.status.strength=std::max(0,player.status.strength-live.temp_strength);live.temp_strength=0;
@@ -432,7 +435,7 @@ bool Combat::UltimateImpact(){
     ++live.ultimates;
     if(mods_.ultimate=="shadow"){
         const auto cards=live.history;live.card_bonus=0;live.card_multiplier=1;
-        for(const auto& id:cards){const auto& card=Definition(id);for(const auto& effect:card.effects){auto replay=effect;replay.ranged|=card.ranged;int times=effect.times;
+        for(const auto& id:cards){const auto card=StarCardView(Definition(id));for(const auto& effect:card.effects){auto replay=effect;replay.ranged|=card.ranged;int times=effect.times;
             if(effect.op==EffectOp::Damage){replay.amount+=mods_.ultimate_bonus+mods_.bonus_damage;if(mods_.comet){replay.amount=replay.amount*60/100;times*=2;}}
             for(int n=0;n<times&&phase!=Phase::Won&&phase!=Phase::Lost;++n)ApplyOne(replay,effect.op!=EffectOp::Damage);
         }}
@@ -511,7 +514,7 @@ CombatSnapshot Combat::Snapshot()const{
     s.energy=energy;s.rage=rage;s.turn=turn;s.guard_streak=guard_streak_;s.phase_index=phase_index_;
     s.shuffle_rng=shuffle_rng_.State();s.intent_rng=intent_rng_.State();s.phase_opening=phase_opening_;
     s.draw=draw;s.hand=hand;s.discard=discard;
-    s.target_rng=target_rng_.State();s.live=live;s.adds=adds;s.exhaust=exhaust;s.created=created;
+    s.target_rng=target_rng_.State();s.live=live;s.adds=adds;s.exhaust=exhaust;s.created=created;s.stars=stars;
     return s;
 }
 
@@ -538,13 +541,24 @@ void Combat::Restore(const CombatSnapshot& s,CombatMods mods){
         return true;
     };
     if(!valid_intent(s.intent))throw std::runtime_error("Invalid saved intent reference");
+    if(s.stars.resolving||s.stars.cursor<0||s.stars.cursor>6||s.stars.player.size()>3||s.stars.enemy.size()>3)throw std::runtime_error("Invalid Turn Star plan");
+    if(!s.stars.enabled&&(!s.stars.player.empty()||!s.stars.enemy.empty()))throw std::runtime_error("Disabled Turn Star plan has cards");
+    if(s.stars.enabled&&s.phase==Phase::Player&&(s.stars.enemy.size()!=3||s.stars.cursor!=0))throw std::runtime_error("Incomplete Turn Star preview");
+    std::vector<int> queued;
+    for(const auto& q:s.stars.player){
+        if(q.target<0||q.target>int(s.adds.size())||q.hand_index< -1||q.hand_index>=int(s.hand.size()))throw std::runtime_error("Invalid queued player card");
+        if(!q.id.empty())Definition(q.id);
+        if(q.hand_index>=0){if(q.id!=s.hand[q.hand_index]||q.hand_index==s.live.locked||Definition(s.hand[q.hand_index]).unplayable||std::find(queued.begin(),queued.end(),q.hand_index)!=queued.end())throw std::runtime_error("Invalid duplicate or locked queued card");queued.push_back(q.hand_index);}
+        else if(s.phase==Phase::Player&&!q.id.empty())throw std::runtime_error("Queued card has no hand reservation");
+    }
+    for(const auto& q:s.stars.enemy)if(q.actor<0||q.actor>int(s.adds.size())||!valid_intent(q.action))throw std::runtime_error("Invalid queued enemy card");
     if(!s.live.slots.empty()){auto slots=s.live.slots;std::sort(slots.begin(),slots.end());if(slots.size()!=s.adds.size()+1)throw std::runtime_error("Invalid target slots");for(int i=0;i<int(slots.size());++i)if(slots[i]!=i)throw std::runtime_error("Invalid target permutation");}
     for(const auto& a:s.adds){if(!valid_fighter(a.fighter)||!valid_intent(a.intent))throw std::runtime_error("Invalid saved summon");bool known=false;for(const auto& e:config.bestiary)known|=e.id==a.id;if(!known)throw std::runtime_error("Unknown saved summon");}
     for(const auto* pile:{&s.draw,&s.hand,&s.discard,&s.exhaust,&s.created}){if(pile->size()>1000)throw std::runtime_error("Saved deck too large");for(const auto& id:*pile)Definition(id);}
     phases_=std::move(phases);enemy_id_=s.enemy_id;role_=found->role;mods_=std::move(mods);
     player=s.player;enemy=s.enemy;phase=s.phase;intent=s.intent;energy=s.energy;rage=s.rage;turn=s.turn;
     guard_streak_=s.guard_streak;phase_index_=s.phase_index;phase_opening_=s.phase_opening;ultimate_pending_=false;
-    definition_=scaled;live=s.live;adds=s.adds;exhaust=s.exhaust;created=s.created;target_rng_.Seed(s.target_rng);
+    definition_=scaled;live=s.live;stars=s.stars;reserved_play_=false;adds=s.adds;exhaust=s.exhaust;created=s.created;target_rng_.Seed(s.target_rng);
     shuffle_rng_.Seed(s.shuffle_rng);intent_rng_.Seed(s.intent_rng);draw=s.draw;hand=s.hand;discard=s.discard;events.clear();
 }
 }

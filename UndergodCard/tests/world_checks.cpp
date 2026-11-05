@@ -101,7 +101,7 @@ void WorldChecks(const Config& config,const Timeline& timeline){
         auto vulnerable_mods=c.Mods();vulnerable_mods.ultimate_vulnerable=2;c.BeginEncounter(FindEnemy(config,"elder_toad"),42,50,50,100,StartingDeck(config),vulnerable_mods);c.enemy.hp=c.enemy.max_hp=1000;c.StartUltimate();c.FinishUltimate();Check(c.enemy.hp==952&&c.enemy.status.vulnerable==2,"ultimate vulnerable applies once after both meteor hits");
     }
     {
-        Game g(config,timeline);EventAt(g,"forge");g.ChooseEvent(0);Check(g.CardSelection()&&g.ChooseCard(0)&&g.run.deck[0]=="punch+","forge opens real upgrade selection");
+        Game g(config,timeline,false);EventAt(g,"forge");g.ChooseEvent(0);Check(g.CardSelection()&&g.ChooseCard(0)&&g.run.deck[0]=="punch+","forge opens real upgrade selection");
         EventAt(g,"forge");g.ChooseEvent(1);const auto n=g.run.deck.size();Check(g.ChooseCard(0)&&g.run.deck.size()==n-1,"forge removes selected card");
         EventAt(g,"forge");g.ChooseEvent(2);Check(g.run.hp==42&&RunBonus(g.run,"spear_bonus")==1,"forge spear trade pays eight HP");
         EventAt(g,"egg");g.ChooseEvent(0);Check(g.run.deck.size()==12&&g.run.deck.back()=="mud"&&FindCard(config,g.run.deck[10]).rarity=="legendary","egg grants legendary and curse");
@@ -129,12 +129,12 @@ void WorldChecks(const Config& config,const Timeline& timeline){
         run.run_id="world-once";run.victory=true;run.defeated_bosses={"frog","hawk","fox","undergod"};run.metrics["damage"]=1200;const int before=p.feathers;Check(SettleProfile(p,run,config)&&p.feathers>before&&p.highest_challenge==0&&!p.achievements.empty(),"campaign settlement unlocks feathers achievements and challenge one");const int paid=p.feathers;run.meta_claimed=false;Check(!SettleProfile(p,run,config)&&p.feathers==paid,"reload cannot duplicate result currency");
         for(int level=1;level<=10;++level){RunState harder;StartRun(harder,c,7,"chick",level);harder.active_encounter_id="undergod";const auto m=ModsFor(harder,config);Check(m.enemy_hp_percent>=110&&m.enemy_damage>=(level>1?1:0),"challenge tiers have cumulative gameplay penalties");}
         RunState highest;StartRun(highest,c,8,"chick",10);highest.active_encounter_id="undergod";const auto highest_mods=ModsFor(highest,config);highest.hp=10;Check(highest.max_hp==45&&highest.gold==25&&highest.potion_slots==2&&highest_mods.enemy_hp_percent==135&&highest_mods.enemy_damage==4&&RestHealAmount(highest,config)==11,"challenge ten combines HP gold slots recovery and boss penalties");
-        bool ended=true;for(const auto& character:config.classes)for(int level=1;level<=10;++level){Game hard(config,timeline);hard.NewRun(1000+level,character.id,level);for(int n=0;n<4000&&!hard.Result();++n){const auto step=hard.Suggest();if(step.kind==AutoKind::None)break;hard.Act(step);Settle(hard);}ended&=hard.Result();}Check(ended,"all three classes reach a result at every challenge tier");
+        bool ended=true;for(const auto& character:config.classes)for(int level=1;level<=10;++level){Game hard(config,timeline,false);hard.NewRun(1000+level,character.id,level);for(int n=0;n<4000&&!hard.Result();++n){const auto step=hard.Suggest();if(step.kind==AutoKind::None)break;hard.Act(step);Settle(hard);}ended&=hard.Result();}Check(ended,"all three classes reach a result at every challenge tier");
         std::error_code ignored;std::filesystem::remove(profile_file,ignored);
     }
     {
         // Save at each settled decision, especially act transitions and new event states.
-        Game g(config,timeline),h(config,timeline);g.NewRun(1337);g.SetSaveFile("artifacts/world-run.json");h.SetSaveFile("artifacts/world-run.json");
+        Game g(config,timeline,false),h(config,timeline,false);g.NewRun(1337);g.SetSaveFile("artifacts/world-run.json");h.SetSaveFile("artifacts/world-run.json");
         bool okay=true;int decisions=0,actmask=0,places=0;
         for(int n=0;n<2000&&!g.Result();++n){
             actmask|=1<<g.run.act;places|=1<<int(g.run.place);const auto action=g.Suggest();if(action.kind==AutoKind::None){okay=false;break;}

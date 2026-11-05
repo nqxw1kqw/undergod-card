@@ -4,7 +4,7 @@
 namespace undergod {
 enum class Place { Map, Fight, Reward, Event, Shop, Rest, RelicReward, CardSelect, RelicSelect };
 enum class Ware { Card, Relic, Potion };
-enum class AutoKind { None, Node, Reward, Event, Buy, Remove, Leave, Heal, Upgrade, Potion, Play, EndTurn, Ultimate, Relic, SelectCard, TradeRelic, Target };
+enum class AutoKind { None, Node, Reward, Event, Buy, Remove, Leave, Heal, Upgrade, Potion, Play, EndTurn, Ultimate, Relic, SelectCard, TradeRelic, Target, Wait };
 
 struct MapNode {
     NodeKind kind=NodeKind::Combat;

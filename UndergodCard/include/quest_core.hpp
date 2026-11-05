@@ -175,6 +175,14 @@ struct EnemyUnit {
     Intent intent;
     bool illusion=false;
 };
+struct StarPlayerCard { int hand_index=-1,target=0; std::string id; };
+struct StarEnemyCard { int actor=0; Intent action; bool wait=false; };
+struct TurnStarPlan {
+    bool enabled=false,resolving=false;
+    int cursor=0;
+    std::vector<StarPlayerCard> player;
+    std::vector<StarEnemyCard> enemy;
+};
 struct BattleRuntime {
     int target=0,mana=0,locked=-1,retain_turns=0,temp_strength=0,next_energy=0,thorns=0;
     int double_attack=0,end_block=0,ult_discount=0,revives=0,flight_damage=0,land_turns=0;
@@ -200,6 +208,7 @@ struct CombatSnapshot {
     BattleRuntime live;
     std::vector<EnemyUnit> adds;
     std::vector<std::string> exhaust,created;
+    TurnStarPlan stars;
 };
 
 class Combat {
@@ -210,6 +219,12 @@ class Combat {
     std::string enemy_id_;
     EnemyDef definition_;
     int attacker_=0;
+    bool reserved_play_=false;
+    int star_phase_start_=0;
+    int star_curses_=0;
+    std::vector<bool> star_enemy_started_;
+    StatusSet star_player_decay_,star_enemy_decay_;
+    std::vector<StatusSet> star_add_decay_;
     std::vector<PhaseDef> phases_;
     void Shuffle(std::vector<std::string>& pile);
     void RollIntent();
@@ -239,6 +254,7 @@ public:
     BattleRuntime live;
     std::vector<EnemyUnit> adds;
     std::vector<std::string> exhaust,created;
+    TurnStarPlan stars;
     explicit Combat(Config c);
     void Reset(uint32_t seed=1337);
     void BeginEncounter(const EnemyDef& enemy_def,uint32_t seed,int hp,int max_hp,int kept_rage,const std::vector<std::string>& deck,CombatMods mods={});
@@ -250,7 +266,7 @@ public:
     std::string TargetName(int index)const;
     std::string Sprite(int index=0)const;
     int UltimateCost()const;
-    bool CanUltimate()const{return phase==Phase::Player&&rage>=UltimateCost()&&(mods_.ultimate!="shadow"||!live.history.empty());}
+    bool CanUltimate()const{return phase==Phase::Player&&!stars.resolving&&rage>=UltimateCost()&&(mods_.ultimate!="shadow"||!live.history.empty());}
     std::string PreviewIntentText()const;
     const CombatMods& Mods()const{return mods_;}
     const std::string& EnemyId()const{return enemy_id_;}
@@ -260,6 +276,20 @@ public:
     void Draw(int count);
     bool CanPlay(int index) const;
     bool Play(int index);
+    void EnableTurnStars();
+    bool CanQueueStar(int index)const;
+    bool QueueStar(int index);
+    bool QueueWait();
+    bool UnqueueStar(int slot);
+    bool IsQueuedStar(int index)const;
+    bool CanAttackStars()const;
+    bool BeginStarAttack();
+    bool ResolveStarAction();
+    void FinishStarRound();
+    void BuildEnemyStars();
+    CardDef StarCardView(const CardDef& card,bool force=false)const;
+    CardDef EnemyStarView(int slot)const;
+    static constexpr int TurnStars=3;
     bool EndPlayer();
     bool ActEnemy();
     bool StartUltimate();

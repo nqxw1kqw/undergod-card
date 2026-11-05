@@ -31,7 +31,7 @@ void TigerChecks(const Config& config,const Timeline& timeline){
     int bosses=0;for(const auto& e:config.bestiary)bosses+=e.role=="boss";bool achievement=false;for(const auto& a:config.achievements)if(a.id=="all_bosses")achievement=a.threshold==bosses&&bosses==6;Check(achievement,"all-boss achievement includes the sixth boss");
 
     const std::filesystem::path session="artifacts/tiger-session.json",profile="artifacts/tiger-profile.json";
-    Game g(config,timeline);g.SetSaveFile(session);g.SetProfileFile(profile);g.profile.feathers=100;g.NewRun(42);Check(g.Save(),"practice fixture has a normal saved campaign");
+    Game g(config,timeline,false);g.SetSaveFile(session);g.SetProfileFile(profile);g.profile.feathers=100;g.NewRun(42);Check(g.Save(),"practice fixture has a normal saved campaign");
     const auto saved_session=Read(session),saved_profile=Read(profile);const auto counter=g.profile.next_run;const int feathers=g.profile.feathers;
     g.StartBossPractice("tiger",1337);Check(g.Practice()&&g.CanAct()&&g.state.EnemyId()=="tiger"&&g.state.enemy.hp==200,"boss practice opens the real tiger fight");Check(g.run.potions.size()==2&&FindCard(config,g.run.deck.front()).upgraded,"practice supplies upgraded starter deck and two potions");Check(!g.Save()&&Read(session)==saved_session,"practice cannot replace the real campaign save");
     Check(!g.BuySkill("chick_spear_1")&&g.profile.feathers==feathers,"practice cannot spend persistent skill currency");

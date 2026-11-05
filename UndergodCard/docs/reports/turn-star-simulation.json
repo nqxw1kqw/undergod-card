@@ -1,0 +1,17 @@
+{
+  "class_wins": [
+    37,
+    18,
+    33
+  ],
+  "losses": 212,
+  "losses_by_act": [
+    52,
+    73,
+    87
+  ],
+  "rules": "turn-stars",
+  "runs": 300,
+  "stalls": 0,
+  "wins": 88
+}

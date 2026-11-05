@@ -406,5 +406,15 @@
         "characters/char_tiger_ult_charge_3.png"
       ]
     }
-  ]
+  ],
+  "fight_banner": {
+    "tool": "built-in image_gen",
+    "prompt": "Use case: logo-brand. Asset type: transparent PNG game battle-start word banner for a warm pastel hand-painted fantasy card game featuring a yellow chick warrior and cute animal bosses. Primary request: one standalone word, exactly FIGHT (letters F I G H T), all uppercase, perfectly legible. Broad horizontal composition with generous transparent padding on all sides. Typography: large bold friendly chunky slightly forward-leaning fantasy serif lettering, rounded hand-inked edges, warm ivory/cream faces, a muted honey-gold inner bevel and thick dark forest-green outline with a thin soft dark drop shadow. Polished hand-painted 2D game lettering that reads at 560x180 display size. Restrained sage, cream and warm gold palette. Text only; no creatures, no backdrop, no frame, no flourishes, no additional words, no watermark. True transparent background with preserved alpha; do not draw a black or white rectangular backdrop. Keep all five letters complete, separate and centered without clipping.",
+    "source": "exec-7cdefb51-6151-4f76-ae31-d4f5b3f21f60.png",
+    "source_sha256": "9910e2a6e40ce997d79cf77eeebf471a1b4cf507342f743bdee028c239d54c7b",
+    "exports": [
+      "assets/pastel/ui/fight.png"
+    ],
+    "note": "Original transparent output, copied without editing."
+  }
 }

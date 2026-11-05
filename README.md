@@ -1,14 +1,15 @@
-# undergod-card — v1.0.1-preview
+# undergod-card — v1.1.0-preview
 
-Game thẻ bài roguelike bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Nhánh draft/v0.3-wip hiện triển khai các mốc v0.4, v0.5 và phần hoàn thiện trong kế hoạch.
+Game thẻ bài roguelike bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Nhánh draft/v0.3-wip bổ sung luật [ba Turn Star](UndergodCard/docs/TURN_STARS.md), di chuyển avatar trên map, chuyển cảnh đen, ảnh FIGHT và chia bài có hoạt ảnh.
 
 ![Ba lớp trong bản DxLib](UndergodCard/docs/images/classes.png)
 
 - Ba hồi 13 / 13 / 15 tầng, map phân nhánh theo seed; sáu boss có cơ chế riêng.
+- Xếp ba lá rồi Attack: ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3. Kế hoạch địch hiện sẵn và có tooltip.
 - 50 lá gốc và 48 bản nâng cấp: Tiêu hao, Giữ giáp, Xuyên giáp, năng lực, hồi sinh, lời nguyền.
 - 12 sự kiện thực, shop, nghỉ, 17 di vật và sáu thuốc.
 - Chiến Binh, Pháp Sư, Ninja; 45 kỹ năng, Lông Vũ lưu giữa run, Thử Thách 1–10 và 15 thành tựu.
-- 202 PNG pastel, nhạc ba hồi và chín cue âm thanh; cinematic riêng cho ba tuyệt kỹ.
+- 203 PNG pastel, gồm ảnh chữ FIGHT nền trong suốt; nhạc ba hồi và chín cue âm thanh, cinematic ba tuyệt kỹ.
 - Lưu/tải cả chiến dịch, ba RNG, triệu hồi, năng lực và lịch sử bài; profile riêng.
 
 ## Chạy và build
@@ -19,14 +20,14 @@ Tải gói Windows tại [Releases](https://github.com/nqxw1kqw/undergod-card/re
 
     .\UndergodCard\verify.ps1 -Configuration Release
     .\UndergodCard\verify.ps1 -Configuration Debug
-    .\UndergodCard\bin\Release\CoreChecks.exe --simulate 1000
+    .\UndergodCard\bin\Release\CoreChecks.exe --simulate-stars 300
     .\UndergodCard\package.ps1 -SkipBuild
 
 Các script nhận -DxLibDir. Nhánh vẫn ở [PR #2](https://github.com/nqxw1kqw/undergod-card/pull/2), chưa merge main hoặc PR #1.
 
 ## Điều khiển và tiến trình
 
-Chuột / 1–9 chọn lối và chơi bài; Tab hoặc bấm địch chọn mục tiêu. E hết lượt, U tuyệt kỹ, F1/F2/F3 đổi x1/x2/x3, Space/Esc bỏ cinematic. Z/X/C/V dùng thuốc; F10 bật/tắt âm thanh. F6 lưu, F9 tiếp tục. R/Enter/Chơi lại mở chọn lớp. Các trang bộ bài và map hỗ trợ bánh xe, Page Up/Page Down và nút trang.
+Chuột / 1–9 chọn lối và xếp bài; bấm lá trong hàng chờ để gỡ. Mỗi lá dùng một sao, đủ ba vị trí thì bấm Attack hoặc E. Có Chờ 1 sao khi thiếu bài. Tab hoặc bấm địch chọn mục tiêu; U tuyệt kỹ. F1/F2/F3 đổi x1/x2/x3, Space/Esc bỏ cinematic; Z/X/C/V dùng thuốc, F10 bật/tắt âm thanh. F6 lưu, F9 tiếp tục; có thể lưu cả hàng bài đang chọn. Các trang bộ bài và map hỗ trợ bánh xe, Page Up/Page Down và nút trang.
 
 profile.json giữ Lông Vũ/kỹ năng/thành tựu; save.json giữ hành trình. Chép cả hai khi chuyển máy. Schema session v2 không tương thích v1 cũ; khi tự mở, game giữ tệp cũ thành .invalid.* trước khi tạo mới.
 

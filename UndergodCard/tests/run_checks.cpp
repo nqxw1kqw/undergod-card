@@ -75,7 +75,7 @@ void RunChecks(const Config& config,const Timeline& timeline){
         auto wide=config;wide.map_columns=4;wide.map_floors=15;Check(GenerateMap(wide,12).size()==61,"four-column fifteen-floor maps are supported");
     }
     {
-        Game g(config,timeline);g.NewRun();g.run.place=Place::Event;g.run.gold=3;g.run.hp=20;
+        Game g(config,timeline,false);g.NewRun();g.run.place=Place::Event;g.run.gold=3;g.run.hp=20;
         g.run.event_choices={{"pay","heal","","","",10,0,-12,0,false},{"leave","leave","","","",0,0,0,0,false}};
         const auto before=g.run;g.ChooseEvent(0);
         Check(g.Event()&&g.run.hp==before.hp&&g.run.gold==before.gold&&g.run.event_choices.size()==2,"unaffordable event choices do not charge, heal or leave");
@@ -83,9 +83,9 @@ void RunChecks(const Config& config,const Timeline& timeline){
         g.run.place=Place::Rest;g.run.hp=10;g.run.relics={"water_jar"};const int amount=RestHealAmount(g.run,config);
         g.RestHeal();Check(amount==20&&g.run.hp==30,"rest preview and healing include the relic bonus");
         Check(!g.RestHeal(),"rest cannot be used twice");
-        Game elite(config,timeline);const bool found=Reach(elite,NodeKind::Elite);Check(found,"a legal path reaches an elite");
+        Game elite(config,timeline,false);const bool found=Reach(elite,NodeKind::Elite);Check(found,"a legal path reaches an elite");
         if(found){elite.state.enemy.hp=1;elite.state.hand={"punch"};elite.state.energy=3;elite.Play(0);Settle(elite);const auto count=elite.run.relics.size();elite.Update(1);Check(elite.Reward()&&count==1&&elite.run.relics.size()==count,"an elite grants one relic exactly once");}
-        Game potion(config,timeline);potion.NewRun();potion.ChooseNode(0);potion.run.potions={"serum","smoke_shield","strength_tonic","weak_brew"};potion.run.potion_slots=4;
+        Game potion(config,timeline,false);potion.NewRun();potion.ChooseNode(0);potion.run.potions={"serum","smoke_shield","strength_tonic","weak_brew"};potion.run.potion_slots=4;
         potion.state.player.hp=20;Check(potion.DrinkPotion(0)&&potion.state.player.hp==35&&potion.run.potions.size()==3,"healing potion is consumed and restores fifteen HP");
         potion.state.rage=85;Check(potion.DrinkPotion(1)&&potion.state.rage==100,"rage potion uses the effect system and respects the cap");
         const auto cards=potion.state.hand.size();Check(potion.DrinkPotion(1)&&potion.state.hand.size()==cards+3,"feather potion draws three cards");
@@ -94,7 +94,7 @@ void RunChecks(const Config& config,const Timeline& timeline){
     std::filesystem::create_directories("artifacts");
     const std::filesystem::path save="artifacts/run-check-save.json",copy="artifacts/run-check-copy.json",bad="artifacts/run-check-bad.json";
     {
-        Game original(config,timeline),restored(config,timeline);original.NewRun(1337);original.SetSaveFile(save);restored.SetSaveFile(save);
+        Game original(config,timeline,false),restored(config,timeline,false);original.NewRun(1337);original.SetSaveFile(save);restored.SetSaveFile(save);
         Check(original.Save()&&restored.Load()&&restored.Map()&&SameMap(original.run.map,restored.run.map),"map checkpoint restores seed, route and screen");
         original.ChooseNode(0);original.SetSpeed(2);original.run.relics={"water_jar"};original.run.potions={"serum","holy_water"};
         original.state.player.hp=39;original.state.enemy.status.poison=2;
@@ -110,7 +110,7 @@ void RunChecks(const Config& config,const Timeline& timeline){
         original.NewRun();original.ChooseNode(0);original.state.rage=100;original.Save();const auto before_cinematic=Read(save);original.Ultimate();
         Check(!original.Save()&&Read(save)==before_cinematic,"saving cannot serialize half of a cinematic");original.SkipCinematic();original.Update(0);
         Check(Read(save)!=before_cinematic,"a skipped cinematic is saved after its single impact");
-        const auto good=Read(save);Game receiver(config,timeline);receiver.NewRun(42);receiver.SetSaveFile(bad);
+        const auto good=Read(save);Game receiver(config,timeline,false);receiver.NewRun(42);receiver.SetSaveFile(bad);
         const auto old_hand=receiver.state.hand;const auto old_seed=receiver.run.seed;
         auto reject=[&](Json data,const char* name){Write(bad,data);Check(!receiver.Load()&&receiver.run.seed==old_seed&&receiver.state.hand==old_hand,name);};
         auto broken=good;broken["version"]=99;reject(broken,"unknown save versions leave the running session untouched");
@@ -131,12 +131,12 @@ void RunChecks(const Config& config,const Timeline& timeline){
     }
     {
         for(NodeKind kind:{NodeKind::Event,NodeKind::Shop,NodeKind::Rest}){
-            Game g(config,timeline),h(config,timeline);Check(Reach(g,kind),"a real path reaches each noncombat screen");
+            Game g(config,timeline,false),h(config,timeline,false);Check(Reach(g,kind),"a real path reaches each noncombat screen");
             g.SetSaveFile(save);h.SetSaveFile(save);Check(g.Save()&&h.Load()&&h.run.place==g.run.place&&h.run.node==g.run.node,"noncombat screens resume on the same node");
             h.SetSaveFile(copy);Check(h.Save()&&Read(save)==Read(copy),"event choices, unsold shop and rest state round trip");
             if(kind==NodeKind::Shop){g.run.gold=300;Check(g.Buy(0)&&g.Save()&&h.Load(),"shop purchases can be saved");}
         }
-        Game run(config,timeline),h(config,timeline);run.NewRun(1337);run.SetSaveFile(save);h.SetSaveFile(save);bool reward=false,phase_two=false,finished=false;
+        Game run(config,timeline,false),h(config,timeline,false);run.NewRun(1337);run.SetSaveFile(save);h.SetSaveFile(save);bool reward=false,phase_two=false,finished=false;
         for(int i=0;i<1600&&!run.Result();++i){
             if(!reward&&run.Reward()){reward=run.Save()&&h.Load()&&h.Reward()&&h.run.rewards==run.run.rewards;}
             if(!phase_two&&run.CanAct()&&run.state.PhaseIndex()==1)phase_two=run.Save()&&h.Load()&&h.state.PhaseIndex()==1&&h.state.PhaseName()==run.state.PhaseName();
@@ -156,7 +156,7 @@ void SimulateRuns(const Config& config,const Timeline& timeline,int count){
         const auto& character=config.classes[seed%config.classes.size()].id;
         auto& result=classes[character];if(result.is_null())result={{"runs",0},{"wins",0},{"losses",0},{"stalled",0}};
         result["runs"]=result["runs"].get<int>()+1;
-        Game g(config,timeline);g.NewRun(unsigned(seed),character);int n=0;
+        Game g(config,timeline,false);g.NewRun(unsigned(seed),character);int n=0;
         for(;n<4000&&!g.Result();++n)if(!AdvanceAuto(g))break;
         if(!g.Result()){++stalled;result["stalled"]=result["stalled"].get<int>()+1;}
         if(g.run.victory){++wins;total_hp+=g.run.hp;result["wins"]=result["wins"].get<int>()+1;}

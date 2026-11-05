@@ -1,53 +1,66 @@
-UNDERGOD CARD QUEST v1.0.1-preview — C++17 / DxLib / Windows x64
+UNDERGOD CARD QUEST v1.1.0-preview — C++17 / DxLib / Windows x64
 
 Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
 Không cần Visual Studio, DxLib, Python hay Node.js để chơi gói này.
 
-LỚP VÀ HÀNH TRÌNH
-Chiến Binh: 50 HP, rút 5; Sao Rơi phóng lao lên trời rồi rơi vào địch.
-Pháp Sư: 40 HP, rút 6; giữ ba Mana, Bão Lông đánh 12 x4 ngẫu nhiên.
-Ninja: 45 HP, rút 5; lá miễn phí; Ảnh Phân lặp tối đa ba lá gần nhất.
-1–3/chuột chọn lớp, Enter bắt đầu. Chuột mua kỹ năng và chọn Thử Thách.
-Kỹ năng dùng Lông Vũ và có hiệu lực từ hành trình mới.
+HÀNH TRÌNH VÀ MỞ TRẬN
+Chọn một trong ba lớp rồi bắt đầu. Bấm điểm hợp lệ trên map: icon gà đi tới
+điểm đó, màn hình tối đen một nhịp rồi sáng lại ở khu vực mới.
+Trước mỗi trận, ảnh FIGHT từ phải chạy vào giữa rồi sang trái.
+Bài được chia lần lượt; đợi chia xong mới chọn bài.
 
-Ba hồi 13 / 13 / 15 tầng: trận, tinh anh, sự kiện, shop, nghỉ rồi trùm.
-Hồi hai gặp Rắn, Diều Hâu hoặc Hổ Vương; hồi ba có Cáo và Undergod.
-Boss hồi hồi 50% HP tối đa và cho chọn di vật.
-Chuột/1–9 chọn lối. Bánh xe, Page Up/Down hoặc nút cuộn xem map.
+TURN STAR
+Mỗi phe có ba Turn Star mỗi vòng. Mỗi lá dùng một sao, thay giá năng lượng cũ.
+Bấm lá hoặc 1–9 để xếp vào hàng chờ. Chọn bài chưa tạo hiệu ứng.
+Bấm lá trong hàng chờ để gỡ; các lá còn lại giữ nguyên thứ tự.
+Đủ ba vị trí thì bấm Attack hoặc E:
+ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3.
+Lá hiện lớn giữa sân rồi áp hiệu ứng đúng nhịp chạm.
+Nút Chờ 1 sao dùng khi thiếu bài hoặc bị khóa; không tạo hiệu ứng.
+Khi một phe gục, phần chuỗi còn lại bị hủy.
 
-ĐẤU THỬ HỔ VƯƠNG
-Nút Đấu thử Hổ Vương ở menu lớp mở ngay trận, cấp bài nâng cấp và hai thuốc.
-Không ghi đè save/profile và không nhận thưởng meta; F9 tiếp tục bản lưu cũ.
-Cũng có thể chạy UndergodCard.exe --boss tiger --seed 1337.
+Địch chốt sẵn ba lá phía trên đầu. Rê chuột lên lá để xem thông tin.
+Không đổi kế hoạch địch khi chọn/gỡ bài hoặc rê chuột.
+Tab hoặc bấm địch để chọn mục tiêu trước khi xếp từng lá.
+Nếu mục tiêu đó đã gục khi thực hiện thì chuyển sang địch còn sống.
+Trong lúc chuỗi đang chạy không sửa hàng bài, dùng thuốc hay lưu/tải.
 
-COMBAT
-Chuột/1–9 chơi bài. E hết lượt. U tuyệt kỹ khi đủ Nộ.
-Tab hoặc bấm địch chọn mục tiêu. Ninja cần lịch sử bài để dùng tuyệt kỹ.
-Z/X/C dùng ba ô thuốc; V ô thứ tư khi có di vật mở thêm.
-F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ; run mới luôn bắt đầu ở x1.
+BÀI VÀ HIỆU ỨNG
+Giáp chặn sát thương; Độc xuyên giáp đầu lượt rồi giảm.
+Suy Yếu giảm sát thương gây ra; Dễ Vỡ tăng sát thương nhận.
+Sức Mạnh cộng trên từng hit. Tiêu hao/năng lực rời bộ trong trận hiện tại.
+Bài rút từ hiệu ứng trong chuỗi được giữ để chọn ở vòng kế; tay tối đa 10 lá.
+Hiệu ứng năng lượng cũ trên bài/thuốc đổi thành rút bài.
+Năng lượng nền từ di vật/kỹ năng đổi thành thêm lựa chọn bài đầu vòng.
+Nâng cấp trước đây chỉ giảm giá được đổi thành thêm 3 giáp khi dùng.
+
+NHÂN VẬT VÀ TUYỆT KỸ
+Chiến Binh: 50 HP, rút 5; Sao Rơi phóng giáo lên trời rồi rơi vào địch.
+Pháp Sư: 40 HP, rút 6; Bão Lông đánh 12 ×4 ngẫu nhiên.
+Ninja: 45 HP, rút 5; Ảnh Phân lặp tối đa ba lá gần nhất.
+U dùng tuyệt kỹ khi đủ Nộ trong giai đoạn chuẩn bị.
 Space/Esc bỏ cinematic; sát thương chỉ áp một lần.
-F10/nút nhạc bật tắt toàn bộ âm thanh. 1–3/chuột chọn thưởng.
+Z/X/C/V dùng thuốc trong giai đoạn chuẩn bị.
+F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ; run mới luôn bắt đầu ở x1.
+F10/nút nhạc bật tắt âm thanh.
 
-Đọc ý định trước khi hết lượt. Độc xuyên giáp rồi giảm dần;
-Suy Yếu giảm sát thương, Dễ Vỡ tăng sát thương nhận.
-Tiêu hao/năng lực rời bộ bài trong trận đó; hồi sinh một lần/run.
-Ếch gọi Nòng Nọc và khóa bài; Rắn có đòn lớn báo trước; Diều Hâu bay;
-Cáo che con thật bằng bóng; Undergod đếm ngược năm lượt Tận Thế.
+BA HỒI VÀ TRÙM
+Ba hồi 13 / 13 / 15 tầng, gồm trận, tinh anh, sự kiện, shop, nghỉ và boss.
+Ếch gọi Nòng Nọc và khóa bài ở vòng chuẩn bị sau.
+Rắn có độc/lột da/siết. Diều Hâu đang bay giảm sát thương cận chiến.
+Hổ tăng sức mạnh dưới 50% HP, chờ một vòng rồi vồ ở vòng tiếp theo.
+Cáo tạo ảo ảnh. Undergod sao chép, hút Nộ và đếm ngược Tận Thế.
+Ba sao địch được chia cho cả phe, gồm boss và viện binh.
 
-SHOP / NGHỈ / SỰ KIỆN
-Shop: chuột/1–7 mua, bấm lá trong bộ gỡ (75 vàng); E/Esc rời.
-Nghỉ: H hồi máu hoặc 1–8 nâng cấp lá trên trang.
-Màn bộ bài/chọn bài/đổi đồ hỗ trợ nút trang, bánh xe, Page Up/Down.
-Sự kiện: chuột/1–3 chọn đánh đổi.
-R/Enter/Chơi lại mở chọn lớp; Esc từ menu trở lại run đang có.
+SHOP / NGHỈ / SỰ KIỆN / LƯU
+Chuột/1–9 chọn lối hoặc lựa chọn. Shop: mua đồ, gỡ bài; E/Esc rời.
+Nghỉ: H hồi HP hoặc chọn lá nâng cấp. Lăn chuột/Page Up/Down đổi trang.
+F6 lưu, F9 tải. Có thể lưu khi mới xếp một hoặc hai lá; giữ nguyên kế hoạch.
+Không lưu/tải lúc di chuyển, chuyển cảnh, chia bài hoặc thực hiện hành động.
+Session v2 cũ vẫn đọc được và chuyển sang luật mới mà không mất bộ bài.
+save.json giữ hành trình; profile.json giữ Lông Vũ/kỹ năng/thành tựu.
+Chép cả hai khi chuyển máy. R/Enter/Chơi lại mở menu lớp.
+Đấu thử Hổ Vương ở menu hoặc --boss tiger không ghi đè tiến trình.
 
-LƯU VÀ TIẾN TRÌNH
-Tự lưu sau hành động ổn định vào save.json cạnh EXE.
-F6 lưu, F9 tải. Mở lại game tự tiếp tục; khóa lưu/tải khi đang animation.
-profile.json giữ Lông Vũ, kỹ năng, thành tựu và mức Thử Thách giữa run.
-Chép cả save.json và profile.json khi chuyển máy cùng phiên bản data.
-Bản lưu v1 cũ không tương thích; game giữ thành .invalid.* trước khi tạo mới.
-Thắng chiến dịch mở cấp Thử Thách kế tiếp, tới cấp 10.
-
-Đây là bản preview. Mục tiêu 25–35 phút và tỉ lệ thắng người chơi mới
-40–50% còn cần đo bằng chơi thực. Thông tin bên thứ ba nằm trong licenses/.
+Bản preview cần chơi thử để chỉnh cảm giác và cân bằng với luật ba sao.
+Thông tin nguồn ở licenses/. Bản HTML/website là project riêng.

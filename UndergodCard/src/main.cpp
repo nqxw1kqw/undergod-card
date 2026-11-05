@@ -8,6 +8,7 @@
 #include <fstream>
 #include <cmath>
 #include <sstream>
+namespace undergod { int StarSmoke(Game&,Ui&,Audio&); }
 
 namespace {
 std::filesystem::path ExeDirectory(){wchar_t path[32768]{};GetModuleFileNameW(nullptr,path,32768);return std::filesystem::path(path).parent_path();}
@@ -123,15 +124,16 @@ int Smoke(undergod::Game& game,undergod::Ui& ui,undergod::Audio& audio){
 }
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
     using namespace undergod;std::filesystem::current_path(ExeDirectory());const bool smoke=std::string(args?args:"").find("--smoke")!=std::string::npos;
+    const bool star_smoke=std::string(args?args:"").find("--star-smoke")!=std::string::npos;
     ChangeWindowMode(TRUE);SetGraphMode(Ui::Width,Ui::Height,32);SetWindowSize(1152,768);SetMainWindowText("Undergod Card Quest - C++ / DxLib");
     SetAlwaysRunFlag(TRUE);SetDoubleStartValidFlag(TRUE);SetOutApplicationLogValidFlag(FALSE);SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
     if(DxLib_Init()<0)return 1;SetDrawScreen(DX_SCREEN_BACK);Ui ui;Audio audio;
     try{
-        const auto config=LoadConfig();Game game(config,LoadTimeline());
+        const auto config=LoadConfig();Game game(config,LoadTimeline(),!smoke);
         const std::string arguments=args?args:"";const auto seed_at=arguments.find("--seed ");
         const auto boss_at=arguments.find("--boss ");
         const unsigned seed=seed_at==std::string::npos?unsigned(GetNowHiPerformanceCount()):unsigned(std::stoul(arguments.substr(seed_at+7)));
-        if(smoke)game.NewRun();
+        if(smoke||star_smoke)game.NewRun();
         else if(boss_at!=std::string::npos){
             std::string boss_id;std::istringstream(arguments.substr(boss_at+7))>>boss_id;
             game.SetSaveFile("save.json");game.SetProfileFile("profile.json");game.StartBossPractice(boss_id,seed,game.profile.selected_class);
@@ -147,6 +149,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
         if(!ui.Init(config))throw std::runtime_error("Cannot load complete image manifest, DxLib fonts or render target");
         if(!audio.Init())throw std::runtime_error("Cannot load audio manifest or sound files");
         if(smoke){const int result=Smoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
+        if(star_smoke){const int result=StarSmoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
         char previous[256]{};int old_mouse=0;auto last=GetNowHiPerformanceCount();
         while(ProcessMessage()==0){
             const auto start=GetNowHiPerformanceCount();const float dt=std::min(.1f,float(start-last)/1000000.f);last=start;
@@ -173,7 +176,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             else if(game.Shop()){for(int i=0;i<9;++i)if(pressed(numbers[i]))game.Buy(i);if(pressed(KEY_INPUT_ESCAPE)||pressed(KEY_INPUT_E))game.LeaveShop();}
             else if(game.Rest()){if(pressed(KEY_INPUT_H))game.RestHeal();for(int i=0;i<8;++i)if(pressed(numbers[i]))ui.ChooseUpgrade(game,i);}
             else{
-                for(int i=0;i<9;++i)if(pressed(numbers[i]))game.Play(i);
+                for(int i=0;i<9;++i)if(pressed(numbers[i]))ui.ChooseHand(game,i);
                 if(pressed(KEY_INPUT_E))game.EndTurn();if(pressed(KEY_INPUT_U))game.Ultimate();
                 if(pressed(KEY_INPUT_Z))game.DrinkPotion(0);if(pressed(KEY_INPUT_X))game.DrinkPotion(1);
                 if(pressed(KEY_INPUT_C))game.DrinkPotion(2);if(pressed(KEY_INPUT_V))game.DrinkPotion(3);

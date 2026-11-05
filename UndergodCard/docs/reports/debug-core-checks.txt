@@ -1,0 +1,3 @@
+RUN victory=1 hp=30 rewards=29 deck=41 gold=201 relics=7 phase=3 node=38
+TURN_STAR_BOSSES wins=47 losses=43 stalls=0
+RESULT 3536 checks, 0 failures

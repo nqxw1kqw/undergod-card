@@ -19,12 +19,18 @@ class Ui {
     void DrawTargets(const Game& game,int mx,int my)const;
     void Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const;
     int Image(const std::string& key)const;
+    bool star_cards_=false;
+    void DrawStarBattle(const Game& game,int mx,int my);
+    void DrawMapPlayer(const Game& game)const;
+    void PlanCard(const CardDef& card,Rect r,int number,bool filled,bool spent,int mx,int my)const;
+    std::string RelicDescription(const Game& game,const RelicDef& relic)const;
 public:
     static constexpr int Width=1440,Height=960;
     int loaded=0,expected=0;
     bool Init(const Config& config);
     void Shutdown();
     void Draw(const Game& game,int mx,int my);
+    void DrawTransitions(const Game& game)const;
     void Click(Game& game,int mx,int my);
     void Page(const Game& game,int direction);
     void ResetView(){map_node_=screen_node_=-999;deck_page_=map_scroll_=0;}
@@ -32,8 +38,14 @@ public:
     int DeckPage()const{return deck_page_;}
     void ChooseSelection(Game& game,int index){game.ChooseCard(deck_page_*8+index);}
     void ChooseTrade(Game& game,int index){game.TradeRelic(deck_page_*8+index);}
+    void ChooseHand(Game& game,int index);
+    std::vector<int> HandIndices(const Game& game)const;
     static Rect CardRect(int count,int index){const int w=std::min(176,(1300-12*(count-1))/std::max(1,count)),total=count*w+(count-1)*12;return {(Width-total)/2+index*(w+12),710,w,195};}
     static Rect EndButton(){return {1220,635,170,48};}
+    static Rect StarSlotRect(int slot){return {450+slot*190,627,180,91};}
+    static Rect EnemyStarRect(int slot){return {955+slot*139,258,130,67};}
+    static Rect WaitButton(){return {70,684,180,34};}
+    static Rect StarHandRect(int count,int index){auto r=CardRect(count,index);r.y=744;r.h=162;return r;}
     static Rect UltimateButton(){return {1040,635,160,48};}
     static Rect RestartButton(){return {1230,42,150,40};}
     static Rect SpeedButton(int speed){return {520+(speed-1)*70,42,60,40};}

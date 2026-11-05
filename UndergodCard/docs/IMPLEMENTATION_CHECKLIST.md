@@ -27,8 +27,21 @@ Phạm vi được Shin xác nhận: toàn bộ lộ trình còn lại, cùng nh
 - [x] Cinematic riêng cho tuyệt kỹ ba lớp; giữ chiêu lao rơi của Chiến Binh.
 - [x] Âm thanh/nhạc và nút tắt/bật.
 - [x] UI lớp/kỹ năng/Thử Thách, mục tiêu, các màn sự kiện và thưởng boss.
-- [x] Kiểm tra có seed, bot 1.000 run, Debug/Release, smoke và ZIP.
+- [x] Kiểm tra có seed, Debug/Release, smoke và ZIP. Mô phỏng 1.000 run ở v1.0.1 là đối chiếu luật năng lượng cũ; luật ba sao có 300 run riêng.
 - [x] Tài liệu và gói Windows được cập nhật; nguồn phát triển giữ trên draft/v0.3-wip.
+
+## Turn Star và mở trận — v1.1.0-preview
+
+- [x] Avatar đúng lớp hiện trên map và di chuyển tới điểm được chọn.
+- [x] Mờ dần tới đen hoàn toàn, vào khu vực rồi sáng lại; khóa thao tác trong chuyển cảnh.
+- [x] Tạo ảnh FIGHT alpha: từ phải vào giữa, dừng rồi ra trái; chia bài sau banner và mỗi vòng mới.
+- [x] Mỗi phe ba sao, mỗi lá một sao; chọn/gỡ hàng chờ, nhớ mục tiêu và có Chờ 1 sao.
+- [x] Công bố ba lá địch trước Attack; hover thông tin, giữ nguyên kế hoạch và RNG.
+- [x] Attack luân phiên ta 1/địch 1/ta 2/địch 2/ta 3/địch 3, hiện lá đang dùng và áp hiệu ứng theo thứ tự.
+- [x] Đồng bộ tooltip, nâng cấp, tài nguyên, khóa bài, tụ lực, chuyển pha và trận nối tiếp với luật mới.
+- [x] Lưu/tải hàng chờ và đọc session v2 cũ; x1/x2/x3 cho cùng kết quả.
+- [x] Debug 3.536 kiểm tra; Release kèm 300 chiến dịch: 3.537 kiểm tra, 0 lỗi. 90 trận boss và 300 chiến dịch đều không kẹt.
+- [x] Native smoke cả hai cấu hình; ZIP 239 tệp chạy cả hai smoke sau giải nén. HTML giữ nguyên 220 tệp runtime.
 
 ## Các mục cần bằng chứng chơi thực
 

@@ -1,62 +1,62 @@
-# Kiểm chứng — 2026-11-05
+# Kiểm chứng — 2026-11-06
 
-Phiên bản v1.0.1-preview trên nhánh draft/v0.3-wip. MSVC v143 / Visual Studio 2022 / DxLib x64. Các tệp báo cáo phát sinh nằm trong artifacts hoặc bin/<cấu hình>/artifacts; ảnh minh họa chọn lọc ở docs/images.
+**v1.1.0-preview**, nhánh `draft/v0.3-wip`, C++17 / MSVC v143 / Visual Studio 2022 / DxLib x64. Bản này dùng luật [ba Turn Star](TURN_STARS.md) trong game native. Demo HTML giữ riêng; đã đối chiếu hash 220 tệp runtime và bản HTML một tệp, tất cả giữ nguyên.
 
-## Kết quả tự động
+## Kết quả hiện tại
 
 | Kiểm tra | Kết quả |
 | --- | --- |
-| MSVC Release x64 | Build thành công; 457 kiểm tra logic, 0 lỗi |
-| MSVC Debug x64 | Build thành công; 457 kiểm tra logic, 0 lỗi |
-| Smoke DxLib Debug và Release | PASS=1; chiến thắng ba hồi, Undergod pha 3 |
-| Ảnh runtime | 202/202 nạp đúng kích thước; 50 icon bài và đủ tham chiếu |
-| Âm thanh | 12/12 nạp; API phát/đang phát, mute/unmute và nhạc loop qua kiểm tra |
-| Asset manifest | Hash PNG/WAV, RGBA8/kích thước và PCM16 mono 22050 Hz hợp lệ |
-| Bot độ khó 0 | 1.000 run, 630 thắng, 370 thua, 0 kẹt |
-| Thử Thách | Cả ba lớp đến kết quả ở mỗi cấp 1–10, bất lợi cộng dồn được kiểm tra |
-| Sinh lại JSON | tools/expand_content.py không làm thay đổi nội dung hiện tại |
+| MSVC Release / Debug x64 | Cả hai build thành công |
+| CoreChecks Debug | 3.536 kiểm tra, 0 lỗi |
+| CoreChecks Release `--simulate-stars 300` | 3.537 kiểm tra, 0 lỗi; gồm một điều kiện không kẹt cho mô phỏng chiến dịch |
+| DxLib `--star-smoke` | Debug và Release đều `PASS=1` |
+| DxLib `--smoke` đối chiếu nền cũ | Debug và Release đều `PASS=1` |
+| EXE từ ZIP giải nén riêng | Cả `--star-smoke` và `--smoke` thoát 0, `PASS=1` |
+| Asset | 203 PNG, 12 WAV; hash, kích thước, tham chiếu, PCM và nạp DxLib hợp lệ |
+| ZIP | CRC và danh sách chính xác: 239 tệp, 16 JSON dữ liệu; không chứa save/profile, SDK, PDB hay CoreChecks |
 
-Chạy thêm --simulate 1000 có tổng 458 kiểm tra, 0 lỗi, gồm điều kiện bot không kẹt.
+Log và hash nguồn được giữ tại [reports/validation.json](reports/validation.json). Kết quả v1.0.1 dùng luật năng lượng cũ ở [báo cáo lịch sử](reports/v1.0.1-validation.md); 1.000 run/630 thắng trong báo cáo đó không phải số liệu của luật ba sao.
 
-## Mô phỏng
+## Luật mới và trình bày
 
-Seed 0–999, luân phiên Chiến Binh / Pháp Sư / Ninja, độ khó 0, không mua kỹ năng meta. Bot chọn hành động bằng heuristic tham lam qua API gameplay; chờ mọi animation/cinematic kết thúc trước quyết định kế tiếp. Mỗi run giới hạn 4.000 quyết định.
+- Chọn bài chỉ đặt vào hàng chờ, chưa gây sát thương hoặc tiêu hao. Gỡ bài giữ thứ tự, chọn mục tiêu riêng cho từng lá, tối đa ba vị trí. Có Chờ 1 sao để tránh kẹt khi thiếu bài/khóa/lời nguyền.
+- Attack khóa thao tác và thực hiện ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3. Hiệu ứng áp tại nhịp chạm; kiểm tra x1/x2/x3 cho cùng kết quả.
+- Địch chốt kế hoạch trước khi chọn bài; hover không đổi RNG. Tooltip dùng hiệu ứng thực, kể cả Sao Chép; chuyển pha giữ kế hoạch đã công bố, tụ lực chỉ tính một lần mỗi vòng.
+- Chuyển đổi năng lượng thành rút bài, nâng cấp chỉ giảm giá cũ thành thêm giáp; bài rút trong chuỗi được giữ cho vòng sau. Kiểm tra phản đòn, khóa bài, mục tiêu chết, chuỗi hai trận và tuyệt kỹ kết thúc trận đầu.
+- Lưu hàng chờ dở, mục tiêu, kế hoạch địch và RNG; tải session v2 cũ không mất bài. Từ chối bản lưu có hàng chờ trùng hoặc không hợp lệ theo cách giữ nguyên trạng thái đang chơi.
+- Avatar di chuyển trước khi vào điểm; xác nhận khu vực chỉ lúc màn hình đen hoàn toàn. FIGHT đi từ phải, dừng giữa, ra trái; sau đó bài mới được chia dần. Khóa thao tác trong các giai đoạn này.
 
-| Lớp | Run | Thắng | Thua | Kẹt | Tỉ lệ thắng bot |
-| --- | --- | --- | --- | --- | --- |
-| Chiến Binh | 334 | 152 | 182 | 0 | 45,5% |
-| Pháp Sư | 333 | 230 | 103 | 0 | 69,1% |
-| Ninja | 333 | 248 | 85 | 0 | 74,5% |
-| Tổng | 1000 | 630 | 370 | 0 | 63,0% |
+`--star-smoke` gọi handler UI trên renderer DxLib thật, ghi ảnh từ backbuffer. Các tình huống combat dùng fixture có kiểm soát để kiểm tra từng nhịp. Đã xem ảnh map, FIGHT, chia bài, hàng chờ, tụ lực và hổ vồ. Ảnh chọn lọc ở [images](images/turn-stars-planning.png).
 
-287.671 quyết định, HP khi thắng trung bình 24,15. Thua ở hồi 1/2/3: 198/49/123. Khác biệt giữa lớp là cơ sở cho vòng cân bằng với người chơi thật; không gán tỉ lệ bot cho người chơi mới.
+![Xếp ba lá và xem kế hoạch địch](images/turn-stars-planning.png)
 
-Seed 1337 Chiến Binh đi qua ba hồi, hạ Undergod ở pha 3, còn 30 HP, 41 lá, 29 màn thưởng bài, 201 vàng, bảy di vật. Có bài kiểm tra lưu/tải sau mỗi quyết định ổn định, bao gồm chuyển hồi và thưởng boss.
+![FIGHT trước khi chia bài](images/fight-opening.png)
 
-## Nội dung được kiểm tra
+## Mô phỏng luật ba sao
 
-- RNG tương thích giá trị chuẩn cũ và ba stream tách biệt; x1/x2/x3 không đổi kết quả combat.
-- Giáp, Sức Mạnh/Yếu/Dễ Vỡ/Độc, nhiều hit, AOE, ngẫu nhiên, xuyên giáp, Tiêu hao, giữ giáp, năng lực, phản đòn, hồi sinh một lần/run.
-- Sáu boss, gồm Hổ Vương:  summon/khóa bài, lột da/siết/charge, bay/đáp, nguyền/ảo ảnh và sao chép/hút Nộ/Tận Thế.
-- 48 nâng cấp có thay đổi thực; ba lớp, Mana, replay, bonus tuyệt kỹ và di vật tương tác.
-- 12 sự kiện có kết quả thực; chuỗi hai trận không hồi giữa, giới hạn ba lượt, chọn bài/đổi đồ và thưởng đôi.
-- Map 300 seed: nối đường, trọng số, nhịp mở đầu/nghỉ/trùm, 3–4 cột.
-- Session/profile round trip; RNG, summon, khóa, history, powers; file sai/truncated, enum/tham chiếu/counter không hợp lệ, lỗi ghi .tmp và chống thưởng lặp.
-- Smoke: chọn lớp/kỹ năng/thành tựu; map/cuộn; đánh/đỡ/contact; khóa input; đủ ba cinematic; bỏ qua; shop/nghỉ trang cuối; thuốc thứ tư; lưu/tải; target bằng handler chuột; renderer sáu boss và nút đấu thử Hổ Vương.
-- Đã xem ảnh render DxLib của menu lớp, cây kỹ năng, boss nhiều mục tiêu và cinematic ba lớp; frame chuẩn hóa alpha/chân/body tại artifacts/art-v1.
+300 seed 0–299, độ khó 0, không mua kỹ năng meta, luân phiên ba lớp. Bot dùng gợi ý của controller native và chờ mọi chuyển cảnh/hành động; giới hạn 6.000 quyết định mỗi run.
 
-Thêm tests/tiger_checks.cpp: hai pha hổ/charge/gầm/nhiều hit, pool Hồi 2, giữ boss cũ trong save và đấu thử không ghi tiến trình, không mua kỹ năng, không làm rò lựa chọn lớp/âm thanh vào profile. Sprite Hổ Vương có 12 frame alpha; đã xem ảnh render idle/gầm/vồ.
+| Lớp | Run | Thắng | Thua | Kẹt |
+| --- | --- | --- | --- | --- |
+| Chiến Binh | 100 | 37 | 63 | 0 |
+| Pháp Sư | 100 | 18 | 82 | 0 |
+| Ninja | 100 | 33 | 67 | 0 |
+| Tổng | 300 | 88 | 212 | 0 |
 
-## Đóng gói
+Thua ở hồi 1/2/3: 52/73/87. Đây là phép kiểm tra tiến trình và nguồn tham khảo cân bằng; tỉ lệ thắng bot 29,3% không đại diện người chơi. Chênh lệch giữa các lớp, nhất là Pháp Sư, còn cần vòng cân bằng bằng chơi thực. Báo cáo máy đọc: [turn-star-simulation.json](reports/turn-star-simulation.json).
 
-package.ps1 tạo ZIP từ EXE Release cùng assets/data/licenses và hướng dẫn UTF-8. tools/validate_package.py so manifest/hash với nguồn, CRC toàn ZIP, kiểm tra EXE đúng bản và danh sách tệp chính xác; loại save/profile, PDB, CoreChecks, cache và SDK. Báo cáo hash/kích thước nằm ở artifacts/package-validation.json. Gói giải nén còn được chạy --smoke độc lập trước phát hành.
+Thêm 90 trận đấu thử seed 0–89, luân phiên ba lớp và Ếch/Hổ: 47 thắng, 43 thua, 0 kẹt. Đấu thử giữ riêng tiến trình, không ghi save/profile hoặc thưởng meta.
 
-Gói đã kiểm tra có 238 tệp, 33788725 byte, 202 PNG, 12 WAV và 16 JSON dữ liệu. SHA-256 ZIP: 917a1b4ae7b9af937e9d45ed3f84d21ab1393397bf4a4c28589ce4cd1945e746. EXE: 614370a4f8880828da073db00a2bb65074fa48ab30c0de70e672025dff0b0921. Báo cáo được giữ tại [docs/reports](reports/validation.json).
+## Gói Windows
+
+`package.ps1 -SkipBuild` đóng gói EXE Release với assets/data/licenses và hướng dẫn UTF-8. `tools/validate_package.py` so CRC, từng hash asset, toàn bộ nội dung nguồn runtime và EXE. Sau đó giải nén sang thư mục kiểm tra độc lập và chạy cả hai chế độ smoke.
+
+- ZIP: 35.596.142 byte; SHA-256 `e64d8703d5b3ee40b3d6d26fc180feb76d96efe7c1432478668b33320a3c8467`.
+- EXE: SHA-256 `28b0b346bc0e8d5184ea918a36f689766c45ce6050b04a3d4da73cd46c8bfeb6`.
+- Chi tiết: [package-validation.json](reports/package-validation.json), [smoke gói mới](reports/packaged-turn-star-smoke.txt).
 
 ## Giới hạn bằng chứng
 
-Công cụ Computer Use báo native pipe không khả dụng, os error 2 (không tìm thấy tệp). Chưa hoàn thành chơi tay trọn run qua chuột/phím hệ điều hành. Handler UI được smoke gọi trực tiếp; ảnh là renderer thật, không phải bản dựng HTML.
+Chưa chơi tay trọn chiến dịch qua chuột/phím Windows và chưa thử trên máy Windows sạch khác. Smoke xác minh handler, renderer và audio API; không chứng minh thao tác nhập liệu hệ điều hành. Lỗi helper Computer Use ghi trong báo cáo v1.0.1 là bằng chứng lịch sử, không phải lần thử mới.
 
-Chưa đo thời lượng 25–35 phút hoặc tỉ lệ thắng 40–50% của người mới. Không coi bot, ảnh render hoặc build xanh là bằng chứng cho các tiêu chí đó. Chưa thử trên một máy Windows sạch khác.
-
-Cảnh báo C4010 đến từ DxFunctionWin.h của SDK ngoài repo.
+Thời lượng 25–35 phút/run và tỉ lệ thắng 40–50% của người mới vẫn cần đo thực tế. Bản phát hành giữ nhãn preview. Cảnh báo C4010 còn lại đến từ `DxFunctionWin.h` của SDK ngoài repo.
