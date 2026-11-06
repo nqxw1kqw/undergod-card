@@ -7,6 +7,6 @@
 
   zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
 
-- **Asset runtime**: 239 PNG được tạo bằng công cụ sinh ảnh; sprite được hậu xử lý alpha/căn frame, banner FIGHT giữ nguyên ảnh trong suốt do ImageGen tạo. Nhân vật gà và Hổ Vương dựa theo ảnh tham khảo Shin cung cấp. Manifest kích thước/SHA-256 ở `assets/manifest.json`; quy cách ở `assets/pastel/STYLE.md`. Provenance ở `assets/provenance.json`; raw/QC giữ ngoài Git. Nhạc ba hồi và chín cue WAV được tổng hợp bằng `tools/synth_audio.py`, không dùng bản thu bên ngoài.
+- **Asset runtime**: 379 PNG được tạo bằng công cụ sinh ảnh; sprite được hậu xử lý alpha/căn frame, banner FIGHT giữ nguyên ảnh trong suốt do ImageGen tạo. Nhân vật gà và Hổ Vương dựa theo ảnh tham khảo Shin cung cấp. Manifest kích thước/SHA-256 ở `assets/manifest.json`; quy cách ở `assets/pastel/STYLE.md`. Provenance ở `assets/provenance.json`; raw/QC giữ ngoài Git. Nhạc ba hồi và chín cue WAV được tổng hợp bằng `tools/synth_audio.py`, không dùng bản thu bên ngoài.
 
 Gói EXE chép các thông báo và giấy phép trên vào thư mục `licenses/`. Repo không kèm mã nguồn hoặc tài nguyên trích xuất từ Slay the Spire.

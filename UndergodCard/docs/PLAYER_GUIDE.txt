@@ -1,7 +1,13 @@
-UNDERGOD CARD QUEST v1.2.0-preview — C++17 / DxLib / Windows x64
+UNDERGOD CARD QUEST v1.3.0-preview — C++17 / DxLib / Windows x64
 
 Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
 Không cần Visual Studio, DxLib, Python hay Node.js để chơi gói này.
+
+HOẠT ẢNH KỸ NĂNG
+Lao đâm hoặc được ném đi; phép bay tới mục tiêu rồi mới gây sát thương.
+Mỗi lá có động tác, vật phẩm hoặc hiệu ứng phù hợp; cả player và boss.
+Lớp khiên quanh người giữ khi còn giáp, lóe khi chặn và tan khi hết giáp.
+Lá đang dùng nằm dưới góc phải. Đòn cuối chạy hết hiệu ứng mới chuyển màn.
 
 HÀNH TRÌNH VÀ MỞ TRẬN
 Chọn một trong ba lớp rồi bắt đầu. Bấm điểm hợp lệ trên map: icon gà đi tới

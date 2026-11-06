@@ -1,46 +1,43 @@
 # Kiểm chứng — 2026-11-06
 
-**v1.2.0-preview**, nhánh `draft/v0.3-wip`, C++17 / MSVC v143 / Visual Studio 2022 / DxLib x64. Bản này sửa icon quay về điểm cũ sau khi tới stage và thêm [36 lá riêng của sáu boss](BOSS_DECKS.md). Các sprite/ảnh cũ và demo HTML giữ nguyên hash.
-
-## Kết quả hiện tại
+**v1.3.0-preview**, nhánh `draft/v0.3-wip`, C++17 / MSVC v143 / Visual Studio 2022 / DxLib x64. Mốc này thêm hoạt ảnh theo kỹ năng, đạn bay và khiên tồn tại theo giáp cho cả player và boss. Chi tiết thiết kế/nguồn ảnh ở [SKILL_ANIMATIONS](SKILL_ANIMATIONS.md).
 
 | Kiểm tra | Kết quả |
 | --- | --- |
-| MSVC Release / Debug x64 | Cả hai build thành công |
-| CoreChecks Debug | 3.841 kiểm tra, 0 lỗi |
-| CoreChecks Release `--simulate-stars 300` | 3.842 kiểm tra, 0 lỗi; gồm điều kiện chiến dịch không kẹt |
-| Bộ boss | Sáu bộ, 36 ID/tên/ảnh/hành động riêng; kiểm tra quyền sở hữu và giới hạn ở mọi pha |
-| DxLib `--star-smoke` và `--smoke` | Debug và Release đều `PASS=1` sau lần sửa UI cuối |
-| EXE từ ZIP giải nén độc lập | Cả hai smoke thoát 0, `PASS=1` |
-| Asset | 239 PNG, 12 WAV; kích thước/hash/tham chiếu/PCM hợp lệ, nạp đủ trong DxLib |
-| Gói | Đúng 276 tệp, 17 JSON dữ liệu; CRC/hash/EXE khớp nguồn |
-| Giữ nội dung cũ | 203 PNG cũ, 220 tệp runtime HTML và bản HTML một tệp không đổi hash |
+| MSVC Release / Debug x64 | Cả hai build thành công; cảnh báo còn lại C4010 trong SDK DxLib |
+| CoreChecks Debug | 4.021 kiểm tra, 0 lỗi |
+| CoreChecks Release `--simulate-stars 300` | 4.022 kiểm tra, 0 lỗi |
+| Hoạt ảnh | 98 cấu hình; 48 lá player chơi được, 36 lá boss, hai lời nguyền, Chờ và 11 hành động địch |
+| Art mới | 18 bộ cơ thể + 17 bộ FX, 140 frame khác nhau; không cắt mép, khiên rỗng ở giữa |
+| Asset runtime | 379 PNG RGBA8 / 12 WAV; hash, kích thước, tham chiếu và PCM hợp lệ |
+| DxLib `--animation-smoke`, `--star-smoke`, `--smoke` | Cả ba `PASS=1`, trên Debug và Release |
+| EXE từ ZIP giải nén riêng | Cả ba smoke thoát 0, `PASS=1` |
+| Gói | 417 tệp, 18 JSON dữ liệu; CRC, danh sách và hash/EXE khớp nguồn |
+| Nội dung đã duyệt | 239 PNG cũ, 220 tệp runtime HTML và bản HTML một tệp giữ nguyên hash |
 
-Báo cáo máy đọc và hash nguồn: [reports/validation.json](reports/validation.json). Mốc trước ở [v1.1.0](reports/v1.1.0-validation.md), còn luật năng lượng cũ ở [v1.0.1](reports/v1.0.1-validation.md). Không dùng số liệu cân bằng của các mốc cũ để mô tả bộ bài boss mới.
+Báo cáo máy đọc và SHA-256 nguồn đã chuẩn hóa xuống dòng LF: [reports/validation.json](reports/validation.json). Mốc trước được giữ tại [v1.2.0](reports/v1.2.0-validation.md), [v1.1.0](reports/v1.1.0-validation.md) và [v1.0.1](reports/v1.0.1-validation.md).
 
-## Icon map và thẻ boss
+## Logic và hình ảnh
 
-Lỗi map được tái hiện tại ranh giới Travel → FadeOut: điểm mới chưa xác nhận nên renderer đọc lại `run.node` cũ. Nay icon giữ tọa độ đích trong toàn bộ FadeOut, rồi bàn giao sang điểm đã xác nhận khi màn đen hoàn toàn. Kiểm tra tiếp đường đi sau màn thưởng, lưu/tải và xuất phát từ stage vừa ghé.
+Kiểm tra thời điểm sát thương thực: lao không gây sát thương trong lúc chuẩn bị, frame đâm và core cùng chạm; Pháp Sư/Cáo đứng niệm, đạn dịch chuyển qua sân rồi mới gây sát thương. Một lá chỉ áp hiệu ứng một lần. Khiên xuất hiện theo giáp thật, còn sau khi lá kết thúc và có nhịp vỡ khi giáp bằng 0. Phản ứng của boss/lính theo đúng đơn vị.
 
-`--star-smoke` đo vị trí từ chính helper mà renderer dùng: icon nằm giữa node tại đầu và giữa FadeOut. Đã xem hai ảnh tương ứng; icon không nhảy về lối vào.
+Sao Chép dùng đúng chuyển động/đường bay của lá gốc, giữ ID bài Undergod. Mưa Sao Băng dự đoán đủ sáu mục tiêu bằng bản sao trạng thái; không tiêu RNG thật. X1/X2/X3 kết thúc cùng trạng thái combat và RNG. Đòn kết liễu giữ sân qua phần va chạm, rồi mới mở thưởng; run mới xóa hiệu ứng cũ.
 
-![Icon tới đúng stage trước khi tối](images/map-arrived.png)
+`--animation-smoke` chụp 24 mốc qua renderer/backbuffer DxLib thật và gọi handler chọn bài/Attack: đâm, cầu phép, khiên player, khiên boss, cầu lửa, lao lửa, mưa sao, chém/ném Ninja, lưỡi Ếch và vồ Hổ. Sau đó đi qua binding của 48 lá player và 36 lá boss. Hành vi core của từng lá boss tiếp tục được kiểm tra riêng theo mọi pha.
 
-![Icon giữ tại stage trong lúc tối](images/map-fade-held.png)
+Đã xem ảnh đạn bay, chạm, khiên giữ, khiên vỡ, lưỡi nối miệng và cú vồ. Lưỡi dùng biên alpha của từng frame để nối đúng miệng; đỉnh cú vồ nằm trong sân. Lá đang thi triển đã chuyển xuống góc phải, không che đường đạn.
 
-Boss rút từ bộ riêng trong `boss_cards.json`, theo pha và trọng số, chốt đủ ba hành động trước Attack. Những lá thường trong một kế hoạch không trùng khi còn lựa chọn; lá giáp hỗ trợ tụ lực được phép lặp. Sáu bộ không nằm trong `config.cards`, shop hay phần thưởng người chơi.
+![Cầu lửa đang bay trong DxLib](images/skill-fireball.png)
 
-Kiểm tra từng lá: sát thương/nhiều hit, giáp, buff, debuff, gọi viện binh, lời nguyền, hút Nộ, tụ lực hai vòng và Sao Chép. Tụ lực dùng dữ liệu hành động để chọn animation thay vì dựa vào tên ảnh chung cũ. Chuyển pha không thay lá đã công bố. Bản lưu v1.1 được gắn ảnh riêng mà giữ nguyên hành động/RNG; từ chối ID thuộc boss khác hoặc không tồn tại trước khi thay trạng thái.
+![Khiên vẫn tồn tại sau lá của player](images/skill-player-shield.png)
 
-Đã xem ảnh DxLib của đủ sáu boss, tooltip, tên dài trong khung ba dòng và Hổ tụ lực/vồ. Nhãn đang bay của Diều Hâu nằm dưới hàng bài để không bị che. Hàng ba sao/chia bài/FIGHT tiếp tục hoạt động theo [TURN_STARS](TURN_STARS.md).
+35 sheet ImageGen 2×2 xuất 140 PNG RGBA8 512×512. Mỗi bộ có bốn frame khác nhau; body dùng cùng hệ số và chân y=456, FX giữ diễn biến kích thước của ảnh gốc. Prompt/ảnh tham chiếu/hash/QC lưu trong provenance; [báo cáo QC](reports/skill-art-qc.json). Toàn bộ 239 PNG trước đó không bị ghi đè.
 
-![Bài riêng của Hổ Vương](images/boss-tiger-cards.png)
+## Hồi quy và mô phỏng
 
-Sáu atlas ImageGen 2×3 đã tách thành 36 PNG RGBA8 256×256, alpha/căn giữa cùng tỉ lệ, không chạm mép cell. Prompt/hash nguồn ở `assets/provenance.json` → `boss_card_decks`; ảnh tổng ở [boss-card-icons.png](images/boss-card-icons.png). Không thay 203 PNG đã duyệt trước đó.
+Hai smoke cũ tiếp tục kiểm tra map tới đích/giữ xuyên FadeOut, FIGHT/chia bài, thứ tự ba sao, tooltip, bộ riêng của sáu boss, tụ lực, menu, shop/sự kiện, lưu/tải, tuyệt kỹ và thắng hành trình tham chiếu. Không thay luật hoặc chỉ số các lá.
 
-## Mô phỏng với bộ boss mới
-
-300 seed 0–299, độ khó 0, không mua kỹ năng meta, luân phiên ba lớp. Bot dùng controller native, chờ hết chuyển cảnh/hành động, tối đa 6.000 quyết định mỗi run.
+300 seed 0–299, độ khó 0, không mua kỹ năng meta, luân phiên ba lớp; bot chờ hết chuyển cảnh/hành động. Kết quả giống v1.2.0:
 
 | Lớp | Run | Thắng | Thua | Kẹt |
 | --- | --- | --- | --- | --- |
@@ -49,21 +46,17 @@ Sáu atlas ImageGen 2×3 đã tách thành 36 PNG RGBA8 256×256, alpha/căn gi�
 | Ninja | 100 | 55 | 45 | 0 |
 | Tổng | 300 | 133 | 167 | 0 |
 
-Thua ở hồi 1/2/3: 34/36/97. Đây là bằng chứng kết thúc tiến trình và dữ liệu tham khảo cân bằng, không phải tỉ lệ thắng người chơi. Pháp Sư còn yếu hơn trong chính sách bot hiện tại. Chi tiết ở [turn-star-simulation.json](reports/turn-star-simulation.json).
-
-90 trận đấu thử Ếch/Hổ, seed 0–89, luân phiên ba lớp: 48 thắng, 42 thua, 0 kẹt. Các kiểm tra đấu thử vẫn xác nhận không ghi save/profile hay thưởng meta.
+Thua theo hồi: 34/36/97. 90 trận đấu thử Ếch/Hổ: 48 thắng, 42 thua, 0 kẹt; kiểm tra đấu thử không ghi đè tiến trình vẫn qua. Đây là kiểm tra tiến trình và hồi quy, chưa phải tỉ lệ thắng người chơi. [Báo cáo mô phỏng](reports/turn-star-simulation.json).
 
 ## Gói Windows
 
-ZIP được so danh sách chính xác, hash từng asset, dữ liệu nguồn, EXE Release và CRC toàn bộ. Không chứa save/profile, SDK, PDB hay CoreChecks. Sau giải nén độc lập, đã chạy cả `--star-smoke` và `--smoke`.
+Gói chỉ chứa runtime, dữ liệu, hướng dẫn và giấy phép. Đã so danh sách ZIP chính xác, CRC toàn bộ, hash mọi asset và EXE Release, rồi giải nén vào thư mục riêng chạy cả ba smoke.
 
-- 276 tệp; 37.506.657 byte; 239 PNG, 12 WAV, 17 JSON dữ liệu.
-- SHA-256 ZIP: `bf0d7858919ec32ad01810ba25662c53657c8c1ef313aae82bf05e3fdbd41773`.
-- SHA-256 EXE: `ef5dc4c39d65ebe4f0012ba181b40be9b82c7fb35f98aa49c72e5d0f1d942962`.
-- [Báo cáo gói](reports/package-validation.json), [smoke gói mới](reports/packaged-turn-star-smoke.txt).
+- 417 tệp; 56.729.916 byte; 379 PNG / 12 WAV / 18 JSON dữ liệu.
+- SHA-256 ZIP: `e431b9f8b9c5b0732716535eeb31d0dd13377031dd103caf31e53cc33a5a12d7`.
+- SHA-256 EXE: `2c4a7d0393515d349c646118f67836b7d3c2c62ed94b6a5c5902cee7f9ad91f8`.
+- [Báo cáo gói](reports/package-validation.json), [hoạt ảnh trong gói](reports/packaged-animation-smoke.txt).
 
 ## Giới hạn bằng chứng
 
-Smoke dùng renderer/backbuffer DxLib thật và gọi handler UI; không phải bản dựng HTML. Các nhịp chiến đấu dùng fixture có kiểm soát, còn ảnh sáu bộ boss dùng kế hoạch được chọn từ bộ thật. Chưa chơi tay trọn chiến dịch qua chuột/phím Windows hoặc thử trên máy Windows sạch khác.
-
-Thời lượng 25–35 phút/run và tỉ lệ thắng người mới 40–50% vẫn cần đo thực tế; không suy ra từ bot. Bản phát hành giữ nhãn preview. Cảnh báo còn lại là C4010 từ `DxFunctionWin.h` của SDK ngoài repo.
+Smoke dùng renderer và handler UI thật với fixture có kiểm soát; chưa chơi tay trọn chiến dịch bằng chuột/phím Windows hoặc thử trên máy Windows sạch khác. Thời lượng 25–35 phút/run và tỉ lệ thắng người mới 40–50% cần đo thực tế. Bản phát hành giữ nhãn preview.

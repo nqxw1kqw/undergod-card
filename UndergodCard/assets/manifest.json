@@ -1,6 +1,6 @@
 {
   "player": "chick",
-  "runtime_pngs": 239,
+  "runtime_pngs": 379,
   "files": [
     {
       "path": "assets/pastel/boss_cards/boss_fox_fire.png",
@@ -723,6 +723,38 @@
       "sha256": "92a50c78ad4d5cfbe225fd7ea496e260cb2abe5a2d60b49772909cd160eba981"
     },
     {
+      "path": "assets/pastel/characters/char_chick_cast_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "13a2869bfd2d9df13558a0bb56edcb07fc62ab87b23584f659da9e78531dff03"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_cast_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "545b000f36c60192611f957fbb65f16b1bd49f8eeeefa1b4154058b52e91d87c"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_cast_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "be32dca7cc780e25f0bc6aac9cf040107093bdaa2b4aef4c2d4134ad43f96360"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_cast_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "fbfa7837ce81ef27725bba28ac4bce97ba7c37eabd05f6d1cc4789fc1f992c1f"
+    },
+    {
       "path": "assets/pastel/characters/char_chick_defend_0.png",
       "size": [
         512,
@@ -753,6 +785,38 @@
         512
       ],
       "sha256": "578b9b9baf1dc68e9cec210f8cc455c31715f5a2fc274d4f0713cf7b372cae28"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_guard_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4b67a41288d4be711c3a0389c3e09790a61e29ebb7cabfa2bbce09e14f5c026f"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_guard_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "7f60b5fe768cac59e48658f481af6b7d6c0ed715dce79279c921b93e73ddec30"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_guard_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "6bd238a634be769d0b6388b15be47d5a9a03531d03bcb63fe1e9d1f5854a4c59"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_guard_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3a3c0b551b1a800d67d4d3344e39b3ab5b095fc4dd28f16b2539da986a7a5f23"
     },
     {
       "path": "assets/pastel/characters/char_chick_hit_0.png",
@@ -817,6 +881,102 @@
         512
       ],
       "sha256": "b315055113db03b222bfe59fb37c42466c506588f06fc543d7b62ff0c1b2ec43"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_peck_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "0744d7d367e21c7f03ac0a5a617980251b829096b5f18ebddc845e4f50dbe0b1"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_peck_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "101cd54653065388881575308a292674636fe615b130f5704ad7fb0e1adf02c3"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_peck_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b14ac64285112bc84926573a9d3a361788c4e0dfa5d746fe036ee8388c70f2b3"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_peck_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ea1e4fec394d012564780e650d51c82f397fe30822d47b443fe7f49c0dcceded"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_stomp_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d6b4867082733eaf8b4f6d1b20815512ffaf3a0a56750b0bbec0903f05021daa"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_stomp_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "504aee4e543fde4589a1c3303e7afbd00d25a6258867a97028d88a5cc0adcc5f"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_stomp_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "07737e9e626e0c7c9fbb46c4574249aa33088efc3c5f80b52b3ec61b4a00bdbf"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_stomp_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "381a0960df0a75a99023014eeaafc97712f5b3cd4b347577f67a77b30a132c59"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_thrust_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "8985b26285e4ec5df7577e1ebbe68f560ab5cadb705a47d88fcd83bc4a17992e"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_thrust_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "38607cb7d8e8d1680ecace39ea24aa6c120bc20490d1ff86c1d72625d62eb2f7"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_thrust_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a42f5af0fe2118657be2c4792884a7ef98aaaf859ceca58ce931ee6680111c79"
+    },
+    {
+      "path": "assets/pastel/characters/char_chick_thrust_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "7d51528207553060efa1c9c2c2f07a667ddf72696cbe5973aa8673abd992b17e"
     },
     {
       "path": "assets/pastel/characters/char_chick_ult_charge_0.png",
@@ -931,6 +1091,38 @@
       "sha256": "74c19753665956985b5a0bdfd1e13fb9684953ede7faab33e67f4344f068dfcf"
     },
     {
+      "path": "assets/pastel/characters/char_fox_cast_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3fe9ebc0635d530d12f34a2c3bc6b6cdfbd0e76069c310cc09fa908a740ccff3"
+    },
+    {
+      "path": "assets/pastel/characters/char_fox_cast_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f86ce71d1d6c884697a5d6bd9fe169d26ef89f0a62db2a163d86a545961e0b08"
+    },
+    {
+      "path": "assets/pastel/characters/char_fox_cast_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d4ee7d9fdb8fbf87e6d087d9d0b6b70d5faaf5ed6898cc241e7843511928760c"
+    },
+    {
+      "path": "assets/pastel/characters/char_fox_cast_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3be9d5cd32da166627855c841c4c1831149d8bbcb0d96d94b77c7101a6ca9781"
+    },
+    {
       "path": "assets/pastel/characters/char_fox_idle_0.png",
       "size": [
         512,
@@ -993,6 +1185,38 @@
         512
       ],
       "sha256": "ac4134bebd8460a32eb1399a8c0e2ad2240f6f5dbfe6a747541f9c602de4dd28"
+    },
+    {
+      "path": "assets/pastel/characters/char_frog_king_cast_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "7774e4df69d7859d83ef9b65758f8d4520da7f80c95ac469f1cbba62c252c283"
+    },
+    {
+      "path": "assets/pastel/characters/char_frog_king_cast_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "262b1331c168759bd587db4fc50a6cedebbc9e869cee8a9fb3e61f63469efcf5"
+    },
+    {
+      "path": "assets/pastel/characters/char_frog_king_cast_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "0e2eb613d975e8a030d68be360b747f316a9d8c23a951a894fe6fe7b27d7361f"
+    },
+    {
+      "path": "assets/pastel/characters/char_frog_king_cast_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1dff4d2e93662bcec2e8661b4637c72acaad7621af4f52aaa34785a74d2ec29c"
     },
     {
       "path": "assets/pastel/characters/char_frog_king_idle_0.png",
@@ -1067,6 +1291,38 @@
       "sha256": "2f4d7289722b6d534ef14a0c4b9ced109f026f3ddeeb6ac5e8f7acd069057501"
     },
     {
+      "path": "assets/pastel/characters/char_hawk_cast_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "fe8dfd2a142a9f92c4e7dcd4e2c5705fe627da2ff5312c3220722c97dde18ce4"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_cast_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1bb4d7e674ac0c0e3cbc0de6cdf2c7f9dea90fb044a20751410dc3dbce03af03"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_cast_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "beba0c555a3737ba235fc7ee967fe3b5d521001ff0e2731c71c5da9a56bfbd31"
+    },
+    {
+      "path": "assets/pastel/characters/char_hawk_cast_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9af4dbf1892a672a4c907c830e6923158e419c7257a44dd60f56e3ca4b84c40d"
+    },
+    {
       "path": "assets/pastel/characters/char_hawk_idle_0.png",
       "size": [
         512,
@@ -1131,6 +1387,38 @@
       "sha256": "a3a637b60833e2e158677ff8967d49c436339866ca7fc2ec6f3e87e093bd0904"
     },
     {
+      "path": "assets/pastel/characters/char_mage_cast_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "08e86fdad90639775737fccc911c04546906228e172f406262d031982b1d831f"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_cast_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "be342455ff2d6b65b08481c0954d3d6f74aebd57ab850b32575ab5f3d0d52dd6"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_cast_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "671fddefafdf4a3aa343118ba907165e5c9775d853a8eaf8dbc7d9932bfbbb1b"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_cast_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "366d4d32cefdb5c9c5707babe5562d6f1ad4298f606b290f6e0ab66b75b1ceac"
+    },
+    {
       "path": "assets/pastel/characters/char_mage_defend_0.png",
       "size": [
         512,
@@ -1161,6 +1449,38 @@
         512
       ],
       "sha256": "80854fee4d7cab3ba021ffeb208799298c92c04a8315c2c0801c599f34ac7608"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_guard_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b8c0fc51c1c1c05fb211f37df1a19d2672a55b76a7c67222cb19a67c4d123b8b"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_guard_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a29b9e294df37cfefd52b440b95711fe569925bc79fd4e715c9e4aabd9835f79"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_guard_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b6c88d00f9ee752517284be2a088696a25742e41e96308d6f3943d786e298e4d"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_guard_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "081b53e7ff24bd8fc62fae77cbfe0c47e0233e050f05263cd3e7c516882d41fe"
     },
     {
       "path": "assets/pastel/characters/char_mage_hit_0.png",
@@ -1225,6 +1545,38 @@
         512
       ],
       "sha256": "0f12f8923975eb1f23e601501c0c0352ebd9064569f192c930d6450fbc8f8176"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_thrust_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d2446be2b7fd95a43501d7b8e0503bd6c91d643f71a56eba610fd3d4cfffd8ff"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_thrust_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "785868c9a29df94f7ae44976b80877a753278111d2a1084b71d575910d37bd54"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_thrust_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "fc57e719fcf40025fb4599900b1ab8f515b0b77ab7972a6b9db5af4c2c922990"
+    },
+    {
+      "path": "assets/pastel/characters/char_mage_thrust_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ab55f23d884fa7ff74f5df9cad229c42199ecc43b30c07d406beb21a1ef402e5"
     },
     {
       "path": "assets/pastel/characters/char_mage_ult_throw_0.png",
@@ -1339,6 +1691,38 @@
       "sha256": "e6d0ac27050cff156cccf27b8d770c36ed5225a1522ef5f80c5e41c762d21782"
     },
     {
+      "path": "assets/pastel/characters/char_ninja_guard_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ea6510f83373f4fa349cf6ade05ce66e5cfa0c1c6984f952592e52e2d3b7de39"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_guard_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c22fe21be906cf8a85a59290a5d0a3242dbd26e5326023df8af0a78aeba05c6a"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_guard_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1f3001400af7c1782034197f60976ffb296848f3ed9dc541ccba72e414973b06"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_guard_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "db9b14f60a417b785e5146944c475a199a5f37aacf1634417095d434909d24b1"
+    },
+    {
       "path": "assets/pastel/characters/char_ninja_hit_0.png",
       "size": [
         512,
@@ -1401,6 +1785,70 @@
         512
       ],
       "sha256": "c2db97e772c78fb81c361d79386cbc00314b5bbe4e4b6f52cd630450eb7847f5"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_slash_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4709dd9ca7f542bcac72826867524feb0d6d2b612dc7ea85e5dbebe211161617"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_slash_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e8cc6744ff993ad1123cae5e5d3614c9c4e422de3f1aafce13eea92a18132b4d"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_slash_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3503b0a0a6ce2988827f74361c41b75d22f3c7eafdbb9215fdecb278fb37e8f7"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_slash_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "54bfc919d666f4aa11081d062c7231e332be181869d1ce0fe6f4cd2a4f115f84"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_throw_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f8bda91f1df70cc77aa335207437db875c5885efe2d7bf683338cd0e28899675"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_throw_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "daa81e1c7ea68c21523355fe0d43e2eebb07c24d1cbdc1b8856e8dad5cf6e448"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_throw_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2f4e05d006fa16b4a4a7847c7a22a4b237fe2e04a35c1ee949bd4b1cea8f04d4"
+    },
+    {
+      "path": "assets/pastel/characters/char_ninja_throw_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "146ac44a6955e2465c339f2bb3964f3f175ba835c64b9e17c3e1ca6f1f247a67"
     },
     {
       "path": "assets/pastel/characters/char_ninja_ult_throw_0.png",
@@ -1483,6 +1931,38 @@
       "sha256": "1c568145092c6198bfbfee9c10926e0a1e90ff486fac30b4e211b80d9d4dfbff"
     },
     {
+      "path": "assets/pastel/characters/char_snake_cast_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "43a151c32ab76a3e747333833c86e1bb0eff4cc4e9e2c489d04e93da7358c5cd"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_cast_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "37fd679d35770d1228436b4fafb747c79fbf02f0692d770416efc284f5910e27"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_cast_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5998959b90b71ede3daed95efebdfdc254e8b05d3fb90855c76b625403101fde"
+    },
+    {
+      "path": "assets/pastel/characters/char_snake_cast_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d8a262dd6c7d759f2f46e7312971fd0f7b44ebe276393263c29db1cf61ddb100"
+    },
+    {
       "path": "assets/pastel/characters/char_snake_idle_0.png",
       "size": [
         512,
@@ -1555,6 +2035,38 @@
       "sha256": "e8391673fe65e10bb25b9e31508c4d9cfe18c3319749500b3309fc2ce7ec6f7d"
     },
     {
+      "path": "assets/pastel/characters/char_tiger_guard_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b49cd9b15a3c1745fffd252f1a3404864fd1fe20949cb334254e38f3e71cd6c4"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_guard_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b0bd6fe23e722aad63b5f1a56ee02a008a728f48d8ed71e8d9fd12a92f1db885"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_guard_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "55257cb0bea7eab5ac2310007650d9f796db9d2175afc0450bfdfe9e21e78e20"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_guard_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a0b04484eea14edc96b4ae13724d9426eadedc2d7196eb5c4ae45a2c08ea45aa"
+    },
+    {
       "path": "assets/pastel/characters/char_tiger_idle_0.png",
       "size": [
         512,
@@ -1585,6 +2097,38 @@
         512
       ],
       "sha256": "2a7c783df2430ca4ed0c2178cf0eba727db77da81cfb196280eb4c020208b393"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_pounce_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9f1c7d37a3bb7fad70581c5ab681d764b12130438287ee144ac1737853d30591"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_pounce_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1858238ae632b8df49d97f8690e8b5b8e9b4095668a61c7210603333ba0e15af"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_pounce_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "71fe4a7950e2907dd412ca63bd478dde3328ebfc49432ac105fffbd8f6f9c3d7"
+    },
+    {
+      "path": "assets/pastel/characters/char_tiger_pounce_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b7f3786b56941351b24d89860988d5ed5f25f93dd376c6733db6d8e2063520c0"
     },
     {
       "path": "assets/pastel/characters/char_tiger_ult_charge_0.png",
@@ -1657,6 +2201,38 @@
         512
       ],
       "sha256": "82b8bfb3b1e3c41560890e333d33fa8f4cf33baee9d2c521923c514cf2ed650c"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_cast_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "038d5d2da9531b0f649d489b0425eac456454b2a3aa49545a29f1564cfecc142"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_cast_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5b887027d57034dbc3437fe0c424e36982759ff6177215d7c2b5c8f68791fa23"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_cast_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "41598f62c31d2e3242bfbb4ad73c50306e364189897ec1d47e4a89871c6ddd7c"
+    },
+    {
+      "path": "assets/pastel/characters/char_undergod_cast_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "22ba2a34605873e46e35a19ac66a3a7ba18d4e5b0c12959e2b2d6fd3f93e5f59"
     },
     {
       "path": "assets/pastel/characters/char_undergod_idle_0.png",
@@ -1873,6 +2449,958 @@
         256
       ],
       "sha256": "1ffdf46fbfb01471b50c04f69d1ca2aab8f9a5e843435e03476e63f001bd5570"
+    },
+    {
+      "path": "assets/pastel/skill_fx/arcane_orb_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "6274ead1569901fb72dd80f2a01fc19376f22315085959510b9925b58e312b6d",
+      "bounds": [
+        68,
+        171,
+        444,
+        341
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/arcane_orb_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "8e887246e056e7d1b8e9b67a3341a7ba09de7c8dea1487ef38172f2f634f08f0",
+      "bounds": [
+        50,
+        156,
+        462,
+        356
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/arcane_orb_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2bbb0256d9067976f4eedcf78b1af86c1c1f9fe05a91ce6b29ba4dbbb49322f5",
+      "bounds": [
+        38,
+        141,
+        473,
+        370
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/arcane_orb_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "3200895d3713325b8f40e8c3a3d55e4eeb1ebf4d6b26d0d1073d7c34370ef481",
+      "bounds": [
+        55,
+        171,
+        457,
+        340
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/claw_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d8850976d5cd8b31de4892f894960de8a14c7f826df951227b7ec29f5bf6d512",
+      "bounds": [
+        97,
+        109,
+        415,
+        403
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/claw_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ef5f5bc0f626fdcfb0a93334fc265e6d817fe36bd673f9d3f131bbfd8321a274",
+      "bounds": [
+        38,
+        55,
+        473,
+        456
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/claw_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9608d618fcbd7a6411153153b23fc84068224913ab5b93b9edf5ded3b354d57c",
+      "bounds": [
+        67,
+        86,
+        438,
+        423
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/claw_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "37150c3e33e5416c6bace27e2e4e29fc9c029d596f20bc27e26f7fca732e399a",
+      "bounds": [
+        118,
+        135,
+        394,
+        377
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/fire_orb_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1bab7e19ad7abe90daab669626533e6239f0078407393dc4246c5b6a5027b46a",
+      "bounds": [
+        49,
+        130,
+        463,
+        382
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/fire_orb_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b5e67aa1902a216a5a2c113ecc7f827c91252e62764770ec5396609944dd1fcc",
+      "bounds": [
+        38,
+        122,
+        473,
+        389
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/fire_orb_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "8c3f8989eff144f0527644da830a7cc0747d0c49111f90cb90973fd58fd092a1",
+      "bounds": [
+        47,
+        116,
+        465,
+        396
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/fire_orb_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "dc94234a2fd7297241b5a81814ee3a13ab2a97e2835d1a88ae827d3b3f5e678a",
+      "bounds": [
+        42,
+        129,
+        469,
+        382
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/heal_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c47538ee088da49a39779f49ad2f944f898b18c6ecfa7df01a8761236d9cabe1",
+      "bounds": [
+        111,
+        106,
+        400,
+        406
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/heal_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "bbaf3543d78b2677d43a08771c3e4b9390d5a38915073cfe3dadb14addef5638",
+      "bounds": [
+        41,
+        80,
+        470,
+        431
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/heal_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d6aec2f72b2f62e255bb84a98d92a4be1e705c3bb11698b4f2ee6c9f99b76624",
+      "bounds": [
+        38,
+        44,
+        473,
+        468
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/heal_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4257ea930dbfa31902a3b413a15addd6eecaa0a93cb5cf496af92c11fa850300",
+      "bounds": [
+        61,
+        74,
+        450,
+        438
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/lightning_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5e3041429e7b9f1ada25cf8c4ce719b682f4d5073ec7bf96c2ea1f3edb77b8c8",
+      "bounds": [
+        219,
+        100,
+        293,
+        412
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/lightning_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a4bbee09f93730e0c2881dfe38a33f378177d963fc96a1da69c5dd7b6d170a45",
+      "bounds": [
+        127,
+        38,
+        385,
+        473
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/lightning_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f3423ff241a0c50785a38ea1a7d8c2c327c03bc353d01cb93dee3a93e3004099",
+      "bounds": [
+        117,
+        134,
+        395,
+        377
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/lightning_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "bca2927cd12a2b62c05993792a95490aba45400fdb5c3dc0c8c38b69e13b7425",
+      "bounds": [
+        140,
+        201,
+        372,
+        311
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/meteor_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c1170906f00673add5844b2d334a8b2bb419ae5484437762b5e963dfc3ba76e6",
+      "bounds": [
+        70,
+        150,
+        441,
+        361
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/meteor_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9c00334e908e06aff9e1e7454f754bef8589d4cb3a6ef1cdf68fce513816d8f4",
+      "bounds": [
+        53,
+        133,
+        458,
+        378
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/meteor_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b20c28f89690aebe9885056e827ad71d7a36f2ee2b15c56a2fc62465eb3c3222",
+      "bounds": [
+        38,
+        121,
+        473,
+        390
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/meteor_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "bcc71d141388d0fbfaefa905607214fad85419bc9d99eb120892ac29f313835b",
+      "bounds": [
+        59,
+        146,
+        453,
+        365
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/shock_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "38cdc6776642f6fbc277bd777a2d5bff29c22e50f2258293a177d67872993637",
+      "bounds": [
+        171,
+        201,
+        341,
+        311
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/shock_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "094f94fc4e25e946f120b3447b72caa32bb995b417cd9cd37f763dd78159ab01",
+      "bounds": [
+        72,
+        138,
+        440,
+        373
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/shock_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "fece06f775c04bf978e7dafdec5f140cccaf880f779f3cc7ad7cb4308a5e7d08",
+      "bounds": [
+        38,
+        140,
+        473,
+        371
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/shock_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2fb91b235b7778a46088104035e3b85a130dab8ae823020ffcde8819296916bc",
+      "bounds": [
+        53,
+        205,
+        457,
+        307
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/sigil_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "18e9bc90fd30976cc95d17b9d9128b2840f1eaaea77323c5b45ea83a92949972",
+      "bounds": [
+        160,
+        164,
+        352,
+        347
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/sigil_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ced7076fe24d3b7d2a094d9b88bfe100757ecbccc9eb402dc163aea8b65b4c97",
+      "bounds": [
+        96,
+        100,
+        415,
+        411
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/sigil_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "99363e0659cc002e5d7adf46403cbeb05165be026d414c30c17473796708a4c7",
+      "bounds": [
+        43,
+        38,
+        468,
+        473
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/sigil_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5dd5bbb1eab4d4ae6363012ef5fb8fdcb664fe5b3dab82c71a7c2d30a21a9250",
+      "bounds": [
+        102,
+        104,
+        410,
+        407
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/slash_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ba003196d744fea68cfd1e8028f79e4bb3ac82171ea4b5f84b971fa31f603216",
+      "bounds": [
+        98,
+        183,
+        413,
+        328
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/slash_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "b5a394b7af28f389f37050af538e5bded21b7b60f20b46e1c7043449c09aa5cb",
+      "bounds": [
+        44,
+        102,
+        467,
+        410
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/slash_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5f69f41081ed38ecc80764e47664da8c47eaaa85d1df1e87776dc1243873cddc",
+      "bounds": [
+        38,
+        114,
+        473,
+        402
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/slash_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "937b2e74dab566d981f31e1fa7cd0aaab84cd1ab1bd0ef586257a269a6567734",
+      "bounds": [
+        165,
+        145,
+        347,
+        367
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/smoke_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "c86f557bfb86f7dc148d573f1dd6b48f1a6c5cb1736e0c5b4876e63774b4ec0e",
+      "bounds": [
+        155,
+        184,
+        356,
+        328
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/smoke_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1bae71adf3c82abc22e7b57104007505fd0796181b62c429371fecfecfb7dde9",
+      "bounds": [
+        82,
+        146,
+        430,
+        365
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/smoke_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "9fbaf00d4c9554cc77656b4adecd94b920054e5bf4d7485bf86586d8e936ec2a",
+      "bounds": [
+        38,
+        152,
+        473,
+        360
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/smoke_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "564d88d4f1a6f4e2e00ddc868f0302b3be80646766fa844a55a50015344fa2eb",
+      "bounds": [
+        54,
+        181,
+        457,
+        327
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/summon_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "23190434cc1546e67b5321abde92cd0f78ab4634dcd6acce73fc6f1aa3c474dc",
+      "bounds": [
+        79,
+        218,
+        433,
+        293
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/summon_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ef3960e3c581055cd41ddf1d70fe7222960f946e420d01db17048bc718d86b65",
+      "bounds": [
+        38,
+        135,
+        473,
+        376
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/summon_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "d7bc4a19f909b0a26c2375ff492741a4e1419dd1c356fd86e10d1e9dbc399f47",
+      "bounds": [
+        42,
+        100,
+        470,
+        412
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/summon_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "fb76790526e13d5ff8f83787da1dab3e084b7260d1a4b0b13b0ee3a54ad5c018",
+      "bounds": [
+        61,
+        176,
+        450,
+        336
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/tongue_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f61dba9c28575bdf2c1a71552d2d7d5ea3cfdc9c3c6a3582a65ec848052b2448",
+      "bounds": [
+        168,
+        175,
+        344,
+        337
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/tongue_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a41339690aaccbc29d87195dd3af2a239ff02d9f4feba279a6d70456015f480a",
+      "bounds": [
+        89,
+        181,
+        422,
+        330
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/tongue_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "977ff0242bea1a751eacc058b2911bbbfcc7c74a0b9ef5fc4053eddd86ef1d7d",
+      "bounds": [
+        38,
+        169,
+        473,
+        342
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/tongue_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4d8698083a4741544752ae1a599d2eddecee85188e5b483c2a7ad7433754a74e",
+      "bounds": [
+        149,
+        168,
+        362,
+        343
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/toxin_orb_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5bc97891a820b15b938b4799e7e39803db3d88fb65af4afefd2f12a640f61062",
+      "bounds": [
+        41,
+        144,
+        470,
+        367
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/toxin_orb_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "84d1ec3f064b685cae427c845b7cb4ccb8d642e58787daff860d3abb7ada533e",
+      "bounds": [
+        41,
+        139,
+        470,
+        373
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/toxin_orb_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f6b345b61938f932d16aa327f5c140c3dba15ac6d6f3d9ddeb58692857aba930",
+      "bounds": [
+        38,
+        136,
+        473,
+        376
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/toxin_orb_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5eb38f0597248154b82083f9f2d8d529ac427d9b18774a6062ce684d43781814",
+      "bounds": [
+        41,
+        141,
+        471,
+        370
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_blue_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "1bc0ace9d7da6183364f385e98e15a24df0ba594c608ce8fe62ffde0e71f318e",
+      "bounds": [
+        69,
+        67,
+        442,
+        444
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_blue_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "bfbe404b1700ba1ba373f008068c295591bce6a69d2fdb1a8c5e65f5412655c8",
+      "bounds": [
+        51,
+        51,
+        461,
+        461
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_blue_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "dac9bd08719ecb4f6416e3997efacff0908675a587c9a561910083b781bc2b6b",
+      "bounds": [
+        38,
+        38,
+        473,
+        473
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_blue_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "2fe853b2816b0c9d2e524c2396fb442fddc536af607c49db13ed45a4937a4766",
+      "bounds": [
+        64,
+        60,
+        448,
+        452
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_fire_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "17e068bfc3d37a52bc6270fee739a83585c75ae987a90076441ecb8c938cd05f",
+      "bounds": [
+        109,
+        47,
+        402,
+        465
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_fire_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "971b637d03fbba1f789633aac8b8363e21817e33e6a9adaae39be9c8a90c3f31",
+      "bounds": [
+        105,
+        38,
+        406,
+        473
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_fire_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "a03f7ed3e846446f16e196045ab7919b9601d69631036f19f25287910cf053d1",
+      "bounds": [
+        109,
+        49,
+        402,
+        463
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_fire_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "ed31fbbe5b4dbde1a9e864c2b8ef312b53092c960bd76da27a05824745ae0078",
+      "bounds": [
+        110,
+        48,
+        402,
+        463
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_leaf_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "21123cdae3d723fcf89cdf5c40fbad4c6c544af46de515e2305ab8a4a7993572",
+      "bounds": [
+        78,
+        59,
+        434,
+        453
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_leaf_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e9585a8767e2bbafff39bb854c7367991870ebfa1bf0d834e812000e88118513",
+      "bounds": [
+        57,
+        46,
+        455,
+        466
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_leaf_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4c0eacbfd38f6b11d00481503077c9d6bbb815631fa00c6dacf780371781716d",
+      "bounds": [
+        41,
+        38,
+        470,
+        473
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_leaf_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "5ffad64ff6448c0d22812f50c3fd95a806f32fa9cc67ac0830fd2dd303f167f8",
+      "bounds": [
+        62,
+        50,
+        450,
+        462
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_shadow_0.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "f92bdb0a26fa7d91595a374c2939fac7ddc45218f01f8bf13c913aceca364878",
+      "bounds": [
+        92,
+        42,
+        419,
+        469
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_shadow_1.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "7c770f22794d51607c2078dbd8d4c0b7077a7f822d87c7cdcc96a1ff1ba47438",
+      "bounds": [
+        65,
+        38,
+        447,
+        473
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_shadow_2.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "4b28a8a59b6b9f0a75852f5912d2f0e3f6f60e8699e50858abe565db81011817",
+      "bounds": [
+        75,
+        39,
+        437,
+        472
+      ]
+    },
+    {
+      "path": "assets/pastel/skill_fx/ward_shadow_3.png",
+      "size": [
+        512,
+        512
+      ],
+      "sha256": "e02dbc7743c92f2abd5023999a8800f2c6de0b7d23cc0b25134743a251e94d6c",
+      "bounds": [
+        90,
+        41,
+        421,
+        470
+      ]
     },
     {
       "path": "assets/pastel/ui/fight.png",

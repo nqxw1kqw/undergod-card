@@ -300,6 +300,7 @@ Config LoadConfig(const std::string& directory){
     }
     for(const auto& boss:c.bestiary)if(boss.role=="boss"&&!deck_owners.count(boss.id))throw std::runtime_error("Boss has no exclusive deck: "+boss.id);
     LoadWorld(c,directory);
+    LoadSkillAnimations(c,directory);
     return c;
 }
 Timeline LoadTimeline(const std::string& file){

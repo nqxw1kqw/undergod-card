@@ -1,4 +1,4 @@
-all_239_images_loaded=1
+all_379_images_loaded=1
 00-classes.png=1
 00-map-player.png=1
 map_travel_precedes_entry=1

@@ -21,3 +21,8 @@ if (!$stars.WaitForExit(60000)) { Stop-Process -Id $stars.Id; throw 'Turn Star s
 $starReport=Get-Content -LiteralPath (Join-Path $PSScriptRoot "bin\$Configuration\artifacts\turn-stars\smoke.txt") -Raw
 Write-Output $starReport
 if ($stars.ExitCode -ne 0 -or $starReport -notmatch 'PASS=1') { throw 'Turn Star DxLib smoke that bai.' }
+$animation=Start-Process -FilePath (Join-Path $PSScriptRoot "bin\$Configuration\UndergodCard.exe") -ArgumentList '--animation-smoke' -WindowStyle Hidden -PassThru
+if (!$animation.WaitForExit(60000)) { Stop-Process -Id $animation.Id; throw 'Skill animation smoke qua 60 giay.' }
+$animationReport=Get-Content -LiteralPath (Join-Path $PSScriptRoot "bin\$Configuration\artifacts\skill-animations\smoke.txt") -Raw
+Write-Output $animationReport
+if ($animation.ExitCode -ne 0 -or $animationReport -notmatch 'PASS=1') { throw 'Skill animation DxLib smoke that bai.' }

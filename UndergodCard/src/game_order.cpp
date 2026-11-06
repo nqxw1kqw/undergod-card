@@ -3,6 +3,7 @@
 
 namespace undergod {
 void Game::BeginArrival(bool banner){
+    if(banner)ResetSkillVisuals();
     arrival_banner_=banner;arrival_=banner?Arrival::FadeIn:Arrival::Deal;arrival_age_=0;
 }
 void Game::UpdateArrival(float dt){
@@ -18,6 +19,7 @@ void Game::UpdateArrival(float dt){
             pending_option_=-1;poses={};popups.clear();visual={};motion_=Motion::None;
             arrival_banner_=run.place==Place::Fight;
             if(arrival_banner_)state.EnableTurnStars();
+            ResetSkillVisuals();
             arrival_=Arrival::BlackHold;save_dirty_=true;
         }else if(arrival_==Arrival::BlackHold)arrival_=Arrival::FadeIn;
         else if(arrival_==Arrival::FadeIn)arrival_=arrival_banner_?Arrival::Fight:Arrival::None;
@@ -61,9 +63,10 @@ void Game::BeginStarMotion(){
     motion_=enemy?(attack?Motion::EnemyAttack:Motion::EnemyOther):(attack?Motion::PlayerAttack:Motion::PlayerOther);
     motion_age_=0;motion_impact_=false;
     if(!enemy)poses[0]={attack?"attack":"defend",0};
+    BeginSkillVisual(enemy,slot);
 }
 void Game::FinishStarMotion(){
-    if(state.phase==Phase::Won||state.phase==Phase::Lost){star_sequence_=false;state.stars.resolving=false;active_actor_=-1;return;}
+    if(state.phase==Phase::Won||state.phase==Phase::Lost){star_sequence_=false;state.stars.resolving=false;active_actor_=-1;AfterResolve();return;}
     if(state.stars.cursor<Combat::TurnStars*2){BeginStarMotion();return;}
     state.FinishStarRound();star_sequence_=false;active_actor_=-1;AfterResolve();
     if(state.phase==Phase::Player&&run.place==Place::Fight)BeginArrival(false);

@@ -14,6 +14,7 @@ void RunChecks(const Config&,const Timeline&);
 void WorldChecks(const Config&,const Timeline&);
 void TigerChecks(const Config&,const Timeline&);
 void StarChecks(const Config&,const Timeline&);
+void AnimationChecks(const Config&,const Timeline&);
 void BossDeckChecks(const Config&,const Timeline&);
 void SimulateStarRuns(const Config&,const Timeline&,int);
 void SimulateRuns(const Config&,const Timeline&,int);
@@ -222,6 +223,7 @@ int main(int argc,char** argv){
     TigerChecks(config,timeline);
     try{StarChecks(config,timeline);}catch(const std::exception& error){std::cout<<"TURN_STAR_EXCEPTION "<<error.what()<<"\n";Check(false,"Turn Star tests must not throw");}
     try{BossDeckChecks(config,timeline);}catch(const std::exception& error){std::cout<<"BOSS_DECK_EXCEPTION "<<error.what()<<"\n";Check(false,"Boss deck tests must not throw");}
+    try{AnimationChecks(config,timeline);}catch(const std::exception& error){std::cout<<"ANIMATION_EXCEPTION "<<error.what()<<"\n";Check(false,"Animation checks must not throw");}
     if(argc==3&&std::string(argv[1])=="--simulate")SimulateRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));
     if(argc==3&&std::string(argv[1])=="--simulate-stars")try{SimulateStarRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));}catch(const std::exception& error){std::cout<<"STAR_CAMPAIGN_EXCEPTION "<<error.what()<<"\n";Check(false,"Turn Star campaign must not throw");}
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;

@@ -19,6 +19,15 @@ class Game {
     bool active_charge_=false;
     CardDef active_card_;
     int active_actor_=-1;
+    ActionVisual skill_visual_;
+    std::array<ActorReaction,6> reactions_;
+    std::vector<FloatingFx> floating_fx_;
+    int known_adds_=0;
+    void BeginSkillVisual(bool enemy,int slot);
+    void ResetSkillVisuals();
+    void TickSkillVisuals(float dt);
+    void SyncSkillShields();
+    void ReactSkillEvent(const Event& event);
     Arrival arrival_=Arrival::None;
     bool arrival_banner_=true;
     float arrival_age_=0;
@@ -99,6 +108,18 @@ public:
     bool ResolvingStars()const{return star_sequence_;}
     const CardDef& ActiveCard()const{return active_card_;}
     int ActiveActor()const{return active_actor_;}
+    const ActionVisual& SkillVisual()const{return skill_visual_;}
+    const std::vector<FloatingFx>& FloatingEffects()const{return floating_fx_;}
+    const ActorReaction& Reaction(int unit)const{return reactions_.at(std::clamp(unit+1,0,5));}
+    bool SkillActor(bool enemy,int target=0)const{return skill_visual_.active&&skill_visual_.actor==(enemy?target:-1);}
+    int SkillFrame()const;
+    float ActorScale(bool enemy,int target=0)const;
+    float ActorLift(bool enemy,int target=0)const;
+    float ActorAngle(bool enemy,int target=0)const;
+    std::pair<float,float> UnitAim(int unit)const;
+    std::vector<ProjectileSample> Projectiles()const;
+    int UnitBlock(int unit)const{return unit<0?state.player.block:state.Target(unit).block;}
+    std::string WardFor(int unit)const;
     int ActiveSlot()const{return std::max(0,(state.stars.cursor-(motion_impact_?1:0))/2);}
     bool CanAttack()const{return CanAct()&&(!turn_stars_||state.CanAttackStars());}
     bool QueueWait();

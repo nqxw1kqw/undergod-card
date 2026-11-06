@@ -44,10 +44,11 @@ void Ui::DrawStarBattle(const Game& game,int mx,int my){
     const std::string ultimate=state.Mods().ultimate=="storm"?"Bão Lông":(state.Mods().ultimate=="shadow"?"Ảnh Phân":"Sao Rơi");
     Button(UltimateButton(),"✦ "+ultimate,game.CanAct()&&state.CanUltimate(),mx,my);
     Button(EndButton(),"Attack →",game.CanAttack(),mx,my);
-    Text(1040,692,"Ta 1 → Địch 1 → Ta 2 → Địch 2…",Muted,small_);
+    if(!game.ResolvingStars())Text(1040,692,"Ta 1 → Địch 1 → Ta 2 → Địch 2…",Muted,small_);
     Text(470,721,game.CanAct()?"Chọn đủ ba lá · Bấm lá trong khung để gỡ · E: Attack":"Bài được thực hiện theo đúng thứ tự đã xếp.",Muted,small_);
     const auto visible=HandIndices(game);const float dealt=game.DealtCards();
     for(int display=0;display<int(visible.size());++display){
+        if(game.ResolvingStars())break;
         const int index=visible[display];
         if(game.ArrivalStage()==Arrival::Fight||game.ArrivalStage()==Arrival::FadeIn)continue;
         if(game.ArrivalStage()==Arrival::Deal&&display>=int(std::ceil(dealt)))continue;
@@ -62,8 +63,8 @@ void Ui::DrawStarBattle(const Game& game,int mx,int my){
         for(int slot=0;slot<int(state.stars.enemy.size());++slot)PlanCard(state.EnemyStarView(slot),EnemyStarRect(slot),slot+1,true,state.stars.cursor>=slot*2+2,mx,my);
     }
     if(game.ResolvingStars()){
-        Center(720,283,(game.ActiveActor()<0?"BÀI CỦA BẠN · ":"BÀI CỦA ĐỊCH · ")+std::to_string(game.ActiveSlot()+1)+" / 3",game.ActiveActor()<0?Color(79,113,88):Color(165,100,84),font_);
-        Card(game.ActiveCard(),{610,310,220,238},-1,true,false,-1,-1);
+        Center(1230,690,(game.ActiveActor()<0?"BÀI CỦA BẠN · ":"BÀI CỦA ĐỊCH · ")+std::to_string(game.ActiveSlot()+1)+" / 3",game.ActiveActor()<0?Color(79,113,88):Color(165,100,84),font_);
+        Card(game.ActiveCard(),{1070,720,320,218},-1,true,false,-1,-1);
     }
     for(int slot=0;slot<int(state.stars.enemy.size());++slot)if(EnemyStarRect(slot).Contains(mx,my)){
         const auto card=state.EnemyStarView(slot);const int actor=state.stars.enemy[slot].actor;

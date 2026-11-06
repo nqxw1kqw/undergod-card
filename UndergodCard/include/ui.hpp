@@ -6,6 +6,7 @@ struct Rect { int x,y,w,h; bool Contains(int mx,int my)const{return mx>=x&&mx<x+
 class Ui {
     int font_=-1,small_=-1,heading_=-1,brand_=-1,stage_=-1;
     std::unordered_map<std::string,int> images_;
+    std::unordered_map<std::string,Rect> image_bounds_;
     int map_scroll_=0,map_node_=-999,deck_page_=0,screen_node_=-999;
     Place screen_place_=Place::Fight;
     void Text(int x,int y,const std::string& text,unsigned color,int font=-1)const;
@@ -15,6 +16,10 @@ class Ui {
     void Wrapped(Rect r,const std::string& text,unsigned color,int font=-1)const;
     void World(const Game& game);
     void Actor(const Game& game,bool enemy,int target=0)const;
+    void SkillActor(const Game& game,bool enemy,int target)const;
+    void DrawWard(const Game& game,int unit)const;
+    void DrawSkillEffects(const Game& game)const;
+    void DrawFx(const std::string& effect,float x,float y,float size,float progress,float angle=0,int alpha=255)const;
     bool DrawExtensions(const Game& game,int mx,int my);
     void DrawTargets(const Game& game,int mx,int my)const;
     void Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const;

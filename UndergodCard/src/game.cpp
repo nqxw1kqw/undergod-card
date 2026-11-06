@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed,std::string class_id,int challenge){if(practice_)profile=practice_profile_;practice_=false;cinematic_.Cancel();StartRun(run,state,seed,class_id,challenge,profile.skills);run.run_id=std::to_string(seed)+":"+std::to_string(profile.next_run++);profile.selected_class=class_id;profile_dirty_=true;menu_=0;motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();sound_events.clear();save_dirty_=true;arrival_=Arrival::None;arrival_age_=0;star_sequence_=false;active_card_={};active_actor_=-1;travel_from_=travel_to_=pending_option_=-1;}
+void Game::NewRun(unsigned seed,std::string class_id,int challenge){if(practice_)profile=practice_profile_;practice_=false;cinematic_.Cancel();StartRun(run,state,seed,class_id,challenge,profile.skills);run.run_id=std::to_string(seed)+":"+std::to_string(profile.next_run++);profile.selected_class=class_id;profile_dirty_=true;menu_=0;motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();sound_events.clear();save_dirty_=true;arrival_=Arrival::None;arrival_age_=0;star_sequence_=false;active_card_={};active_actor_=-1;travel_from_=travel_to_=pending_option_=-1;ResetSkillVisuals();}
 void Game::StartBossPractice(std::string enemy_id,unsigned seed,std::string class_id){
     const auto& boss=FindEnemy(state.config,enemy_id);if(boss.role!="boss")throw std::runtime_error("Practice needs a boss");
     const auto kept_profile=profile;const auto baseline=practice_?practice_profile_:profile;NewRun(seed,class_id);profile=kept_profile;practice_profile_=baseline;profile_dirty_=false;
@@ -35,27 +35,30 @@ bool Game::Load(){
     std::string error;
     if(save_file_.empty()||!LoadSession(save_file_,run,state,speed_,error)){Toast("Không đọc được bản lưu. Hành trình hiện tại vẫn được giữ.");return false;}
     cinematic_.Cancel();motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;
-    poses={};popups.clear();visual={};time=0;menu_=0;arrival_=Arrival::None;star_sequence_=false;active_card_={};active_actor_=-1;if(turn_stars_&&run.place==Place::Fight)state.EnableTurnStars();if(practice_){profile=practice_profile_;profile_dirty_=false;}practice_=false;save_dirty_=false;sound_events.clear();Toast("Đã tiếp tục hành trình.");return true;
+    poses={};popups.clear();visual={};time=0;menu_=0;arrival_=Arrival::None;star_sequence_=false;active_card_={};active_actor_=-1;if(turn_stars_&&run.place==Place::Fight)state.EnableTurnStars();if(practice_){profile=practice_profile_;profile_dirty_=false;}practice_=false;save_dirty_=false;sound_events.clear();ResetSkillVisuals();Toast("Đã tiếp tục hành trình.");return true;
 }
 void Game::ConsumeEvents(){
     for(const auto& event:state.events){
+        ReactSkillEvent(event);
         if(event.type==EventType::Damage&&event.amount>0)sound_events.push_back("hit");
         else if(event.type==EventType::Block)sound_events.push_back("block");
         else if(event.type==EventType::Heal||event.type==EventType::Revive)sound_events.push_back("heal");
         else if(event.type==EventType::Phase||event.type==EventType::Summon)sound_events.push_back("boss");
         if(event.type==EventType::Damage){const bool blocked=event.amount==0&&event.blocked>0;poses[event.enemy?1:0]={blocked?"defend":"hit",0};popups.push_back({event.enemy,event.amount?event.amount:event.blocked,EventType::Damage,0,blocked,StatusId::Poison,event.target});}
-        else if(event.type==EventType::Block){poses[event.enemy?1:0]={"defend",0};popups.push_back({event.enemy,event.amount,EventType::Block,0});}
-        else if(event.type==EventType::Heal)popups.push_back({event.enemy,event.amount,EventType::Heal,0});
-        else if(event.type==EventType::Status)popups.push_back({event.enemy,event.amount,EventType::Status,0,false,event.status});
+        else if(event.type==EventType::Block){poses[event.enemy?1:0]={"defend",0};popups.push_back({event.enemy,event.amount,EventType::Block,0,false,StatusId::Poison,event.target});}
+        else if(event.type==EventType::Heal)popups.push_back({event.enemy,event.amount,EventType::Heal,0,false,StatusId::Poison,event.target});
+        else if(event.type==EventType::Status)popups.push_back({event.enemy,event.amount,EventType::Status,0,false,event.status,event.target});
         else if(event.type==EventType::Phase)Toast("Giai đoạn "+std::to_string(event.amount)+": "+state.PhaseName());
         else if(event.type==EventType::Revive){popups.push_back({false,event.amount,EventType::Heal,0});Toast("Phượng Hoàng hồi sinh!");}
         else if(event.type==EventType::Summon)Toast("Địch gọi thêm "+std::to_string(event.amount)+" viện binh.");
     }
     state.events.clear();
+    SyncSkillShields();
     if(sound_events.size()>64)sound_events.erase(sound_events.begin(),sound_events.end()-64);
 }
 void Game::AfterResolve(){
     ConsumeEvents();
+    if(turn_stars_&&((star_sequence_&&motion_!=Motion::None)||Cinematic()))return;
     if(practice_){run.hp=state.player.hp;run.rage=state.rage;run.victory=state.phase==Phase::Won;run.defeat=state.phase==Phase::Lost;if(run.victory||run.defeat)sound_events.push_back(run.victory?"victory":"defeat");return;}
     ObserveCombat(run,state);
     if(turn_stars_&&run.place==Place::Fight&&!state.stars.enabled){
@@ -80,6 +83,7 @@ void Game::EndTurn(){
 }
 void Game::ApplyMotion(){
     if(motion_impact_)return;motion_impact_=true;
+    if(skill_visual_.active)skill_visual_.applied=true;
     if(star_sequence_)state.ResolveStarAction();
     else if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther)state.Play(pending_card_);
     else state.ActEnemy();
@@ -163,12 +167,13 @@ void Game::Ultimate(){
     if(!CanAct())return;if(!state.StartUltimate()){Toast("Tuyệt kỹ cần "+std::to_string(state.UltimateCost())+" Nộ.");return;}
     sound_events.push_back("ultimate");
     ConsumeEvents();visual={};cinematic_age_=0;
-    cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();AfterResolve();},[this]{state.FinishUltimate();visual={};poses[0]={};});
+    cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();AfterResolve();},[this]{state.FinishUltimate();visual={};poses[0]={};if(turn_stars_)AfterResolve();});
 }
 void Game::SkipCinematic(){cinematic_.Skip();}
 void Game::Update(float real_dt){
     real_dt=std::max(0.f,real_dt);toast_age=std::max(0.f,toast_age-real_dt);
     const float dt=real_dt*PlaybackRate();time+=dt;
+    TickSkillVisuals(dt);
     UpdateArrival(dt);
     for(auto& p:poses){p.age+=dt;const bool held=p.name=="ult_throw"&&Cinematic();if(!held&&p.name!="idle"&&p.age>(p.name=="ult_charge"?2.f:.65f))p={};}
     for(auto& p:popups)p.age+=dt;
@@ -176,11 +181,14 @@ void Game::Update(float real_dt){
     if(motion_!=Motion::None){
         const bool enemy=motion_==Motion::EnemyAttack||motion_==Motion::EnemyOther;
         const float before=motion_age_;motion_age_+=dt;
+        if(skill_visual_.active)skill_visual_.age=motion_age_;
         if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={motion_==Motion::EnemyAttack?"attack":((star_sequence_?active_charge_:state.intent.kind==IntentKind::Charge)?"ult_charge":"defend"),motion_age_-.45f};
-        const float impact=enemy?(motion_==Motion::EnemyAttack?.77f:.45f):.32f;
+        const float impact=skill_visual_.active?skill_visual_.animation.contact:(enemy?(motion_==Motion::EnemyAttack?.77f:.45f):.32f);
         if(motion_age_>=impact)ApplyMotion();
-        if(motion_age_>=(enemy?1.15f:.65f)){motion_=Motion::None;pending_card_=-1;if(star_sequence_)FinishStarMotion();}
+        const float duration=skill_visual_.active?skill_visual_.animation.duration:(enemy?1.15f:.65f);
+        if(motion_age_>=duration){motion_=Motion::None;pending_card_=-1;skill_visual_.active=false;if(star_sequence_)FinishStarMotion();}
     }
+    SyncSkillShields();
     if(!Busy()&&!practice_){ObserveCombat(run,state);if(SettleProfile(profile,run,state.config)){profile_dirty_=true;save_dirty_=true;}}
     if(Cinematic()){
         cinematic_age_+=dt;
@@ -206,6 +214,19 @@ float Game::TargetX(int target)const{
     return 840.f+500.f*slot/std::max(1,count-1);
 }
 float Game::ActorOffset(bool enemy,int target)const{
+    if(turn_stars_){
+        const auto& r=Reaction(enemy?target:-1);const float recoil=std::sin(r.hit_age*60)*12*std::max(0.f,1-r.hit_age/.3f)*(enemy?1.f:-1.f);
+        if(!SkillActor(enemy,target))return recoil;
+        const auto& v=skill_visual_;const auto& a=v.animation;
+        const bool melee=a.motion==SkillMotion::Thrust||a.motion==SkillMotion::Slash||a.motion==SkillMotion::Peck||a.motion==SkillMotion::Dash||a.motion==SkillMotion::Pounce||a.motion==SkillMotion::Swoop;
+        if(!melee||a.self)return recoil;
+        const float ramp=std::max(.06f,a.contact-a.launch-.10f),recover=std::max(.06f,a.duration-a.contact-.18f);float f=0;
+        if(v.age>=a.launch&&v.age<a.launch+ramp){const float t=(v.age-a.launch)/ramp;f=t*t;}
+        else if(v.age>=a.launch+ramp&&v.age<a.contact+.07f)f=1;
+        else if(v.age>=a.contact+.07f){const float t=std::clamp((v.age-a.contact-.07f)/recover,0.f,1.f);f=1-t*t*(3-2*t);}
+        const float travel=std::max(0.f,TargetX(enemy?target:state.live.target)-PlayerHome-(enemy?170.f:160.f));
+        return (enemy?-1.f:1.f)*travel*a.lunge*f+recoil;
+    }
     const auto& p=poses[enemy?1:0];float recoil=p.name=="hit"?std::sin(p.age*60.f)*12.f*std::max(0.f,1-p.age/.3f)*(enemy?1.f:-1.f):0;
     if((enemy&&motion_!=Motion::EnemyAttack)||(!enemy&&motion_!=Motion::PlayerAttack)||(enemy&&star_sequence_&&target!=active_actor_))return recoil;
     const float t=motion_age_-(enemy?.45f:0.f);float f=0;

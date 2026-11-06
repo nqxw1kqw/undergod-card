@@ -12,7 +12,7 @@ int StarSmoke(Game& game,Ui& ui,Audio& audio){
     auto step=[&](float seconds){while(seconds>.0001f){const float dt=std::min(.02f,seconds);game.Update(dt/game.PlaybackRate());audio.Update(game);seconds-=dt;}};
     auto settle=[&](){for(int i=0;i<1000&&game.Busy();++i)step(.02f);check(!game.Busy(),"animation_settled");};
     auto capture=[&](const char* name,int mx=-1,int my=-1){ClearDrawScreen();ui.Draw(game,mx,my);const auto file=(folder/name).string();check(SaveDrawScreenToPNG(0,0,Ui::Width,Ui::Height,file.c_str())==0,name);ScreenFlip();ProcessMessage();};
-    check(ui.loaded==ui.expected&&ui.expected==239,"all_239_images_loaded");
+    check(ui.loaded==ui.expected&&ui.expected==379,"all_379_images_loaded");
     game.NewRun(1337);game.OpenClasses();capture("00-classes.png");game.BackMenu();capture("00-map-player.png");game.ChooseNode(0);step(.4f);
     check(game.Traveling()&&game.run.node==-1&&game.TravelProgress()>0,"map_travel_precedes_entry");capture("01-map-moving.png");
     step(.44f);capture("01b-map-before-arrival.png");step(.02f);capture("01c-map-arrived.png");

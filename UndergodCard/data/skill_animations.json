@@ -1,0 +1,1077 @@
+{
+  "effects": [
+    "fire_orb",
+    "arcane_orb",
+    "toxin_orb",
+    "slash",
+    "claw",
+    "ward_blue",
+    "ward_leaf",
+    "ward_shadow",
+    "ward_fire",
+    "heal",
+    "sigil",
+    "smoke",
+    "tongue",
+    "shock",
+    "lightning",
+    "meteor",
+    "summon"
+  ],
+  "bodies": [
+    {
+      "actor": "chick",
+      "pose": "thrust",
+      "emitterX": 491.0,
+      "emitterY": 286.0
+    },
+    {
+      "actor": "chick",
+      "pose": "cast",
+      "emitterX": 418.0,
+      "emitterY": 259.0
+    },
+    {
+      "actor": "chick",
+      "pose": "guard",
+      "emitterX": 407.0,
+      "emitterY": 274.0
+    },
+    {
+      "actor": "chick",
+      "pose": "peck",
+      "emitterX": 417.0,
+      "emitterY": 121.0
+    },
+    {
+      "actor": "chick",
+      "pose": "stomp",
+      "emitterX": 408.0,
+      "emitterY": 141.0
+    },
+    {
+      "actor": "mage",
+      "pose": "thrust",
+      "emitterX": 441.0,
+      "emitterY": 296.0
+    },
+    {
+      "actor": "mage",
+      "pose": "cast",
+      "emitterX": 448.0,
+      "emitterY": 248.5
+    },
+    {
+      "actor": "mage",
+      "pose": "guard",
+      "emitterX": 417.0,
+      "emitterY": 224.0
+    },
+    {
+      "actor": "ninja",
+      "pose": "slash",
+      "emitterX": 405.0,
+      "emitterY": 272.0
+    },
+    {
+      "actor": "ninja",
+      "pose": "throw",
+      "emitterX": 402.0,
+      "emitterY": 280.0
+    },
+    {
+      "actor": "ninja",
+      "pose": "guard",
+      "emitterX": 390.0,
+      "emitterY": 252.0
+    },
+    {
+      "actor": "frog_king",
+      "pose": "cast",
+      "emitterX": 35.0,
+      "emitterY": 256.0
+    },
+    {
+      "actor": "snake",
+      "pose": "cast",
+      "emitterX": 87.0,
+      "emitterY": 183.0
+    },
+    {
+      "actor": "hawk",
+      "pose": "cast",
+      "emitterX": 55.0,
+      "emitterY": 219.0
+    },
+    {
+      "actor": "fox",
+      "pose": "cast",
+      "emitterX": 92.0,
+      "emitterY": 280.0
+    },
+    {
+      "actor": "undergod",
+      "pose": "cast",
+      "emitterX": 35.0,
+      "emitterY": 257.0
+    },
+    {
+      "actor": "tiger",
+      "pose": "guard",
+      "emitterX": 133.0,
+      "emitterY": 260.0
+    },
+    {
+      "actor": "tiger",
+      "pose": "pounce",
+      "emitterX": 44.0,
+      "emitterY": 306.0
+    }
+  ],
+  "families": {
+    "wait": {
+      "motion": "still",
+      "pose": "idle",
+      "launch": 0,
+      "contact": 0.2,
+      "duration": 0.42,
+      "size": 60
+    },
+    "thrust": {
+      "motion": "thrust",
+      "pose": "melee",
+      "launch": 0,
+      "contact": 0.32,
+      "duration": 0.65,
+      "impact": "slash",
+      "size": 115
+    },
+    "slash": {
+      "motion": "slash",
+      "pose": "melee",
+      "launch": 0.02,
+      "contact": 0.28,
+      "duration": 0.7,
+      "impact": "slash",
+      "size": 120
+    },
+    "peck": {
+      "motion": "peck",
+      "pose": "peck",
+      "launch": 0,
+      "contact": 0.28,
+      "duration": 0.68,
+      "impact": "slash",
+      "size": 75
+    },
+    "stomp": {
+      "motion": "stomp",
+      "pose": "stomp",
+      "path": "ground",
+      "projectile": "shock",
+      "launch": 0.22,
+      "contact": 0.48,
+      "duration": 0.95,
+      "impact": "shock",
+      "size": 190
+    },
+    "bolt": {
+      "motion": "cast",
+      "pose": "cast",
+      "path": "straight",
+      "cast": "sigil",
+      "projectile": "arcane_orb",
+      "impact": "lightning",
+      "launch": 0.14,
+      "contact": 0.58,
+      "duration": 1.02,
+      "size": 110
+    },
+    "lob": {
+      "motion": "cast",
+      "pose": "cast",
+      "path": "arc",
+      "cast": "sigil",
+      "projectile": "spear",
+      "impact": "spear_impact",
+      "launch": 0.12,
+      "contact": 0.6,
+      "duration": 1.05,
+      "size": 160,
+      "arc": 65
+    },
+    "rain": {
+      "motion": "cast",
+      "pose": "cast",
+      "path": "rain",
+      "cast": "sigil",
+      "projectile": "feather",
+      "impact": "slash",
+      "launch": 0.18,
+      "contact": 0.66,
+      "duration": 1.12,
+      "size": 110,
+      "spread": 75,
+      "arc": 100,
+      "count": 3
+    },
+    "guard": {
+      "motion": "guard",
+      "pose": "guard",
+      "self": true,
+      "cast": "sigil",
+      "impact": "ward_blue",
+      "ward": "ward_blue",
+      "launch": 0.08,
+      "contact": 0.32,
+      "duration": 0.85,
+      "size": 245
+    },
+    "heal": {
+      "motion": "cast",
+      "pose": "cast",
+      "self": true,
+      "cast": "heal",
+      "impact": "heal",
+      "launch": 0.08,
+      "contact": 0.38,
+      "duration": 0.95,
+      "size": 150
+    },
+    "buff": {
+      "motion": "cast",
+      "pose": "cast",
+      "self": true,
+      "cast": "sigil",
+      "impact": "sigil",
+      "launch": 0.1,
+      "contact": 0.4,
+      "duration": 0.95,
+      "size": 180
+    },
+    "orbit": {
+      "motion": "cast",
+      "pose": "cast",
+      "self": true,
+      "path": "orbit",
+      "cast": "sigil",
+      "projectile": "arcane_orb",
+      "impact": "sigil",
+      "launch": 0.08,
+      "contact": 0.46,
+      "duration": 1.05,
+      "size": 90,
+      "arc": 70,
+      "count": 3
+    },
+    "dash": {
+      "motion": "dash",
+      "pose": "melee",
+      "cast": "smoke",
+      "impact": "slash",
+      "launch": 0.12,
+      "contact": 0.5,
+      "duration": 1.0,
+      "size": 160
+    },
+    "enemy_melee": {
+      "motion": "slash",
+      "pose": "melee",
+      "launch": 0.45,
+      "contact": 0.77,
+      "duration": 1.15,
+      "impact": "slash",
+      "size": 140
+    },
+    "enemy_bolt": {
+      "motion": "cast",
+      "pose": "cast",
+      "path": "straight",
+      "cast": "sigil",
+      "projectile": "arcane_orb",
+      "impact": "sigil",
+      "launch": 0.42,
+      "contact": 0.88,
+      "duration": 1.35,
+      "size": 125
+    },
+    "enemy_guard": {
+      "motion": "guard",
+      "pose": "guard",
+      "self": true,
+      "cast": "sigil",
+      "impact": "ward_blue",
+      "ward": "ward_blue",
+      "launch": 0.14,
+      "contact": 0.45,
+      "duration": 1.15,
+      "size": 255
+    },
+    "enemy_buff": {
+      "motion": "roar",
+      "pose": "cast",
+      "self": true,
+      "cast": "sigil",
+      "impact": "sigil",
+      "launch": 0.12,
+      "contact": 0.45,
+      "duration": 1.15,
+      "size": 200
+    },
+    "enemy_charge": {
+      "motion": "charge",
+      "pose": "charge",
+      "self": true,
+      "cast": "sigil",
+      "impact": "ward_fire",
+      "launch": 0.12,
+      "contact": 0.45,
+      "duration": 1.15,
+      "size": 230
+    },
+    "enemy_summon": {
+      "motion": "cast",
+      "pose": "cast",
+      "cast": "sigil",
+      "impact": "summon",
+      "launch": 0.18,
+      "contact": 0.7,
+      "duration": 1.25,
+      "size": 200
+    },
+    "enemy_curse": {
+      "motion": "cast",
+      "pose": "cast",
+      "path": "arc",
+      "cast": "smoke",
+      "projectile": "sigil",
+      "impact": "ward_shadow",
+      "launch": 0.3,
+      "contact": 0.82,
+      "duration": 1.28,
+      "size": 130,
+      "arc": 65
+    }
+  },
+  "profiles": {
+    "wait": {
+      "family": "wait"
+    },
+    "punch": {
+      "family": "thrust"
+    },
+    "shield": {
+      "family": "guard",
+      "prop": "card_shield",
+      "size": 230
+    },
+    "heavy": {
+      "family": "thrust",
+      "duration": 0.82,
+      "size": 175,
+      "lunge": 1.04
+    },
+    "cookie": {
+      "family": "heal",
+      "prop": "card_cookie"
+    },
+    "peck": {
+      "family": "peck",
+      "size": 80
+    },
+    "double_peck": {
+      "family": "peck",
+      "contact": 0.38,
+      "duration": 0.95,
+      "count": 3,
+      "spread": 28
+    },
+    "feather": {
+      "family": "guard",
+      "path": "orbit",
+      "projectile": "feather",
+      "contact": 0.38,
+      "count": 1,
+      "arc": 65,
+      "size": 110
+    },
+    "millet": {
+      "family": "heal",
+      "prop": "card_millet",
+      "contact": 0.34,
+      "duration": 0.8,
+      "size": 125
+    },
+    "stomp": {
+      "family": "stomp"
+    },
+    "crow": {
+      "family": "buff",
+      "motion": "roar",
+      "contact": 0.3,
+      "count": 3,
+      "size": 170
+    },
+    "wing": {
+      "family": "guard",
+      "path": "orbit",
+      "projectile": "feather",
+      "count": 4,
+      "arc": 85,
+      "contact": 0.43,
+      "duration": 1.0,
+      "size": 100
+    },
+    "venom_beak": {
+      "family": "peck",
+      "cast": "toxin_orb",
+      "impact": "toxin_orb",
+      "size": 110,
+      "contact": 0.34,
+      "duration": 0.82
+    },
+    "snare": {
+      "family": "bolt",
+      "path": "arc",
+      "projectile": "sigil",
+      "impact": "ward_leaf",
+      "arc": 55,
+      "size": 135
+    },
+    "feather_rain": {
+      "family": "rain",
+      "count": 3
+    },
+    "guard_up": {
+      "family": "guard",
+      "impact": "sigil",
+      "count": 2,
+      "size": 235,
+      "contact": 0.36
+    },
+    "grub": {
+      "family": "heal",
+      "prop": "card_grub",
+      "count": 2,
+      "size": 120,
+      "duration": 1.03
+    },
+    "storm_spear": {
+      "family": "lob",
+      "path": "fan",
+      "projectile": "spear",
+      "cast": "lightning",
+      "impact": "lightning",
+      "count": 2,
+      "spread": 45,
+      "arc": 30
+    },
+    "star_tip": {
+      "family": "lob",
+      "cast": "sigil",
+      "impact": "lightning",
+      "size": 220,
+      "contact": 0.67,
+      "duration": 1.15,
+      "arc": 40
+    },
+    "toxin": {
+      "family": "lob",
+      "prop": "card_toxin",
+      "projectile": "card_toxin",
+      "cast": "toxin_orb",
+      "impact": "toxin_orb",
+      "size": 110,
+      "arc": 110
+    },
+    "wingbeat": {
+      "family": "orbit",
+      "projectile": "feather",
+      "count": 2,
+      "size": 100,
+      "arc": 55,
+      "duration": 0.9
+    },
+    "feather_shield": {
+      "family": "guard",
+      "path": "orbit",
+      "projectile": "feather",
+      "count": 3,
+      "size": 95,
+      "arc": 88,
+      "contact": 0.44,
+      "duration": 1.05
+    },
+    "piercing_spear": {
+      "family": "lob",
+      "path": "straight",
+      "cast": "lightning",
+      "impact": "lightning",
+      "arc": 0,
+      "contact": 0.54,
+      "size": 190
+    },
+    "counter": {
+      "family": "guard",
+      "path": "orbit",
+      "projectile": "kunai",
+      "count": 4,
+      "arc": 75,
+      "size": 90,
+      "impact": "sigil",
+      "duration": 1.02
+    },
+    "golden_egg": {
+      "family": "buff",
+      "prop": "card_golden_egg",
+      "contact": 0.46,
+      "duration": 1.1,
+      "size": 210
+    },
+    "whirlwind": {
+      "family": "lob",
+      "path": "helix",
+      "projectile": "feather",
+      "count": 4,
+      "spread": 80,
+      "arc": 90,
+      "impact": "slash",
+      "size": 140,
+      "contact": 0.72,
+      "duration": 1.18
+    },
+    "guard_stance": {
+      "family": "guard",
+      "prop": "card_shield",
+      "size": 310,
+      "count": 3,
+      "impact": "sigil",
+      "contact": 0.42,
+      "duration": 1.08
+    },
+    "rage_fire": {
+      "family": "buff",
+      "motion": "roar",
+      "cast": "fire_orb",
+      "impact": "ward_fire",
+      "contact": 0.35,
+      "duration": 1.0,
+      "size": 285
+    },
+    "mark_prey": {
+      "family": "bolt",
+      "path": "beam",
+      "projectile": "sigil",
+      "impact": "sigil",
+      "contact": 0.53,
+      "size": 130
+    },
+    "returning_spear": {
+      "family": "lob",
+      "path": "return",
+      "arc": 45,
+      "contact": 0.57,
+      "duration": 1.28
+    },
+    "holy_spear": {
+      "family": "orbit",
+      "projectile": "spear",
+      "count": 2,
+      "size": 155,
+      "arc": 75,
+      "contact": 0.5,
+      "duration": 1.15
+    },
+    "fortress": {
+      "family": "guard",
+      "impact": "sigil",
+      "cast": "shock",
+      "count": 4,
+      "size": 265,
+      "contact": 0.48,
+      "duration": 1.12
+    },
+    "meteor_rain": {
+      "family": "rain",
+      "projectile": "meteor",
+      "impact": "fire_orb",
+      "count": 6,
+      "spread": 150,
+      "arc": 160,
+      "size": 110,
+      "contact": 0.78,
+      "duration": 1.3
+    },
+    "phoenix": {
+      "family": "buff",
+      "prop": "card_phoenix",
+      "cast": "heal",
+      "impact": "ward_fire",
+      "size": 280,
+      "contact": 0.58,
+      "duration": 1.22
+    },
+    "resonance": {
+      "family": "orbit",
+      "count": 4,
+      "size": 75,
+      "arc": 90,
+      "contact": 0.52,
+      "duration": 1.2
+    },
+    "mud": {
+      "family": "wait"
+    },
+    "fatigue": {
+      "family": "wait"
+    },
+    "spellbolt": {
+      "family": "bolt"
+    },
+    "venom_orb": {
+      "family": "bolt",
+      "cast": "toxin_orb",
+      "projectile": "toxin_orb",
+      "impact": "toxin_orb",
+      "size": 130,
+      "contact": 0.56
+    },
+    "mana_barrier": {
+      "family": "guard",
+      "cast": "arcane_orb",
+      "size": 275,
+      "duration": 0.95
+    },
+    "mana_focus": {
+      "family": "buff",
+      "cast": "arcane_orb",
+      "contact": 0.44,
+      "duration": 1.04,
+      "size": 200
+    },
+    "arcane_storm": {
+      "family": "bolt",
+      "path": "helix",
+      "count": 3,
+      "spread": 90,
+      "arc": 90,
+      "contact": 0.72,
+      "duration": 1.24,
+      "impact": "toxin_orb",
+      "size": 120
+    },
+    "star_orbit": {
+      "family": "orbit",
+      "count": 3,
+      "size": 85,
+      "arc": 90
+    },
+    "dagger": {
+      "family": "slash",
+      "size": 120
+    },
+    "smoke_step": {
+      "family": "guard",
+      "cast": "smoke",
+      "impact": "smoke",
+      "ward": "ward_shadow",
+      "size": 250,
+      "contact": 0.36,
+      "duration": 1.05
+    },
+    "shadow_dance": {
+      "family": "orbit",
+      "projectile": "kunai",
+      "cast": "smoke",
+      "impact": "smoke",
+      "count": 3,
+      "size": 105,
+      "arc": 110,
+      "duration": 1.2
+    },
+    "blade_rain": {
+      "family": "rain",
+      "projectile": "kunai",
+      "impact": "slash",
+      "count": 3,
+      "size": 125,
+      "spread": 100
+    },
+    "assassinate": {
+      "family": "dash",
+      "size": 210,
+      "lunge": 1.08,
+      "count": 1
+    },
+    "phantom_guard": {
+      "family": "guard",
+      "cast": "smoke",
+      "impact": "ward_shadow",
+      "ward": "ward_shadow",
+      "count": 2,
+      "size": 265,
+      "contact": 0.43,
+      "duration": 1.1
+    },
+    "comet_lance": {
+      "family": "lob",
+      "cast": "fire_orb",
+      "impact": "fire_orb",
+      "projectile": "spear",
+      "size": 215,
+      "arc": 100,
+      "contact": 0.7,
+      "duration": 1.2
+    },
+    "lotus_guard": {
+      "family": "guard",
+      "cast": "heal",
+      "impact": "ward_leaf",
+      "ward": "ward_leaf",
+      "size": 265,
+      "contact": 0.4,
+      "duration": 1.03
+    },
+    "boss_frog_tongue": {
+      "family": "enemy_bolt",
+      "path": "return",
+      "projectile": "tongue",
+      "cast": "",
+      "impact": "slash",
+      "launch": 0.45,
+      "contact": 0.77,
+      "duration": 1.15,
+      "size": 230
+    },
+    "boss_frog_slam": {
+      "family": "stomp",
+      "launch": 0.45,
+      "contact": 0.9,
+      "duration": 1.3,
+      "count": 2,
+      "size": 210
+    },
+    "boss_frog_guard": {
+      "family": "enemy_guard",
+      "ward": "ward_leaf",
+      "impact": "ward_leaf"
+    },
+    "boss_frog_spores": {
+      "family": "enemy_bolt",
+      "path": "fan",
+      "projectile": "toxin_orb",
+      "cast": "toxin_orb",
+      "impact": "toxin_orb",
+      "count": 3,
+      "spread": 65,
+      "size": 95,
+      "arc": 70
+    },
+    "boss_frog_scepter": {
+      "family": "enemy_buff",
+      "count": 3,
+      "size": 215,
+      "ward": "ward_leaf"
+    },
+    "boss_frog_call": {
+      "family": "enemy_summon",
+      "size": 185
+    },
+    "boss_snake_fangs": {
+      "family": "enemy_melee",
+      "motion": "peck",
+      "cast": "toxin_orb",
+      "impact": "toxin_orb",
+      "size": 125
+    },
+    "boss_snake_mist": {
+      "family": "enemy_bolt",
+      "path": "arc",
+      "projectile": "toxin_orb",
+      "cast": "toxin_orb",
+      "impact": "toxin_orb",
+      "count": 3,
+      "arc": 85,
+      "spread": 70,
+      "size": 110
+    },
+    "boss_snake_scales": {
+      "family": "enemy_guard",
+      "ward": "ward_leaf",
+      "impact": "ward_leaf",
+      "cast": "heal",
+      "size": 270
+    },
+    "boss_snake_molt": {
+      "family": "enemy_buff",
+      "cast": "heal",
+      "impact": "sigil",
+      "ward": "ward_leaf",
+      "count": 2,
+      "size": 235
+    },
+    "boss_snake_coil": {
+      "family": "enemy_charge",
+      "impact": "ward_leaf",
+      "size": 260
+    },
+    "boss_snake_strike": {
+      "family": "enemy_melee",
+      "motion": "thrust",
+      "impact": "slash",
+      "size": 180,
+      "lunge": 1.04,
+      "duration": 1.25
+    },
+    "boss_hawk_talons": {
+      "family": "enemy_melee",
+      "motion": "swoop",
+      "impact": "claw",
+      "count": 2,
+      "size": 120,
+      "arc": 35,
+      "spread": 45
+    },
+    "boss_hawk_dive": {
+      "family": "enemy_melee",
+      "motion": "swoop",
+      "impact": "shock",
+      "size": 205,
+      "arc": 110,
+      "duration": 1.3
+    },
+    "boss_hawk_wings": {
+      "family": "enemy_buff",
+      "path": "orbit",
+      "projectile": "feather",
+      "count": 3,
+      "arc": 95,
+      "size": 105,
+      "ward": "ward_blue"
+    },
+    "boss_hawk_guard": {
+      "family": "enemy_guard",
+      "path": "orbit",
+      "projectile": "feather",
+      "count": 5,
+      "arc": 85,
+      "size": 95
+    },
+    "boss_hawk_gale": {
+      "family": "enemy_bolt",
+      "path": "helix",
+      "projectile": "feather",
+      "impact": "slash",
+      "count": 2,
+      "arc": 80,
+      "spread": 65,
+      "size": 150
+    },
+    "boss_hawk_cry": {
+      "family": "enemy_bolt",
+      "path": "beam",
+      "projectile": "lightning",
+      "impact": "lightning",
+      "size": 110,
+      "count": 1
+    },
+    "boss_fox_fire": {
+      "family": "enemy_bolt",
+      "projectile": "fire_orb",
+      "cast": "fire_orb",
+      "impact": "fire_orb",
+      "size": 135
+    },
+    "boss_fox_hex": {
+      "family": "enemy_curse",
+      "projectile": "card_boss_fox_hex",
+      "prop": "card_boss_fox_hex",
+      "size": 120
+    },
+    "boss_fox_veil": {
+      "family": "enemy_guard",
+      "cast": "smoke",
+      "impact": "ward_shadow",
+      "ward": "ward_shadow",
+      "size": 280
+    },
+    "boss_fox_spirits": {
+      "family": "enemy_bolt",
+      "path": "helix",
+      "projectile": "fire_orb",
+      "cast": "sigil",
+      "impact": "fire_orb",
+      "count": 2,
+      "arc": 85,
+      "spread": 80,
+      "size": 110,
+      "contact": 0.93,
+      "duration": 1.4
+    },
+    "boss_fox_wither": {
+      "family": "enemy_bolt",
+      "path": "ground",
+      "projectile": "toxin_orb",
+      "cast": "smoke",
+      "impact": "toxin_orb",
+      "size": 125,
+      "contact": 0.82
+    },
+    "boss_fox_illusion": {
+      "family": "enemy_melee",
+      "motion": "dash",
+      "cast": "smoke",
+      "impact": "slash",
+      "size": 175,
+      "count": 2,
+      "duration": 1.28
+    },
+    "boss_undergod_mirror": {
+      "family": "enemy_bolt",
+      "cast": "ward_shadow",
+      "impact": "sigil",
+      "size": 135
+    },
+    "boss_undergod_guard": {
+      "family": "enemy_guard",
+      "cast": "sigil",
+      "ward": "ward_shadow",
+      "impact": "ward_shadow",
+      "size": 285
+    },
+    "boss_undergod_drain": {
+      "family": "enemy_bolt",
+      "path": "drain",
+      "projectile": "fire_orb",
+      "cast": "ward_shadow",
+      "impact": "sigil",
+      "count": 3,
+      "spread": 45,
+      "size": 75,
+      "contact": 0.94,
+      "duration": 1.4
+    },
+    "boss_undergod_crush": {
+      "family": "enemy_bolt",
+      "projectile": "card_boss_undergod_crush",
+      "cast": "sigil",
+      "impact": "shock",
+      "size": 165
+    },
+    "boss_undergod_meteors": {
+      "family": "enemy_bolt",
+      "path": "rain",
+      "projectile": "card_boss_undergod_meteors",
+      "impact": "lightning",
+      "count": 2,
+      "spread": 115,
+      "arc": 160,
+      "size": 145,
+      "contact": 0.96,
+      "duration": 1.45
+    },
+    "boss_undergod_gaze": {
+      "family": "enemy_bolt",
+      "path": "beam",
+      "projectile": "sigil",
+      "cast": "ward_shadow",
+      "impact": "ward_shadow",
+      "size": 135,
+      "contact": 0.8
+    },
+    "boss_tiger_claw": {
+      "family": "enemy_melee",
+      "impact": "claw",
+      "size": 145
+    },
+    "boss_tiger_twin": {
+      "family": "enemy_melee",
+      "impact": "claw",
+      "count": 2,
+      "spread": 60,
+      "size": 135,
+      "contact": 0.8,
+      "duration": 1.3
+    },
+    "boss_tiger_roar": {
+      "family": "enemy_buff",
+      "pose": "charge",
+      "cast": "fire_orb",
+      "impact": "sigil",
+      "ward": "ward_fire",
+      "count": 3,
+      "size": 215
+    },
+    "boss_tiger_guard": {
+      "family": "enemy_guard",
+      "cast": "fire_orb",
+      "impact": "ward_fire",
+      "ward": "ward_fire",
+      "size": 280
+    },
+    "boss_tiger_pounce": {
+      "family": "enemy_charge",
+      "cast": "fire_orb",
+      "impact": "ward_fire",
+      "size": 250
+    },
+    "boss_tiger_fang": {
+      "family": "enemy_bolt",
+      "path": "arc",
+      "projectile": "card_boss_tiger_fang",
+      "cast": "fire_orb",
+      "impact": "fire_orb",
+      "arc": 60,
+      "size": 125,
+      "launch": 0.45,
+      "contact": 0.85,
+      "duration": 1.3
+    },
+    "mob_attack": {
+      "family": "enemy_melee"
+    },
+    "mob_multi": {
+      "family": "enemy_melee",
+      "count": 2,
+      "size": 120
+    },
+    "mob_defend": {
+      "family": "enemy_guard"
+    },
+    "mob_buff": {
+      "family": "enemy_buff",
+      "ward": "ward_leaf"
+    },
+    "mob_debuff": {
+      "family": "enemy_bolt",
+      "projectile": "toxin_orb",
+      "impact": "toxin_orb",
+      "size": 95
+    },
+    "mob_charge": {
+      "family": "enemy_charge"
+    },
+    "mob_curse": {
+      "family": "enemy_curse"
+    },
+    "mob_summon": {
+      "family": "enemy_summon"
+    },
+    "mob_mimic": {
+      "family": "enemy_bolt"
+    },
+    "mob_drain": {
+      "family": "enemy_bolt",
+      "path": "drain",
+      "projectile": "fire_orb",
+      "count": 3,
+      "size": 75
+    },
+    "mob_spit": {
+      "family": "enemy_bolt",
+      "projectile": "toxin_orb",
+      "impact": "toxin_orb",
+      "size": 105
+    }
+  }
+}

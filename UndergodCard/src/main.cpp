@@ -8,7 +8,7 @@
 #include <fstream>
 #include <cmath>
 #include <sstream>
-namespace undergod { int StarSmoke(Game&,Ui&,Audio&); }
+namespace undergod { int StarSmoke(Game&,Ui&,Audio&); int AnimationSmoke(Game&,Ui&,Audio&); }
 
 namespace {
 std::filesystem::path ExeDirectory(){wchar_t path[32768]{};GetModuleFileNameW(nullptr,path,32768);return std::filesystem::path(path).parent_path();}
@@ -125,6 +125,7 @@ int Smoke(undergod::Game& game,undergod::Ui& ui,undergod::Audio& audio){
 int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
     using namespace undergod;std::filesystem::current_path(ExeDirectory());const bool smoke=std::string(args?args:"").find("--smoke")!=std::string::npos;
     const bool star_smoke=std::string(args?args:"").find("--star-smoke")!=std::string::npos;
+    const bool animation_smoke=std::string(args?args:"").find("--animation-smoke")!=std::string::npos;
     ChangeWindowMode(TRUE);SetGraphMode(Ui::Width,Ui::Height,32);SetWindowSize(1152,768);SetMainWindowText("Undergod Card Quest - C++ / DxLib");
     SetAlwaysRunFlag(TRUE);SetDoubleStartValidFlag(TRUE);SetOutApplicationLogValidFlag(FALSE);SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
     if(DxLib_Init()<0)return 1;SetDrawScreen(DX_SCREEN_BACK);Ui ui;Audio audio;
@@ -133,7 +134,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
         const std::string arguments=args?args:"";const auto seed_at=arguments.find("--seed ");
         const auto boss_at=arguments.find("--boss ");
         const unsigned seed=seed_at==std::string::npos?unsigned(GetNowHiPerformanceCount()):unsigned(std::stoul(arguments.substr(seed_at+7)));
-        if(smoke||star_smoke)game.NewRun();
+        if(smoke||star_smoke||animation_smoke)game.NewRun();
         else if(boss_at!=std::string::npos){
             std::string boss_id;std::istringstream(arguments.substr(boss_at+7))>>boss_id;
             game.SetSaveFile("save.json");game.SetProfileFile("profile.json");game.StartBossPractice(boss_id,seed,game.profile.selected_class);
@@ -150,6 +151,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
         if(!audio.Init())throw std::runtime_error("Cannot load audio manifest or sound files");
         if(smoke){const int result=Smoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
         if(star_smoke){const int result=StarSmoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
+        if(animation_smoke){const int result=AnimationSmoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
         char previous[256]{};int old_mouse=0;auto last=GetNowHiPerformanceCount();
         while(ProcessMessage()==0){
             const auto start=GetNowHiPerformanceCount();const float dt=std::min(.1f,float(start-last)/1000000.f);last=start;

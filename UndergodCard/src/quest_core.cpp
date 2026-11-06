@@ -147,7 +147,9 @@ void Combat::Hit(bool target_enemy,int damage,bool pierce){
 void Combat::AddStatusEvent(Fighter& fighter,bool enemy_target,StatusId id,int amount){
     if(amount==0) return;
     AddStatusStack(fighter,id,amount);
-    events.push_back({EventType::Status,enemy_target,amount,0,id,enemy_target?live.target:0});
+    int unit=0;
+    if(enemy_target && &fighter!=&enemy)for(int i=0;i<int(adds.size());++i)if(&fighter==&adds[i].fighter){unit=i+1;break;}
+    events.push_back({EventType::Status,enemy_target,amount,0,id,unit});
 }
 
 bool Combat::TickPoison(bool enemy_target,bool& phased){

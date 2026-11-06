@@ -52,6 +52,16 @@ Phạm vi được Shin xác nhận: toàn bộ lộ trình còn lại, cùng nh
 - [x] 36 ảnh ImageGen qua tách nền/căn/QC; runtime có 239 PNG, tooltip và tên dài hiển thị trong khung ba dòng.
 - [x] Kiểm tra quyền sở hữu mọi pha, hiệu ứng từng lá, ID chéo boss và bản v1.1; số liệu hiện tại tại VALIDATION.md.
 
+## Hoạt ảnh kỹ năng — v1.3.0-preview
+
+- [x] 48 lá player chơi được và 36 lá boss có cấu hình chuyển động/đường bay/ảnh chạm riêng; bản nâng cấp kế thừa kỹ năng.
+- [x] 18 bộ cơ thể + 17 bộ VFX ImageGen, 140 frame RGBA mới; 35 bộ đều bốn frame khác nhau và không cắt mép.
+- [x] Lao đâm, phép bay trước khi sát thương, mưa vật thể đúng mục tiêu, lưỡi nối miệng/rút về, Hổ vồ không cắt đầu.
+- [x] Khiên của player/boss/lính giữ khi còn giáp, phản ứng chặn và tan khi hết giáp.
+- [x] Chờ hết hoạt ảnh/cinematic đòn kết liễu trước thưởng hoặc trận tiếp.
+- [x] Kiểm tra thời điểm chạm, RNG, Sao Chép, đa mục tiêu và x1/x2/x3; 300 chiến dịch giữ nguyên kết quả.
+- [x] Build Debug/Release và ba smoke DxLib; chi tiết và gói giải nén ở VALIDATION.md.
+
 ## Các mục cần bằng chứng chơi thực
 
 - [ ] Chơi tay toàn chiến dịch trên Windows (helper trước đó lỗi native pipe).

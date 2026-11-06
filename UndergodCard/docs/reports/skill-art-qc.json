@@ -1,0 +1,567 @@
+[
+  {
+    "name": "chick_thrust",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_chick_thrust_0.png",
+      "assets/pastel/characters/char_chick_thrust_1.png",
+      "assets/pastel/characters/char_chick_thrust_2.png",
+      "assets/pastel/characters/char_chick_thrust_3.png"
+    ],
+    "reference_body_height": 373.0,
+    "body_heights": [
+      371,
+      372,
+      368,
+      371
+    ],
+    "body_ratio": 0.9946380697050938,
+    "emitterX": 491.0,
+    "emitterY": 286.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "chick_cast",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_chick_cast_0.png",
+      "assets/pastel/characters/char_chick_cast_1.png",
+      "assets/pastel/characters/char_chick_cast_2.png",
+      "assets/pastel/characters/char_chick_cast_3.png"
+    ],
+    "reference_body_height": 373.0,
+    "body_heights": [
+      375,
+      371,
+      370,
+      373
+    ],
+    "body_ratio": 0.9973190348525469,
+    "emitterX": 418.0,
+    "emitterY": 259.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "chick_guard",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_chick_guard_0.png",
+      "assets/pastel/characters/char_chick_guard_1.png",
+      "assets/pastel/characters/char_chick_guard_2.png",
+      "assets/pastel/characters/char_chick_guard_3.png"
+    ],
+    "reference_body_height": 373.0,
+    "body_heights": [
+      381,
+      379,
+      360,
+      366
+    ],
+    "body_ratio": 0.9986595174262735,
+    "emitterX": 407.0,
+    "emitterY": 274.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "chick_peck",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_chick_peck_0.png",
+      "assets/pastel/characters/char_chick_peck_1.png",
+      "assets/pastel/characters/char_chick_peck_2.png",
+      "assets/pastel/characters/char_chick_peck_3.png"
+    ],
+    "reference_body_height": 373.0,
+    "body_heights": [
+      378,
+      364,
+      367,
+      379
+    ],
+    "body_ratio": 0.9986595174262735,
+    "emitterX": 417.0,
+    "emitterY": 121.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "chick_stomp",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_chick_stomp_0.png",
+      "assets/pastel/characters/char_chick_stomp_1.png",
+      "assets/pastel/characters/char_chick_stomp_2.png",
+      "assets/pastel/characters/char_chick_stomp_3.png"
+    ],
+    "reference_body_height": 373.0,
+    "body_heights": [
+      382,
+      373,
+      350,
+      373
+    ],
+    "body_ratio": 1.0,
+    "emitterX": 408.0,
+    "emitterY": 141.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "mage_thrust",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_mage_thrust_0.png",
+      "assets/pastel/characters/char_mage_thrust_1.png",
+      "assets/pastel/characters/char_mage_thrust_2.png",
+      "assets/pastel/characters/char_mage_thrust_3.png"
+    ],
+    "reference_body_height": 363.0,
+    "body_heights": [
+      372,
+      350,
+      354,
+      371
+    ],
+    "body_ratio": 0.9986225895316805,
+    "emitterX": 441.0,
+    "emitterY": 296.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "mage_cast",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_mage_cast_0.png",
+      "assets/pastel/characters/char_mage_cast_1.png",
+      "assets/pastel/characters/char_mage_cast_2.png",
+      "assets/pastel/characters/char_mage_cast_3.png"
+    ],
+    "reference_body_height": 363.0,
+    "body_heights": [
+      364,
+      362,
+      362,
+      366
+    ],
+    "body_ratio": 1.0,
+    "emitterX": 448.0,
+    "emitterY": 248.5,
+    "unique_frames": 4
+  },
+  {
+    "name": "mage_guard",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_mage_guard_0.png",
+      "assets/pastel/characters/char_mage_guard_1.png",
+      "assets/pastel/characters/char_mage_guard_2.png",
+      "assets/pastel/characters/char_mage_guard_3.png"
+    ],
+    "reference_body_height": 363.0,
+    "body_heights": [
+      362,
+      364,
+      362,
+      363
+    ],
+    "body_ratio": 0.9986225895316805,
+    "emitterX": 417.0,
+    "emitterY": 224.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "ninja_slash",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_ninja_slash_0.png",
+      "assets/pastel/characters/char_ninja_slash_1.png",
+      "assets/pastel/characters/char_ninja_slash_2.png",
+      "assets/pastel/characters/char_ninja_slash_3.png"
+    ],
+    "reference_body_height": 358.0,
+    "body_heights": [
+      358,
+      358,
+      358,
+      358
+    ],
+    "body_ratio": 1.0,
+    "emitterX": 405.0,
+    "emitterY": 272.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "ninja_throw",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_ninja_throw_0.png",
+      "assets/pastel/characters/char_ninja_throw_1.png",
+      "assets/pastel/characters/char_ninja_throw_2.png",
+      "assets/pastel/characters/char_ninja_throw_3.png"
+    ],
+    "reference_body_height": 358.0,
+    "body_heights": [
+      359,
+      357,
+      359,
+      359
+    ],
+    "body_ratio": 1.0027932960893855,
+    "emitterX": 402.0,
+    "emitterY": 280.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "ninja_guard",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_ninja_guard_0.png",
+      "assets/pastel/characters/char_ninja_guard_1.png",
+      "assets/pastel/characters/char_ninja_guard_2.png",
+      "assets/pastel/characters/char_ninja_guard_3.png"
+    ],
+    "reference_body_height": 358.0,
+    "body_heights": [
+      358,
+      358,
+      359,
+      365
+    ],
+    "body_ratio": 1.0013966480446927,
+    "emitterX": 390.0,
+    "emitterY": 252.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "frog_king_cast",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_frog_king_cast_0.png",
+      "assets/pastel/characters/char_frog_king_cast_1.png",
+      "assets/pastel/characters/char_frog_king_cast_2.png",
+      "assets/pastel/characters/char_frog_king_cast_3.png"
+    ],
+    "reference_body_height": 344.0,
+    "body_heights": [
+      345,
+      343,
+      336,
+      344
+    ],
+    "body_ratio": 0.998546511627907,
+    "emitterX": 35.0,
+    "emitterY": 256.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "snake_cast",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_snake_cast_0.png",
+      "assets/pastel/characters/char_snake_cast_1.png",
+      "assets/pastel/characters/char_snake_cast_2.png",
+      "assets/pastel/characters/char_snake_cast_3.png"
+    ],
+    "reference_body_height": 341.5,
+    "body_heights": [
+      312,
+      363,
+      338,
+      345
+    ],
+    "body_ratio": 1.0,
+    "emitterX": 87.0,
+    "emitterY": 183.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "hawk_cast",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_hawk_cast_0.png",
+      "assets/pastel/characters/char_hawk_cast_1.png",
+      "assets/pastel/characters/char_hawk_cast_2.png",
+      "assets/pastel/characters/char_hawk_cast_3.png"
+    ],
+    "reference_body_height": 366.5,
+    "body_heights": [
+      369,
+      364,
+      363,
+      370
+    ],
+    "body_ratio": 1.0,
+    "emitterX": 55.0,
+    "emitterY": 219.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "fox_cast",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_fox_cast_0.png",
+      "assets/pastel/characters/char_fox_cast_1.png",
+      "assets/pastel/characters/char_fox_cast_2.png",
+      "assets/pastel/characters/char_fox_cast_3.png"
+    ],
+    "reference_body_height": 357.0,
+    "body_heights": [
+      357,
+      357,
+      357,
+      357
+    ],
+    "body_ratio": 1.0,
+    "emitterX": 92.0,
+    "emitterY": 280.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "undergod_cast",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_undergod_cast_0.png",
+      "assets/pastel/characters/char_undergod_cast_1.png",
+      "assets/pastel/characters/char_undergod_cast_2.png",
+      "assets/pastel/characters/char_undergod_cast_3.png"
+    ],
+    "reference_body_height": 352.5,
+    "body_heights": [
+      353,
+      353,
+      352,
+      353
+    ],
+    "body_ratio": 1.001418439716312,
+    "emitterX": 35.0,
+    "emitterY": 257.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "tiger_guard",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_tiger_guard_0.png",
+      "assets/pastel/characters/char_tiger_guard_1.png",
+      "assets/pastel/characters/char_tiger_guard_2.png",
+      "assets/pastel/characters/char_tiger_guard_3.png"
+    ],
+    "reference_body_height": 361.5,
+    "body_heights": [
+      361,
+      361,
+      340,
+      361
+    ],
+    "body_ratio": 0.9986168741355463,
+    "emitterX": 133.0,
+    "emitterY": 260.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "tiger_pounce",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/characters/char_tiger_pounce_0.png",
+      "assets/pastel/characters/char_tiger_pounce_1.png",
+      "assets/pastel/characters/char_tiger_pounce_2.png",
+      "assets/pastel/characters/char_tiger_pounce_3.png"
+    ],
+    "reference_body_height": 361.5,
+    "body_heights": [
+      366,
+      360,
+      315,
+      408
+    ],
+    "body_ratio": 1.004149377593361,
+    "emitterX": 44.0,
+    "emitterY": 306.0,
+    "unique_frames": 4
+  },
+  {
+    "name": "fire_orb",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/fire_orb_0.png",
+      "assets/pastel/skill_fx/fire_orb_1.png",
+      "assets/pastel/skill_fx/fire_orb_2.png",
+      "assets/pastel/skill_fx/fire_orb_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "arcane_orb",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/arcane_orb_0.png",
+      "assets/pastel/skill_fx/arcane_orb_1.png",
+      "assets/pastel/skill_fx/arcane_orb_2.png",
+      "assets/pastel/skill_fx/arcane_orb_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "toxin_orb",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/toxin_orb_0.png",
+      "assets/pastel/skill_fx/toxin_orb_1.png",
+      "assets/pastel/skill_fx/toxin_orb_2.png",
+      "assets/pastel/skill_fx/toxin_orb_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "slash",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/slash_0.png",
+      "assets/pastel/skill_fx/slash_1.png",
+      "assets/pastel/skill_fx/slash_2.png",
+      "assets/pastel/skill_fx/slash_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "claw",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/claw_0.png",
+      "assets/pastel/skill_fx/claw_1.png",
+      "assets/pastel/skill_fx/claw_2.png",
+      "assets/pastel/skill_fx/claw_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "ward_blue",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/ward_blue_0.png",
+      "assets/pastel/skill_fx/ward_blue_1.png",
+      "assets/pastel/skill_fx/ward_blue_2.png",
+      "assets/pastel/skill_fx/ward_blue_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "ward_leaf",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/ward_leaf_0.png",
+      "assets/pastel/skill_fx/ward_leaf_1.png",
+      "assets/pastel/skill_fx/ward_leaf_2.png",
+      "assets/pastel/skill_fx/ward_leaf_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "ward_shadow",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/ward_shadow_0.png",
+      "assets/pastel/skill_fx/ward_shadow_1.png",
+      "assets/pastel/skill_fx/ward_shadow_2.png",
+      "assets/pastel/skill_fx/ward_shadow_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "ward_fire",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/ward_fire_0.png",
+      "assets/pastel/skill_fx/ward_fire_1.png",
+      "assets/pastel/skill_fx/ward_fire_2.png",
+      "assets/pastel/skill_fx/ward_fire_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "heal",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/heal_0.png",
+      "assets/pastel/skill_fx/heal_1.png",
+      "assets/pastel/skill_fx/heal_2.png",
+      "assets/pastel/skill_fx/heal_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "sigil",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/sigil_0.png",
+      "assets/pastel/skill_fx/sigil_1.png",
+      "assets/pastel/skill_fx/sigil_2.png",
+      "assets/pastel/skill_fx/sigil_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "smoke",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/smoke_0.png",
+      "assets/pastel/skill_fx/smoke_1.png",
+      "assets/pastel/skill_fx/smoke_2.png",
+      "assets/pastel/skill_fx/smoke_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "tongue",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/tongue_0.png",
+      "assets/pastel/skill_fx/tongue_1.png",
+      "assets/pastel/skill_fx/tongue_2.png",
+      "assets/pastel/skill_fx/tongue_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "shock",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/shock_0.png",
+      "assets/pastel/skill_fx/shock_1.png",
+      "assets/pastel/skill_fx/shock_2.png",
+      "assets/pastel/skill_fx/shock_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "lightning",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/lightning_0.png",
+      "assets/pastel/skill_fx/lightning_1.png",
+      "assets/pastel/skill_fx/lightning_2.png",
+      "assets/pastel/skill_fx/lightning_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "meteor",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/meteor_0.png",
+      "assets/pastel/skill_fx/meteor_1.png",
+      "assets/pastel/skill_fx/meteor_2.png",
+      "assets/pastel/skill_fx/meteor_3.png"
+    ],
+    "unique_frames": 4
+  },
+  {
+    "name": "summon",
+    "edge_touch_frames": [],
+    "exports": [
+      "assets/pastel/skill_fx/summon_0.png",
+      "assets/pastel/skill_fx/summon_1.png",
+      "assets/pastel/skill_fx/summon_2.png",
+      "assets/pastel/skill_fx/summon_3.png"
+    ],
+    "unique_frames": 4
+  }
+]

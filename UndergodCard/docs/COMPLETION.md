@@ -1,8 +1,10 @@
-# Hoàn thiện kế hoạch — v1.2.0-preview
+# Hoàn thiện kế hoạch — v1.3.0-preview
 
 Cập nhật theo yêu cầu mới: avatar đi tới điểm trên map, giữ màn đen khi đổi khu vực, ảnh FIGHT và chia bài; mỗi phe ba Turn Star, xếp ba lá rồi Attack luân phiên, xem trước bài địch bằng tooltip. Luật, chuyển đổi năng lượng/nâng cấp và tương thích bản lưu ở [TURN_STARS.md](TURN_STARS.md). Bản HTML/website giữ độc lập.
 
 v1.2.0 sửa vị trí avatar xuyên FadeOut, trở lại map và lưu/tải; thêm sáu bộ riêng, 36 lá boss với chiêu và ảnh thực, giới hạn theo pha. Chi tiết tại [BOSS_DECKS.md](BOSS_DECKS.md).
+
+v1.3.0 thêm 98 cấu hình hoạt ảnh cho player/boss/địch, 72 frame cơ thể và 68 frame VFX mới. Đâm, niệm, phóng, hồi/buff có chuyển động phù hợp từng lá; khiên giữ theo giáp thật của mỗi đơn vị. Đòn cuối chạy hết phần chạm rồi mới đổi màn. Xem [SKILL_ANIMATIONS.md](SKILL_ANIMATIONS.md).
 
 2026-11-06. Giữ nhánh draft/v0.3-wip và PR #2; chưa merge main/PR #1. Các hệ thống trong mốc v0.4/v0.5/v1.0 và yêu cầu Turn Star đã có triển khai. Hai tiêu chí cần chơi thực để mở trong IMPLEMENTATION_CHECKLIST.
 
@@ -13,7 +15,7 @@ v1.2.0 sửa vị trí avatar xuyên FadeOut, trở lại map và lưu/tải; th
 - 17 di vật gồm đủ mười cơ chế thiết kế; sáu thuốc; thưởng 60/33/7 theo tầng hiếm, tinh anh Hiếm+, di vật không trùng.
 - Ba lớp/bộ khởi đầu/tuyệt kỹ; 45 kỹ năng; tiền meta; Thử Thách cộng dồn 1–10; 15 thành tựu.
 - Session v2/profile v1, ba RNG, sổ nhận thưởng chống trùng, ghi nguyên tử, kiểm tra đường map/pile/tham chiếu.
-- 239 PNG: ảnh riêng cho 50 bài người chơi, 36 lá boss, ba lớp, sáu boss, địch thường/tinh anh, đồ và banner FIGHT. Giữ gà Chiến Binh đã được Shin duyệt làm chuẩn; bộ ếch dùng chung cũ đã ra khỏi runtime.
+- 379 PNG: ảnh riêng cho 50 bài người chơi, 36 lá boss, ba lớp, sáu boss, địch thường/tinh anh, đồ và banner FIGHT. Giữ gà Chiến Binh đã được Shin duyệt làm chuẩn; bộ ếch dùng chung cũ đã ra khỏi runtime.
 - Bão Lông/Ảnh Phân có cinematic riêng; Sao Rơi giữ phóng lao lên trời/rơi đúng contact. Nhạc ba hồi, chín cue PCM gốc và tắt/bật lưu trong profile.
 - UI lớp/kỹ năng/thành tựu/Thử Thách/mục tiêu/khóa bài/dự báo/thưởng boss; hàng chờ Turn Star thay thanh năng lượng/Mana.
 
@@ -23,7 +25,7 @@ Boss chuyển pha theo HP hiện có, không nạp lại HP. Bóng Cáo một HP
 
 Mắt Diều Hâu mô phỏng trên bản sao hai lượt nếu không chơi thêm bài, không tiêu RNG thật; hành động có thể đổi dự báo. Undergod chuyển tài nguyên riêng của player thành Sức Mạnh/hút Nộ khi sao chép.
 
-Địch thường có ảnh riêng và chuyển động code; không nhân bản ảnh thành animation giả. Boss có bốn idle/bốn attack; Hổ Vương có thêm bốn frame tụ lực/gầm. Thiếu hit/defend dùng idle kèm recoil/flash/khiên.
+Địch thường có ảnh riêng và chuyển động code; không nhân bản ảnh thành animation giả. Boss có idle/attack cùng động tác niệm hoặc đỡ/vồ mới. Player có động tác riêng cho đâm, mổ, giậm, chém, ném, niệm và đỡ. Phản ứng nhận đòn/khiên theo từng đơn vị; không dùng chung một phản ứng cho cả nhóm boss và lính.
 
 Raw/QC ở artifacts/art-v1 ngoài Git. Công cụ import chỉ tách grid/chroma key/alpha/căn frame; bitmap do ImageGen tạo. Audio từ tools/synth_audio.py, không dùng bản thu bên ngoài.
 

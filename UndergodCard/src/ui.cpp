@@ -15,7 +15,9 @@ void Blend(int alpha){SetDrawBlendMode(alpha==255?DX_BLENDMODE_NOBLEND:DX_BLENDM
 }
 int Ui::Image(const std::string& key)const{const auto it=images_.find(key);return it==images_.end()?-1:it->second;}
 bool Ui::Init(const Config& config){
-    {std::ifstream file("assets/manifest.json");if(!file)return false;nlohmann::json manifest;file>>manifest;expected=manifest.at("runtime_pngs");}
+    {std::ifstream file("assets/manifest.json");if(!file)return false;nlohmann::json manifest;file>>manifest;expected=manifest.at("runtime_pngs");
+        for(const auto& item:manifest.at("files")){const std::string path=item.at("path");if(item.contains("bounds")&&path.find("/skill_fx/")!=std::string::npos){const auto& b=item.at("bounds");image_bounds_["skill_"+std::filesystem::path(path).stem().string()]={b[0],b[1],int(b[2])-int(b[0]),int(b[3])-int(b[1])};}}
+    }
     SetDrawMode(DX_DRAWMODE_BILINEAR);
     font_=CreateFontToHandle("Segoe UI",18,5,DX_FONTTYPE_ANTIALIASING_4X4);
     small_=CreateFontToHandle("Segoe UI",14,4,DX_FONTTYPE_ANTIALIASING_4X4);
@@ -32,6 +34,8 @@ bool Ui::Init(const Config& config){
         const std::string key=std::string(actor)+"_"+state+"_"+std::to_string(f);
         const auto file="characters/char_"+key+".png";if(std::filesystem::exists("assets/pastel/"+file))load(key,file,512);
     }
+    for(const auto& b:config.animations.bodies)for(int f=0;f<4;++f){const auto key=b.actor+"_"+b.pose+"_"+std::to_string(f);load(key,"characters/char_"+key+".png",512);}
+    for(const auto& effect:config.animations.effects)for(int f=0;f<4;++f){const auto key=effect+"_"+std::to_string(f);load("skill_"+key,"skill_fx/"+key+".png",512);}
     for(const auto& card:config.cards)if(!card.upgraded){const auto file="cards/"+card.id+".png";load("card_"+card.id,file,256);}
     for(const auto& card:config.boss_cards)load("card_"+card.id,"boss_cards/"+card.id+".png",256);
     for(const auto& relic:config.relics)load("relic_"+relic.id,"relics/"+relic.id+".png",256);
@@ -65,6 +69,7 @@ void Ui::Page(const Game& game,int direction){
     else if(game.Shop()||game.Rest()||game.CardSelection()||game.RelicSelection()){const int count=game.RelicSelection()?int(game.run.relics.size()):int(game.run.deck.size());deck_page_=std::clamp(deck_page_+direction,0,std::max(0,(count-1)/8));}
 }
 void Ui::Actor(const Game& game,bool enemy,int target)const{
+    if(game.TurnStarRules()){SkillActor(game,enemy,target);return;}
     if(enemy&&game.state.Target(target).hp<=0)return;
     const Pose idle;const auto& pose=enemy&&game.ResolvingStars()&&game.ActiveActor()!=target?idle:game.poses[enemy?1:0];const std::string id=enemy?game.state.Sprite(target):FindClass(game.state.config,game.run.class_id).sprite;
     const float fps=pose.name=="ult_throw"?4.f:8.f;
@@ -88,9 +93,14 @@ void Ui::World(const Game& game){
     for(int i=0;i<6;++i)DrawOval(int(i*330-70-std::sin(game.time*.15f)*14),360,210,150,C(174,201,164),TRUE);
     DrawBox(0,306,Width,360,C(220,227,182),TRUE);DrawBox(0,306,Width,310,C(143,169,124),TRUE);
     for(int i=0;i<40;++i){const int x=i*37;DrawLine(x,337,x+18,337,C(173,188,146));DrawCircle(x+12,316+(i%4)*8,3,i%3?C(246,239,205):C(238,185,194),TRUE);}
-    for(int target:game.state.Targets())Actor(game,true,target);
+    if(game.TurnStarRules()){for(int target=0;target<=int(game.state.adds.size());++target)Actor(game,true,target);}
+    else for(int target:game.state.Targets())Actor(game,true,target);
     if(game.Cinematic()){Blend(int(game.visual.dim*255));DrawBox(0,0,Width,360,C(33,28,60),TRUE);Blend(255);}
     Actor(game,false);
+    if(game.TurnStarRules()){
+        DrawWard(game,-1);for(int target=0;target<=int(game.state.adds.size());++target)DrawWard(game,target);
+        DrawSkillEffects(game);
+    }
     if(game.Cinematic()&&game.state.Mods().ultimate!="spear"){
         const float age=game.CinematicTime();const auto mode=game.state.Mods().ultimate;
         if(mode=="storm"){

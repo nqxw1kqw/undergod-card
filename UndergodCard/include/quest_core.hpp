@@ -1,6 +1,7 @@
 #pragma once
 #include "quest_effects.hpp"
 #include "quest_world.hpp"
+#include "quest_animation.hpp"
 #include <cstdint>
 #include <stdexcept>
 #include <string>
@@ -96,6 +97,7 @@ struct RelicDef {
 struct PotionDef { std::string id,name,description; int price=40; std::vector<Effect> effects; };
 
 struct Config {
+    AnimationLibrary animations;
     Balance balance;
     EnemyDef enemy;
     std::string player_name="Gà Chiến Binh";
