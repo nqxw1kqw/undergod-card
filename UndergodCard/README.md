@@ -1,10 +1,12 @@
 # Undergod Card Quest — C++17 / DxLib
 
-Bản v1.3.0-preview sửa icon nhảy về điểm cũ sau khi đến stage và thêm 36 lá riêng cho sáu boss: [docs/BOSS_DECKS.md](docs/BOSS_DECKS.md). Giữ ba Turn Star, hàng bài hai phe luân phiên, chuyển cảnh đen, FIGHT và chia bài. Chi tiết luật/tương thích tại [docs/TURN_STARS.md](docs/TURN_STARS.md); bằng chứng tại docs/VALIDATION.md. Demo HTML giữ độc lập.
+Bản v1.3.1-preview dùng cửa sổ 1600×900 với bố cục 16:9. Giữ hoạt ảnh theo từng kỹ năng, ba Turn Star luân phiên, bộ riêng của sáu boss, avatar map, FIGHT và chia bài. Chi tiết ở [hoạt ảnh](docs/SKILL_ANIMATIONS.md), [bộ boss](docs/BOSS_DECKS.md), [luật Turn Star](docs/TURN_STARS.md) và [kiểm chứng](docs/VALIDATION.md). Demo HTML giữ độc lập.
 
 Mốc này thêm [hoạt ảnh cho từng kỹ năng](docs/SKILL_ANIMATIONS.md), dùng 18 bộ động tác và 17 bộ VFX mới: lao đâm/ném, phép bay, mổ/giậm/chém/vồ, buff và khiên tồn tại theo giáp thật cho cả hai phe. Lá đang dùng nằm dưới góc phải để không che sân. Game đợi hiệu ứng đòn cuối kết thúc trước khi mở thưởng hoặc trận kế tiếp.
 
 ## Build, chạy và đóng gói
+
+Khung hình và vùng nội dung cửa sổ mặc định: **1600×900, tỉ lệ 16:9**. Map/menu được căn giữa, hàng bài thu gọn, sprite và hiệu ứng giữ cùng tỉ lệ hai chiều; tọa độ bấm mục tiêu đi cùng vị trí mới. Không đổi logic chiến đấu hoặc dữ liệu bản lưu.
 
 Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x64. Cần MSVC v143, Windows SDK và DxLib Visual C++ x64; mặc định C:\DxLib.
 

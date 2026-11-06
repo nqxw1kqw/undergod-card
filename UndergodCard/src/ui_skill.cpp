@@ -9,6 +9,7 @@ void Alpha(int value){SetDrawBlendMode(value>=255?DX_BLENDMODE_NOBLEND:DX_BLENDM
 }
 void Ui::DrawFx(const std::string& effect,float x,float y,float size,float progress,float angle,int alpha)const{
     if(effect.empty()||alpha<=0)return;
+    x=SceneX(x);
     const int frame=std::clamp(int(progress*4),0,3);
     int graph=Image("skill_"+effect+"_"+std::to_string(frame));
     if(graph<0)graph=Image(effect);
@@ -35,7 +36,7 @@ void Ui::SkillActor(const Game& game,bool enemy,int target)const{
     int graph=Image(id+"_"+pose+"_"+std::to_string(frame));
     if(graph<0)graph=Image(id+"_idle_0");
     const float scale=game.ActorScale(enemy,target);
-    const float x=(enemy?game.TargetX(target):Game::PlayerHome)+game.ActorOffset(enemy,target);
+    const float x=SceneX(enemy?game.TargetX(target):Game::PlayerHome)+game.ActorOffset(enemy,target);
     const float y=320+game.ActorLift(enemy,target)-(pose=="idle"?std::sin(game.time*3.14f)*2:0);
     Alpha(38);DrawOval(int(x),324,int(105*scale),9,GetColor(80,107,76),TRUE);Alpha(255);
     const float opacity=dead?std::max(0.f,1-reaction.hit_age/.32f):std::min(1.f,reaction.spawn_age/.24f);
@@ -80,7 +81,7 @@ void Ui::DrawSkillEffects(const Game& game)const{
                 if(graph>=0&&clip!=image_bounds_.end()){
                     const float dx=shot.x-v.source_x,dy=shot.y-v.source_y,length=std::sqrt(dx*dx+dy*dy);
                     const auto& b=clip->second;
-                    DrawRectRotaGraph3F((shot.x+v.source_x)*.5f,(shot.y+v.source_y)*.5f,b.x,b.y,b.w,b.h,b.w*.5f,b.h*.5f,std::max(1.f,length)/b.w,24.f/b.h,std::atan2(dy,dx),graph,TRUE);
+                    DrawRectRotaGraph3F(SceneX((shot.x+v.source_x)*.5f),(shot.y+v.source_y)*.5f,b.x,b.y,b.w,b.h,b.w*.5f,b.h*.5f,std::max(1.f,length)/b.w,24.f/b.h,std::atan2(dy,dx),graph,TRUE);
                 }
             }else if(a.path==FlightPath::Beam){
                 const float dx=shot.x-v.source_x,dy=shot.y-v.source_y,length=std::sqrt(dx*dx+dy*dy);

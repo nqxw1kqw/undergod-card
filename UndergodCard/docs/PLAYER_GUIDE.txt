@@ -1,6 +1,7 @@
-UNDERGOD CARD QUEST v1.3.0-preview — C++17 / DxLib / Windows x64
+UNDERGOD CARD QUEST v1.3.1-preview — C++17 / DxLib / Windows x64
 
 Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
+Game mở ở 1600×900, tỉ lệ 16:9; giao diện và hàng bài đã căn theo khung mới.
 Không cần Visual Studio, DxLib, Python hay Node.js để chơi gói này.
 
 HOẠT ẢNH KỸ NĂNG

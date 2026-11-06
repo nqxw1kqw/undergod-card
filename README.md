@@ -1,8 +1,8 @@
-# undergod-card — v1.3.0-preview
+# undergod-card — v1.3.1-preview
 
 Game thẻ bài roguelike bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Nhánh draft/v0.3-wip có luật [ba Turn Star](UndergodCard/docs/TURN_STARS.md), avatar đi trên map, chuyển cảnh đen, FIGHT và chia bài có hoạt ảnh. Bản mới sửa icon nhảy về điểm cũ khi tới stage và thêm [36 lá riêng của sáu boss](UndergodCard/docs/BOSS_DECKS.md).
 
-v1.3.0 thêm [hoạt ảnh riêng theo kỹ năng](UndergodCard/docs/SKILL_ANIMATIONS.md): đâm lao, niệm phép, đạn bay, vuốt/vồ và lớp khiên giữ quanh player/boss khi còn giáp; 140 frame mới. Sát thương khớp thời điểm chạm; đòn kết liễu chạy hết hiệu ứng rồi mới chuyển màn.
+v1.3.1 dùng khung hình/cửa sổ **1600×900 (16:9)**, căn giữa map/menu/sân đấu và thu gọn hàng bài cho chiều cao mới, giữ đúng tỉ lệ sprite. Có [hoạt ảnh riêng theo kỹ năng](UndergodCard/docs/SKILL_ANIMATIONS.md): đâm lao, niệm phép, đạn bay, vuốt/vồ và lớp khiên theo giáp thật của hai phe.
 
 ![Ba lớp trong bản DxLib](UndergodCard/docs/images/classes.png)
 

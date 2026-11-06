@@ -13,6 +13,12 @@ int StarSmoke(Game& game,Ui& ui,Audio& audio){
     auto settle=[&](){for(int i=0;i<1000&&game.Busy();++i)step(.02f);check(!game.Busy(),"animation_settled");};
     auto capture=[&](const char* name,int mx=-1,int my=-1){ClearDrawScreen();ui.Draw(game,mx,my);const auto file=(folder/name).string();check(SaveDrawScreenToPNG(0,0,Ui::Width,Ui::Height,file.c_str())==0,name);ScreenFlip();ProcessMessage();};
     check(ui.loaded==ui.expected&&ui.expected==379,"all_379_images_loaded");
+    int screen_w=0,screen_h=0;GetDrawScreenSize(&screen_w,&screen_h);
+    check(screen_w==1600&&screen_h==900,"backbuffer_is_1600x900");
+    RECT client{};GetClientRect(GetMainWindowHandle(),&client);
+    check(client.right==1600&&client.bottom==900,"window_client_is_1600x900");
+    bool hand_fits=true;for(int count=1;count<=10;++count)for(int index=0;index<count;++index){const auto r=Ui::StarHandRect(count,index);hand_fits&=r.x>=20&&r.x+r.w<=Ui::Width-20&&r.y>=Ui::StarSlotRect(0).y+Ui::StarSlotRect(0).h&&r.y+r.h<=Ui::Height-35;}
+    check(hand_fits,"all_hand_sizes_fit_below_star_queue_and_above_footer");
     game.NewRun(1337);game.OpenClasses();capture("00-classes.png");game.BackMenu();capture("00-map-player.png");game.ChooseNode(0);step(.4f);
     check(game.Traveling()&&game.run.node==-1&&game.TravelProgress()>0,"map_travel_precedes_entry");capture("01-map-moving.png");
     step(.44f);capture("01b-map-before-arrival.png");step(.02f);capture("01c-map-arrived.png");

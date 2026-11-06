@@ -62,6 +62,14 @@ Phạm vi được Shin xác nhận: toàn bộ lộ trình còn lại, cùng nh
 - [x] Kiểm tra thời điểm chạm, RNG, Sao Chép, đa mục tiêu và x1/x2/x3; 300 chiến dịch giữ nguyên kết quả.
 - [x] Build Debug/Release và ba smoke DxLib; chi tiết và gói giải nén ở VALIDATION.md.
 
+## Cửa sổ 16:9 — v1.3.1-preview
+
+- [x] Backbuffer và vùng nội dung cửa sổ Windows đều 1600×900, đo bằng DxLib/Win32 khi chạy.
+- [x] Căn giữa menu, map, nhân vật, đạn/va chạm và tọa độ bấm mục tiêu; giữ tỉ lệ sprite hai chiều.
+- [x] Hàng chờ và bài tay 1–10 lá nằm trên footer; thẻ đang dùng và thông báo không che nút Attack/Bắt đầu.
+- [x] Chỉnh nút cuối map/shop/phân trang và giới hạn cuộn để vẫn thấy đầy đủ tầng boss trên màn ngắn hơn.
+- [x] Debug/Release và EXE giải nén chạy đủ ba smoke; xem VALIDATION.md.
+
 ## Các mục cần bằng chứng chơi thực
 
 - [ ] Chơi tay toàn chiến dịch trên Windows (helper trước đó lỗi native pipe).

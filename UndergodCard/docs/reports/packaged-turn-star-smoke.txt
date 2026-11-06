@@ -1,4 +1,7 @@
 all_379_images_loaded=1
+backbuffer_is_1600x900=1
+window_client_is_1600x900=1
+all_hand_sizes_fit_below_star_queue_and_above_footer=1
 00-classes.png=1
 00-map-player.png=1
 map_travel_precedes_entry=1

@@ -1,10 +1,12 @@
-# Hoàn thiện kế hoạch — v1.3.0-preview
+# Hoàn thiện kế hoạch — v1.3.1-preview
 
 Cập nhật theo yêu cầu mới: avatar đi tới điểm trên map, giữ màn đen khi đổi khu vực, ảnh FIGHT và chia bài; mỗi phe ba Turn Star, xếp ba lá rồi Attack luân phiên, xem trước bài địch bằng tooltip. Luật, chuyển đổi năng lượng/nâng cấp và tương thích bản lưu ở [TURN_STARS.md](TURN_STARS.md). Bản HTML/website giữ độc lập.
 
 v1.2.0 sửa vị trí avatar xuyên FadeOut, trở lại map và lưu/tải; thêm sáu bộ riêng, 36 lá boss với chiêu và ảnh thực, giới hạn theo pha. Chi tiết tại [BOSS_DECKS.md](BOSS_DECKS.md).
 
 v1.3.0 thêm 98 cấu hình hoạt ảnh cho player/boss/địch, 72 frame cơ thể và 68 frame VFX mới. Đâm, niệm, phóng, hồi/buff có chuyển động phù hợp từng lá; khiên giữ theo giáp thật của mỗi đơn vị. Đòn cuối chạy hết phần chạm rồi mới đổi màn. Xem [SKILL_ANIMATIONS.md](SKILL_ANIMATIONS.md).
+
+v1.3.1 chuyển backbuffer và cửa sổ sang 1600×900. Giữ tỉ lệ sprite, căn giữa nội dung và đồng bộ vùng bấm mục tiêu; chỉnh chiều cao hàng chờ/bài tay, nút dưới map/shop và thông báo menu cho màn 16:9.
 
 2026-11-06. Giữ nhánh draft/v0.3-wip và PR #2; chưa merge main/PR #1. Các hệ thống trong mốc v0.4/v0.5/v1.0 và yêu cầu Turn Star đã có triển khai. Hai tiêu chí cần chơi thực để mở trong IMPLEMENTATION_CHECKLIST.
 

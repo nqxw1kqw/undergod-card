@@ -1,21 +1,29 @@
 # Kiểm chứng — 2026-11-06
 
-**v1.3.0-preview**, nhánh `draft/v0.3-wip`, C++17 / MSVC v143 / Visual Studio 2022 / DxLib x64. Mốc này thêm hoạt ảnh theo kỹ năng, đạn bay và khiên tồn tại theo giáp cho cả player và boss. Chi tiết thiết kế/nguồn ảnh ở [SKILL_ANIMATIONS](SKILL_ANIMATIONS.md).
+**v1.3.1-preview**, nhánh `draft/v0.3-wip`, C++17 / MSVC v143 / Visual Studio 2022 / DxLib x64. Mốc này đổi cửa sổ và bố cục sang **1600×900, tỉ lệ 16:9**, giữ hoạt ảnh theo kỹ năng, đạn bay và khiên của hai phe. Chi tiết hoạt ảnh ở [SKILL_ANIMATIONS](SKILL_ANIMATIONS.md).
 
 | Kiểm tra | Kết quả |
 | --- | --- |
 | MSVC Release / Debug x64 | Cả hai build thành công; cảnh báo còn lại C4010 trong SDK DxLib |
 | CoreChecks Debug | 4.021 kiểm tra, 0 lỗi |
-| CoreChecks Release `--simulate-stars 300` | 4.022 kiểm tra, 0 lỗi |
+| CoreChecks Release | 4.021 kiểm tra, 0 lỗi |
+| Khung hình/cửa sổ | Backbuffer DxLib và client Win32 đều đo được 1600×900 |
+| Bố cục 16:9 | Bài tay 1–10 lá nằm giữa hàng sao và footer; menu/map/shop, mục tiêu và thông báo đã căn lại |
 | Hoạt ảnh | 98 cấu hình; 48 lá player chơi được, 36 lá boss, hai lời nguyền, Chờ và 11 hành động địch |
 | Art mới | 18 bộ cơ thể + 17 bộ FX, 140 frame khác nhau; không cắt mép, khiên rỗng ở giữa |
 | Asset runtime | 379 PNG RGBA8 / 12 WAV; hash, kích thước, tham chiếu và PCM hợp lệ |
 | DxLib `--animation-smoke`, `--star-smoke`, `--smoke` | Cả ba `PASS=1`, trên Debug và Release |
 | EXE từ ZIP giải nén riêng | Cả ba smoke thoát 0, `PASS=1` |
 | Gói | 417 tệp, 18 JSON dữ liệu; CRC, danh sách và hash/EXE khớp nguồn |
-| Nội dung đã duyệt | 239 PNG cũ, 220 tệp runtime HTML và bản HTML một tệp giữ nguyên hash |
+| Nội dung đã duyệt | Toàn bộ 379 PNG runtime giữ nguyên hash; HTML nằm ngoài phạm vi chỉnh sửa |
 
-Báo cáo máy đọc và SHA-256 nguồn đã chuẩn hóa xuống dòng LF: [reports/validation.json](reports/validation.json). Mốc trước được giữ tại [v1.2.0](reports/v1.2.0-validation.md), [v1.1.0](reports/v1.1.0-validation.md) và [v1.0.1](reports/v1.0.1-validation.md).
+Báo cáo máy đọc và SHA-256 nguồn đã chuẩn hóa xuống dòng LF: [reports/validation.json](reports/validation.json). Mốc trước được giữ tại [v1.3.0](reports/v1.3.0-validation.md), [v1.2.0](reports/v1.2.0-validation.md), [v1.1.0](reports/v1.1.0-validation.md) và [v1.0.1](reports/v1.0.1-validation.md).
+
+Sprite và hiệu ứng giữ cùng tỉ lệ hai chiều, không kéo dãn ảnh 1440×960. Vị trí scene được căn giữa cùng tọa độ bấm chọn mục tiêu; map dùng sáu tầng hiển thị để boss cuối vẫn vào đủ khung khi cuộn hết. Thông báo menu nằm trên tiêu đề, không che nút Bắt đầu.
+
+![Bố cục chiến đấu 1600×900](images/layout-1600-battle.png)
+
+![Map 1600×900](images/layout-1600-map.png)
 
 ## Logic và hình ảnh
 
@@ -37,7 +45,7 @@ Sao Chép dùng đúng chuyển động/đường bay của lá gốc, giữ ID 
 
 Hai smoke cũ tiếp tục kiểm tra map tới đích/giữ xuyên FadeOut, FIGHT/chia bài, thứ tự ba sao, tooltip, bộ riêng của sáu boss, tụ lực, menu, shop/sự kiện, lưu/tải, tuyệt kỹ và thắng hành trình tham chiếu. Không thay luật hoặc chỉ số các lá.
 
-300 seed 0–299, độ khó 0, không mua kỹ năng meta, luân phiên ba lớp; bot chờ hết chuyển cảnh/hành động. Kết quả giống v1.2.0:
+Số liệu mô phỏng tham chiếu từ mốc v1.3.0: 300 seed 0–299, độ khó 0, không mua kỹ năng meta, luân phiên ba lớp; bot chờ hết chuyển cảnh/hành động. Mốc v1.3.1 chỉ sửa renderer/bố cục, không sửa core hoặc dữ liệu combat; đã chạy lại 4.021 kiểm tra core trên mỗi cấu hình, không chạy lại loạt 300 seed.
 
 | Lớp | Run | Thắng | Thua | Kẹt |
 | --- | --- | --- | --- | --- |
@@ -52,9 +60,9 @@ Thua theo hồi: 34/36/97. 90 trận đấu thử Ếch/Hổ: 48 thắng, 42 thu
 
 Gói chỉ chứa runtime, dữ liệu, hướng dẫn và giấy phép. Đã so danh sách ZIP chính xác, CRC toàn bộ, hash mọi asset và EXE Release, rồi giải nén vào thư mục riêng chạy cả ba smoke.
 
-- 417 tệp; 56.729.916 byte; 379 PNG / 12 WAV / 18 JSON dữ liệu.
-- SHA-256 ZIP: `e431b9f8b9c5b0732716535eeb31d0dd13377031dd103caf31e53cc33a5a12d7`.
-- SHA-256 EXE: `2c4a7d0393515d349c646118f67836b7d3c2c62ed94b6a5c5902cee7f9ad91f8`.
+- 417 tệp; 56.727.717 byte; 379 PNG / 12 WAV / 18 JSON dữ liệu.
+- SHA-256 ZIP: `82c83ff0e924f751a317dfbcb149e4c24c025fba80cb0ab48d673aac3edb518d`.
+- SHA-256 EXE: `7ef0f0f10f510a66819bd64553f6c49dae90c38a5f9700f3a008b9c15cc6da0a`.
 - [Báo cáo gói](reports/package-validation.json), [hoạt ảnh trong gói](reports/packaged-animation-smoke.txt).
 
 ## Giới hạn bằng chứng

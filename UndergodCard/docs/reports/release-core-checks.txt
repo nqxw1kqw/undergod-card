@@ -1,5 +1,4 @@
 RUN victory=1 hp=30 rewards=29 deck=41 gold=201 relics=7 phase=3 node=38
 TURN_STAR_BOSSES wins=48 losses=42 stalls=0
 SKILL_ANIMATIONS profiles=98 bodies=18 effects=17
-TURN_STAR_CAMPAIGNS {"class_wins":[50,28,55],"losses":167,"losses_by_act":[34,36,97],"rules":"turn-stars","runs":300,"stalls":0,"wins":133}
-RESULT 4022 checks, 0 failures
+RESULT 4021 checks, 0 failures

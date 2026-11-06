@@ -41,7 +41,7 @@ int Smoke(undergod::Game& game,undergod::Ui& ui,undergod::Audio& audio){
     report<<"audio="<<audio.loaded<<"/"<<audio.expected<<"\n";check(audio.loaded==audio.expected&&audio.expected==12,"all_audio");
     audio.Update(game);check(audio.Play("hit")&&audio.Playing("hit"),"audio_playback");
     game.ToggleAudio();audio.Update(game);check(!audio.Playing("music_0")&&!audio.Playing("hit")&&!audio.Play("hit"),"audio_mute");game.ToggleAudio();audio.Update(game);check(audio.Playing("music_0"),"audio_unmute");
-    game.NewRun();capture("00-map.png");check(game.Map()&&game.run.options.size()>=2,"map_opening");click(Ui::MapUpButton());click(Ui::MapUpButton());capture("00-map-boss.png");ui.Page(game,-100);click(Ui::MapChoiceRect(0,int(game.run.options.size())));
+    game.NewRun();capture("00-map.png");check(game.Map()&&game.run.options.size()>=2,"map_opening");click(Ui::MapUpButton());click(Ui::MapUpButton());click(Ui::MapUpButton());capture("00-map-boss.png");ui.Page(game,-100);click(Ui::MapChoiceRect(0,int(game.run.options.size())));
     const int opening_hp=game.state.enemy.hp;capture("01-battle.png");check(game.CanAct()&&game.state.hand.size()==5&&game.state.hand[0]=="punch"&&game.state.player.hp==50&&game.state.enemy.hp==opening_hp,"opening");
     check(game.Speed()==1,"default_speed_x1");click(Ui::SpeedButton(2));check(game.Speed()==2,"speed_x2_button");click(Ui::SpeedButton(3));check(game.Speed()==3,"speed_x3_button");click(Ui::SpeedButton(1));
     game.state.energy=0;click(Ui::CardRect(5,0));check(!game.toast.empty()&&game.state.enemy.hp==opening_hp,"unaffordable_toast");game.state.energy=3;
@@ -111,7 +111,7 @@ int Smoke(undergod::Game& game,undergod::Ui& ui,undergod::Audio& audio){
         game.state.BeginEncounter(FindEnemy(game.state.config,boss),42,50,50,0,game.run.deck,ModsFor(game.run,game.state.config));
         if(boss=="frog"||boss=="fox"||boss=="undergod"){game.state.enemy.hp=game.state.enemy.max_hp/2+1;game.state.hand={"punch","shield"};game.state.energy=3;game.Play(0);Drain(game);}
         capture(("25-boss-"+boss+".png").c_str());
-        if(game.state.Targets().size()>1){const int target=game.state.Targets().back();ui.Click(game,int(game.TargetX(target)),420);check(game.state.live.target==target,"target_mouse_button");}
+        if(game.state.Targets().size()>1){const int target=game.state.Targets().back();ui.Click(game,int(Ui::SceneX(game.TargetX(target))),420);check(game.state.live.target==target,"target_mouse_button");}
         game.EndTurn();Tick(game,.69f);capture(("26-attack-"+boss+".png").c_str());Drain(game);
     }
     game.OpenClasses();click(Ui::PracticeButton());check(game.Practice()&&game.state.EnemyId()=="tiger","tiger_practice_button");
@@ -126,7 +126,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
     using namespace undergod;std::filesystem::current_path(ExeDirectory());const bool smoke=std::string(args?args:"").find("--smoke")!=std::string::npos;
     const bool star_smoke=std::string(args?args:"").find("--star-smoke")!=std::string::npos;
     const bool animation_smoke=std::string(args?args:"").find("--animation-smoke")!=std::string::npos;
-    ChangeWindowMode(TRUE);SetGraphMode(Ui::Width,Ui::Height,32);SetWindowSize(1152,768);SetMainWindowText("Undergod Card Quest - C++ / DxLib");
+    ChangeWindowMode(TRUE);SetGraphMode(Ui::Width,Ui::Height,32);SetWindowSize(Ui::Width,Ui::Height);SetMainWindowText("Undergod Card Quest - C++ / DxLib");
     SetAlwaysRunFlag(TRUE);SetDoubleStartValidFlag(TRUE);SetOutApplicationLogValidFlag(FALSE);SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
     if(DxLib_Init()<0)return 1;SetDrawScreen(DX_SCREEN_BACK);Ui ui;Audio audio;
     try{
