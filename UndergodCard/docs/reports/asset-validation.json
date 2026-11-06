@@ -1,6 +1,8 @@
 {
-  "pngs": 203,
+  "pngs": 239,
   "cards": 50,
+  "boss_cards": 36,
+  "boss_decks": 6,
   "relics": 17,
   "potions": 6,
   "audio": 12,

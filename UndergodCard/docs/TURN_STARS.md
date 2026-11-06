@@ -1,5 +1,7 @@
 # Turn Star và mở trận — v1.1.0-preview
 
+Bản v1.2.0 giữ các luật dưới đây, sửa icon quay về điểm cũ trong FadeOut và tách 36 lá riêng của sáu boss. Cách chọn bài theo pha và nhịp tụ lực mới ở [BOSS_DECKS.md](BOSS_DECKS.md).
+
 Thay đổi dành cho game gốc C++17 / DxLib / Visual Studio. Demo HTML và website được giữ riêng, không cập nhật theo thay đổi này.
 
 ## Bản đồ và mở trận

@@ -43,6 +43,15 @@ Phạm vi được Shin xác nhận: toàn bộ lộ trình còn lại, cùng nh
 - [x] Debug 3.536 kiểm tra; Release kèm 300 chiến dịch: 3.537 kiểm tra, 0 lỗi. 90 trận boss và 300 chiến dịch đều không kẹt.
 - [x] Native smoke cả hai cấu hình; ZIP 239 tệp chạy cả hai smoke sau giải nén. HTML giữ nguyên 220 tệp runtime.
 
+## Map và bộ bài boss — v1.2.0-preview
+
+- [x] Giữ icon ở đích xuyên FadeOut; trở lại map và lưu/tải không quay về lối vào.
+- [x] Sáu lá riêng cho mỗi boss; tổng 36 ID/tên/ảnh/chiêu riêng, không vào shop/thưởng người chơi.
+- [x] Chọn từ bộ của đúng boss theo pha, không trùng lá thường trong một kế hoạch; giữ lá đã công bố và RNG khi thao tác/lưu/tải.
+- [x] Tụ lực dùng ảnh riêng, chỉ đếm một lần/vòng; Undergod sao chép hiệu ứng nhưng giữ thẻ riêng.
+- [x] 36 ảnh ImageGen qua tách nền/căn/QC; runtime có 239 PNG, tooltip và tên dài hiển thị trong khung ba dòng.
+- [x] Kiểm tra quyền sở hữu mọi pha, hiệu ứng từng lá, ID chéo boss và bản v1.1; số liệu hiện tại tại VALIDATION.md.
+
 ## Các mục cần bằng chứng chơi thực
 
 - [ ] Chơi tay toàn chiến dịch trên Windows (helper trước đó lỗi native pipe).

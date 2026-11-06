@@ -1,4 +1,4 @@
-UNDERGOD CARD QUEST v1.1.0-preview — C++17 / DxLib / Windows x64
+UNDERGOD CARD QUEST v1.2.0-preview — C++17 / DxLib / Windows x64
 
 Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
 Không cần Visual Studio, DxLib, Python hay Node.js để chơi gói này.
@@ -51,6 +51,10 @@ Rắn có độc/lột da/siết. Diều Hâu đang bay giảm sát thương c�
 Hổ tăng sức mạnh dưới 50% HP, chờ một vòng rồi vồ ở vòng tiếp theo.
 Cáo tạo ảo ảnh. Undergod sao chép, hút Nộ và đếm ngược Tận Thế.
 Ba sao địch được chia cho cả phe, gồm boss và viện binh.
+Mỗi boss có sáu lá riêng với ảnh/tên/chiêu riêng, không nằm trong bộ bài người chơi.
+Boss chốt ba lá từ bộ của mình theo pha HP. Rê chuột xem hiệu ứng trước Attack.
+Hổ mở pha Bùng Lửa bằng tụ lực; sau cú vồ có thể chọn lại các chiêu khác.
+Gương Hắc Ảnh của Undergod giữ ảnh riêng và ghi rõ lá được sao chép.
 
 SHOP / NGHỈ / SỰ KIỆN / LƯU
 Chuột/1–9 chọn lối hoặc lựa chọn. Shop: mua đồ, gỡ bài; E/Esc rời.
@@ -58,6 +62,7 @@ Nghỉ: H hồi HP hoặc chọn lá nâng cấp. Lăn chuột/Page Up/Down đ�
 F6 lưu, F9 tải. Có thể lưu khi mới xếp một hoặc hai lá; giữ nguyên kế hoạch.
 Không lưu/tải lúc di chuyển, chuyển cảnh, chia bài hoặc thực hiện hành động.
 Session v2 cũ vẫn đọc được và chuyển sang luật mới mà không mất bộ bài.
+Bản v1.1 giữ nguyên hàng địch đã công bố và RNG, nhận ảnh boss riêng khi tải.
 save.json giữ hành trình; profile.json giữ Lông Vũ/kỹ năng/thành tựu.
 Chép cả hai khi chuyển máy. R/Enter/Chơi lại mở menu lớp.
 Đấu thử Hổ Vương ở menu hoặc --boss tiger không ghi đè tiến trình.

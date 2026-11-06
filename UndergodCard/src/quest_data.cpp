@@ -276,6 +276,29 @@ Config LoadConfig(const std::string& directory){
         if(!choice.potion.empty()&&!has_potion(choice.potion))throw std::runtime_error("Event potion was not defined: "+choice.potion);
     }
     if(copies<1||copies>1000||rewardable<c.reward_choices||c.reward_choices<1||c.reward_choices>3||c.balance.player_hp<1||c.enemy.hp<1||c.balance.draw<1||c.balance.draw>10||c.balance.energy<1||c.balance.rage_max<1||c.balance.rage_attack<0||c.balance.rage_block<0||c.balance.ultimate_damage<1)throw std::runtime_error("Invalid balance configuration");
+    std::set<std::string> deck_owners,boss_card_ids;
+    for(const auto& deck:Read(directory+"/boss_cards.json")){
+        const std::string owner=deck.at("boss");const auto& boss=role_of(owner);
+        if(boss.role!="boss"||!deck_owners.insert(owner).second)throw std::runtime_error("Invalid or duplicate boss deck: "+owner);
+        int guards=0;
+        for(const auto& j:deck.at("cards")){
+            BossCardDef card;card.boss_id=owner;card.id=j.at("id");card.name=j.at("name");
+            card.min_phase=j.value("minPhase",0);card.max_phase=j.value("maxPhase",int(boss.phases.size()));
+            card.action=ParsePatterns(Json::array({j.at("action")})).front();
+            if(!Ident(card.id)||card.id.rfind("boss_"+owner+"_",0)!=0||!boss_card_ids.insert(card.id).second||has_card(card.id)||card.name.empty()||card.min_phase<0||card.max_phase<card.min_phase||card.max_phase>int(boss.phases.size()))throw std::runtime_error("Invalid boss card: "+card.id);
+            if(card.action.kind==IntentKind::Charge&&(card.action.charge_turns<1||card.action.max_damage<1))throw std::runtime_error("Boss charge needs a telegraph and damage");
+            if(card.action.kind==IntentKind::Summon&&(card.action.summon_id.empty()||!known(card.action.summon_id)||role_of(card.action.summon_id).role!="summon"))throw std::runtime_error("Invalid boss card summon");
+            if(card.action.kind==IntentKind::Defend&&card.min_phase==0&&card.max_phase==int(boss.phases.size()))++guards;
+            c.boss_cards.push_back(std::move(card));
+        }
+        if(deck.at("cards").size()!=6||guards<1)throw std::runtime_error("Boss deck needs six cards and a guard in every phase");
+        for(int phase=0;phase<=int(boss.phases.size());++phase){
+            int eligible=0,attacks=0;
+            for(const auto& card:c.boss_cards)if(card.boss_id==owner&&phase>=card.min_phase&&phase<=card.max_phase){++eligible;const auto k=card.action.kind;attacks+=k==IntentKind::Attack||k==IntentKind::MultiAttack||k==IntentKind::Mimic||k==IntentKind::Drain||k==IntentKind::Charge;}
+            if(eligible<3||attacks<1)throw std::runtime_error("Boss phase has no usable deck");
+        }
+    }
+    for(const auto& boss:c.bestiary)if(boss.role=="boss"&&!deck_owners.count(boss.id))throw std::runtime_error("Boss has no exclusive deck: "+boss.id);
     LoadWorld(c,directory);
     return c;
 }

@@ -416,5 +416,151 @@
       "assets/pastel/ui/fight.png"
     ],
     "note": "Original transparent output, copied without editing."
-  }
+  },
+  "boss_card_decks": [
+    {
+      "boss": "frog",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent prop/icon pack for the Frog King's six exclusive enemy ability cards in a warm pastel hand-inked fantasy card game. Image 1 is the existing frog king identity/palette reference; image 2 is a style reference for readable outlined item icons. Make an EXACT 3-column by 2-row atlas, six equal square cells, read left to right then top to bottom. Icon 1: a royal green frog head with a long curled pink tongue lashing outward. Icon 2: a rounded frog foot striking two small ripples of marsh water. Icon 3: a round moss-covered shield wearing a small golden crown. Icon 4: a cluster of pale green mushrooms releasing a contained spore cloud. Icon 5: a frog king's gold and blue jeweled scepter radiating three small golden rays. Icon 6: two tiny cute green tadpoles beside a royal golden bell. Match the reference's soft brown ink outlines, pastel olive/cream/gold, simple chunky forms and subtle painted shading. Each distinct icon must be centered at consistent scale wholly inside the central 70 percent of its cell; leave large empty margins. No card borders, no letters, no words, no numbers, no grid lines, no watermark. Flat SOLID pure magenta #FF00FF background everywhere between and behind the icons. No purple/magenta on the icons themselves. Each icon isolated, no object or effect crosses a cell boundary. Overall canvas landscape 3:2.",
+      "references": [
+        "char_frog_king_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-5f1a17e3-cb42-43fc-aa43-01a110bc144c.png",
+      "source_sha256": "394ad1978aaa53a372e8cd622dec94e9d11d1a6abebf40130aa77a93827db022",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_frog_tongue.png",
+        "assets/pastel/boss_cards/boss_frog_slam.png",
+        "assets/pastel/boss_cards/boss_frog_guard.png",
+        "assets/pastel/boss_cards/boss_frog_spores.png",
+        "assets/pastel/boss_cards/boss_frog_scepter.png",
+        "assets/pastel/boss_cards/boss_frog_call.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "snake",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent prop/icon pack for Mud Serpent Mother's six exclusive enemy ability cards in a warm pastel hand-inked fantasy card game. Image 1 is the snake boss identity/palette reference; image 2 is the existing item icon style. EXACT 3 columns by 2 rows, six equal square cells, read left to right top to bottom. Icon 1: a pair of curved ivory snake fangs with one green venom drop. Icon 2: a small clay bowl with a compact green poisonous mist above it. Icon 3: a round overlapping olive-brown snake-scale shield. Icon 4: a curled shed golden snake skin surrounding a fresh leaf. Icon 5: a tightly coiled brown serpent tail enclosing a cracked stone, with small compressed pressure rays. Icon 6: the reference snake's head lunging out of a compact coil, ivory teeth visible. Rounded cute forms, brown hand-inked outlines, olive/mud/cream palette, soft painted shading, large readable silhouettes. Each icon centered wholly inside the central 70 percent of its equal cell, generous empty margins, consistent visual scale. No card frames, text, letters, numbers, labels, grid lines or watermark. Background must be perfectly flat SOLID #FF00FF magenta; avoid magenta on icons. No part crosses a cell edge. Landscape canvas 3:2.",
+      "references": [
+        "char_snake_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-14310e4b-10d6-4319-8713-b3847c5b2c4a.png",
+      "source_sha256": "78ea9ac38e5e01a36e4c7da71a2e0051e32de015ff459751241fe4a3105c945b",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_snake_fangs.png",
+        "assets/pastel/boss_cards/boss_snake_mist.png",
+        "assets/pastel/boss_cards/boss_snake_scales.png",
+        "assets/pastel/boss_cards/boss_snake_molt.png",
+        "assets/pastel/boss_cards/boss_snake_coil.png",
+        "assets/pastel/boss_cards/boss_snake_strike.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "hawk",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent six-icon ability prop pack for Storm Hawk's exclusive enemy cards in a warm pastel hand-inked fantasy card game. Image 1 is the hawk boss identity/palette reference; image 2 is the game's item art style. EXACT 3-column 2-row atlas of six equal square cells, left to right then top to bottom. Icon 1: two small golden hawk talons making crossed claw marks. Icon 2: the brown and blue reference hawk's head angled downward with a compact pale-blue dive arc. Icon 3: a fan of three blue-gray wing feathers and one small gold spark. Icon 4: a rounded shield made of layered blue-gray feathers. Icon 5: a single curved pale-blue wind blade curling around a brown feather. Icon 6: the hawk's yellow beak open in a cry with three small blue thunder rays. Simple friendly chunky shapes, brown ink contours, muted brown/cream/blue-gray, softly painted highlights. Isolate each icon fully inside central 70 percent of each cell, same scale and generous empty padding. Flat pure SOLID magenta #FF00FF background with no gradient. No magenta parts in the icons. No text, labels, numbers, card frames, border, grid lines, watermark, clipping or crossing cell boundaries. Landscape 3:2.",
+      "references": [
+        "char_hawk_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-070574b6-b758-42b4-99f2-9e4c32b6e44d.png",
+      "source_sha256": "e774f60f26a16e21f8d0ed06c745a228ad9ed8ad043efba22e42da261dbc816d",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_hawk_talons.png",
+        "assets/pastel/boss_cards/boss_hawk_dive.png",
+        "assets/pastel/boss_cards/boss_hawk_wings.png",
+        "assets/pastel/boss_cards/boss_hawk_guard.png",
+        "assets/pastel/boss_cards/boss_hawk_gale.png",
+        "assets/pastel/boss_cards/boss_hawk_cry.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "fox",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: coherent six-icon ability prop pack for the Fox Sorcerer's exclusive boss cards, warm pastel hand-inked fantasy card game. Image 1 gives the fox's identity and costume colors; image 2 gives the existing game's item illustration style. Make EXACTLY 3 columns and 2 rows, six equal square cells, read left to right top to bottom. Icon 1: a small warm-orange fox-shaped magical flame. Icon 2: a folded cream paper talisman splashed with brown mud, tied with a dark plum ribbon. Icon 3: an ornate plum-and-gold hand mirror covered partly by a pale ivory veil. Icon 4: two tiny orange foxfire flames circling a gold crescent moon. Icon 5: a wilting green leaf held by a small plum magical glove. Icon 6: the reference orange fox face with a second pale ivory ghost-fox silhouette offset behind it. Friendly chunky silhouettes, brown ink edges, restrained orange/cream/dark plum/gold palette, softly painted highlights, no pink-magenta pigments in the icons. Icons centered at the same scale entirely in the central 70 percent of each cell, generous padding. Background perfectly flat SOLID pure #FF00FF magenta. No text, numbers, labels, card frames, watermark, grid lines, objects touching or crossing cell boundaries. Landscape canvas 3:2.",
+      "references": [
+        "char_fox_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-8cc25c58-f145-4501-b634-80a0a18c1520.png",
+      "source_sha256": "22914a782fba72d2177f2f31647dea26cf5f317c9007874594403c015652fa9b",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_fox_fire.png",
+        "assets/pastel/boss_cards/boss_fox_hex.png",
+        "assets/pastel/boss_cards/boss_fox_veil.png",
+        "assets/pastel/boss_cards/boss_fox_spirits.png",
+        "assets/pastel/boss_cards/boss_fox_wither.png",
+        "assets/pastel/boss_cards/boss_fox_illusion.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "undergod",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent six-icon ability prop pack for Undergod's exclusive boss cards in a warm pastel hand-inked fantasy card game. Image 1 is the masked black-plum armored boss identity/palette reference; image 2 is the existing item icon style. EXACT 3-column by 2-row atlas of six equal square cells, reading left to right top to bottom. Icon 1: an ivory half mask reflected in a small dark-plum oval magic mirror. Icon 2: the boss's round black armored shield with an ivory four-point diamond. Icon 3: a dark-plum gauntlet pulling a small warm-red glowing rage crystal toward its palm. Icon 4: a squat black and ivory armored fist cracking a small stone with contained purple-blue rays. Icon 5: two small dark-plum falling meteors wrapped in muted violet-blue fire. Icon 6: the boss's ivory mask with two glowing blue-violet eyes and a small dark crescent behind it. Chunky rounded outlined hand-painted forms, warm brown ink contours, deep plum/ivory/charcoal/gold with blue-violet accents; avoid pink or magenta on all icons. Each centered and wholly contained within its cell's central 70 percent safe area, consistent scale, generous margins. Entire backdrop flat SOLID pure magenta #FF00FF. No text, labels, numbers, grid lines, card frames, watermark, clipped or edge-crossing parts. Landscape 3:2.",
+      "references": [
+        "char_undergod_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-94c58012-e7ff-45f3-8d5b-a15d52dc66f0.png",
+      "source_sha256": "c51500e43373069a4747ebc1f9b4ff063f97e60c075cd88c979b431d8b7e32c6",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_undergod_mirror.png",
+        "assets/pastel/boss_cards/boss_undergod_guard.png",
+        "assets/pastel/boss_cards/boss_undergod_drain.png",
+        "assets/pastel/boss_cards/boss_undergod_crush.png",
+        "assets/pastel/boss_cards/boss_undergod_meteors.png",
+        "assets/pastel/boss_cards/boss_undergod_gaze.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "tiger",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent six-icon ability prop pack for the Flame Tiger King's exclusive boss cards in a warm pastel hand-inked fantasy card game. Image 1 is the tiger boss identity, orange striped fur, armor and flame mane reference; image 2 is the existing item illustration style. EXACT 3 columns by 2 rows of six equal square cells, read left to right top to bottom. Icon 1: a single orange tiger paw with three ivory claws. Icon 2: two crossed orange tiger paws with ivory claws and two small orange slash marks. Icon 3: the reference tiger's roaring face surrounded by a compact orange flame mane. Icon 4: a rounded charcoal armored shield bearing an amber-red gem and two small embers. Icon 5: the reference tiger leaping as a compact fiery silhouette, orange striped fur and ivory claws, with one short orange flame arc contained behind it. Icon 6: an ivory tiger fang wrapped in a small warm orange flame. Brown hand-inked outlines, soft painted highlights, chunky readable forms, orange/rust/cream/charcoal/gold colors. Same visual scale, each centered fully inside the central 70 percent of its cell, generous empty margins; no parts may cross a cell edge. Background flat SOLID pure #FF00FF magenta; no pink/magenta in artwork. No text, labels, numbers, frames, grid lines or watermark. Landscape 3:2.",
+      "references": [
+        "char_tiger_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-8d5720e4-ad06-422a-b493-3c1553743509.png",
+      "source_sha256": "ea1e4958dd264da308893711fffdc0782c081d7eadf8b69b03c6cbbef59305fd",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_tiger_claw.png",
+        "assets/pastel/boss_cards/boss_tiger_twin.png",
+        "assets/pastel/boss_cards/boss_tiger_roar.png",
+        "assets/pastel/boss_cards/boss_tiger_guard.png",
+        "assets/pastel/boss_cards/boss_tiger_pounce.png",
+        "assets/pastel/boss_cards/boss_tiger_fang.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    }
+  ]
 }

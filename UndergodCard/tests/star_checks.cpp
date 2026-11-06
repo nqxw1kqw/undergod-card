@@ -73,7 +73,10 @@ void StarChecks(const Config& config,const Timeline& timeline){
         Finish(c);Check(c.live.charge_left==2&&c.stars.enemy[0].action.kind==IntentKind::Charge,"new phase charge starts in the next round");
         const int hp=c.player.hp;for(int i=0;i<3;++i)c.QueueWait();c.BeginStarAttack();Finish(c);
         Check(c.player.hp==hp&&c.live.charge_left==1,"charge counts once per round and waits before damage");
-        for(int i=0;i<3;++i)c.QueueWait();c.BeginStarAttack();Finish(c);Check(c.player.hp<hp&&c.live.charge_left==2,"charge hits next round and restarts once");
+        const int before=c.player.hp,announced=c.EnemyStarView(0).damage;
+        for(int i=0;i<3;++i)c.QueueWait();c.BeginStarAttack();c.ResolveStarAction();c.ResolveStarAction();
+        Check(before-c.player.hp==announced&&c.live.charge_left==0,"charge hits exactly once next round with its announced damage");Finish(c);
+        Check(c.live.charge_left==(c.intent.kind==IntentKind::Charge?2:0),"after pounce the next announced card controls whether a new charge starts");
     }
     {
         Combat c(config);c.BeginEncounter(FindEnemy(config,"frog"),4,500,500,0,StartingDeck(config));c.EnableTurnStars();c.hand={"punch","punch","punch"};c.live.locked=-1;c.enemy.hp=76;

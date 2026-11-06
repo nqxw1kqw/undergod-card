@@ -7,7 +7,14 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(StatusSet,poison,weak,vulnerable,strength)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Fighter,hp,max_hp,block,status)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Effect,op,target,status,amount,times,pierce,ranged)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CombatMods,bonus_damage,bonus_block,combat_start,turn_start,class_id,ultimate,energy,draw,retain_block,first_attack,third_attack,ultimate_bonus,ultimate_discount,ultimate_vulnerable,ultimate_hits,spear_bonus,poison_bonus,max_mana,ultimate_damage,enemy_hp_percent,enemy_damage,mana,revive_spent,preview,comet)
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Intent,attack,value,kind,status,status_amount,hits,summon_id,card_id)
+inline void to_json(nlohmann::json& j,const Intent& a){
+    j={{"attack",a.attack},{"value",a.value},{"kind",a.kind},{"status",a.status},{"status_amount",a.status_amount},{"hits",a.hits},{"summon_id",a.summon_id},{"card_id",a.card_id},{"deck_card_id",a.deck_card_id}};
+}
+inline void from_json(const nlohmann::json& j,Intent& a){
+    j.at("attack").get_to(a.attack);j.at("value").get_to(a.value);j.at("kind").get_to(a.kind);j.at("status").get_to(a.status);
+    j.at("status_amount").get_to(a.status_amount);j.at("hits").get_to(a.hits);j.at("summon_id").get_to(a.summon_id);j.at("card_id").get_to(a.card_id);
+    a.deck_card_id=j.value("deck_card_id",std::string{});
+}
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(EnemyUnit,id,name,sprite,fighter,intent,illusion)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(StarPlayerCard,hand_index,target,id)
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(StarEnemyCard,actor,action,wait)

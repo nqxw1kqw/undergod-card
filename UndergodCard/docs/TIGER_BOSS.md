@@ -1,5 +1,7 @@
 # Hổ Vương Xích Diệm
 
+Từ v1.2.0, Hổ có sáu lá riêng và chọn theo bộ bài sau cú vồ; nhịp tụ lực/các lá ở [BOSS_DECKS.md](BOSS_DECKS.md). Các thông số pattern dưới đây ghi lại thiết kế gốc trước khi tách bộ riêng.
+
 Boss thứ sáu, bổ sung theo ảnh hổ chiến binh Shin gửi. Có thể gặp ở cuối Hồi 2, cùng pool với Rắn Bùn Mẹ và Diều Hâu Bão.
 
 ![Hổ Vương trong bản DxLib](images/tiger-practice.png)

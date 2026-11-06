@@ -2,6 +2,51 @@
 #include <set>
 
 namespace undergod {
+bool Combat::HasBossDeck()const{
+    if(role_!="boss")return false;
+    for(const auto& card:config.boss_cards)if(card.boss_id==enemy_id_)return true;
+    return false;
+}
+const BossCardDef* Combat::BossCardIdentity(const std::string& owner,const Intent& action)const{
+    const BossCardDef* fallback=nullptr;
+    for(const auto& card:config.boss_cards)if(card.boss_id==owner){
+        if(!action.deck_card_id.empty()){if(card.id==action.deck_card_id)return &card;}
+        else if(card.action.kind==action.kind){
+            if(phase_index_>=card.min_phase&&phase_index_<=card.max_phase)return &card;
+            fallback=&card;
+        }
+    }
+    return action.deck_card_id.empty()?fallback:nullptr;
+}
+void Combat::BindBossCardIdentities(){
+    auto bind=[&](const std::string& owner,Intent& action){if(action.deck_card_id.empty())if(const auto* card=BossCardIdentity(owner,action))action.deck_card_id=card->id;};
+    bind(enemy_id_,intent);
+    for(auto& q:stars.enemy)bind(q.actor==0?enemy_id_:adds.at(q.actor-1).id,q.action);
+}
+Intent Combat::DrawBossIntent(bool force_attack,bool allow_charge,const std::vector<std::string>& used,bool force_charge){
+    std::vector<const BossCardDef*> pool;
+    auto gather=[&](bool exclude_used){
+        for(const auto& card:config.boss_cards){
+            const auto kind=card.action.kind;
+            const bool attack=kind==IntentKind::Attack||kind==IntentKind::MultiAttack||kind==IntentKind::Mimic||kind==IntentKind::Drain||kind==IntentKind::Charge;
+            if(card.boss_id!=enemy_id_||phase_index_<card.min_phase||phase_index_>card.max_phase||(!allow_charge&&kind==IntentKind::Charge)||(force_charge&&kind!=IntentKind::Charge)||(force_attack&&!attack))continue;
+            if(exclude_used&&std::find(used.begin(),used.end(),card.id)!=used.end())continue;
+            pool.push_back(&card);
+        }
+    };
+    gather(true);if(pool.empty())gather(false);
+    if(pool.empty())throw std::runtime_error("Boss has no eligible card: "+enemy_id_);
+    int total=0;for(const auto* card:pool)total+=card->action.weight;
+    const double roll=intent_rng_.Next()*total;int accumulated=0;const auto* chosen=pool.back();
+    for(const auto* card:pool){accumulated+=card->action.weight;if(roll<accumulated){chosen=card;break;}}
+    const auto& pattern=chosen->action;Intent action;
+    action.deck_card_id=chosen->id;action.kind=pattern.kind;action.hits=pattern.hits;action.status=pattern.status;action.status_amount=pattern.status_amount;action.summon_id=pattern.summon_id;
+    action.attack=pattern.kind==IntentKind::Attack||pattern.kind==IntentKind::MultiAttack||pattern.kind==IntentKind::Mimic||pattern.kind==IntentKind::Drain;
+    if(action.attack||pattern.kind==IntentKind::Charge)action.value=pattern.min_damage+mods_.enemy_damage+int(intent_rng_.Next()*(pattern.max_damage-pattern.min_damage+1));
+    else action.value=pattern.block;
+    if(action.kind==IntentKind::Mimic&&!live.last_turn.empty())action.card_id=live.last_turn.back();
+    return action;
+}
 void Combat::EnableTurnStars(){
     if(stars.enabled)return;
     stars={};stars.enabled=true;live.mana=0;
@@ -13,7 +58,13 @@ void Combat::EnableTurnStars(){
     }
     while(hand.size()>10){draw.push_back(hand.back());hand.pop_back();}
     if(live.locked>=int(hand.size()))live.locked=-1;
-    if(phase==Phase::Player)BuildEnemyStars();
+    if(phase==Phase::Player){
+        if(HasBossDeck()){
+            if(live.charge_left>0)BindBossCardIdentities();
+            else{phase_opening_|=turn==1;RollIntent();}
+        }
+        BuildEnemyStars();
+    }
 }
 bool Combat::IsQueuedStar(int index)const{
     for(const auto& q:stars.player)if(q.hand_index==index&&index>=0)return true;
@@ -45,11 +96,17 @@ bool Combat::CanAttackStars()const{
 void Combat::BuildEnemyStars(){
     stars.enemy.clear();if(phase!=Phase::Player)return;
     const auto targets=Targets();if(targets.empty())return;
+    std::vector<std::string> used;
     for(int slot=0;slot<TurnStars;++slot){
         const int actor=targets[std::min(slot,int(targets.size())-1)];
         Intent action;
         if(actor==0&&slot==0)action=intent;
-        else if(actor==0){
+        else if(actor==0&&HasBossDeck()){
+            if(intent.kind==IntentKind::Charge){
+                action.kind=IntentKind::Defend;action.value=3;
+                if(const auto* guard=BossCardIdentity(enemy_id_,action))action.deck_card_id=guard->id;
+            }else action=DrawBossIntent(false,false,used);
+        }else if(actor==0){
             EnemyDef def=definition_;const auto& p=CurrentPhase();
             def.patterns=p.patterns;def.min_damage=p.min_damage;def.max_damage=p.max_damage;def.block=p.block;def.attack_chance=p.attack_chance;
             action=PickIntent(def);
@@ -65,6 +122,7 @@ void Combat::BuildEnemyStars(){
             if(action.status_amount>0)action.status_amount=std::max(1,(action.status_amount+1)/2);
         }
         if(action.kind==IntentKind::Mimic&&!live.last_turn.empty())action.card_id=live.last_turn.back();
+        if(!action.deck_card_id.empty())used.push_back(action.deck_card_id);
         stars.enemy.push_back({actor,action,false});
     }
 }
@@ -184,8 +242,10 @@ CardDef Combat::EnemyStarView(int slot)const{
     if(slot<0||slot>=int(stars.enemy.size()))return card;
     const auto& q=stars.enemy[slot];const auto& a=q.action;
     if(q.wait)return card;
+    const std::string owner=q.actor==0?enemy_id_:adds.at(q.actor-1).id;
+    const auto* own=BossCardIdentity(owner,a);
     const auto& f=Target(q.actor);
-    if(f.hp<=0){card.id.clear();card.name="Lá bị hủy";card.description="Đơn vị đã gục, bỏ qua hành động.";return card;}
+    if(f.hp<=0){card.id=own?own->id:std::string{};card.name="Lá bị hủy";card.description="Đơn vị đã gục, bỏ qua hành động.";return card;}
     const int damage=ScaleDamage(a.value*std::max(1,q.actor==0?live.enemy_double:1),f.status,player.status);
     if(a.kind==IntentKind::Charge){
         card.id="comet_lance";card.name=live.charge_left>1?"Tụ lực":"Cú vồ";card.damage=live.charge_left<=1?damage:0;
@@ -218,6 +278,12 @@ CardDef Combat::EnemyStarView(int slot)const{
     else if(a.kind==IntentKind::Curse){card.id="mud";card.name="Bùn nguyền";card.description="Biến một lá trên tay vòng sau thành Bùn Lầy.";}
     else if(a.kind==IntentKind::Summon){card.id="shadow_dance";card.name="Gọi viện binh";card.description="Gọi "+std::to_string(a.hits)+" viện binh.";}
     else{card.block=a.value;card.name="Dựng giáp";card.description="Nhận "+std::to_string(a.value)+" giáp.";}
-    card.keywords={card.type=="attack"?"Tấn Công":"Kỹ Năng"};return card;
+    card.keywords={card.type=="attack"?"Tấn Công":"Kỹ Năng"};
+    if(own){
+        card.id=own->id;card.name=own->name;card.upgraded=false;card.rarity="boss";card.class_id=owner;
+        card.keywords.insert(card.keywords.begin(),"Thẻ trùm");
+        if(a.kind==IntentKind::Mimic&&!a.card_id.empty())card.description="Sao chép "+Definition(a.card_id).name+". "+card.description;
+    }
+    return card;
 }
 }

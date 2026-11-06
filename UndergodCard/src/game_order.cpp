@@ -47,6 +47,7 @@ bool Game::UnqueueCard(int slot){const bool result=CanAct()&&state.UnqueueStar(s
 void Game::BeginStarMotion(){
     const int cursor=state.stars.cursor,slot=cursor/2;
     const bool enemy=cursor%2!=0;
+    active_charge_=enemy&&state.stars.enemy.at(slot).action.kind==IntentKind::Charge;
     active_actor_=-1;
     if(enemy){active_card_=state.EnemyStarView(slot);active_actor_=state.stars.enemy.at(slot).actor;}
     else{

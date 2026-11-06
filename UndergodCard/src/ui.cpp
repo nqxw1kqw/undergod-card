@@ -33,6 +33,7 @@ bool Ui::Init(const Config& config){
         const auto file="characters/char_"+key+".png";if(std::filesystem::exists("assets/pastel/"+file))load(key,file,512);
     }
     for(const auto& card:config.cards)if(!card.upgraded){const auto file="cards/"+card.id+".png";load("card_"+card.id,file,256);}
+    for(const auto& card:config.boss_cards)load("card_"+card.id,"boss_cards/"+card.id+".png",256);
     for(const auto& relic:config.relics)load("relic_"+relic.id,"relics/"+relic.id+".png",256);
     for(const auto& potion:config.potions)load("potion_"+potion.id,"potions/"+potion.id+".png",256);
     load("spear","vfx/spear.png",512);load("spear_impact","vfx/spear_impact.png",512);
@@ -119,7 +120,7 @@ void Ui::World(const Game& game){
 void Ui::Card(const CardDef& original,Rect r,int index,bool affordable,bool locked,int mx,int my)const{
     auto card=original;if(star_cards_)card.cost=1;
     if(!locked&&r.Contains(mx,my))r.y-=8;
-    const unsigned stripe=card.rarity=="legendary"?C(188,143,58):(card.rarity=="curse"?C(128,99,147):(card.rarity=="rare"?C(125,141,178):(card.rarity=="uncommon"?C(90,142,120):C(196,154,132))));
+    const unsigned stripe=card.rarity=="boss"?C(157,101,117):(card.rarity=="legendary"?C(188,143,58):(card.rarity=="curse"?C(128,99,147):(card.rarity=="rare"?C(125,141,178):(card.rarity=="uncommon"?C(90,142,120):C(196,154,132)))));
     Box({r.x,r.y+4,r.w,r.h},C(225,218,202));Box(r,C(221,214,201));Box({r.x+1,r.y+1,r.w-2,r.h-2},C(255,252,246));
     const auto bg=card.poison>0?C(214,230,214):(card.heal>0?C(244,236,204):(card.block>0&&card.damage==0?C(227,236,235):(card.rarity=="rare"?C(236,228,206):C(242,230,223))));
     Box({r.x+12,r.y+20,r.w-24,std::min(90,r.h-104)},bg,8);
@@ -156,7 +157,7 @@ void Ui::Draw(const Game& game,int mx,int my){
     if(screen_place_!=game.run.place||screen_node_!=game.run.node){deck_page_=0;screen_place_=game.run.place;screen_node_=game.run.node;}
     deck_page_=std::clamp(deck_page_,0,std::max(0,(int(game.RelicSelection()?game.run.relics.size():game.run.deck.size())-1)/8));
     if(map_node_!=game.run.node){map_node_=game.run.node;const int floor=game.run.node>=0?game.run.map[game.run.node].floor:0;map_scroll_=std::clamp(floor-2,0,std::max(0,game.run.map.empty()?0:game.run.map.back().floor-6));}
-    if(game.Traveling()&&game.TravelTo()>=0){const int floor=game.run.map.at(game.TravelTo()).floor;if(floor-map_scroll_<0||floor-map_scroll_>5)map_scroll_=std::clamp(floor-2,0,std::max(0,game.run.map.back().floor-6));}
+    if(game.MapTravelPending()&&game.TravelTo()>=0){const int floor=game.run.map.at(game.TravelTo()).floor;if(floor-map_scroll_<0||floor-map_scroll_>5)map_scroll_=std::clamp(floor-2,0,std::max(0,game.run.map.back().floor-6));}
     if(DrawExtensions(game,mx,my))return;
     auto backdrop=[&](){
         DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);

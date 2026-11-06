@@ -16,6 +16,7 @@ struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_a
 class Game {
     bool turn_stars_=true;
     bool star_sequence_=false;
+    bool active_charge_=false;
     CardDef active_card_;
     int active_actor_=-1;
     Arrival arrival_=Arrival::None;
@@ -85,6 +86,10 @@ public:
     float ArrivalTime()const{return arrival_age_;}
     bool ShowingMap()const{return !Menu()&&run.place==Place::Map&&!run.victory&&!run.defeat;}
     bool Traveling()const{return arrival_==Arrival::Travel;}
+    bool MapTravelPending()const{return arrival_==Arrival::Travel||arrival_==Arrival::FadeOut;}
+    int MapAvatarFrom()const{return MapTravelPending()?travel_from_:run.node;}
+    int MapAvatarTo()const{return MapTravelPending()?travel_to_:run.node;}
+    float MapAvatarProgress()const{return Traveling()?TravelProgress():1.f;}
     int TravelFrom()const{return travel_from_;}
     int TravelTo()const{return travel_to_;}
     float TravelProgress()const{return std::clamp(arrival_age_/.85f,0.f,1.f);}

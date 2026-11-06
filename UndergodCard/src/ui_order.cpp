@@ -25,7 +25,7 @@ void Ui::PlanCard(const CardDef& card,Rect r,int number,bool filled,bool spent,i
     if(graph>=0)DrawRotaGraph3F(r.x+29.f,r.y+r.h/2.f,128,128,.20,.20,0,graph,TRUE,FALSE);
     else Center(r.x+29,r.y+r.h/2-10,"✦",Muted,font_);
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND,255);
-    Wrapped({r.x+55,r.y+8,r.w-61,40},card.name,spent?Muted:Ink);
+    Wrapped({r.x+55,r.y+8,r.w-61,r.h-32},card.name,spent?Muted:Ink);
     Text(r.x+56,r.y+r.h-24,spent?"✓ Đã dùng":std::to_string(number)+" · 1 sao",Color(125,97,151),small_);
     if(r.Contains(mx,my)&&!spent)DrawRoundRect(r.x,r.y,r.x+r.w,r.y+r.h,9,9,Color(154,125,80),FALSE);
 }
@@ -57,7 +57,8 @@ void Ui::DrawStarBattle(const Game& game,int mx,int my){
         if(index==state.live.locked){Box({r.x+16,r.y+50,r.w-32,25},Color(154,91,112));Center(r.x+r.w/2,r.y+54,"BỊ KHÓA",Color(255,255,246),small_);}
     }
     if(state.stars.enabled&&!game.Cinematic()){
-        Text(758,268,"Ý ĐỊCH · 3 SAO",Muted,small_);
+        const bool boss=!state.EnemyStarView(0).class_id.empty()&&state.EnemyStarView(0).rarity=="boss";
+        Text(748,268,boss?"BỘ TRÙM · 3 SAO":"Ý ĐỊCH · 3 SAO",Muted,small_);
         for(int slot=0;slot<int(state.stars.enemy.size());++slot)PlanCard(state.EnemyStarView(slot),EnemyStarRect(slot),slot+1,true,state.stars.cursor>=slot*2+2,mx,my);
     }
     if(game.ResolvingStars()){
@@ -77,17 +78,21 @@ void Ui::DrawStarBattle(const Game& game,int mx,int my){
         }
     }
 }
-void Ui::DrawMapPlayer(const Game& game)const{
-    if(!game.TurnStarRules()||game.run.map.empty())return;
+std::pair<float,float> Ui::MapPlayerPosition(const Game& game)const{
+    if(game.run.map.empty())return {720.f,812.f};
     const int columns=game.run.act==0?game.state.config.map_columns:game.state.config.acts[game.run.act].columns;
     auto point=[&](int index){
         if(index<0)return std::pair<float,float>{720.f,812.f};
         const auto& node=game.run.map.at(index);const auto r=MapNodeRect(node.floor-map_scroll_,node.column,node.kind==NodeKind::Boss,columns);
         return std::pair<float,float>{float(r.x+r.w/2),float(r.y+r.h/2)};
     };
-    const auto from=point(game.Traveling()?game.TravelFrom():game.run.node),to=point(game.Traveling()?game.TravelTo():game.run.node);
-    const float progress=game.Traveling()?game.TravelProgress():1.f,f=progress*progress*(3-2*progress);
-    const float x=from.first+(to.first-from.first)*f,y=from.second+(to.second-from.second)*f;
+    const auto from=point(game.MapAvatarFrom()),to=point(game.MapAvatarTo());
+    const float progress=game.MapAvatarProgress(),f=progress*progress*(3-2*progress);
+    return {from.first+(to.first-from.first)*f,from.second+(to.second-from.second)*f};
+}
+void Ui::DrawMapPlayer(const Game& game)const{
+    if(!game.TurnStarRules()||game.run.map.empty())return;
+    const auto position=MapPlayerPosition(game);const float x=position.first,y=position.second,progress=game.MapAvatarProgress();
     SetDrawBlendMode(DX_BLENDMODE_ALPHA,50);DrawOval(int(x),int(y+15),32,11,Color(56,86,65),TRUE);SetDrawBlendMode(DX_BLENDMODE_NOBLEND,255);
     DrawCircle(int(x),int(y+2),30,Color(252,247,224),TRUE);DrawCircle(int(x),int(y+2),31,Color(115,145,107),FALSE);
     const auto sprite=FindClass(game.state.config,game.run.class_id).sprite;

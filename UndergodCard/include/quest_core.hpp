@@ -36,6 +36,12 @@ struct IntentPattern {
     std::string summon_id;
 };
 
+struct BossCardDef {
+    std::string id,boss_id,name;
+    int min_phase=0,max_phase=0;
+    IntentPattern action;
+};
+
 struct PhaseDef {
     std::string name;
     int hp=1;
@@ -94,6 +100,7 @@ struct Config {
     EnemyDef enemy;
     std::string player_name="Gà Chiến Binh";
     std::vector<CardDef> cards;
+    std::vector<BossCardDef> boss_cards;
     std::string player_id="chick";
     std::vector<EnemyDef> bestiary;
     std::vector<RouteNode> route;
@@ -166,7 +173,7 @@ struct Intent {
     StatusId status=StatusId::Strength;
     int status_amount=0;
     int hits=1;
-    std::string summon_id,card_id;
+    std::string summon_id,card_id,deck_card_id;
 };
 
 struct EnemyUnit {
@@ -235,6 +242,10 @@ class Combat {
     void Summon(const std::string& id,int count,bool illusion=false);
     void LockCard();
     Intent PickIntent(const EnemyDef& definition);
+    bool HasBossDeck()const;
+    Intent DrawBossIntent(bool force_attack,bool allow_charge,const std::vector<std::string>& used={},bool force_charge=false);
+    const BossCardDef* BossCardIdentity(const std::string& owner,const Intent& action)const;
+    void BindBossCardIdentities();
     void ResolveAdd(int index);
     CombatMods mods_;
     void ApplyOne(const Effect& effect,bool from_card=true);

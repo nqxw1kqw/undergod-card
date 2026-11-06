@@ -77,7 +77,7 @@ void Ui::DrawTargets(const Game& game,int mx,int my)const{
         if(disguised)Center(x,r.y+42,"Chọn để thử phá ảo",Muted,small_);
         else if(index>0){const auto& intent=state.adds[index-1].intent;Center(x,r.y+42,intent.attack?"Đánh "+std::to_string(intent.value*intent.hits):"Phòng / Tăng sức",Muted,small_);}
     }
-    if(state.live.airborne)Center(1160,294,"Đang bay · giảm 50% sát thương cận chiến",Rgb(105,113,158),small_);
+    if(state.live.airborne)Center(1160,game.TurnStarRules()?338:294,"Đang bay · giảm 50% sát thương cận chiến",Rgb(105,113,158),small_);
     if(state.live.doom_left>0)Center(720,226,"TẬN THẾ SAU "+std::to_string(state.live.doom_left)+" LƯỢT",Rgb(181,77,91),font_);
     else if(state.live.constrict_left>0)Center(720,226,"Siết: còn "+std::to_string(state.live.constrict_left)+" lượt",Rgb(156,105,77),small_);
     const auto future=state.PreviewIntentText();if(!future.empty())Wrapped({760,568,620,40},future,Muted);

@@ -1,0 +1,68 @@
+[
+  {
+    "boss": "frog",
+    "cards": [
+      {"id":"boss_frog_tongue","name":"Lưỡi Vương Quyền","action":{"kind":"attack","minDamage":8,"maxDamage":13,"weight":4}},
+      {"id":"boss_frog_slam","name":"Dậm Đầm Lầy","action":{"kind":"multi","minDamage":3,"maxDamage":5,"hits":2,"weight":2}},
+      {"id":"boss_frog_guard","name":"Giáp Rêu Vương","action":{"kind":"defend","block":6,"weight":2}},
+      {"id":"boss_frog_spores","name":"Bào Tử Buồn Ngủ","action":{"kind":"debuff","status":"weak","amount":2,"weight":1}},
+      {"id":"boss_frog_scepter","name":"Uy Lệnh Vương","minPhase":1,"action":{"kind":"buff","status":"strength","amount":2,"block":3,"weight":1}},
+      {"id":"boss_frog_call","name":"Gọi Vệ Nòng Nọc","minPhase":1,"action":{"kind":"summon","summon":"tadpole","hits":1,"weight":1}}
+    ]
+  },
+  {
+    "boss": "snake",
+    "cards": [
+      {"id":"boss_snake_fangs","name":"Nanh Độc","action":{"kind":"attack","minDamage":9,"maxDamage":13,"status":"poison","amount":2,"weight":4}},
+      {"id":"boss_snake_mist","name":"Sương Độc","action":{"kind":"debuff","status":"poison","amount":3,"weight":2}},
+      {"id":"boss_snake_scales","name":"Vảy Bùn","action":{"kind":"defend","block":7,"weight":2}},
+      {"id":"boss_snake_molt","name":"Lột Vảy Tăng Sức","minPhase":1,"action":{"kind":"buff","status":"strength","amount":2,"block":5,"weight":1}},
+      {"id":"boss_snake_coil","name":"Vòng Siết Nghiền","minPhase":2,"action":{"kind":"charge","minDamage":25,"maxDamage":30,"chargeTurns":2,"weight":2}},
+      {"id":"boss_snake_strike","name":"Phóng Nanh","minPhase":1,"action":{"kind":"attack","minDamage":12,"maxDamage":16,"weight":3}}
+    ]
+  },
+  {
+    "boss": "hawk",
+    "cards": [
+      {"id":"boss_hawk_talons","name":"Song Trảo Gió","action":{"kind":"multi","minDamage":5,"maxDamage":7,"hits":2,"weight":3}},
+      {"id":"boss_hawk_dive","name":"Lao Từ Trời","action":{"kind":"attack","minDamage":12,"maxDamage":16,"weight":3}},
+      {"id":"boss_hawk_wings","name":"Cánh Bão","action":{"kind":"buff","status":"strength","amount":1,"block":2,"weight":1}},
+      {"id":"boss_hawk_guard","name":"Áo Giáp Lông","action":{"kind":"defend","block":6,"weight":2}},
+      {"id":"boss_hawk_gale","name":"Lưỡi Gió","action":{"kind":"attack","minDamage":7,"maxDamage":10,"status":"vulnerable","amount":2,"weight":1}},
+      {"id":"boss_hawk_cry","name":"Tiếng Sét","action":{"kind":"debuff","status":"weak","amount":2,"weight":1}}
+    ]
+  },
+  {
+    "boss": "fox",
+    "cards": [
+      {"id":"boss_fox_fire","name":"Hồ Hỏa","action":{"kind":"attack","minDamage":10,"maxDamage":14,"weight":3}},
+      {"id":"boss_fox_hex","name":"Bùa Bùn","action":{"kind":"curse","weight":2}},
+      {"id":"boss_fox_veil","name":"Màn Gương","action":{"kind":"defend","block":8,"weight":2}},
+      {"id":"boss_fox_spirits","name":"Song Hồ Đăng","action":{"kind":"multi","minDamage":4,"maxDamage":6,"hits":2,"weight":2}},
+      {"id":"boss_fox_wither","name":"Héo Mòn","action":{"kind":"debuff","status":"weak","amount":2,"weight":1}},
+      {"id":"boss_fox_illusion","name":"Nanh Ảo Ảnh","minPhase":1,"action":{"kind":"attack","minDamage":12,"maxDamage":16,"status":"vulnerable","amount":1,"weight":2}}
+    ]
+  },
+  {
+    "boss": "undergod",
+    "cards": [
+      {"id":"boss_undergod_mirror","name":"Gương Hắc Ảnh","action":{"kind":"mimic","minDamage":10,"maxDamage":14,"weight":4}},
+      {"id":"boss_undergod_guard","name":"Khiên Vực Sâu","action":{"kind":"defend","block":10,"weight":2}},
+      {"id":"boss_undergod_drain","name":"Tước Nộ","minPhase":1,"action":{"kind":"drain","minDamage":10,"maxDamage":14,"amount":20,"weight":3}},
+      {"id":"boss_undergod_crush","name":"Quyền Hư Không","minPhase":1,"action":{"kind":"attack","minDamage":14,"maxDamage":18,"weight":3}},
+      {"id":"boss_undergod_meteors","name":"Mưa Tận Thế","minPhase":2,"action":{"kind":"multi","minDamage":6,"maxDamage":8,"hits":2,"weight":3}},
+      {"id":"boss_undergod_gaze","name":"Ánh Nhìn Diệt Vong","action":{"kind":"debuff","status":"vulnerable","amount":2,"weight":1}}
+    ]
+  },
+  {
+    "boss": "tiger",
+    "cards": [
+      {"id":"boss_tiger_claw","name":"Trảo Xích Diệm","action":{"kind":"attack","minDamage":10,"maxDamage":13,"weight":3}},
+      {"id":"boss_tiger_twin","name":"Song Trảo","action":{"kind":"multi","minDamage":4,"maxDamage":6,"hits":2,"weight":2}},
+      {"id":"boss_tiger_roar","name":"Gầm Vương Giả","action":{"kind":"buff","status":"strength","amount":2,"block":6,"weight":1}},
+      {"id":"boss_tiger_guard","name":"Giáp Tàn Lửa","action":{"kind":"defend","block":6,"weight":2}},
+      {"id":"boss_tiger_pounce","name":"Vồ Xích Diệm","minPhase":1,"action":{"kind":"charge","minDamage":25,"maxDamage":28,"chargeTurns":2,"weight":4}},
+      {"id":"boss_tiger_fang","name":"Nanh Lửa","action":{"kind":"attack","minDamage":8,"maxDamage":11,"status":"vulnerable","amount":1,"weight":2}}
+    ]
+  }
+]

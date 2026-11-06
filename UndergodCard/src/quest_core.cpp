@@ -37,6 +37,13 @@ void Combat::RollIntent(){
     const auto& current=CurrentPhase();
     const bool opening=phase_opening_||(turn==0&&current.opening_attack);
     phase_opening_=false;
+    if(stars.enabled&&HasBossDeck()){
+        const bool charge_opening=opening&&!current.patterns.empty()&&std::all_of(current.patterns.begin(),current.patterns.end(),[](const IntentPattern& p){return p.kind==IntentKind::Charge;});
+        intent=DrawBossIntent(opening||guard_streak_>=current.max_guards,true,{},charge_opening);
+        if(intent.kind==IntentKind::Charge){const auto* card=BossCardIdentity(enemy_id_,intent);live.charge_left=card->action.charge_turns;intent.attack=live.charge_left<=1;}
+        guard_streak_=intent.attack||intent.kind==IntentKind::Charge?0:guard_streak_+1;
+        return;
+    }
     intent={};
     if(current.patterns.empty()){
         const bool rolled=intent_rng_.Next()<current.attack_chance;
@@ -534,13 +541,17 @@ void Combat::Restore(const CombatSnapshot& s,CombatMods mods){
     for(int value:{s.live.retain_turns,s.live.temp_strength,s.live.next_energy,s.live.thorns,s.live.double_attack,s.live.end_block,s.live.ult_discount,s.live.flight_damage,s.live.land_turns,s.live.charge_left,s.live.constrict_left,s.live.doom_left,s.live.played_turn,s.live.damage_dealt,s.live.damage_taken,s.live.poison_applied,s.live.ultimates,s.live.attacks_turn,s.live.attack_count,s.live.enemy_thorns,s.live.enemy_end_block,s.live.enemy_double,s.live.enemy_retain,s.live.enemy_revive})if(value<0||value>10000000)throw std::runtime_error("Invalid saved counter");
     if(s.live.history.size()>3||s.live.last_turn.size()>3)throw std::runtime_error("Invalid card history");
     for(const auto* history:{&s.live.history,&s.live.last_turn})for(const auto& id:*history)Definition(id);
-    auto valid_intent=[&](const Intent& action){
+    auto valid_intent=[&](const Intent& action,const std::string& owner){
         if(int(action.kind)<0||int(action.kind)>int(IntentKind::Drain)||int(action.status)<0||int(action.status)>int(StatusId::Strength)||action.value<0||action.value>100000||action.status_amount<0||action.status_amount>10000||action.hits<1||action.hits>8)return false;
         if(!action.card_id.empty())Definition(action.card_id);
         if(!action.summon_id.empty()){bool known=false;for(const auto& e:config.bestiary)known|=e.id==action.summon_id;if(!known)return false;}
+        if(!action.deck_card_id.empty()){
+            const auto* card=BossCardIdentity(owner,action);
+            if(!card||card->action.kind!=action.kind)return false;
+        }
         return true;
     };
-    if(!valid_intent(s.intent))throw std::runtime_error("Invalid saved intent reference");
+    if(!valid_intent(s.intent,s.enemy_id))throw std::runtime_error("Invalid saved intent reference");
     if(s.stars.resolving||s.stars.cursor<0||s.stars.cursor>6||s.stars.player.size()>3||s.stars.enemy.size()>3)throw std::runtime_error("Invalid Turn Star plan");
     if(!s.stars.enabled&&(!s.stars.player.empty()||!s.stars.enemy.empty()))throw std::runtime_error("Disabled Turn Star plan has cards");
     if(s.stars.enabled&&s.phase==Phase::Player&&(s.stars.enemy.size()!=3||s.stars.cursor!=0))throw std::runtime_error("Incomplete Turn Star preview");
@@ -551,14 +562,15 @@ void Combat::Restore(const CombatSnapshot& s,CombatMods mods){
         if(q.hand_index>=0){if(q.id!=s.hand[q.hand_index]||q.hand_index==s.live.locked||Definition(s.hand[q.hand_index]).unplayable||std::find(queued.begin(),queued.end(),q.hand_index)!=queued.end())throw std::runtime_error("Invalid duplicate or locked queued card");queued.push_back(q.hand_index);}
         else if(s.phase==Phase::Player&&!q.id.empty())throw std::runtime_error("Queued card has no hand reservation");
     }
-    for(const auto& q:s.stars.enemy)if(q.actor<0||q.actor>int(s.adds.size())||!valid_intent(q.action))throw std::runtime_error("Invalid queued enemy card");
+    for(const auto& q:s.stars.enemy)if(q.actor<0||q.actor>int(s.adds.size())||!valid_intent(q.action,q.actor==0?s.enemy_id:s.adds[q.actor-1].id))throw std::runtime_error("Invalid queued enemy card");
     if(!s.live.slots.empty()){auto slots=s.live.slots;std::sort(slots.begin(),slots.end());if(slots.size()!=s.adds.size()+1)throw std::runtime_error("Invalid target slots");for(int i=0;i<int(slots.size());++i)if(slots[i]!=i)throw std::runtime_error("Invalid target permutation");}
-    for(const auto& a:s.adds){if(!valid_fighter(a.fighter)||!valid_intent(a.intent))throw std::runtime_error("Invalid saved summon");bool known=false;for(const auto& e:config.bestiary)known|=e.id==a.id;if(!known)throw std::runtime_error("Unknown saved summon");}
+    for(const auto& a:s.adds){if(!valid_fighter(a.fighter)||!valid_intent(a.intent,a.id))throw std::runtime_error("Invalid saved summon");bool known=false;for(const auto& e:config.bestiary)known|=e.id==a.id;if(!known)throw std::runtime_error("Unknown saved summon");}
     for(const auto* pile:{&s.draw,&s.hand,&s.discard,&s.exhaust,&s.created}){if(pile->size()>1000)throw std::runtime_error("Saved deck too large");for(const auto& id:*pile)Definition(id);}
     phases_=std::move(phases);enemy_id_=s.enemy_id;role_=found->role;mods_=std::move(mods);
     player=s.player;enemy=s.enemy;phase=s.phase;intent=s.intent;energy=s.energy;rage=s.rage;turn=s.turn;
     guard_streak_=s.guard_streak;phase_index_=s.phase_index;phase_opening_=s.phase_opening;ultimate_pending_=false;
     definition_=scaled;live=s.live;stars=s.stars;reserved_play_=false;adds=s.adds;exhaust=s.exhaust;created=s.created;target_rng_.Seed(s.target_rng);
     shuffle_rng_.Seed(s.shuffle_rng);intent_rng_.Seed(s.intent_rng);draw=s.draw;hand=s.hand;discard=s.discard;events.clear();
+    if(stars.enabled)BindBossCardIdentities();
 }
 }

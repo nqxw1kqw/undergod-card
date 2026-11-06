@@ -16,6 +16,15 @@ def main():
     def read(name):return json.loads((ROOT/'data'/name).read_text(encoding='utf-8'))
     cards=read('cards.json');assert len(cards)==50
     for card in cards:assert f'assets/pastel/cards/{card["id"]}.png' in actual,card['id']
+    boss_cards=read('boss_cards.json');boss_ids={e['id'] for e in read('enemies.json') if e['role']=='boss'}
+    assert {deck['boss'] for deck in boss_cards}==boss_ids
+    boss_art=set()
+    for deck in boss_cards:
+        assert len(deck['cards'])==6
+        for card in deck['cards']:
+            name=f"assets/pastel/boss_cards/{card['id']}.png"
+            assert card['id'].startswith('boss_'+deck['boss']+'_') and name in actual and name not in boss_art
+            boss_art.add(name)
     for kind in ['relics','potions']:
         for item in read(kind+'.json'):assert f'assets/pastel/{kind}/{item["id"]}.png' in actual,item['id']
     for character in read('classes.json'):
@@ -34,7 +43,7 @@ def main():
             assert wav.getnchannels()==1 and wav.getsampwidth()==2 and wav.getframerate()==22050,path
             raw=wav.readframes(wav.getnframes());samples=struct.unpack('<'+'h'*(len(raw)//2),raw)
             peak=max(abs(value) for value in samples);assert 0<peak<32767,(path,peak)
-    report=dict(pngs=len(actual),cards=len(cards),relics=len(read('relics.json')),potions=len(read('potions.json')),audio=len(audio),hashes=True,references=True,pcm=True)
+    report=dict(pngs=len(actual),cards=len(cards),boss_cards=len(boss_art),boss_decks=len(boss_cards),relics=len(read('relics.json')),potions=len(read('potions.json')),audio=len(audio),hashes=True,references=True,pcm=True)
     target=ROOT/'artifacts/asset-validation.json';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(json.dumps(report,indent=2)+'\n')
     print('ASSETS '+json.dumps(report))
 

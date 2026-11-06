@@ -176,7 +176,7 @@ void Game::Update(float real_dt){
     if(motion_!=Motion::None){
         const bool enemy=motion_==Motion::EnemyAttack||motion_==Motion::EnemyOther;
         const float before=motion_age_;motion_age_+=dt;
-        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={motion_==Motion::EnemyAttack?"attack":((star_sequence_?active_card_.id=="comet_lance":state.intent.kind==IntentKind::Charge)?"ult_charge":"defend"),motion_age_-.45f};
+        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={motion_==Motion::EnemyAttack?"attack":((star_sequence_?active_charge_:state.intent.kind==IntentKind::Charge)?"ult_charge":"defend"),motion_age_-.45f};
         const float impact=enemy?(motion_==Motion::EnemyAttack?.77f:.45f):.32f;
         if(motion_age_>=impact)ApplyMotion();
         if(motion_age_>=(enemy?1.15f:.65f)){motion_=Motion::None;pending_card_=-1;if(star_sequence_)FinishStarMotion();}

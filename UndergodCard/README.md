@@ -1,6 +1,6 @@
 # Undergod Card Quest — C++17 / DxLib
 
-Bản v1.1.0-preview thêm ba Turn Star, hàng bài hai phe luân phiên, avatar di chuyển trên map, chuyển cảnh đen, FIGHT và chia bài vào chiến dịch hiện có. Chi tiết luật và tương thích tại [docs/TURN_STARS.md](docs/TURN_STARS.md); bằng chứng tại docs/VALIDATION.md. Demo HTML giữ độc lập.
+Bản v1.2.0-preview sửa icon nhảy về điểm cũ sau khi đến stage và thêm 36 lá riêng cho sáu boss: [docs/BOSS_DECKS.md](docs/BOSS_DECKS.md). Giữ ba Turn Star, hàng bài hai phe luân phiên, chuyển cảnh đen, FIGHT và chia bài. Chi tiết luật/tương thích tại [docs/TURN_STARS.md](docs/TURN_STARS.md); bằng chứng tại docs/VALIDATION.md. Demo HTML giữ độc lập.
 
 ## Build, chạy và đóng gói
 
@@ -56,6 +56,7 @@ Mỗi lớp có ba nhánh × năm kỹ năng; mua tuần tự bằng Lông Vũ v
 | --- | --- |
 | cards | 50 lá gốc, type/rarity/class/effects/keywords, exhaust/power/ranged |
 | enemies | Sáu địch thường, hai tinh anh, sáu boss, triệu hồi và đối thủ sự kiện |
+| boss_cards | Sáu lá riêng/boss, ID/tên/chiêu/trọng số và pha được phép; ảnh riêng ở assets/pastel/boss_cards |
 | campaign / map / run | Hồi, pool boss/địch, tầng/cột, trọng số, kinh tế |
 | events | 12 sự kiện với đánh đổi, chọn bài/đổi đồ hoặc mở trận thực |
 | relics / potions | 17 di vật, sáu thuốc dùng chung resolver |

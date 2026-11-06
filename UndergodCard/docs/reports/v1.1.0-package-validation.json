@@ -1,0 +1,11 @@
+{
+  "files": 239,
+  "pngs": 203,
+  "wavs": 12,
+  "data_files": 16,
+  "crc": true,
+  "exact_manifest": true,
+  "exe_sha256": "28b0b346bc0e8d5184ea918a36f689766c45ce6050b04a3d4da73cd46c8bfeb6",
+  "zip_sha256": "e64d8703d5b3ee40b3d6d26fc180feb76d96efe7c1432478668b33320a3c8467",
+  "zip_bytes": 35596142
+}

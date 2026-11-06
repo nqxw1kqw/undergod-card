@@ -1,6 +1,8 @@
-# Hoàn thiện kế hoạch — v1.1.0-preview
+# Hoàn thiện kế hoạch — v1.2.0-preview
 
 Cập nhật theo yêu cầu mới: avatar đi tới điểm trên map, giữ màn đen khi đổi khu vực, ảnh FIGHT và chia bài; mỗi phe ba Turn Star, xếp ba lá rồi Attack luân phiên, xem trước bài địch bằng tooltip. Luật, chuyển đổi năng lượng/nâng cấp và tương thích bản lưu ở [TURN_STARS.md](TURN_STARS.md). Bản HTML/website giữ độc lập.
+
+v1.2.0 sửa vị trí avatar xuyên FadeOut, trở lại map và lưu/tải; thêm sáu bộ riêng, 36 lá boss với chiêu và ảnh thực, giới hạn theo pha. Chi tiết tại [BOSS_DECKS.md](BOSS_DECKS.md).
 
 2026-11-06. Giữ nhánh draft/v0.3-wip và PR #2; chưa merge main/PR #1. Các hệ thống trong mốc v0.4/v0.5/v1.0 và yêu cầu Turn Star đã có triển khai. Hai tiêu chí cần chơi thực để mở trong IMPLEMENTATION_CHECKLIST.
 
@@ -11,7 +13,7 @@ Cập nhật theo yêu cầu mới: avatar đi tới điểm trên map, giữ m�
 - 17 di vật gồm đủ mười cơ chế thiết kế; sáu thuốc; thưởng 60/33/7 theo tầng hiếm, tinh anh Hiếm+, di vật không trùng.
 - Ba lớp/bộ khởi đầu/tuyệt kỹ; 45 kỹ năng; tiền meta; Thử Thách cộng dồn 1–10; 15 thành tựu.
 - Session v2/profile v1, ba RNG, sổ nhận thưởng chống trùng, ghi nguyên tử, kiểm tra đường map/pile/tham chiếu.
-- 203 PNG: ảnh riêng cho 50 bài, ba lớp, sáu boss, địch thường/tinh anh, đồ và banner FIGHT. Giữ gà Chiến Binh đã được Shin duyệt làm chuẩn; bộ ếch dùng chung cũ đã ra khỏi runtime.
+- 239 PNG: ảnh riêng cho 50 bài người chơi, 36 lá boss, ba lớp, sáu boss, địch thường/tinh anh, đồ và banner FIGHT. Giữ gà Chiến Binh đã được Shin duyệt làm chuẩn; bộ ếch dùng chung cũ đã ra khỏi runtime.
 - Bão Lông/Ảnh Phân có cinematic riêng; Sao Rơi giữ phóng lao lên trời/rơi đúng contact. Nhạc ba hồi, chín cue PCM gốc và tắt/bật lưu trong profile.
 - UI lớp/kỹ năng/thành tựu/Thử Thách/mục tiêu/khóa bài/dự báo/thưởng boss; hàng chờ Turn Star thay thanh năng lượng/Mana.
 

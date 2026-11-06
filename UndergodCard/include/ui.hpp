@@ -40,10 +40,11 @@ public:
     void ChooseTrade(Game& game,int index){game.TradeRelic(deck_page_*8+index);}
     void ChooseHand(Game& game,int index);
     std::vector<int> HandIndices(const Game& game)const;
+    std::pair<float,float> MapPlayerPosition(const Game& game)const;
     static Rect CardRect(int count,int index){const int w=std::min(176,(1300-12*(count-1))/std::max(1,count)),total=count*w+(count-1)*12;return {(Width-total)/2+index*(w+12),710,w,195};}
     static Rect EndButton(){return {1220,635,170,48};}
     static Rect StarSlotRect(int slot){return {450+slot*190,627,180,91};}
-    static Rect EnemyStarRect(int slot){return {955+slot*139,258,130,67};}
+    static Rect EnemyStarRect(int slot){return {955+slot*139,235,130,90};}
     static Rect WaitButton(){return {70,684,180,34};}
     static Rect StarHandRect(int count,int index){auto r=CardRect(count,index);r.y=744;r.h=162;return r;}
     static Rect UltimateButton(){return {1040,635,160,48};}

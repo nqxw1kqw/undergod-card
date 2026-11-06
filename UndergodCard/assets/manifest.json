@@ -1,7 +1,295 @@
 {
   "player": "chick",
-  "runtime_pngs": 203,
+  "runtime_pngs": 239,
   "files": [
+    {
+      "path": "assets/pastel/boss_cards/boss_fox_fire.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "8eaa0ff958a15a20474d170de1934c695293ac5f3930430aacfe61235758916e"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_fox_hex.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f291404ee947c4ef4c0a25b3fd6ec349b4bb1f3d07bfa9a2438444cdcc28e564"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_fox_illusion.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d6132c61beb59a7c7a7e67b09147fbe41b29f15bfef1418837cc537694598125"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_fox_spirits.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d9480b46bb0a5439b967be9add3e751bedc5e37dc5a3fee7150380a912daa33f"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_fox_veil.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c158e5d4850bcb5a288aba393a644abaf0a9049c519297eba6d2aa5095590af4"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_fox_wither.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "411213700efa4f0a80c91c43431527354ebfe17c021f22957bef0a41902fa8fa"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_frog_call.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c14cef629f7368bf5396f0e0b881ede5286244bd77b703c784fa97714f1e9a54"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_frog_guard.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "426fc677d5914554d32b82ddb74782033de8de4b97a7266ec022f77e973aaf10"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_frog_scepter.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "5c005a975439ea8bddf83ca8d257d5672aeb69335f1c70a4bf89e05eda9c21fc"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_frog_slam.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "f31a024ae2ccb541db16cea6a462518e4e3728f49d68f6ba955d6b9d75af1c6b"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_frog_spores.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "aeaecfa526bfb7ac27d0bac27ac089234fe829bc60406c18cb676fd820303a53"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_frog_tongue.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "122909e21e4f7f17f0071403712d16733a70df686c643d7802b5f299639c9f84"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_hawk_cry.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "ba67e6eccb0e60f2ec86405282faf12b4f24745019ae3e3a9e71f1a645df4932"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_hawk_dive.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "d1c90e4f1463cbdd00ceb19002d63673082ea6bc84cd993a91063378a4f6b5ea"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_hawk_gale.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "086a90079c61d7fbf5b0a632755bda66e7c3b3c4c648d1d74365c866ccc4e451"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_hawk_guard.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "92a11258b8c4ba0674c53fd8c3c1152124749e4f412ab3b1347a2d3f8f27ab6c"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_hawk_talons.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "81596b5ce9618f5fffdedade451bac1b2109e8274e02dce1f2641f4fb6bb8739"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_hawk_wings.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "edc2a676af510554fb1809e7898ee5e80de933fcbd12ff8f50fec14866ef56c5"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_snake_coil.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "456699ab536f331c9d4d859c1aee75fe52b1fc96f3f619415a81b3faa142e6bc"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_snake_fangs.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "edbc94b07b0780fc72a7bf3373fafde6071d99348790e2382c964973cb28e983"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_snake_mist.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2a7a8fbb248dbb32ff38ef436579fb85cd8afe6d2dd588f8902e5466af6ee8c2"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_snake_molt.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "083d455083bcf8bf62551d1818400279db763bb41aab3feb70c86fcfb920953c"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_snake_scales.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "b13a320d171743852f321857387cf965fb7ad9d5d8d757d9ad4d778f1fe472f7"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_snake_strike.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "650bf2cf0c6a8376a76c9a6652cd5e7b2f2ea6015ce9dd0a7ba1e05fed2fcc0b"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_tiger_claw.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "c077fbe6b79f7b3b626144d80640cb18b550c94d2fded7bd1d206abdd320b9f7"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_tiger_fang.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "aff344d064b926cf95654516ff9e0acf31a0126e4e6ee683b2c6db215075a473"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_tiger_guard.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "63111de8607431c2dea33f49cf36ec70c60a329c6d35ce19cbd3731748ec2e11"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_tiger_pounce.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "fcbd29a2ea0d1bc4616c27f7c47cfe71bcc6302355d6c1d44a49228a379bbfac"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_tiger_roar.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "49518c8cb2416a4d45a86bcfad277685b9cf1d42e1f54b396ac72293004aaba3"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_tiger_twin.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "295d9458e32a1cd19912f500886fc66d7b9ef113bc2b46c1cb9ea77b1ca4c970"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_undergod_crush.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "72b08933d2705b377dad2ea6489ec3f296bea866c56aa1b6f37cdd722b9d89f2"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_undergod_drain.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "b4df26fa0d7a5f9af7d4e8b24f9b6c22b2146e152b86bf19c573b23abcd27751"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_undergod_gaze.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "75cf6ba24df2c962053b0c120dcfce09b2b0bc8b3492ebd13dcda2071791b242"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_undergod_guard.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "32379deb8729761c1821c95e1ecf2f3bb687a3e950d459ac1b0754ea200b3e17"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_undergod_meteors.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "2959581f2a32f53181e8be88d89e315f8b8c689e1c93c5005972bf763c54ae9e"
+    },
+    {
+      "path": "assets/pastel/boss_cards/boss_undergod_mirror.png",
+      "size": [
+        256,
+        256
+      ],
+      "sha256": "5c9c8dcd737f84bced25e25e11b232ef8218253ef1416da2f09557c57710839c"
+    },
     {
       "path": "assets/pastel/cards/arcane_storm.png",
       "size": [
@@ -1587,6 +1875,14 @@
       "sha256": "1ffdf46fbfb01471b50c04f69d1ca2aab8f9a5e843435e03476e63f001bd5570"
     },
     {
+      "path": "assets/pastel/ui/fight.png",
+      "size": [
+        2172,
+        724
+      ],
+      "sha256": "9910e2a6e40ce997d79cf77eeebf471a1b4cf507342f743bdee028c239d54c7b"
+    },
+    {
       "path": "assets/pastel/vfx/feather.png",
       "size": [
         256,
@@ -1617,14 +1913,6 @@
         512
       ],
       "sha256": "09895d7e5a0259185ca3bd97ac425be7fa3c7f6742d12d422dc5667bf7d267ef"
-    },
-    {
-      "path": "assets/pastel/ui/fight.png",
-      "size": [
-        2172,
-        724
-      ],
-      "sha256": "9910e2a6e40ce997d79cf77eeebf471a1b4cf507342f743bdee028c239d54c7b"
     }
   ],
   "audio_files": [
