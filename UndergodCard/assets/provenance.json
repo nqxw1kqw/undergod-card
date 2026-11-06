@@ -1,0 +1,1417 @@
+{
+  "generator": "built-in ImageGen",
+  "processor": "generate2dsprite.py process; grid extraction, chroma key, alpha spill cleanup, shared body scale, feet y=456",
+  "groups": [
+    {
+      "group": "card_atlas_0",
+      "source_file": "exec-14211bb2-9799-4061-93c5-fb39f688adea.png",
+      "source_sha256": "07fb30513b26dad1bee6d7a58cc272c1f0903a3a5d27fae1ce8cd322873055a9",
+      "prompt": "",
+      "exports": [
+        "cards/peck.png",
+        "cards/double_peck.png",
+        "cards/feather.png",
+        "cards/millet.png",
+        "cards/stomp.png",
+        "cards/crow.png",
+        "cards/wing.png",
+        "cards/venom_beak.png",
+        "cards/snare.png",
+        "cards/feather_rain.png",
+        "cards/guard_up.png",
+        "cards/grub.png",
+        "cards/storm_spear.png",
+        "cards/star_tip.png",
+        "cards/toxin.png",
+        "cards/wingbeat.png"
+      ]
+    },
+    {
+      "group": "card_atlas_1",
+      "source_file": "exec-ccadf2ad-26de-4f74-a232-3dc8b51beaea.png",
+      "source_sha256": "f7d878ff55272a063212b2c4e1b5e14171f98e964119e72120c6d739738d7a24",
+      "prompt": "",
+      "exports": [
+        "cards/feather_shield.png",
+        "cards/piercing_spear.png",
+        "cards/counter.png",
+        "cards/golden_egg.png",
+        "cards/whirlwind.png",
+        "cards/guard_stance.png",
+        "cards/rage_fire.png",
+        "cards/mark_prey.png",
+        "cards/returning_spear.png",
+        "cards/holy_spear.png",
+        "cards/fortress.png",
+        "cards/meteor_rain.png",
+        "cards/phoenix.png",
+        "cards/resonance.png",
+        "cards/mud.png",
+        "cards/fatigue.png"
+      ]
+    },
+    {
+      "group": "card_atlas_2",
+      "source_file": "exec-88b42fdb-24c5-4d9f-919e-01cea7f31289.png",
+      "source_sha256": "85385a10a22b3a62ba278534b02d7562d1d0f1d65b3e96568e9bb9e7d6598d51",
+      "prompt": "",
+      "exports": [
+        "cards/spellbolt.png",
+        "cards/venom_orb.png",
+        "cards/mana_barrier.png",
+        "cards/mana_focus.png",
+        "cards/arcane_storm.png",
+        "cards/star_orbit.png",
+        "cards/dagger.png",
+        "cards/smoke_step.png",
+        "cards/shadow_dance.png",
+        "cards/blade_rain.png",
+        "cards/assassinate.png",
+        "cards/phantom_guard.png",
+        "cards/comet_lance.png",
+        "cards/lotus_guard.png",
+        "vfx/feather.png",
+        "vfx/kunai.png"
+      ]
+    },
+    {
+      "group": "mage_idle",
+      "source_file": "exec-1608c65c-001b-4856-98f3-398173b55b6e.png",
+      "source_sha256": "c1394ecb76ad79a19fd89fff2190af0ff9c013ddd954e52bd3f729aad803e299",
+      "prompt": "",
+      "exports": [
+        "characters/char_mage_idle_0.png",
+        "characters/char_mage_idle_1.png",
+        "characters/char_mage_idle_2.png",
+        "characters/char_mage_idle_3.png"
+      ]
+    },
+    {
+      "group": "mage_attack",
+      "source_file": "exec-a8a63a84-9674-46e7-bf42-37604d913628.png",
+      "source_sha256": "366a203a820093bf6bce2a8a5d70e22aaad2b1a01741b1a864b609c3063239ca",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame attack BODY animation sheet of exactly the same mage chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. a short wand thrust toward the right: preparation, compact forward point, contact pose, recovery. Keep book close. No visible spell or projectile. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_mage_attack_0.png",
+        "characters/char_mage_attack_1.png",
+        "characters/char_mage_attack_2.png",
+        "characters/char_mage_attack_3.png"
+      ]
+    },
+    {
+      "group": "mage_hit",
+      "source_file": "exec-11ab1866-39e7-41fb-8337-2bac94b816fa.png",
+      "source_sha256": "2cde0d847f25af7f32ada0f8b387f05a6eeec2bdac3e7b6eab1c64e6310e3179",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame hit BODY animation sheet of exactly the same mage chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. a brief hurt recoil: surprised eyes, slight body lean back, closed eyes, recovery. Hat/book/wand remain close and fully contained. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_mage_hit_0.png",
+        "characters/char_mage_hit_1.png",
+        "characters/char_mage_hit_2.png",
+        "characters/char_mage_hit_3.png"
+      ]
+    },
+    {
+      "group": "mage_defend",
+      "source_file": "exec-e9d68611-7546-494f-a660-5b0ea4477185.png",
+      "source_sha256": "214abf904d5c8df53d38320883145b0858085dd619920a98f3de108493620439",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame defend BODY animation sheet of exactly the same mage chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. raise the spellbook protectively in front of the chest, brace briefly, then recover. No magical shield or detached effects. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_mage_defend_0.png",
+        "characters/char_mage_defend_1.png",
+        "characters/char_mage_defend_2.png",
+        "characters/char_mage_defend_3.png"
+      ]
+    },
+    {
+      "group": "mage_ult_throw",
+      "source_file": "exec-d3c00292-5a71-426d-86b7-05de2a109525.png",
+      "source_sha256": "73c910922a721d8780f8b8527f69faaaae3bac6f74fcb42612370be4c7943920",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame ult_throw BODY animation sheet of exactly the same mage chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. a ceremonial cast: look upward, raise the wand close above the shoulder, invoke while lifting the free hand, hold the final casting pose. No projectile, aura or detached particles. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_mage_ult_throw_0.png",
+        "characters/char_mage_ult_throw_1.png",
+        "characters/char_mage_ult_throw_2.png",
+        "characters/char_mage_ult_throw_3.png"
+      ]
+    },
+    {
+      "group": "ninja_idle",
+      "source_file": "exec-b923c012-1f03-490c-a288-433235a27528.png",
+      "source_sha256": "adc499b65d55b93210888dbfb201351367f1d6b7a4c9f724a47c36fb614b8004",
+      "prompt": "",
+      "exports": [
+        "characters/char_ninja_idle_0.png",
+        "characters/char_ninja_idle_1.png",
+        "characters/char_ninja_idle_2.png",
+        "characters/char_ninja_idle_3.png"
+      ]
+    },
+    {
+      "group": "ninja_attack",
+      "source_file": "exec-6e4eccb9-123b-4ed0-80db-e927a5ee4ab9.png",
+      "source_sha256": "4f695a3cbdab1d710266ff4809504c300b50e4a99785f2aa9e8894707a92d48f",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame attack BODY animation sheet of exactly the same ninja chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. a quick short kunai stab toward the right: windup, compact forward arm motion, contact pose, recovery. Keep blade close, no extended slash arc or detached effects. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_ninja_attack_0.png",
+        "characters/char_ninja_attack_1.png",
+        "characters/char_ninja_attack_2.png",
+        "characters/char_ninja_attack_3.png"
+      ]
+    },
+    {
+      "group": "ninja_hit",
+      "source_file": "exec-eb89b74e-02b1-4e84-9221-214aeb4c98f8.png",
+      "source_sha256": "cda58a9d58b316ce38482f573dfdada6352ae9e90edab370e6ca2d984435152d",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame hit BODY animation sheet of exactly the same ninja chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. a brief hurt recoil: surprised eyes, small lean back, closed eyes, recovery. Kunai and scarf remain tightly contained. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_ninja_hit_0.png",
+        "characters/char_ninja_hit_1.png",
+        "characters/char_ninja_hit_2.png",
+        "characters/char_ninja_hit_3.png"
+      ]
+    },
+    {
+      "group": "ninja_defend",
+      "source_file": "exec-237851e9-93fa-4c29-a011-4b40f9fd58da.png",
+      "source_sha256": "455268b85c1076bd35b4ef6efaf39b1c7b2628a14fedb40478b8802998315606",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame defend BODY animation sheet of exactly the same ninja chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. brace and cross forearms close in front of the chest with kunai held safely close, then recover. No shield effect or smoke. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_ninja_defend_0.png",
+        "characters/char_ninja_defend_1.png",
+        "characters/char_ninja_defend_2.png",
+        "characters/char_ninja_defend_3.png"
+      ]
+    },
+    {
+      "group": "ninja_ult_throw",
+      "source_file": "exec-2691244c-0e1c-4405-8e10-9f7e4c245d90.png",
+      "source_sha256": "2df8e9fe547d428f50c59901e0ef76f203b0679f4d79d116d02fbe1176a2fc07",
+      "prompt": "Edit/reference identity preservation. Create a production 4-frame ult_throw BODY animation sheet of exactly the same ninja chick in the supplied accepted idle reference. Preserve every costume detail, colors, face, hat/hood and accessories; match reference body height and proportions within 10%. Exact 2 columns x 2 rows equal-cell grid, reading row-major, facing right in three-quarter side view. perform shadow hand seals close to the chest: prepare, bring hands together, invoke, hold final hand seal. Kunai tucked into belt. No duplicate characters or detached smoke; the runtime layers clones separately. Same scale across all frames, body centerline fixed, feet on a stable bottom baseline, entire body and weapon inside central 65%-70% safe area in each cell. Do not shrink the body to accommodate the action. Dark warm brown outlines, clean pastel cel shading matching reference. Flat pure #FF00FF magenta background, no floor shadow, no text, no cell borders. Body-only, no trails, dust, muzzle flashes, particles or detached FX.",
+      "exports": [
+        "characters/char_ninja_ult_throw_0.png",
+        "characters/char_ninja_ult_throw_1.png",
+        "characters/char_ninja_ult_throw_2.png",
+        "characters/char_ninja_ult_throw_3.png"
+      ]
+    },
+    {
+      "group": "enemies_idle",
+      "source_file": "exec-c7ed26bf-1b2d-4bd8-aedc-1ff019fdda3a.png",
+      "source_sha256": "24bc10ad3213995ebc72ffc0a002fd957984285fb3d4c26b347d59b8193c2218",
+      "prompt": "",
+      "exports": [
+        "characters/char_froglet_idle_0.png",
+        "characters/char_toad_idle_0.png",
+        "characters/char_reed_frog_idle_0.png",
+        "characters/char_moss_toad_idle_0.png",
+        "characters/char_marsh_guard_idle_0.png",
+        "characters/char_poison_frog_idle_0.png",
+        "characters/char_elite_frog_idle_0.png",
+        "characters/char_elder_toad_idle_0.png",
+        "characters/char_tadpole_idle_0.png"
+      ]
+    },
+    {
+      "group": "frog_king_idle",
+      "source_file": "exec-02985aa5-acdf-4e6f-87c8-76f33a25be80.png",
+      "source_sha256": "1513555c60892e27ffb3e43c5180f3dd50b7d319380ed12c56663419daef0c5f",
+      "prompt": "",
+      "exports": [
+        "characters/char_frog_king_idle_0.png",
+        "characters/char_frog_king_idle_1.png",
+        "characters/char_frog_king_idle_2.png",
+        "characters/char_frog_king_idle_3.png"
+      ]
+    },
+    {
+      "group": "hawk_idle",
+      "source_file": "exec-4a9628dc-851c-46fc-a1e7-4a6b0d5096e7.png",
+      "source_sha256": "bb319135b3ff381cc2eb1a7815775d5bb53bf83113970a67d82a2fb3056954a7",
+      "prompt": "",
+      "exports": [
+        "characters/char_hawk_idle_0.png",
+        "characters/char_hawk_idle_1.png",
+        "characters/char_hawk_idle_2.png",
+        "characters/char_hawk_idle_3.png"
+      ]
+    },
+    {
+      "group": "snake_idle",
+      "source_file": "exec-b0d52db3-6888-4e60-b0e7-a038a747d00a.png",
+      "source_sha256": "11661edd89f7b4dd6d81d3f230e0e1dffefafa2fbf6c280528708c89e40f96e6",
+      "prompt": "",
+      "exports": [
+        "characters/char_snake_idle_0.png",
+        "characters/char_snake_idle_1.png",
+        "characters/char_snake_idle_2.png",
+        "characters/char_snake_idle_3.png"
+      ]
+    },
+    {
+      "group": "fox_idle",
+      "source_file": "exec-ff9aa264-0a43-48fd-a4b1-757f0bf7f34b.png",
+      "source_sha256": "ac3ef152e47928a0b3cfc3e8fd179f70da49fc24538056ac20819c6e69af9a23",
+      "prompt": "",
+      "exports": [
+        "characters/char_fox_idle_0.png",
+        "characters/char_fox_idle_1.png",
+        "characters/char_fox_idle_2.png",
+        "characters/char_fox_idle_3.png"
+      ]
+    },
+    {
+      "group": "undergod_idle",
+      "source_file": "exec-1ae3c5ca-1965-4a4d-a5f8-83b66f502764.png",
+      "source_sha256": "29f432b9cd17ac33674e66c9eb6b3212f364fc136c23e925595ec1383f1ab10d",
+      "prompt": "",
+      "exports": [
+        "characters/char_undergod_idle_0.png",
+        "characters/char_undergod_idle_1.png",
+        "characters/char_undergod_idle_2.png",
+        "characters/char_undergod_idle_3.png"
+      ]
+    },
+    {
+      "group": "frog_king_attack",
+      "source_file": "exec-e0be1e1a-dc2c-4b1b-805b-a2948cae4ab6.png",
+      "source_sha256": "1fd10eaac17353fa8977b578ec754656524f3e5f4848b1dbbd1d370b53bb30fb",
+      "prompt": "Identity-preserving game sprite animation using the supplied accepted idle sheet. Exactly the same character, clothing, equipment, silhouette, warm dark outlines and pastel cel shading. Create exact 2 columns x 2 rows equal cells, four frames of ONE ATTACK action: windup, motion, contact, recovery. a short forceful staff thrust toward the left, then recovery; keep crown and cape identity. Facing LEFT. Body-only; no detached projectiles, spell particles, slash arcs, clouds or impact effects. Body height must match idle within 10%; do not shrink the body because of the action. Each body centered inside central 65%-70% of its cell, stable feet/coil bottom anchor, all weapons and limbs contained, generous padding on every side. Solid flat pure #FF00FF magenta background, no floor shadow, no text or cell borders.",
+      "exports": [
+        "characters/char_frog_king_attack_0.png",
+        "characters/char_frog_king_attack_1.png",
+        "characters/char_frog_king_attack_2.png",
+        "characters/char_frog_king_attack_3.png"
+      ]
+    },
+    {
+      "group": "snake_attack",
+      "source_file": "exec-ca276932-e8c3-4e64-a1c9-8ba2171e20d2.png",
+      "source_sha256": "0185f6b7d10ca6868270c44f0fc3cdde78839e57a8630107c6e31f2aa80530cb",
+      "prompt": "Identity-preserving game sprite animation using the supplied accepted idle sheet. Exactly the same character, clothing, equipment, silhouette, warm dark outlines and pastel cel shading. Create exact 2 columns x 2 rows equal cells, four frames of ONE ATTACK action: windup, motion, contact, recovery. a compact forward head strike toward the left, coils stay rooted at the same baseline, then recoil. Facing LEFT. Body-only; no detached projectiles, spell particles, slash arcs, clouds or impact effects. Body height must match idle within 10%; do not shrink the body because of the action. Each body centered inside central 65%-70% of its cell, stable feet/coil bottom anchor, all weapons and limbs contained, generous padding on every side. Solid flat pure #FF00FF magenta background, no floor shadow, no text or cell borders.",
+      "exports": [
+        "characters/char_snake_attack_0.png",
+        "characters/char_snake_attack_1.png",
+        "characters/char_snake_attack_2.png",
+        "characters/char_snake_attack_3.png"
+      ]
+    },
+    {
+      "group": "hawk_attack",
+      "source_file": "exec-e7c0a00f-1c58-4712-ba50-ed2d57fd819e.png",
+      "source_sha256": "22dc11d183d801e045ad7936711ea386cecd8e63ca892b2d814f6194a078b361",
+      "prompt": "Identity-preserving game sprite animation using the supplied accepted idle sheet. Exactly the same character, clothing, equipment, silhouette, warm dark outlines and pastel cel shading. Create exact 2 columns x 2 rows equal cells, four frames of ONE ATTACK action: windup, motion, contact, recovery. a compact talon-and-wing attack toward the left, wings remain close enough to contain the silhouette, then recovery. Facing LEFT. Body-only; no detached projectiles, spell particles, slash arcs, clouds or impact effects. Body height must match idle within 10%; do not shrink the body because of the action. Each body centered inside central 65%-70% of its cell, stable feet/coil bottom anchor, all weapons and limbs contained, generous padding on every side. Solid flat pure #FF00FF magenta background, no floor shadow, no text or cell borders.",
+      "exports": [
+        "characters/char_hawk_attack_0.png",
+        "characters/char_hawk_attack_1.png",
+        "characters/char_hawk_attack_2.png",
+        "characters/char_hawk_attack_3.png"
+      ]
+    },
+    {
+      "group": "fox_attack",
+      "source_file": "exec-d7ccf04d-3feb-4705-a1be-90638d7054f7.png",
+      "source_sha256": "8d7e23abe204cd73f62757d123e458833d463805900ff9c6e12c09bf66ccd100",
+      "prompt": "Identity-preserving game sprite animation using the supplied accepted idle sheet. Exactly the same character, clothing, equipment, silhouette, warm dark outlines and pastel cel shading. Create exact 2 columns x 2 rows equal cells, four frames of ONE ATTACK action: windup, motion, contact, recovery. a compact card-casting paw gesture toward the left, cards remain close in paw and contain no letters, then recovery. Facing LEFT. Body-only; no detached projectiles, spell particles, slash arcs, clouds or impact effects. Body height must match idle within 10%; do not shrink the body because of the action. Each body centered inside central 65%-70% of its cell, stable feet/coil bottom anchor, all weapons and limbs contained, generous padding on every side. Solid flat pure #FF00FF magenta background, no floor shadow, no text or cell borders.",
+      "exports": [
+        "characters/char_fox_attack_0.png",
+        "characters/char_fox_attack_1.png",
+        "characters/char_fox_attack_2.png",
+        "characters/char_fox_attack_3.png"
+      ]
+    },
+    {
+      "group": "undergod_attack",
+      "source_file": "exec-4df6fc4a-ecb5-4c5b-b967-16273783bf3a.png",
+      "source_sha256": "22e2a67884194d4e3622cfd2034070d4b6c2e5725375fde5c4e99396693fa3df",
+      "prompt": "Identity-preserving game sprite animation using the supplied accepted idle sheet. Exactly the same character, clothing, equipment, silhouette, warm dark outlines and pastel cel shading. Create exact 2 columns x 2 rows equal cells, four frames of ONE ATTACK action: windup, motion, contact, recovery. a short spear thrust toward the left, shield held close, then recovery. Facing LEFT. Body-only; no detached projectiles, spell particles, slash arcs, clouds or impact effects. Body height must match idle within 10%; do not shrink the body because of the action. Each body centered inside central 65%-70% of its cell, stable feet/coil bottom anchor, all weapons and limbs contained, generous padding on every side. Solid flat pure #FF00FF magenta background, no floor shadow, no text or cell borders.",
+      "exports": [
+        "characters/char_undergod_attack_0.png",
+        "characters/char_undergod_attack_1.png",
+        "characters/char_undergod_attack_2.png",
+        "characters/char_undergod_attack_3.png"
+      ]
+    },
+    {
+      "group": "relic_atlas_0",
+      "source_file": "exec-ba1a84dc-df6c-416b-be96-1f80be54609d.png",
+      "source_sha256": "974c623d508f64c148818bfd33b3b524f7ff54b454c1ee9e670c9a024b9129de",
+      "prompt": "Create one polished 4 by 4 game icon atlas, 16 separate square cells, solid pure #FF00FF magenta background, no gutters or lines or text. Cute hand-inked pastel fantasy props for a yellow chick card roguelike; thick charcoal outlines, soft cream highlights, warm earthy and jewel accents, simple readable silhouettes. Each whole prop centered inside central 65 percent of its cell with generous empty magenta margins. Row-major exact order: 1 glowing phoenix tail feather gold and crimson; 2 one precious golden corn kernel; 3 iron bird beak charm; 4 cosy little twig bird nest with cream lining; 5 bronze dawn handbell with red ribbon; 6 spiral snail shell shield with steel rim; 7 glowing ruby rage pearl in gold setting; 8 green frog king crown with red gems; 9 amber hawk eye jewel pendant; 10 silver meteor spear tip with a small blue comet halo fully contained; 11 warm golden speckled egg on a tiny red cushion; 12 small wooden round shield studded with thorns; 13 squat green venom vial with cork; 14 red heart in little golden armour wings; 15 folded turquoise bargain talisman charm; 16 brown potion bandolier with two tiny stoppered bottles. All art complete in its own cell; no ground, shadows cast outside props, letters, numbers, card frames or UI.",
+      "exports": [
+        "relics/down_feather.png",
+        "relics/coin_pouch.png",
+        "relics/steel_beak.png",
+        "relics/water_jar.png",
+        "relics/lucky_spur.png",
+        "relics/shell_shield.png",
+        "relics/rage_pearl.png",
+        "relics/frog_crown.png",
+        "relics/hawk_eye.png",
+        "relics/meteor_spear.png",
+        "relics/warm_egg.png",
+        "relics/thorn_shield.png",
+        "relics/venom_vial.png",
+        "relics/brave_heart.png",
+        "relics/bargain.png",
+        "relics/bandolier.png"
+      ]
+    },
+    {
+      "group": "relic_atlas_1",
+      "source_file": "exec-d1a9ad6d-3a57-4673-8355-d82935782ac1.png",
+      "source_sha256": "02a7e09f28209bdaf5eb0b7e5658e01ebe3f524066f086659c8439b1bc73e286",
+      "prompt": "Create one polished 3 by 3 game prop icon atlas, 9 separate equal square cells, solid pure #FF00FF magenta background, no gutters or lines or text. Cute hand-inked pastel fantasy inventory icons for a yellow chick card roguelike, thick charcoal outlines, warm cream highlights, readable compact silhouettes. Each whole prop centered inside central 65 percent of cell with generous empty magenta. Exact row-major order: 1 little red and gold war drum with two crossed drumsticks; 2 round orange juice potion bottle with orange slice stopper; 3 silver milky potion in stout metal capped bottle with small shield emblem, no letters; 4 ruby red rage wine bottle with feather ribbon; 5 squat muddy green poison jar with bubbles and cork; 6 golden hourglass-shaped blue time potion bottle; 7 lavender feather powder bottle with a fluffy feather stopper; 8 single small golden feather currency token; 9 gold medal with a yellow chick face and laurel. Keep style consistent across all icons; whole silhouettes contained; no text, no UI, no photographic details.",
+      "exports": [
+        "relics/war_drum.png",
+        "potions/serum.png",
+        "potions/smoke_shield.png",
+        "potions/strength_tonic.png",
+        "potions/poison_vial.png",
+        "potions/holy_water.png",
+        "potions/weak_brew.png"
+      ]
+    },
+    {
+      "group": "tiger_idle",
+      "source_file": "exec-c58e5896-e59b-4259-b74b-6410ff8719b6.png",
+      "source_sha256": "274dc482620a745b2042ee60914e66d124ae7cf6bedfe40c17a3c9c097e25dc0",
+      "prompt": "Use case: stylized-concept. Asset type: production 2D side-view boss sprite animation for an existing hand-inked pastel fantasy card game.\nImage 1 is the SUBJECT IDENTITY reference supplied by the user. Preserve its recognizable orange tiger face with black stripes, yellow eyes, white muzzle/chest/toes, dark swept-up forelock, attached red-orange flame-shaped mane, muscular anthropomorphic build, silver segmented chest plate and large grey metal bracers, red-orange belt armour with small turquoise accent. It is a tiger warrior, not a lion, not a bird, no weapon.\nImage 2 is ONLY the project's line-art / gentle cel-shading / rendering-style reference. Do not borrow the fox body, clothing, colours or props. Bring the tiger into that warm charcoal-outlined game illustration style while keeping the identity and imposing muscular proportions from image 1. Crisp readable painted shapes, no pixel art, no photo or 3D.\nGenerate ONE IDLE breathing loop as exactly a 2-column by 2-row grid, FOUR equal square cells, row-major animation order. Entire sheet background is absolutely uniform pure #FF00FF magenta with no shadows on it. Each cell contains exactly one full-body tiger, stable feet baseline and stable body centre/scale, body occupies only the central 60-65 percent including the mane, generous magenta padding all around. All paws, toes, flame mane, shoulders and armour entirely contained in each cell. Three-quarter SIDE view facing LEFT, ready to fight a smaller hero on the left. Stance legs apart and fists raised near waist, relaxed breathing then slight fist/shoulder motion, tiny controlled attached mane motion and a subtle blink. Frames are a coherent breathing cycle, same camera and character body height. No forward motion, no detached flame particles, no broad aura, no trails, no floor, no scene, no text, labels, grid lines or UI. Do not make him a small baby/chibi, preserve the formidable tiger-warrior silhouette.",
+      "exports": [
+        "characters/char_tiger_idle_0.png",
+        "characters/char_tiger_idle_1.png",
+        "characters/char_tiger_idle_2.png",
+        "characters/char_tiger_idle_3.png"
+      ]
+    },
+    {
+      "group": "tiger_attack",
+      "source_file": "exec-c2087509-222c-4b0c-8d82-ad04bd05f07b.png",
+      "source_sha256": "c19cef2d51fee58d8cd27c5ca0f24cdad067ba2e3993f226618bfef24cc15a2f",
+      "prompt": "Use the supplied accepted idle tiger sheet as the EXACT character design, palette, armour, proportions, camera and line-art reference. Generate a new separate action animation sheet for that same tiger warrior, exactly 2 columns by 2 rows, four equal square cells, one complete tiger per cell, row-major sequence. ONE ATTACK action: frame 1 draws the front fist back with shoulders coiled; frame 2 a short forward-left step and fist extension; frame 3 powerful leftward claw/punch contact with the lead arm extended but contained; frame 4 recover to ready stance. Slight knee compression only, keep body height within 10 percent of the reference. No detached slash, no trails, no impact or fire particles. The character faces LEFT in three-quarter SIDE view. Preserve orange/black stripes, white muzzle and chest, dark forelock, yellow eyes, red-orange flame mane, silver chest armour/bracers, orange-red belt armour and turquoise belt detail. No redesign or other animals. Warm charcoal ink outlines, clean soft cel shading matching the reference. Full body and the entire mane/limbs remain in central 60-65 percent of EVERY cell with generous pure #FF00FF magenta padding; stable feet baseline, stable body centre and scale between frames; never let a fist or mane cross any cell edge. Same body size as the idle reference, not a smaller character to fit effects. Entire background solid uniform pure #FF00FF magenta. No floor, shadows, scenery, detached FX, text, labels, grids or UI.",
+      "exports": [
+        "characters/char_tiger_attack_0.png",
+        "characters/char_tiger_attack_1.png",
+        "characters/char_tiger_attack_2.png",
+        "characters/char_tiger_attack_3.png"
+      ]
+    },
+    {
+      "group": "tiger_ult_charge",
+      "source_file": "exec-3d69e0ca-c3b4-46df-94a2-74be09f4337c.png",
+      "source_sha256": "9484fd7e27fdd08d688fdb7086b4d7dfe100ffb0db69255825f1b0b628c755c1",
+      "prompt": "Use the supplied accepted idle tiger sheet as the EXACT character design, palette, armour, proportions, camera and line-art reference. Generate a new separate action animation sheet for that same tiger warrior, exactly 2 columns by 2 rows, four equal square cells, one complete tiger per cell, row-major sequence. ONE CHARGE/ROAR action: frame 1 crouch very slightly and hold both fists near chest; frame 2 lift chest and open mouth showing a tiger roar; frame 3 sustain the roar with a firmer stance and gently lifted attached flame-shaped mane; frame 4 fists coiled ready to spring, mouth partly closed. The warm orange mane remains attached and compact, no detached flames or expanding aura. Keep body height within 10 percent of idle. The character faces LEFT in three-quarter SIDE view. Preserve orange/black stripes, white muzzle and chest, dark forelock, yellow eyes, red-orange flame mane, silver chest armour/bracers, orange-red belt armour and turquoise belt detail. No redesign or other animals. Warm charcoal ink outlines, clean soft cel shading matching the reference. Full body and the entire mane/limbs remain in central 60-65 percent of EVERY cell with generous pure #FF00FF magenta padding; stable feet baseline, stable body centre and scale between frames; never let a fist or mane cross any cell edge. Same body size as the idle reference, not a smaller character to fit effects. Entire background solid uniform pure #FF00FF magenta. No floor, shadows, scenery, detached FX, text, labels, grids or UI.",
+      "exports": [
+        "characters/char_tiger_ult_charge_0.png",
+        "characters/char_tiger_ult_charge_1.png",
+        "characters/char_tiger_ult_charge_2.png",
+        "characters/char_tiger_ult_charge_3.png"
+      ]
+    }
+  ],
+  "fight_banner": {
+    "tool": "built-in image_gen",
+    "prompt": "Use case: logo-brand. Asset type: transparent PNG game battle-start word banner for a warm pastel hand-painted fantasy card game featuring a yellow chick warrior and cute animal bosses. Primary request: one standalone word, exactly FIGHT (letters F I G H T), all uppercase, perfectly legible. Broad horizontal composition with generous transparent padding on all sides. Typography: large bold friendly chunky slightly forward-leaning fantasy serif lettering, rounded hand-inked edges, warm ivory/cream faces, a muted honey-gold inner bevel and thick dark forest-green outline with a thin soft dark drop shadow. Polished hand-painted 2D game lettering that reads at 560x180 display size. Restrained sage, cream and warm gold palette. Text only; no creatures, no backdrop, no frame, no flourishes, no additional words, no watermark. True transparent background with preserved alpha; do not draw a black or white rectangular backdrop. Keep all five letters complete, separate and centered without clipping.",
+    "source": "exec-7cdefb51-6151-4f76-ae31-d4f5b3f21f60.png",
+    "source_sha256": "9910e2a6e40ce997d79cf77eeebf471a1b4cf507342f743bdee028c239d54c7b",
+    "exports": [
+      "assets/pastel/ui/fight.png"
+    ],
+    "note": "Original transparent output, copied without editing."
+  },
+  "boss_card_decks": [
+    {
+      "boss": "frog",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent prop/icon pack for the Frog King's six exclusive enemy ability cards in a warm pastel hand-inked fantasy card game. Image 1 is the existing frog king identity/palette reference; image 2 is a style reference for readable outlined item icons. Make an EXACT 3-column by 2-row atlas, six equal square cells, read left to right then top to bottom. Icon 1: a royal green frog head with a long curled pink tongue lashing outward. Icon 2: a rounded frog foot striking two small ripples of marsh water. Icon 3: a round moss-covered shield wearing a small golden crown. Icon 4: a cluster of pale green mushrooms releasing a contained spore cloud. Icon 5: a frog king's gold and blue jeweled scepter radiating three small golden rays. Icon 6: two tiny cute green tadpoles beside a royal golden bell. Match the reference's soft brown ink outlines, pastel olive/cream/gold, simple chunky forms and subtle painted shading. Each distinct icon must be centered at consistent scale wholly inside the central 70 percent of its cell; leave large empty margins. No card borders, no letters, no words, no numbers, no grid lines, no watermark. Flat SOLID pure magenta #FF00FF background everywhere between and behind the icons. No purple/magenta on the icons themselves. Each icon isolated, no object or effect crosses a cell boundary. Overall canvas landscape 3:2.",
+      "references": [
+        "char_frog_king_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-5f1a17e3-cb42-43fc-aa43-01a110bc144c.png",
+      "source_sha256": "394ad1978aaa53a372e8cd622dec94e9d11d1a6abebf40130aa77a93827db022",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_frog_tongue.png",
+        "assets/pastel/boss_cards/boss_frog_slam.png",
+        "assets/pastel/boss_cards/boss_frog_guard.png",
+        "assets/pastel/boss_cards/boss_frog_spores.png",
+        "assets/pastel/boss_cards/boss_frog_scepter.png",
+        "assets/pastel/boss_cards/boss_frog_call.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "snake",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent prop/icon pack for Mud Serpent Mother's six exclusive enemy ability cards in a warm pastel hand-inked fantasy card game. Image 1 is the snake boss identity/palette reference; image 2 is the existing item icon style. EXACT 3 columns by 2 rows, six equal square cells, read left to right top to bottom. Icon 1: a pair of curved ivory snake fangs with one green venom drop. Icon 2: a small clay bowl with a compact green poisonous mist above it. Icon 3: a round overlapping olive-brown snake-scale shield. Icon 4: a curled shed golden snake skin surrounding a fresh leaf. Icon 5: a tightly coiled brown serpent tail enclosing a cracked stone, with small compressed pressure rays. Icon 6: the reference snake's head lunging out of a compact coil, ivory teeth visible. Rounded cute forms, brown hand-inked outlines, olive/mud/cream palette, soft painted shading, large readable silhouettes. Each icon centered wholly inside the central 70 percent of its equal cell, generous empty margins, consistent visual scale. No card frames, text, letters, numbers, labels, grid lines or watermark. Background must be perfectly flat SOLID #FF00FF magenta; avoid magenta on icons. No part crosses a cell edge. Landscape canvas 3:2.",
+      "references": [
+        "char_snake_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-14310e4b-10d6-4319-8713-b3847c5b2c4a.png",
+      "source_sha256": "78ea9ac38e5e01a36e4c7da71a2e0051e32de015ff459751241fe4a3105c945b",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_snake_fangs.png",
+        "assets/pastel/boss_cards/boss_snake_mist.png",
+        "assets/pastel/boss_cards/boss_snake_scales.png",
+        "assets/pastel/boss_cards/boss_snake_molt.png",
+        "assets/pastel/boss_cards/boss_snake_coil.png",
+        "assets/pastel/boss_cards/boss_snake_strike.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "hawk",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent six-icon ability prop pack for Storm Hawk's exclusive enemy cards in a warm pastel hand-inked fantasy card game. Image 1 is the hawk boss identity/palette reference; image 2 is the game's item art style. EXACT 3-column 2-row atlas of six equal square cells, left to right then top to bottom. Icon 1: two small golden hawk talons making crossed claw marks. Icon 2: the brown and blue reference hawk's head angled downward with a compact pale-blue dive arc. Icon 3: a fan of three blue-gray wing feathers and one small gold spark. Icon 4: a rounded shield made of layered blue-gray feathers. Icon 5: a single curved pale-blue wind blade curling around a brown feather. Icon 6: the hawk's yellow beak open in a cry with three small blue thunder rays. Simple friendly chunky shapes, brown ink contours, muted brown/cream/blue-gray, softly painted highlights. Isolate each icon fully inside central 70 percent of each cell, same scale and generous empty padding. Flat pure SOLID magenta #FF00FF background with no gradient. No magenta parts in the icons. No text, labels, numbers, card frames, border, grid lines, watermark, clipping or crossing cell boundaries. Landscape 3:2.",
+      "references": [
+        "char_hawk_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-070574b6-b758-42b4-99f2-9e4c32b6e44d.png",
+      "source_sha256": "e774f60f26a16e21f8d0ed06c745a228ad9ed8ad043efba22e42da261dbc816d",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_hawk_talons.png",
+        "assets/pastel/boss_cards/boss_hawk_dive.png",
+        "assets/pastel/boss_cards/boss_hawk_wings.png",
+        "assets/pastel/boss_cards/boss_hawk_guard.png",
+        "assets/pastel/boss_cards/boss_hawk_gale.png",
+        "assets/pastel/boss_cards/boss_hawk_cry.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "fox",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: coherent six-icon ability prop pack for the Fox Sorcerer's exclusive boss cards, warm pastel hand-inked fantasy card game. Image 1 gives the fox's identity and costume colors; image 2 gives the existing game's item illustration style. Make EXACTLY 3 columns and 2 rows, six equal square cells, read left to right top to bottom. Icon 1: a small warm-orange fox-shaped magical flame. Icon 2: a folded cream paper talisman splashed with brown mud, tied with a dark plum ribbon. Icon 3: an ornate plum-and-gold hand mirror covered partly by a pale ivory veil. Icon 4: two tiny orange foxfire flames circling a gold crescent moon. Icon 5: a wilting green leaf held by a small plum magical glove. Icon 6: the reference orange fox face with a second pale ivory ghost-fox silhouette offset behind it. Friendly chunky silhouettes, brown ink edges, restrained orange/cream/dark plum/gold palette, softly painted highlights, no pink-magenta pigments in the icons. Icons centered at the same scale entirely in the central 70 percent of each cell, generous padding. Background perfectly flat SOLID pure #FF00FF magenta. No text, numbers, labels, card frames, watermark, grid lines, objects touching or crossing cell boundaries. Landscape canvas 3:2.",
+      "references": [
+        "char_fox_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-8cc25c58-f145-4501-b634-80a0a18c1520.png",
+      "source_sha256": "22914a782fba72d2177f2f31647dea26cf5f317c9007874594403c015652fa9b",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_fox_fire.png",
+        "assets/pastel/boss_cards/boss_fox_hex.png",
+        "assets/pastel/boss_cards/boss_fox_veil.png",
+        "assets/pastel/boss_cards/boss_fox_spirits.png",
+        "assets/pastel/boss_cards/boss_fox_wither.png",
+        "assets/pastel/boss_cards/boss_fox_illusion.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "undergod",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent six-icon ability prop pack for Undergod's exclusive boss cards in a warm pastel hand-inked fantasy card game. Image 1 is the masked black-plum armored boss identity/palette reference; image 2 is the existing item icon style. EXACT 3-column by 2-row atlas of six equal square cells, reading left to right top to bottom. Icon 1: an ivory half mask reflected in a small dark-plum oval magic mirror. Icon 2: the boss's round black armored shield with an ivory four-point diamond. Icon 3: a dark-plum gauntlet pulling a small warm-red glowing rage crystal toward its palm. Icon 4: a squat black and ivory armored fist cracking a small stone with contained purple-blue rays. Icon 5: two small dark-plum falling meteors wrapped in muted violet-blue fire. Icon 6: the boss's ivory mask with two glowing blue-violet eyes and a small dark crescent behind it. Chunky rounded outlined hand-painted forms, warm brown ink contours, deep plum/ivory/charcoal/gold with blue-violet accents; avoid pink or magenta on all icons. Each centered and wholly contained within its cell's central 70 percent safe area, consistent scale, generous margins. Entire backdrop flat SOLID pure magenta #FF00FF. No text, labels, numbers, grid lines, card frames, watermark, clipped or edge-crossing parts. Landscape 3:2.",
+      "references": [
+        "char_undergod_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-94c58012-e7ff-45f3-8d5b-a15d52dc66f0.png",
+      "source_sha256": "c51500e43373069a4747ebc1f9b4ff063f97e60c075cd88c979b431d8b7e32c6",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_undergod_mirror.png",
+        "assets/pastel/boss_cards/boss_undergod_guard.png",
+        "assets/pastel/boss_cards/boss_undergod_drain.png",
+        "assets/pastel/boss_cards/boss_undergod_crush.png",
+        "assets/pastel/boss_cards/boss_undergod_meteors.png",
+        "assets/pastel/boss_cards/boss_undergod_gaze.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    },
+    {
+      "boss": "tiger",
+      "tool": "built-in image_gen",
+      "prompt": "Use case: stylized-concept. Asset type: a coherent six-icon ability prop pack for the Flame Tiger King's exclusive boss cards in a warm pastel hand-inked fantasy card game. Image 1 is the tiger boss identity, orange striped fur, armor and flame mane reference; image 2 is the existing item illustration style. EXACT 3 columns by 2 rows of six equal square cells, read left to right top to bottom. Icon 1: a single orange tiger paw with three ivory claws. Icon 2: two crossed orange tiger paws with ivory claws and two small orange slash marks. Icon 3: the reference tiger's roaring face surrounded by a compact orange flame mane. Icon 4: a rounded charcoal armored shield bearing an amber-red gem and two small embers. Icon 5: the reference tiger leaping as a compact fiery silhouette, orange striped fur and ivory claws, with one short orange flame arc contained behind it. Icon 6: an ivory tiger fang wrapped in a small warm orange flame. Brown hand-inked outlines, soft painted highlights, chunky readable forms, orange/rust/cream/charcoal/gold colors. Same visual scale, each centered fully inside the central 70 percent of its cell, generous empty margins; no parts may cross a cell edge. Background flat SOLID pure #FF00FF magenta; no pink/magenta in artwork. No text, labels, numbers, frames, grid lines or watermark. Landscape 3:2.",
+      "references": [
+        "char_tiger_idle_0.png",
+        "toxin.png"
+      ],
+      "source": "exec-8d5720e4-ad06-422a-b493-3c1553743509.png",
+      "source_sha256": "ea1e4958dd264da308893711fffdc0782c081d7eadf8b69b03c6cbbef59305fd",
+      "grid": [
+        2,
+        3
+      ],
+      "exports": [
+        "assets/pastel/boss_cards/boss_tiger_claw.png",
+        "assets/pastel/boss_cards/boss_tiger_twin.png",
+        "assets/pastel/boss_cards/boss_tiger_roar.png",
+        "assets/pastel/boss_cards/boss_tiger_guard.png",
+        "assets/pastel/boss_cards/boss_tiger_pounce.png",
+        "assets/pastel/boss_cards/boss_tiger_fang.png"
+      ],
+      "processing": "generate2dsprite.py process; 256px, centered shared scale .80, all components, reject edge touch; remove RGB magenta spill within distance 100"
+    }
+  ],
+  "skill_animations": {
+    "generator": "built-in ImageGen",
+    "processing": "generate2dsprite extraction, magenta alpha cleanup, shared body normalization, feet anchor y=456",
+    "groups": [
+      {
+        "name": "chick_thrust",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_chick_thrust_0.png",
+          "assets/pastel/characters/char_chick_thrust_1.png",
+          "assets/pastel/characters/char_chick_thrust_2.png",
+          "assets/pastel/characters/char_chick_thrust_3.png"
+        ],
+        "reference_body_height": 373.0,
+        "body_heights": [
+          371,
+          372,
+          368,
+          371
+        ],
+        "body_ratio": 0.9946380697050938,
+        "emitterX": 491.0,
+        "emitterY": 286.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "941a53ef1c5e506575fcfd9530743ab8c6819c850329e31c1c3e8c59f1e4df40",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the yellow chick warrior making a real short SPEAR THRUST to the RIGHT, feet planted and shield close. Frame 1 crouched ready with the spear drawn back at waist height; frame 2 leans forward and begins extending; frame 3 spear clearly level and pointing right at chest height, stabbing with the shaft close to the body and bent elbows; frame 4 retracts toward ready. Do not swing the spear overhead. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_chick_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "chick_cast",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_chick_cast_0.png",
+          "assets/pastel/characters/char_chick_cast_1.png",
+          "assets/pastel/characters/char_chick_cast_2.png",
+          "assets/pastel/characters/char_chick_cast_3.png"
+        ],
+        "reference_body_height": 373.0,
+        "body_heights": [
+          375,
+          371,
+          370,
+          373
+        ],
+        "body_ratio": 0.9973190348525469,
+        "emitterX": 418.0,
+        "emitterY": 259.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "33010c26f9d76263f3a56f2199e673f74f80987aa6b54a839da76476f15d37a2",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the yellow chick warrior using a support spell toward the RIGHT. Frame 1 keeps spear upright behind shoulder and lifts its free shield arm; frame 2 opens the free wing-hand forward; frame 3 holds a decisive forward casting gesture with a slight upper-body lean; frame 4 lowers the arm into recovery. Keep red scarf and wooden shield attached and visible, no new costume. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_chick_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "chick_guard",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_chick_guard_0.png",
+          "assets/pastel/characters/char_chick_guard_1.png",
+          "assets/pastel/characters/char_chick_guard_2.png",
+          "assets/pastel/characters/char_chick_guard_3.png"
+        ],
+        "reference_body_height": 373.0,
+        "body_heights": [
+          381,
+          379,
+          360,
+          366
+        ],
+        "body_ratio": 0.9986595174262735,
+        "emitterX": 407.0,
+        "emitterY": 274.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "e355427f4cb9e183602c7bc32667196c951ac792743d79f9697ce0786f0ca2f7",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the yellow chick warrior bracing a real wooden SHIELD toward the RIGHT. Frame 1 lowers knees with shield by chest; frame 2 raises and angles shield outward; frame 3 firmly braces behind it, spear kept close behind shoulder; frame 4 settles back. The wooden shield changes orientation clearly; no energy bubble in the body art. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_chick_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "chick_peck",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_chick_peck_0.png",
+          "assets/pastel/characters/char_chick_peck_1.png",
+          "assets/pastel/characters/char_chick_peck_2.png",
+          "assets/pastel/characters/char_chick_peck_3.png"
+        ],
+        "reference_body_height": 373.0,
+        "body_heights": [
+          378,
+          364,
+          367,
+          379
+        ],
+        "body_ratio": 0.9986595174262735,
+        "emitterX": 417.0,
+        "emitterY": 121.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "917711c9b583660b89e48741db7c0bfc8046cf5d5010a466d693f2b65f170a3f",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the yellow chick warrior making a beak PECK to the RIGHT. Frame 1 draws neck/head back; frame 2 leans head and upper body forward; frame 3 beak thrusts forward sharply while spear and shield stay tucked against body; frame 4 retracts its head. Same chick proportions, full feet visible, no giant stretch or spear attack. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_chick_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "chick_stomp",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_chick_stomp_0.png",
+          "assets/pastel/characters/char_chick_stomp_1.png",
+          "assets/pastel/characters/char_chick_stomp_2.png",
+          "assets/pastel/characters/char_chick_stomp_3.png"
+        ],
+        "reference_body_height": 373.0,
+        "body_heights": [
+          382,
+          373,
+          350,
+          373
+        ],
+        "body_ratio": 1.0,
+        "emitterX": 408.0,
+        "emitterY": 141.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "6bba76807e4116507ed75cbbef6c628b4c0997d6774a885a84c826740c32b8dc",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the yellow chick warrior making a foot STOMP. Frame 1 raises one small orange foot and lifts knees; frame 2 brings that foot down; frame 3 both feet contact the shared foot line with a squat and determined face; frame 4 stands up. Spear stays upright close to body, shield attached. No cracks, shockwave or dust in this body sheet. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_chick_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "mage_thrust",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_mage_thrust_0.png",
+          "assets/pastel/characters/char_mage_thrust_1.png",
+          "assets/pastel/characters/char_mage_thrust_2.png",
+          "assets/pastel/characters/char_mage_thrust_3.png"
+        ],
+        "reference_body_height": 363.0,
+        "body_heights": [
+          372,
+          350,
+          354,
+          371
+        ],
+        "body_ratio": 0.9986225895316805,
+        "emitterX": 441.0,
+        "emitterY": 296.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "9377bd0f01464cb5c671090a587200d5365c23e152371b832b7990e8137a2ecf",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the purple-hatted chick mage making a compact STAFF JAB to the RIGHT. Frame 1 pulls crystal wand near body; frame 2 bends knees and points it forward; frame 3 extends wand level at chest height toward the right while spellbook is tucked to chest; frame 4 recovers. Keep the original purple robe, gold star hat and ivory feather-emblem spellbook. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_mage_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "mage_cast",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_mage_cast_0.png",
+          "assets/pastel/characters/char_mage_cast_1.png",
+          "assets/pastel/characters/char_mage_cast_2.png",
+          "assets/pastel/characters/char_mage_cast_3.png"
+        ],
+        "reference_body_height": 363.0,
+        "body_heights": [
+          364,
+          362,
+          362,
+          366
+        ],
+        "body_ratio": 1.0,
+        "emitterX": 448.0,
+        "emitterY": 248.5,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "9188e4ed8c573cdc430f304e741439ef5eaa6da31b4e3109089f436b3e0c772a",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the purple-hatted chick mage CASTING a projectile spell to the RIGHT. Frame 1 reads from the original feather spellbook with wand drawn back; frame 2 raises and aims crystal wand right; frame 3 forcefully extends its wand hand with open book in other hand; frame 4 lowers wand slightly in recovery. A clear gesture, no magic orb, glow or detached FX in this body sheet. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_mage_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "mage_guard",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_mage_guard_0.png",
+          "assets/pastel/characters/char_mage_guard_1.png",
+          "assets/pastel/characters/char_mage_guard_2.png",
+          "assets/pastel/characters/char_mage_guard_3.png"
+        ],
+        "reference_body_height": 363.0,
+        "body_heights": [
+          362,
+          364,
+          362,
+          363
+        ],
+        "body_ratio": 0.9986225895316805,
+        "emitterX": 417.0,
+        "emitterY": 224.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "888848c17d30843b0178b57d0fd154a855107b66565c0fdcdf758f92c833a0e2",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the purple-hatted chick mage conjuring DEFENSE. Frame 1 brings its feather spellbook close; frame 2 opens the book like a small shield and raises wand; frame 3 braces behind the open book and points wand diagonally forward-right; frame 4 relaxes. Keep body proportions and purple/gold clothing, no rune circle or bubble in body art. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_mage_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ninja_slash",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_ninja_slash_0.png",
+          "assets/pastel/characters/char_ninja_slash_1.png",
+          "assets/pastel/characters/char_ninja_slash_2.png",
+          "assets/pastel/characters/char_ninja_slash_3.png"
+        ],
+        "reference_body_height": 358.0,
+        "body_heights": [
+          358,
+          358,
+          358,
+          358
+        ],
+        "body_ratio": 1.0,
+        "emitterX": 405.0,
+        "emitterY": 272.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "4000ef282692fe0d58749e007fdac058eac7f55f81f01b71eac3f582ee321366",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the indigo chick ninja making a close-range DAGGER SLASH to the RIGHT. Frame 1 holds dagger back at hip, knees bent; frame 2 draws its wing-arm across torso; frame 3 cuts forward-right with dagger close enough to body for the same compact silhouette; frame 4 retracts the dagger. Red headband and indigo wraps unchanged; no slash trail or smoke in body sheet. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_ninja_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ninja_throw",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_ninja_throw_0.png",
+          "assets/pastel/characters/char_ninja_throw_1.png",
+          "assets/pastel/characters/char_ninja_throw_2.png",
+          "assets/pastel/characters/char_ninja_throw_3.png"
+        ],
+        "reference_body_height": 358.0,
+        "body_heights": [
+          359,
+          357,
+          359,
+          359
+        ],
+        "body_ratio": 1.0027932960893855,
+        "emitterX": 402.0,
+        "emitterY": 280.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "ab825811ebc5a7685c21ed08cec6a60456eaab825aeceb13f8d1221aabe4f3d3",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the indigo chick ninja THROWING a small kunai to the RIGHT. Frame 1 draws dagger hand back close to cheek; frame 2 snaps forearm forward; frame 3 arm points forward with EMPTY fingers after release, no flying weapon; frame 4 brings the arm back toward its pouch. Full body stays centered and stable, red headband unchanged. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_ninja_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ninja_guard",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_ninja_guard_0.png",
+          "assets/pastel/characters/char_ninja_guard_1.png",
+          "assets/pastel/characters/char_ninja_guard_2.png",
+          "assets/pastel/characters/char_ninja_guard_3.png"
+        ],
+        "reference_body_height": 358.0,
+        "body_heights": [
+          358,
+          358,
+          359,
+          365
+        ],
+        "body_ratio": 1.0013966480446927,
+        "emitterX": 390.0,
+        "emitterY": 252.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "0845f1f114cf4b511ac2ea902e8049a53833bc9807d9c517e87b1f1397e9948d",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the indigo chick ninja entering a defensive CLOAK GUARD. Frame 1 lowers knees; frame 2 folds both wrapped arms in front of chest with dagger held safely against forearm; frame 3 firmly braces and pulls its indigo scarf/short cape across chest; frame 4 returns to ready. No smoke, aura or shield FX in body sheet. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_ninja_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "frog_king_cast",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_frog_king_cast_0.png",
+          "assets/pastel/characters/char_frog_king_cast_1.png",
+          "assets/pastel/characters/char_frog_king_cast_2.png",
+          "assets/pastel/characters/char_frog_king_cast_3.png"
+        ],
+        "reference_body_height": 344.0,
+        "body_heights": [
+          345,
+          343,
+          336,
+          344
+        ],
+        "body_ratio": 0.998546511627907,
+        "emitterX": 35.0,
+        "emitterY": 256.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "4313d0272c2a02a6812f9bf41ef7fb48a4df2b8e2246d94ad19b34ffbfdfd03d",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the crowned green Frog King CASTING with its blue jeweled scepter toward the LEFT. Frame 1 holds scepter close; frame 2 raises the scepter slightly and opens the other hand; frame 3 points scepter to the left and leans forward; frame 4 returns it upright. Crown, cape and belly proportions unchanged; do not replace it with a generic frog. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_frog_king_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "snake_cast",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_snake_cast_0.png",
+          "assets/pastel/characters/char_snake_cast_1.png",
+          "assets/pastel/characters/char_snake_cast_2.png",
+          "assets/pastel/characters/char_snake_cast_3.png"
+        ],
+        "reference_body_height": 341.5,
+        "body_heights": [
+          312,
+          363,
+          338,
+          345
+        ],
+        "body_ratio": 1.0,
+        "emitterX": 87.0,
+        "emitterY": 183.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "5f24680c866a87526cfc8e2c2b51a010023224c1700505fb25da51c41430cf40",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the olive-brown Snake Mother SPITTING a venom projectile toward the LEFT. Frame 1 draws head back over its compact coil; frame 2 raises neck and opens mouth; frame 3 leans left with mouth open and small fangs visible; frame 4 closes mouth and retracts. Keep leafy crest, red-brown neck cape and cream belly; no venom or other FX in body art. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_snake_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "hawk_cast",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_hawk_cast_0.png",
+          "assets/pastel/characters/char_hawk_cast_1.png",
+          "assets/pastel/characters/char_hawk_cast_2.png",
+          "assets/pastel/characters/char_hawk_cast_3.png"
+        ],
+        "reference_body_height": 366.5,
+        "body_heights": [
+          369,
+          364,
+          363,
+          370
+        ],
+        "body_ratio": 1.0,
+        "emitterX": 55.0,
+        "emitterY": 219.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "a8a60baa1579416c7f71bc784c0e8e081e0ae23b0fc8c0414eb4abbca596bcf8",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the brown/blue Storm Hawk making a WIND SPELL with a wing flap toward the LEFT. Frame 1 draws wings near chest; frame 2 lifts both wings above shoulder level compactly; frame 3 pushes its forward wing left in a forceful flap; frame 4 folds wings near body. Keep blue feather crest, red scarf and belt. No gusts, feathers or FX detached from the body. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_hawk_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "fox_cast",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_fox_cast_0.png",
+          "assets/pastel/characters/char_fox_cast_1.png",
+          "assets/pastel/characters/char_fox_cast_2.png",
+          "assets/pastel/characters/char_fox_cast_3.png"
+        ],
+        "reference_body_height": 357.0,
+        "body_heights": [
+          357,
+          357,
+          357,
+          357
+        ],
+        "body_ratio": 1.0,
+        "emitterX": 92.0,
+        "emitterY": 280.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "59e84ed98be8324b632fc33325281e7723f718e4847150fb744d10d60c6cade9",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the orange Fox Sorcerer CASTING a fire or curse spell toward the LEFT. Frame 1 holds its paper talisman fan near chest; frame 2 raises the fan and free hand; frame 3 extends free hand left while fan stays near body; frame 4 brings the hand back. Preserve purple moon hood, gold trim and orange/cream tail; no fireballs, floating papers or magic FX in the body sheet. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_fox_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "undergod_cast",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_undergod_cast_0.png",
+          "assets/pastel/characters/char_undergod_cast_1.png",
+          "assets/pastel/characters/char_undergod_cast_2.png",
+          "assets/pastel/characters/char_undergod_cast_3.png"
+        ],
+        "reference_body_height": 352.5,
+        "body_heights": [
+          353,
+          353,
+          352,
+          353
+        ],
+        "body_ratio": 1.001418439716312,
+        "emitterX": 35.0,
+        "emitterY": 257.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "3079c90c2c192dfd12c536f2f78cdfdea8a8526f6541206dac5d39a4942491c6",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the masked black-plum Undergod CASTING dark magic toward the LEFT. Frame 1 draws crystal spear/staff close and holds round shield at side; frame 2 raises its staff head slightly; frame 3 points the crystal toward the left with a clear forward arm gesture; frame 4 returns the staff upright. Ivory half-mask, glowing violet eyes, armor, shield and violet diamond emblems unchanged; no spells or auras in body art. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_undergod_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "tiger_guard",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_tiger_guard_0.png",
+          "assets/pastel/characters/char_tiger_guard_1.png",
+          "assets/pastel/characters/char_tiger_guard_2.png",
+          "assets/pastel/characters/char_tiger_guard_3.png"
+        ],
+        "reference_body_height": 361.5,
+        "body_heights": [
+          361,
+          361,
+          340,
+          361
+        ],
+        "body_ratio": 0.9986168741355463,
+        "emitterX": 133.0,
+        "emitterY": 260.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "57a4767451f95aad1955034c0799d54b30fc081d1faa985229fa8e7476c08ae0",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the orange Flame Tiger King BRACING a defensive guard toward the LEFT. Frame 1 draws its armored fists to chest; frame 2 crosses plated forearms in front of torso; frame 3 lowers knees and firmly braces behind the crossed arms; frame 4 relaxes fists to ready. Preserve all tiger stripes, white chest, armor plates and compact flame mane; no added shield prop or detached flames. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_tiger_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "tiger_pounce",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/characters/char_tiger_pounce_0.png",
+          "assets/pastel/characters/char_tiger_pounce_1.png",
+          "assets/pastel/characters/char_tiger_pounce_2.png",
+          "assets/pastel/characters/char_tiger_pounce_3.png"
+        ],
+        "reference_body_height": 361.5,
+        "body_heights": [
+          366,
+          360,
+          315,
+          408
+        ],
+        "body_ratio": 1.004149377593361,
+        "emitterX": 44.0,
+        "emitterY": 306.0,
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "85467174478f93505073c8b93fc42560314d409cc706e925fa87a23b809ba419",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game character action sheet. Primary request: Animate the orange Flame Tiger King making a compact POUNCE toward the LEFT. Frame 1 crouches and brings forepaws close; frame 2 pushes forward, reaching one armored claw left; frame 3 both clawed forepaws reach left with hind legs tucked compactly; frame 4 plants paws and returns toward standing. Keep full body within cell at reference body scale; maintain a common bottom anchor because the game handles the jump's vertical motion. No detached flame trail or dust. Create one coherent FOUR-FRAME action sequence in an EXACT 2-column by 2-row grid, read left to right then top to bottom, four equal square cells. Preserve the reference character's identity, costume, equipment, soft brown hand-inked outlines and warm pastel painted shading. Same camera, body size and stable foot anchor across frames. Full body and close-held weapon inside the central 70% safe area of EACH cell, generous empty margins, never cross cell edges; keep body height matching the reference idle rather than shrinking the body to fit a long weapon. Body and attached weapon only: NO detached projectile, slash arc, spell glow, aura, dust or other FX; those are separate game layers. Perfectly flat SOLID #FF00FF magenta background; no text, labels, numbers, boxes, grid lines, watermark or ground. Square atlas.",
+        "reference": "char_tiger_idle_0.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "fire_orb",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/fire_orb_0.png",
+          "assets/pastel/skill_fx/fire_orb_1.png",
+          "assets/pastel/skill_fx/fire_orb_2.png",
+          "assets/pastel/skill_fx/fire_orb_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "9c0bd2762ea803c3720258ef2ccb5106abf263bd84af806359d3e976f90e5ecf",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A right-moving orange FIREBALL flight loop: a round cream-hot flame core on the RIGHT and a short curling orange tail to the LEFT. Four subtly flickering frames, consistent core size and travel direction. No impact ground. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "arcane_orb",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/arcane_orb_0.png",
+          "assets/pastel/skill_fx/arcane_orb_1.png",
+          "assets/pastel/skill_fx/arcane_orb_2.png",
+          "assets/pastel/skill_fx/arcane_orb_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "3839b8b0241c9a2d5a1ffb254f38900842deaab2baa08c9c8d4d7501096e2a8e",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A right-moving blue-violet ARCANE BOLT flight loop, round pale-blue core at the RIGHT with two compact curling blue-violet wisps trailing LEFT and small gold flecks. Four pulse phases, same core position and size. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "toxin_orb",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/toxin_orb_0.png",
+          "assets/pastel/skill_fx/toxin_orb_1.png",
+          "assets/pastel/skill_fx/toxin_orb_2.png",
+          "assets/pastel/skill_fx/toxin_orb_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "a58814001c8a8d82088f72ea21f150ab082d412e4207d7ef10078ead957f365e",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A right-moving green VENOM ORB flight loop, lime droplet core at the RIGHT and a short olive-green bubbly mist trail LEFT. Four subtly wobbling phases, same compact silhouette, clearly fluid rather than a glass bottle. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "slash",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/slash_0.png",
+          "assets/pastel/skill_fx/slash_1.png",
+          "assets/pastel/skill_fx/slash_2.png",
+          "assets/pastel/skill_fx/slash_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "70891f0bad17d37efc1d0179d24208d8e092455d88df7f980a447565945b672e",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A clean ivory-and-honey curved SLASH IMPACT. Frame 1 a short thin curved streak; frame 2 a bold curved crescent; frame 3 a wider fading crescent with three small chips; frame 4 a few dissipating pale slivers. Each phase isolated, no weapon. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "claw",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/claw_0.png",
+          "assets/pastel/skill_fx/claw_1.png",
+          "assets/pastel/skill_fx/claw_2.png",
+          "assets/pastel/skill_fx/claw_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "99d4a805d3e5831c6b524f78a6aef6c2a6b2ddcfdc78f1964724dece5619bdc8",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: An orange tiger CLAW IMPACT: three diagonal curved ivory/orange scratch strokes. Frame 1 short sparks; frame 2 three strong parallel claw slashes; frame 3 slashes widen and soften; frame 4 fade to small orange streaks. No tiger paw or body. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ward_blue",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/ward_blue_0.png",
+          "assets/pastel/skill_fx/ward_blue_1.png",
+          "assets/pastel/skill_fx/ward_blue_2.png",
+          "assets/pastel/skill_fx/ward_blue_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "2a0ecb4f3ba12cbc5f6b0c84d9f21b5c0bdd721ee0750197ec437fbe352a503e",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A HOLLOW pale-aqua protective SHIELD BUBBLE loop: a tall oval closed dome/ring with faceted blue edges, subtle cream gleams and an EMPTY MAGENTA CENTER, sized to surround a full game character. Four gently pulsing frames of the same oval. No solid blue disk, shield item or figure; the character must remain visible through its transparent center after keying. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ward_leaf",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/ward_leaf_0.png",
+          "assets/pastel/skill_fx/ward_leaf_1.png",
+          "assets/pastel/skill_fx/ward_leaf_2.png",
+          "assets/pastel/skill_fx/ward_leaf_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "6045342d26b2841a8a4b9e0d558e0b5991cc2f1fb5b2b5cc1ded51110101e9c7",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A HOLLOW moss/leaf protective WARD loop: a tall oval closed ring of broad pale-green leaves, cream highlights and a small lotus leaf at the base; EMPTY PURE MAGENTA CENTER. Four subtle pulse phases of same oval; large clear center for a character to remain visible. No character or solid filled disk. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ward_shadow",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/ward_shadow_0.png",
+          "assets/pastel/skill_fx/ward_shadow_1.png",
+          "assets/pastel/skill_fx/ward_shadow_2.png",
+          "assets/pastel/skill_fx/ward_shadow_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "395db092b59ae6f9168c34f030bb7ab91bdbefd08961516e43081bd6a64a07da",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A HOLLOW dark protective WARD loop: tall oval closed ring of deep plum smoke with soft blue-violet facets and two tiny ivory diamond accents; EMPTY PURE MAGENTA CENTER. Four gentle curling/pulsing phases, same oval footprint, no character or filled disk. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "ward_fire",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/ward_fire_0.png",
+          "assets/pastel/skill_fx/ward_fire_1.png",
+          "assets/pastel/skill_fx/ward_fire_2.png",
+          "assets/pastel/skill_fx/ward_fire_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "2db1b2555ac3689a2ace895ba3ec25912619a2bc63bd163a0a6444136d9538f6",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A HOLLOW flame protective WARD loop: tall oval closed ring of muted amber-orange flame tongues, a few cream sparks and dark rusty outline; EMPTY PURE MAGENTA CENTER. Four restrained flickering phases, same oval outline, not a solid fireball and no character. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "heal",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/heal_0.png",
+          "assets/pastel/skill_fx/heal_1.png",
+          "assets/pastel/skill_fx/heal_2.png",
+          "assets/pastel/skill_fx/heal_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "b04978f9f5544626f57728859c732eae18a7176aa2e15fed910bbcb7c5ad29b1",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A restorative HEALING BLOOM burst: frame 1 three small pale-green leaves and a cream light bud; frame 2 leaves open around a soft green star-shaped glow; frame 3 leaves rise with small gold motes; frame 4 pale leaves and motes gently dissipate. No text or medical plus sign, no character. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "sigil",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/sigil_0.png",
+          "assets/pastel/skill_fx/sigil_1.png",
+          "assets/pastel/skill_fx/sigil_2.png",
+          "assets/pastel/skill_fx/sigil_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "46dbaa9d9722e021062a387719e480888a4007d337e0dbce0bab491c834b3d92",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A GOLDEN SPELL SIGIL pulse, a compact closed ornamental rune ring with tiny stars and an open magenta center. Frame 1 a small faint gold ring; frame 2 clear ivory/gold circular rune segments; frame 3 ring expands with three little stars; frame 4 segments fade apart. No readable letters, numbers or occult text. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "smoke",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/smoke_0.png",
+          "assets/pastel/skill_fx/smoke_1.png",
+          "assets/pastel/skill_fx/smoke_2.png",
+          "assets/pastel/skill_fx/smoke_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "f24913890d6ffd6455b1fffd035e78aff9690ea35ea0c42ad02fb6d9f9a8ca69",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A compact indigo-gray NINJA SMOKE burst: frame 1 a small rounded puff; frame 2 three connected rolling plumes; frame 3 plumes spread sideways a little; frame 4 thin fading wisps. Cream edges and muted blue-violet shading, no ninja or ground. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "tongue",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/tongue_0.png",
+          "assets/pastel/skill_fx/tongue_1.png",
+          "assets/pastel/skill_fx/tongue_2.png",
+          "assets/pastel/skill_fx/tongue_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "ee617ff9d4635814f3a1d7dafcdf4692211d07301741ef7591f1af1c99c4d21d",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A royal frog's pink-red TONGUE LASH extending toward the RIGHT. Frame 1 a short curled red tongue strip with rounded wet tip; frame 2 partially unfurled; frame 3 a long horizontal pink-red strip with a rounded tip at the RIGHT and slight forked curl at the LEFT root; frame 4 curled-back recovery. No frog face or mouth; isolated wet fleshy tongue effect, never magenta-pink. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "shock",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/shock_0.png",
+          "assets/pastel/skill_fx/shock_1.png",
+          "assets/pastel/skill_fx/shock_2.png",
+          "assets/pastel/skill_fx/shock_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "a28d6ceddf24bea03a6f86469c215c00e84a25ebbcef589ebeceb73f7e356883",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A downward STOMP SHOCKWAVE on a tiny ground patch, isolated as a flat oval burst. Frame 1 a small cream spark near the oval center; frame 2 a golden oval shock ring with three small brown stone chips; frame 3 a wider fading low dust ring and five chips; frame 4 light dust wisps. No platform, floor tiles, character or background. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "lightning",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/lightning_0.png",
+          "assets/pastel/skill_fx/lightning_1.png",
+          "assets/pastel/skill_fx/lightning_2.png",
+          "assets/pastel/skill_fx/lightning_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "77604b89f8a18cf2d484ada89d0a17259c6fd17d85b004c0190a77316f5b1171",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A compact electric-blue LIGHTNING STRIKE impact, oriented mostly vertical. Frame 1 a thin pale zigzag; frame 2 a bold ivory-blue bolt with two small side sparks; frame 3 bolt breaks into a blue burst; frame 4 three fading pale sparks. Same central strike axis in all four cells, no cloud or environment. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "meteor",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/meteor_0.png",
+          "assets/pastel/skill_fx/meteor_1.png",
+          "assets/pastel/skill_fx/meteor_2.png",
+          "assets/pastel/skill_fx/meteor_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "c71c63b9d28f496bcb1e1c125183a3612f3f39711aabc26a9aab31b47df784ac",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A small right-moving GOLDEN METEOR flight loop: irregular warm-brown/amber stone at the RIGHT wrapped in cream/orange fire, short diagonal flame tail extending LEFT. Four flickering phases with same core stone and direction, compact enough for multiple projectiles. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      },
+      {
+        "name": "summon",
+        "edge_touch_frames": [],
+        "exports": [
+          "assets/pastel/skill_fx/summon_0.png",
+          "assets/pastel/skill_fx/summon_1.png",
+          "assets/pastel/skill_fx/summon_2.png",
+          "assets/pastel/skill_fx/summon_3.png"
+        ],
+        "unique_frames": 4,
+        "source_file": "raw.png",
+        "source_sha256": "b0c3042fcd9a3a81d13851200626e05c4269c2d3abcd273d5988a2dd75f0b01f",
+        "prompt": "Use case: stylized-concept. Asset type: hand-painted 2D game effect animation sheet. Primary request: A compact HOLLOW SUMMONING PORTAL opening as a flattened oval on the ground: frame 1 a thin olive-green ring; frame 2 a bright green/gold ring with three rising leaf motes; frame 3 a clear open magenta center and tall gold sparkle; frame 4 ring softens into leaf motes. No creature, environment, text or floor tile. Make an EXACT 2-column by 2-row animation grid, four equal square cells, frames read left to right then top to bottom. One coherent evolving effect, not four unrelated icons. Keep effect centered and inside the central 70% of every cell with generous magenta margins and consistent scale; no parts cross edges. Match soft brown ink outlines, bold readable pastel painted shapes and cream highlights of the game style reference. No character, hand, weapon-holder, scene, UI, cards, text, labels, numbers, boxes, grid lines or watermark. Entire background and every empty hole must be perfectly flat SOLID pure #FF00FF magenta. Avoid pink-magenta pigments on the effect; purple accents should be blue-violet. Square atlas.",
+        "reference": "spear_impact.png",
+        "grid": [
+          2,
+          2
+        ]
+      }
+    ]
+  }
+}

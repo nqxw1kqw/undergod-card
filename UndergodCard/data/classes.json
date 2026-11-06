@@ -1,0 +1,75 @@
+[
+  {
+    "id": "chick",
+    "name": "Gà Chiến Binh",
+    "sprite": "chick",
+    "hp": 50,
+    "energy": 3,
+    "draw": 5,
+    "ultimate": "spear",
+    "ultimateDamage": 40,
+    "ultimateHits": 1,
+    "description": "Giáo và Khiên. Sao Rơi gây 40 sát thương.",
+    "deck": [
+      "punch",
+      "punch",
+      "punch",
+      "punch",
+      "punch",
+      "shield",
+      "shield",
+      "shield",
+      "heavy",
+      "cookie"
+    ]
+  },
+  {
+    "id": "mage",
+    "name": "Gà Pháp Sư",
+    "sprite": "mage",
+    "hp": 40,
+    "energy": 3,
+    "draw": 6,
+    "mana": true,
+    "ultimate": "storm",
+    "ultimateDamage": 12,
+    "ultimateHits": 4,
+    "description": "Mana giữ lại tối đa 3. Bão Lông đánh 12 ×4 ngẫu nhiên.",
+    "deck": [
+      "spellbolt",
+      "spellbolt",
+      "spellbolt",
+      "spellbolt",
+      "mana_barrier",
+      "mana_barrier",
+      "mana_barrier",
+      "venom_orb",
+      "star_orbit",
+      "cookie"
+    ]
+  },
+  {
+    "id": "ninja",
+    "name": "Gà Ninja",
+    "sprite": "ninja",
+    "hp": 45,
+    "energy": 3,
+    "draw": 5,
+    "ultimate": "shadow",
+    "ultimateDamage": 1,
+    "ultimateHits": 3,
+    "description": "Lá miễn phí và combo. Ảnh Phân lặp ba lá đã chơi gần nhất.",
+    "deck": [
+      "dagger",
+      "dagger",
+      "dagger",
+      "dagger",
+      "smoke_step",
+      "smoke_step",
+      "smoke_step",
+      "blade_rain",
+      "shadow_dance",
+      "cookie"
+    ]
+  }
+]

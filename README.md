@@ -1,54 +1,43 @@
-# undergod-card
+# undergod-card — v1.3.1-preview
 
-Game thẻ bài theo lượt với **C++17, DxLib, Visual Studio 2022 và Windows x64**. Gà Chiến Binh dùng giáo, khiên và thẻ bài để đấu với Ếch Vương.
+Game thẻ bài roguelike bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Nhánh draft/v0.3-wip có luật [ba Turn Star](UndergodCard/docs/TURN_STARS.md), avatar đi trên map, chuyển cảnh đen, FIGHT và chia bài có hoạt ảnh. Bản mới sửa icon nhảy về điểm cũ khi tới stage và thêm [36 lá riêng của sáu boss](UndergodCard/docs/BOSS_DECKS.md).
 
-![Trận đấu Gà Chiến Binh và Ếch Vương](UndergodCard/docs/images/battle.png)
+v1.3.1 dùng khung hình/cửa sổ **1600×900 (16:9)**, căn giữa map/menu/sân đấu và thu gọn hàng bài cho chiều cao mới, giữ đúng tỉ lệ sprite. Có [hoạt ảnh riêng theo kỹ năng](UndergodCard/docs/SKILL_ANIMATIONS.md): đâm lao, niệm phép, đạn bay, vuốt/vồ và lớp khiên theo giáp thật của hai phe.
 
-- Hành trình ngắn bốn trận, kết bằng Ếch Vương hai giai đoạn. HP và Nộ được giữ; giáp và trạng thái xóa khi sang trận mới.
-- Bộ khởi đầu 10 lá, rút 5, 3 năng lượng. Sau mỗi trận trước trùm, chọn 1 trong 3 lá thưởng. Bộ thưởng có 15 lá, chia độ hiếm và từ khóa.
-- Hiệu ứng đọc từ JSON: sát thương, giáp, hồi máu, Độc, Suy Yếu, Dễ Thương, Sức Mạnh, rút bài. Ý định địch hiện sát thương đã tính các trạng thái đó.
-- Chiêu **Sao Rơi**: gà phóng lao lên trời, lao rơi xuống địch và gây sát thương lúc chạm.
-- Nhịp x1 chậm mặc định; nút x1/x2/x3 hoặc F1/F2/F3 đổi tốc độ cả giữa đòn đánh.
-- 50 PNG pastel, UI tiếng Việt; chạy trực tiếp bằng DxLib. Lá mới chưa có ảnh riêng thì hiện ký hiệu dự phòng.
+![Ba lớp trong bản DxLib](UndergodCard/docs/images/classes.png)
 
-## Chơi ngay
+- Ba hồi 13 / 13 / 15 tầng, map phân nhánh theo seed; sáu boss có cơ chế riêng.
+- Xếp ba lá rồi Attack: ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3. Kế hoạch địch hiện sẵn và có tooltip.
+- 50 lá gốc và 48 bản nâng cấp: Tiêu hao, Giữ giáp, Xuyên giáp, năng lực, hồi sinh, lời nguyền.
+- 12 sự kiện thực, shop, nghỉ, 17 di vật và sáu thuốc.
+- Chiến Binh, Pháp Sư, Ninja; 45 kỹ năng, Lông Vũ lưu giữa run, Thử Thách 1–10 và 15 thành tựu.
+- Mỗi boss có bộ sáu lá riêng, chọn theo pha HP; ảnh/tên/chiêu riêng, không vào shop hoặc thưởng người chơi.
+- 379 PNG pastel, gồm 36 icon bài boss và chữ FIGHT nền trong suốt; nhạc ba hồi/chín cue, cinematic ba tuyệt kỹ.
+- Lưu/tải cả chiến dịch, ba RNG, triệu hồi, năng lực và lịch sử bài; profile riêng.
 
-Tải `UndergodCard-DxLib-Windows-x64.zip` trong [Releases](https://github.com/nqxw1kqw/undergod-card/releases), giải nén và chạy `UndergodCard.exe`. Giữ các thư mục `assets`, `data`, `licenses` cạnh EXE.
+## Chạy và build
 
-Chuột hoặc **1–9** chơi thẻ, **E** hết lượt, **U** dùng Sao Rơi khi đủ Nộ. Sau trận, **1–3** hoặc chuột chọn một lá thưởng. **Space / Esc** bỏ qua cinematic. **R / Enter** chơi lại từ trận đầu.
+Tải gói Windows tại [Releases](https://github.com/nqxw1kqw/undergod-card/releases), giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE. Gói chơi không cần cài Visual Studio hay SDK.
 
-## Mở và build
+Để sửa code, mở [UndergodCard.sln](UndergodCard/UndergodCard.sln) bằng VS2022, chọn UndergodCard, Release | x64. Cần bộ công cụ C++ cho desktop, MSVC v143, Windows SDK và DxLib Visual C++ x64 (mặc định C:\DxLib).
 
-1. Cài Visual Studio 2022 với bộ công cụ C++ cho desktop, MSVC v143 và Windows SDK.
-2. Cài bộ DxLib cho Visual C++ x64 tại `C:\DxLib`, hoặc chỉ định `DxLibDir` khi build.
-3. Mở [UndergodCard.sln](UndergodCard/UndergodCard.sln), chọn `UndergodCard`, `Release | x64` và nhấn F5.
+    .\UndergodCard\verify.ps1 -Configuration Release
+    .\UndergodCard\verify.ps1 -Configuration Debug
+    .\UndergodCard\bin\Release\CoreChecks.exe --simulate-stars 300
+    .\UndergodCard\package.ps1 -SkipBuild
 
-Từ thư mục gốc repo:
+Các script nhận -DxLibDir. Nhánh vẫn ở [PR #2](https://github.com/nqxw1kqw/undergod-card/pull/2), chưa merge main hoặc PR #1.
 
-```powershell
-.\UndergodCard\build.ps1 -Configuration Release
-.\UndergodCard\verify.ps1 -Configuration Release
-.\UndergodCard\package.ps1 -SkipBuild
-```
+## Điều khiển và tiến trình
 
-Với SDK ở vị trí khác:
+Chuột / 1–9 chọn lối và xếp bài; bấm lá trong hàng chờ để gỡ. Mỗi lá dùng một sao, đủ ba vị trí thì bấm Attack hoặc E. Có Chờ 1 sao khi thiếu bài. Tab hoặc bấm địch chọn mục tiêu; U tuyệt kỹ. F1/F2/F3 đổi x1/x2/x3, Space/Esc bỏ cinematic; Z/X/C/V dùng thuốc, F10 bật/tắt âm thanh. F6 lưu, F9 tiếp tục; có thể lưu cả hàng bài đang chọn. Các trang bộ bài và map hỗ trợ bánh xe, Page Up/Page Down và nút trang.
 
-```powershell
-.\UndergodCard\build.ps1 -DxLibDir 'D:\Libraries\DxLib'
-```
+profile.json giữ Lông Vũ/kỹ năng/thành tựu; save.json giữ hành trình. Chép cả hai khi chuyển máy. Schema session v2 không tương thích v1 cũ; khi tự mở, game giữ tệp cũ thành .invalid.* trước khi tạo mới.
 
-EXE sinh tại `UndergodCard/bin/Release/UndergodCard.exe`; ZIP sinh tại `UndergodCard/release/`. SDK DxLib được cài riêng, không kèm trong repo.
+## Kiểm chứng
 
-## Cấu trúc và kiểm chứng
+Xem [VALIDATION](UndergodCard/docs/VALIDATION.md), [hướng dẫn native](UndergodCard/README.md), [COMPLETION](UndergodCard/docs/COMPLETION.md) và [checklist](UndergodCard/docs/IMPLEMENTATION_CHECKLIST.md).
 
-`UndergodCard/` chứa solution, source, JSON, 50 asset runtime và bộ kiểm tra. Core combat tách khỏi renderer; tốc độ và animation không đổi kết quả damage hay RNG. Logic chạy không cần DxLib:
+Mục tiêu 25–35 phút/run và tỉ lệ thắng người chơi mới 40–50% còn cần đo bằng chơi thực. Smoke DxLib kiểm tra renderer và handler UI; không thay kiểm thử nhập liệu chuột/phím Windows.
 
-```bash
-make -C UndergodCard core
-```
-
-Bộ đó có **134 kiểm tra**, gồm seed 1337 tự đi hết bốn trận, giữ HP 47/40/40 rồi thắng trùm ở giai đoạn 2 với 21 HP. Trên Windows, `verify.ps1` build solution, chạy cùng bộ kiểm tra, rồi smoke DxLib tự chơi hành trình và yêu cầu `boss_phase=2`.
-
-Xem [hướng dẫn gameplay và source](UndergodCard/README.md), [kiểm chứng](UndergodCard/docs/VALIDATION.md) và [thành phần bên ngoài](UndergodCard/THIRD_PARTY.md).
-
-Repo chỉ chứa project native hiện tại. Bản web, kho RE, ảnh gốc sinh asset và công cụ hậu xử lý được lưu riêng tại máy phát triển; build và chạy game không phụ thuộc các bản tham khảo đó. File build, cache và gói EXE được bỏ qua bởi Git.
+Repo giữ nguồn native và asset runtime; kho RE, bản web, ảnh nguồn, save, SDK, cache và file build ở ngoài Git.

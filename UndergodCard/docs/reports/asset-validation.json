@@ -1,0 +1,16 @@
+{
+  "pngs": 379,
+  "cards": 50,
+  "boss_cards": 36,
+  "boss_decks": 6,
+  "skill_profiles": 98,
+  "body_animations": 18,
+  "fx_animations": 17,
+  "new_frames": 140,
+  "relics": 17,
+  "potions": 6,
+  "audio": 12,
+  "hashes": true,
+  "references": true,
+  "pcm": true
+}

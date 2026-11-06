@@ -1,9 +1,11 @@
 {
   "rewardChoices": 3,
-  "nodes": [
-    {"kind": "combat", "enemy": "froglet"},
-    {"kind": "combat", "enemy": "toad"},
-    {"kind": "elite", "enemy": "elite_frog"},
-    {"kind": "boss", "enemy": "frog"}
-  ]
+  "goldStart": 50,
+  "healPercent": 30,
+  "removePrice": 75,
+  "potionSlots": 3,
+  "boss": "frog",
+  "elite": "elite_frog",
+  "combats": ["froglet", "toad", "reed_frog", "moss_toad", "marsh_guard", "poison_frog"],
+  "elites": ["elite_frog", "elder_toad"]
 }

@@ -22,6 +22,6 @@ public:
     void Finish(){if(done_)return;done_=true;Impact();end_();}
     void Skip(){if(timeline_.skippable)Finish();}
     bool Active()const{return !done_;}
-    void Cancel(){done_=true;cue_={};impact_={};end_={};}
+    void Cancel(bool clear_callbacks=true){done_=true;if(clear_callbacks){cue_={};impact_={};end_={};}}
 };
 }

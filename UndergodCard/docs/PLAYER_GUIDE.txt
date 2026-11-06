@@ -1,0 +1,78 @@
+UNDERGOD CARD QUEST v1.3.1-preview — C++17 / DxLib / Windows x64
+
+Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
+Game mở ở 1600×900, tỉ lệ 16:9; giao diện và hàng bài đã căn theo khung mới.
+Không cần Visual Studio, DxLib, Python hay Node.js để chơi gói này.
+
+HOẠT ẢNH KỸ NĂNG
+Lao đâm hoặc được ném đi; phép bay tới mục tiêu rồi mới gây sát thương.
+Mỗi lá có động tác, vật phẩm hoặc hiệu ứng phù hợp; cả player và boss.
+Lớp khiên quanh người giữ khi còn giáp, lóe khi chặn và tan khi hết giáp.
+Lá đang dùng nằm dưới góc phải. Đòn cuối chạy hết hiệu ứng mới chuyển màn.
+
+HÀNH TRÌNH VÀ MỞ TRẬN
+Chọn một trong ba lớp rồi bắt đầu. Bấm điểm hợp lệ trên map: icon gà đi tới
+điểm đó, màn hình tối đen một nhịp rồi sáng lại ở khu vực mới.
+Trước mỗi trận, ảnh FIGHT từ phải chạy vào giữa rồi sang trái.
+Bài được chia lần lượt; đợi chia xong mới chọn bài.
+
+TURN STAR
+Mỗi phe có ba Turn Star mỗi vòng. Mỗi lá dùng một sao, thay giá năng lượng cũ.
+Bấm lá hoặc 1–9 để xếp vào hàng chờ. Chọn bài chưa tạo hiệu ứng.
+Bấm lá trong hàng chờ để gỡ; các lá còn lại giữ nguyên thứ tự.
+Đủ ba vị trí thì bấm Attack hoặc E:
+ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3.
+Lá hiện lớn giữa sân rồi áp hiệu ứng đúng nhịp chạm.
+Nút Chờ 1 sao dùng khi thiếu bài hoặc bị khóa; không tạo hiệu ứng.
+Khi một phe gục, phần chuỗi còn lại bị hủy.
+
+Địch chốt sẵn ba lá phía trên đầu. Rê chuột lên lá để xem thông tin.
+Không đổi kế hoạch địch khi chọn/gỡ bài hoặc rê chuột.
+Tab hoặc bấm địch để chọn mục tiêu trước khi xếp từng lá.
+Nếu mục tiêu đó đã gục khi thực hiện thì chuyển sang địch còn sống.
+Trong lúc chuỗi đang chạy không sửa hàng bài, dùng thuốc hay lưu/tải.
+
+BÀI VÀ HIỆU ỨNG
+Giáp chặn sát thương; Độc xuyên giáp đầu lượt rồi giảm.
+Suy Yếu giảm sát thương gây ra; Dễ Vỡ tăng sát thương nhận.
+Sức Mạnh cộng trên từng hit. Tiêu hao/năng lực rời bộ trong trận hiện tại.
+Bài rút từ hiệu ứng trong chuỗi được giữ để chọn ở vòng kế; tay tối đa 10 lá.
+Hiệu ứng năng lượng cũ trên bài/thuốc đổi thành rút bài.
+Năng lượng nền từ di vật/kỹ năng đổi thành thêm lựa chọn bài đầu vòng.
+Nâng cấp trước đây chỉ giảm giá được đổi thành thêm 3 giáp khi dùng.
+
+NHÂN VẬT VÀ TUYỆT KỸ
+Chiến Binh: 50 HP, rút 5; Sao Rơi phóng giáo lên trời rồi rơi vào địch.
+Pháp Sư: 40 HP, rút 6; Bão Lông đánh 12 ×4 ngẫu nhiên.
+Ninja: 45 HP, rút 5; Ảnh Phân lặp tối đa ba lá gần nhất.
+U dùng tuyệt kỹ khi đủ Nộ trong giai đoạn chuẩn bị.
+Space/Esc bỏ cinematic; sát thương chỉ áp một lần.
+Z/X/C/V dùng thuốc trong giai đoạn chuẩn bị.
+F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ; run mới luôn bắt đầu ở x1.
+F10/nút nhạc bật tắt âm thanh.
+
+BA HỒI VÀ TRÙM
+Ba hồi 13 / 13 / 15 tầng, gồm trận, tinh anh, sự kiện, shop, nghỉ và boss.
+Ếch gọi Nòng Nọc và khóa bài ở vòng chuẩn bị sau.
+Rắn có độc/lột da/siết. Diều Hâu đang bay giảm sát thương cận chiến.
+Hổ tăng sức mạnh dưới 50% HP, chờ một vòng rồi vồ ở vòng tiếp theo.
+Cáo tạo ảo ảnh. Undergod sao chép, hút Nộ và đếm ngược Tận Thế.
+Ba sao địch được chia cho cả phe, gồm boss và viện binh.
+Mỗi boss có sáu lá riêng với ảnh/tên/chiêu riêng, không nằm trong bộ bài người chơi.
+Boss chốt ba lá từ bộ của mình theo pha HP. Rê chuột xem hiệu ứng trước Attack.
+Hổ mở pha Bùng Lửa bằng tụ lực; sau cú vồ có thể chọn lại các chiêu khác.
+Gương Hắc Ảnh của Undergod giữ ảnh riêng và ghi rõ lá được sao chép.
+
+SHOP / NGHỈ / SỰ KIỆN / LƯU
+Chuột/1–9 chọn lối hoặc lựa chọn. Shop: mua đồ, gỡ bài; E/Esc rời.
+Nghỉ: H hồi HP hoặc chọn lá nâng cấp. Lăn chuột/Page Up/Down đổi trang.
+F6 lưu, F9 tải. Có thể lưu khi mới xếp một hoặc hai lá; giữ nguyên kế hoạch.
+Không lưu/tải lúc di chuyển, chuyển cảnh, chia bài hoặc thực hiện hành động.
+Session v2 cũ vẫn đọc được và chuyển sang luật mới mà không mất bộ bài.
+Bản v1.1 giữ nguyên hàng địch đã công bố và RNG, nhận ảnh boss riêng khi tải.
+save.json giữ hành trình; profile.json giữ Lông Vũ/kỹ năng/thành tựu.
+Chép cả hai khi chuyển máy. R/Enter/Chơi lại mở menu lớp.
+Đấu thử Hổ Vương ở menu hoặc --boss tiger không ghi đè tiến trình.
+
+Bản preview cần chơi thử để chỉnh cảm giác và cân bằng với luật ba sao.
+Thông tin nguồn ở licenses/. Bản HTML/website là project riêng.

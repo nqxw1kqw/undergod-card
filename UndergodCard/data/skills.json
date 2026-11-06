@@ -1,0 +1,583 @@
+[
+  {
+    "id": "chick_spear_1",
+    "class": "chick",
+    "branch": "spear",
+    "tier": 1,
+    "cost": 7,
+    "name": "Giáo 1",
+    "description": "+1 sát thương Chọc Giáo",
+    "bonuses": {
+      "spear_bonus": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_spear_2",
+    "class": "chick",
+    "branch": "spear",
+    "tier": 2,
+    "cost": 10,
+    "name": "Giáo 2",
+    "description": "+2 HP tối đa",
+    "bonuses": {
+      "max_hp": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_spear_3",
+    "class": "chick",
+    "branch": "spear",
+    "tier": 3,
+    "cost": 13,
+    "name": "Giáo 3",
+    "description": "+5 sát thương đòn tấn công thứ ba/lượt",
+    "bonuses": {
+      "third_attack": 5
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_spear_4",
+    "class": "chick",
+    "branch": "spear",
+    "tier": 4,
+    "cost": 16,
+    "name": "Giáo 4",
+    "description": "+1 sát thương mỗi hit",
+    "bonuses": {
+      "damage": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_spear_5",
+    "class": "chick",
+    "branch": "spear",
+    "tier": 5,
+    "cost": 19,
+    "name": "Giáo 5",
+    "description": "Mở lá năng lực trong phần thưởng. Mở Thánh Giáo.",
+    "bonuses": {},
+    "unlockCard": "holy_spear"
+  },
+  {
+    "id": "chick_shield_1",
+    "class": "chick",
+    "branch": "shield",
+    "tier": 1,
+    "cost": 7,
+    "name": "Khiên 1",
+    "description": "+5 giáp đầu trận",
+    "bonuses": {
+      "start_block": 5
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_shield_2",
+    "class": "chick",
+    "branch": "shield",
+    "tier": 2,
+    "cost": 10,
+    "name": "Khiên 2",
+    "description": "+3 HP tối đa",
+    "bonuses": {
+      "max_hp": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_shield_3",
+    "class": "chick",
+    "branch": "shield",
+    "tier": 3,
+    "cost": 13,
+    "name": "Khiên 3",
+    "description": "+3 giáp giữ qua lượt",
+    "bonuses": {
+      "retain_block": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_shield_4",
+    "class": "chick",
+    "branch": "shield",
+    "tier": 4,
+    "cost": 16,
+    "name": "Khiên 4",
+    "description": "+3 HP hồi thêm khi nghỉ",
+    "bonuses": {
+      "rest_bonus": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_shield_5",
+    "class": "chick",
+    "branch": "shield",
+    "tier": 5,
+    "cost": 19,
+    "name": "Khiên 5",
+    "description": "Mở lá năng lực trong phần thưởng. Mở Pháo Đài Gà.",
+    "bonuses": {},
+    "unlockCard": "fortress"
+  },
+  {
+    "id": "chick_star_1",
+    "class": "chick",
+    "branch": "star",
+    "tier": 1,
+    "cost": 7,
+    "name": "Sao 1",
+    "description": "+10 Nộ đầu trận",
+    "bonuses": {
+      "start_rage": 10
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_star_2",
+    "class": "chick",
+    "branch": "star",
+    "tier": 2,
+    "cost": 10,
+    "name": "Sao 2",
+    "description": "+2 HP tối đa",
+    "bonuses": {
+      "max_hp": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_star_3",
+    "class": "chick",
+    "branch": "star",
+    "tier": 3,
+    "cost": 13,
+    "name": "Sao 3",
+    "description": "+10 sát thương mỗi hit tuyệt kỹ",
+    "bonuses": {
+      "ultimate_bonus": 10
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_star_4",
+    "class": "chick",
+    "branch": "star",
+    "tier": 4,
+    "cost": 16,
+    "name": "Sao 4",
+    "description": "+10 Nộ đầu trận",
+    "bonuses": {
+      "start_rage": 10
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "chick_star_5",
+    "class": "chick",
+    "branch": "star",
+    "tier": 5,
+    "cost": 19,
+    "name": "Sao 5",
+    "description": "+2 Dễ Vỡ sau tuyệt kỹ Mở Cộng Hưởng Sao.",
+    "bonuses": {
+      "ultimate_vulnerable": 2
+    },
+    "unlockCard": "resonance"
+  },
+  {
+    "id": "mage_arcane_1",
+    "class": "mage",
+    "branch": "arcane",
+    "tier": 1,
+    "cost": 7,
+    "name": "Phép 1",
+    "description": "+1 sát thương mỗi hit",
+    "bonuses": {
+      "damage": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_arcane_2",
+    "class": "mage",
+    "branch": "arcane",
+    "tier": 2,
+    "cost": 10,
+    "name": "Phép 2",
+    "description": "+2 HP tối đa",
+    "bonuses": {
+      "max_hp": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_arcane_3",
+    "class": "mage",
+    "branch": "arcane",
+    "tier": 3,
+    "cost": 13,
+    "name": "Phép 3",
+    "description": "+1 lá rút mỗi lượt",
+    "bonuses": {
+      "draw": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_arcane_4",
+    "class": "mage",
+    "branch": "arcane",
+    "tier": 4,
+    "cost": 16,
+    "name": "Phép 4",
+    "description": "+2 sát thương mỗi hit tuyệt kỹ",
+    "bonuses": {
+      "ultimate_bonus": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_arcane_5",
+    "class": "mage",
+    "branch": "arcane",
+    "tier": 5,
+    "cost": 19,
+    "name": "Phép 5",
+    "description": "+2 sát thương mỗi hit tuyệt kỹ",
+    "bonuses": {
+      "ultimate_bonus": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_poison_1",
+    "class": "mage",
+    "branch": "poison",
+    "tier": 1,
+    "cost": 7,
+    "name": "Độc 1",
+    "description": "+1 Độc mỗi lần áp từ bài",
+    "bonuses": {
+      "poison_bonus": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_poison_2",
+    "class": "mage",
+    "branch": "poison",
+    "tier": 2,
+    "cost": 10,
+    "name": "Độc 2",
+    "description": "+2 HP tối đa",
+    "bonuses": {
+      "max_hp": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_poison_3",
+    "class": "mage",
+    "branch": "poison",
+    "tier": 3,
+    "cost": 13,
+    "name": "Độc 3",
+    "description": "+4 giáp đầu trận",
+    "bonuses": {
+      "start_block": 4
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_poison_4",
+    "class": "mage",
+    "branch": "poison",
+    "tier": 4,
+    "cost": 16,
+    "name": "Độc 4",
+    "description": "+1 Độc mỗi lần áp từ bài",
+    "bonuses": {
+      "poison_bonus": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_poison_5",
+    "class": "mage",
+    "branch": "poison",
+    "tier": 5,
+    "cost": 19,
+    "name": "Độc 5",
+    "description": "+4 sát thương lá tấn công đầu trận",
+    "bonuses": {
+      "first_attack": 4
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_mana_1",
+    "class": "mage",
+    "branch": "mana",
+    "tier": 1,
+    "cost": 7,
+    "name": "Mana 1",
+    "description": "+1 sức chứa Mana",
+    "bonuses": {
+      "max_mana": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_mana_2",
+    "class": "mage",
+    "branch": "mana",
+    "tier": 2,
+    "cost": 10,
+    "name": "Mana 2",
+    "description": "+3 HP hồi thêm khi nghỉ",
+    "bonuses": {
+      "rest_bonus": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_mana_3",
+    "class": "mage",
+    "branch": "mana",
+    "tier": 3,
+    "cost": 13,
+    "name": "Mana 3",
+    "description": "+15 Nộ đầu trận",
+    "bonuses": {
+      "start_rage": 15
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_mana_4",
+    "class": "mage",
+    "branch": "mana",
+    "tier": 4,
+    "cost": 16,
+    "name": "Mana 4",
+    "description": "+3 HP tối đa",
+    "bonuses": {
+      "max_hp": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "mage_mana_5",
+    "class": "mage",
+    "branch": "mana",
+    "tier": 5,
+    "cost": 19,
+    "name": "Mana 5",
+    "description": "+1 năng lượng mỗi lượt",
+    "bonuses": {
+      "energy": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_blade_1",
+    "class": "ninja",
+    "branch": "blade",
+    "tier": 1,
+    "cost": 7,
+    "name": "Dao 1",
+    "description": "+1 sát thương mỗi hit",
+    "bonuses": {
+      "damage": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_blade_2",
+    "class": "ninja",
+    "branch": "blade",
+    "tier": 2,
+    "cost": 10,
+    "name": "Dao 2",
+    "description": "+2 HP tối đa",
+    "bonuses": {
+      "max_hp": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_blade_3",
+    "class": "ninja",
+    "branch": "blade",
+    "tier": 3,
+    "cost": 13,
+    "name": "Dao 3",
+    "description": "+5 sát thương đòn tấn công thứ ba/lượt",
+    "bonuses": {
+      "third_attack": 5
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_blade_4",
+    "class": "ninja",
+    "branch": "blade",
+    "tier": 4,
+    "cost": 16,
+    "name": "Dao 4",
+    "description": "+3 sát thương lá tấn công đầu trận",
+    "bonuses": {
+      "first_attack": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_blade_5",
+    "class": "ninja",
+    "branch": "blade",
+    "tier": 5,
+    "cost": 19,
+    "name": "Dao 5",
+    "description": "+3 sát thương đòn tấn công thứ ba/lượt",
+    "bonuses": {
+      "third_attack": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_mist_1",
+    "class": "ninja",
+    "branch": "mist",
+    "tier": 1,
+    "cost": 7,
+    "name": "Khói 1",
+    "description": "+5 giáp đầu trận",
+    "bonuses": {
+      "start_block": 5
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_mist_2",
+    "class": "ninja",
+    "branch": "mist",
+    "tier": 2,
+    "cost": 10,
+    "name": "Khói 2",
+    "description": "+3 HP tối đa",
+    "bonuses": {
+      "max_hp": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_mist_3",
+    "class": "ninja",
+    "branch": "mist",
+    "tier": 3,
+    "cost": 13,
+    "name": "Khói 3",
+    "description": "+3 giáp giữ qua lượt",
+    "bonuses": {
+      "retain_block": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_mist_4",
+    "class": "ninja",
+    "branch": "mist",
+    "tier": 4,
+    "cost": 16,
+    "name": "Khói 4",
+    "description": "+3 HP hồi thêm khi nghỉ",
+    "bonuses": {
+      "rest_bonus": 3
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_mist_5",
+    "class": "ninja",
+    "branch": "mist",
+    "tier": 5,
+    "cost": 19,
+    "name": "Khói 5",
+    "description": "+2 giáp mỗi lần chơi lá thủ",
+    "bonuses": {
+      "block": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_shadow_1",
+    "class": "ninja",
+    "branch": "shadow",
+    "tier": 1,
+    "cost": 7,
+    "name": "Ảnh 1",
+    "description": "+10 Nộ đầu trận",
+    "bonuses": {
+      "start_rage": 10
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_shadow_2",
+    "class": "ninja",
+    "branch": "shadow",
+    "tier": 2,
+    "cost": 10,
+    "name": "Ảnh 2",
+    "description": "+2 HP tối đa",
+    "bonuses": {
+      "max_hp": 2
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_shadow_3",
+    "class": "ninja",
+    "branch": "shadow",
+    "tier": 3,
+    "cost": 13,
+    "name": "Ảnh 3",
+    "description": "+10 Nộ giảm cho tuyệt kỹ",
+    "bonuses": {
+      "ultimate_discount": 10
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_shadow_4",
+    "class": "ninja",
+    "branch": "shadow",
+    "tier": 4,
+    "cost": 16,
+    "name": "Ảnh 4",
+    "description": "+1 lá rút mỗi lượt",
+    "bonuses": {
+      "draw": 1
+    },
+    "unlockCard": ""
+  },
+  {
+    "id": "ninja_shadow_5",
+    "class": "ninja",
+    "branch": "shadow",
+    "tier": 5,
+    "cost": 19,
+    "name": "Ảnh 5",
+    "description": "+10 Nộ giảm cho tuyệt kỹ",
+    "bonuses": {
+      "ultimate_discount": 10
+    },
+    "unlockCard": ""
+  }
+]

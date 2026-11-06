@@ -1,0 +1,8 @@
+[
+  {"id": "serum", "name": "Nước Cam Gà", "price": 40, "description": "Hồi 15 HP.", "effects": [{"op": "heal", "amount": 15, "target": "self"}]},
+  {"id": "smoke_shield", "name": "Sữa Sắt", "price": 36, "description": "Nhận 10 giáp.", "effects": [{"op": "block", "amount": 10, "target": "self"}]},
+  {"id": "strength_tonic", "name": "Rượu Nộ", "price": 48, "description": "Nhận 40 Nộ.", "effects": [{"op": "rage", "amount": 40, "target": "self"}]},
+  {"id": "poison_vial", "name": "Bùn Độc", "price": 42, "description": "Gây 8 Độc lên địch.", "effects": [{"op": "apply", "status": "poison", "amount": 8, "target": "enemy"}]},
+  {"id": "holy_water", "name": "Lọ Thời Gian", "price": 30, "description": "Nhận 2 năng lượng lượt này.", "effects": [{"op": "energy", "amount": 2, "target": "self"}]},
+  {"id": "weak_brew", "name": "Bột Lông", "price": 38, "description": "Rút 3 lá.", "effects": [{"op": "draw", "amount": 3, "target": "self"}]}
+]

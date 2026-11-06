@@ -1,0 +1,8 @@
+{
+  "columns": 3,
+  "floors": 12,
+  "eliteMinFloor": 2,
+  "weights": {"combat": 45, "elite": 12, "event": 22, "shop": 8, "rest": 13},
+  "combatGold": [15, 25],
+  "eliteGold": [30, 40]
+}

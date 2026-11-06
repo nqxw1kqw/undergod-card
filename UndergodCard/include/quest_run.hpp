@@ -2,33 +2,70 @@
 #include "quest_core.hpp"
 
 namespace undergod {
-// Linear route for v0.2. MapNode::next is a single edge today; a later MapGen
-// can fill a branching graph of combat, elite, event, shop, rest and boss nodes
-// without changing this state. relics, potions, gold and class_id are kept so
-// those systems can attach without another save-shape change.
+enum class Place { Map, Fight, Reward, Event, Shop, Rest, RelicReward, CardSelect, RelicSelect };
+enum class Ware { Card, Relic, Potion };
+enum class AutoKind { None, Node, Reward, Event, Buy, Remove, Leave, Heal, Upgrade, Potion, Play, EndTurn, Ultimate, Relic, SelectCard, TradeRelic, Target, Wait };
+
 struct MapNode {
     NodeKind kind=NodeKind::Combat;
-    std::string encounter_id;
+    std::string encounter_id,event_id;
+    int floor=0,column=0,reward_gold=0;
+    bool visited=false;
     std::vector<int> next;
 };
 
+struct ShopItem { Ware ware=Ware::Card; std::string id; int price=0; bool sold=false; };
+struct AutoStep { AutoKind kind=AutoKind::None; int index=0; };
+
 struct RunState {
     unsigned seed=1337;
-    int index=0;
-    int hp=50,max_hp=50,rage=0,gold=0;
+    int index=-1,node=-1;
+    int hp=50,max_hp=50,rage=0,gold=0,potion_slots=2;
     std::string class_id="chick";
+    std::string event_title,event_text;
     std::vector<std::string> deck,relics,potions,rewards;
+    std::vector<EventChoice> event_choices;
     std::vector<MapNode> map;
-    bool pending_reward=false,victory=false,defeat=false,fight_resolved=false;
+    std::vector<int> options;
+    std::vector<ShopItem> shop;
+    Place place=Place::Fight;
+    bool pending_reward=false,victory=false,defeat=false,fight_resolved=false,rest_used=false;
+    int act=0,challenge=0,trial_limit=0,reward_multiplier=1,fog_until=-1,sequence_gold=0;
+    bool advance_act=false,reward_from_event=false,sequence_relic=false,meta_claimed=false,phoenix_spent=false;
+    std::string run_id,active_encounter_id,selection,last_outcome;
+    std::vector<std::string> skills,relic_rewards,sequence,defeated_bosses;
+    std::map<std::string,int> bonuses,metrics;
 };
 
-std::vector<MapNode> BuildRoute(const std::vector<RouteNode>& route);
+std::vector<MapNode> GenerateMap(const Config& config,unsigned seed,int act=0);
 const EnemyDef& FindEnemy(const Config& config,const std::string& id);
+const CardDef& FindCard(const Config& config,const std::string& id);
+const RelicDef& FindRelic(const Config& config,const std::string& id);
+const PotionDef& FindPotion(const Config& config,const std::string& id);
 uint32_t EncounterSeed(unsigned seed,int index);
-void StartRun(RunState& run,Combat& combat,unsigned seed);
+CombatMods ModsFor(const RunState& run,const Config& config);
+void StartRun(RunState& run,Combat& combat,unsigned seed,const std::string& class_id="chick",int challenge=0,const std::vector<std::string>& skills={});
+int RunBonus(const RunState& run,const std::string& key);
+std::map<std::string,int> ChallengeBonuses(const Config& config,int level);
+bool ChooseRelicReward(RunState& run,const Config& config,int index);
+bool ChooseSelectedCard(RunState& run,const Config& config,int index);
+bool ChooseTradeRelic(RunState& run,const Config& config,int index);
+void CancelSelection(RunState& run);
 void ObserveCombat(RunState& run,Combat& combat);
+bool ChooseNode(RunState& run,Combat& combat,int option);
 bool ChooseReward(RunState& run,Combat& combat,int index);
+bool ChooseEvent(RunState& run,const Config& config,int index);
+bool ChooseEvent(RunState& run,Combat& combat,int index);
+bool BuyItem(RunState& run,const Config& config,int index);
+bool RemoveCard(RunState& run,const Config& config,int index);
+void LeaveShop(RunState& run);
+bool RestHeal(RunState& run,const Config& config);
+int RestHealAmount(const RunState& run,const Config& config);
+bool CanChooseEvent(const RunState& run,int index);
+bool UpgradeCard(RunState& run,const Config& config,int index);
+bool DrinkPotion(RunState& run,Combat& combat,int index);
 int SuggestCard(const Combat& combat);
 int SuggestReward(const RunState& run,const Config& config);
+AutoStep SuggestAuto(const RunState& run,const Combat& combat);
 std::string NextEncounterName(const RunState& run,const Config& config);
 }

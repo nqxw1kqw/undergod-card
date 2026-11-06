@@ -3,13 +3,14 @@
     "id": "froglet",
     "name": "Ếch Con",
     "role": "combat",
-    "maxHp": 22,
+    "maxHp": 25,
     "attackChance": 0.75,
     "minDamage": 6,
     "maxDamage": 8,
     "block": 3,
     "openingAttack": true,
-    "maxConsecutiveGuards": 1
+    "maxConsecutiveGuards": 1,
+    "sprite": "froglet"
   },
   {
     "id": "toad",
@@ -19,48 +20,547 @@
     "openingAttack": true,
     "maxConsecutiveGuards": 1,
     "patterns": [
-      {"kind": "attack", "minDamage": 6, "maxDamage": 9, "weight": 3},
-      {"kind": "attack", "minDamage": 5, "maxDamage": 7, "status": "weak", "amount": 1, "weight": 2},
-      {"kind": "defend", "block": 5, "weight": 1}
-    ]
+      {
+        "kind": "attack",
+        "minDamage": 6,
+        "maxDamage": 9,
+        "weight": 3
+      },
+      {
+        "kind": "attack",
+        "minDamage": 5,
+        "maxDamage": 7,
+        "status": "weak",
+        "amount": 1,
+        "weight": 2
+      },
+      {
+        "kind": "defend",
+        "block": 5,
+        "weight": 1
+      }
+    ],
+    "sprite": "toad"
+  },
+  {
+    "id": "reed_frog",
+    "name": "Ếch Lau",
+    "role": "combat",
+    "maxHp": 28,
+    "minFloor": 1,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 5,
+        "maxDamage": 8,
+        "weight": 3
+      },
+      {
+        "kind": "buff",
+        "status": "strength",
+        "amount": 1,
+        "weight": 1
+      }
+    ],
+    "sprite": "reed_frog"
+  },
+  {
+    "id": "moss_toad",
+    "name": "Cóc Rêu",
+    "role": "combat",
+    "maxHp": 36,
+    "minFloor": 2,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 6,
+        "maxDamage": 8,
+        "weight": 3
+      },
+      {
+        "kind": "defend",
+        "block": 9,
+        "weight": 2
+      }
+    ],
+    "sprite": "moss_toad"
+  },
+  {
+    "id": "marsh_guard",
+    "name": "Cóc Đầm Lầy",
+    "role": "combat",
+    "maxHp": 40,
+    "minFloor": 4,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 7,
+        "maxDamage": 9,
+        "weight": 3
+      },
+      {
+        "kind": "debuff",
+        "status": "vulnerable",
+        "amount": 1,
+        "weight": 1
+      }
+    ],
+    "sprite": "marsh_guard"
+  },
+  {
+    "id": "poison_frog",
+    "name": "Ếch Bùn Độc",
+    "role": "combat",
+    "maxHp": 32,
+    "minFloor": 3,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 5,
+        "maxDamage": 7,
+        "status": "poison",
+        "amount": 1,
+        "weight": 3
+      },
+      {
+        "kind": "defend",
+        "block": 4,
+        "weight": 1
+      }
+    ],
+    "sprite": "poison_frog"
+  },
+  {
+    "id": "elder_toad",
+    "name": "Cóc Trưởng Lão",
+    "role": "elite",
+    "maxHp": 68,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 9,
+        "maxDamage": 13,
+        "weight": 3
+      },
+      {
+        "kind": "buff",
+        "status": "strength",
+        "amount": 2,
+        "block": 5,
+        "weight": 1
+      }
+    ],
+    "sprite": "elder_toad"
   },
   {
     "id": "elite_frog",
     "name": "Ếch Tinh Anh",
     "role": "elite",
-    "maxHp": 36,
+    "maxHp": 60,
     "openingAttack": true,
     "maxConsecutiveGuards": 1,
     "patterns": [
-      {"kind": "attack", "minDamage": 7, "maxDamage": 10, "weight": 3},
-      {"kind": "attack", "minDamage": 5, "maxDamage": 7, "status": "poison", "amount": 2, "weight": 2},
-      {"kind": "defend", "block": 6, "weight": 1}
-    ]
+      {
+        "kind": "attack",
+        "minDamage": 7,
+        "maxDamage": 10,
+        "weight": 3
+      },
+      {
+        "kind": "attack",
+        "minDamage": 5,
+        "maxDamage": 7,
+        "status": "poison",
+        "amount": 2,
+        "weight": 2
+      },
+      {
+        "kind": "defend",
+        "block": 6,
+        "weight": 1
+      }
+    ],
+    "sprite": "elite_frog"
   },
   {
     "id": "frog",
     "name": "Ếch Vương",
     "role": "boss",
-    "maxHp": 46,
+    "sprite": "frog_king",
+    "mechanic": "frog",
+    "maxHp": 150,
     "openingAttack": true,
     "maxConsecutiveGuards": 1,
     "patterns": [
-      {"kind": "attack", "minDamage": 8, "maxDamage": 11, "weight": 3},
-      {"kind": "defend", "block": 8, "weight": 1},
-      {"kind": "attack", "minDamage": 6, "maxDamage": 9, "status": "vulnerable", "amount": 1, "weight": 2}
+      {
+        "kind": "attack",
+        "minDamage": 8,
+        "maxDamage": 13,
+        "weight": 3
+      },
+      {
+        "kind": "defend",
+        "block": 6,
+        "weight": 1
+      }
     ],
     "phases": [
       {
         "name": "Ếch Vương Cuồng Nộ",
-        "maxHp": 42,
-        "strength": 2,
+        "maxHp": 150,
+        "threshold": 50,
+        "patterns": [
+          {
+            "kind": "attack",
+            "minDamage": 10,
+            "maxDamage": 14,
+            "weight": 3
+          },
+          {
+            "kind": "defend",
+            "block": 8,
+            "weight": 1
+          }
+        ],
         "openingAttack": true,
         "maxConsecutiveGuards": 1,
+        "lockCard": true,
+        "summon": "tadpole",
+        "summonCount": 2
+      }
+    ]
+  },
+  {
+    "id": "snake",
+    "name": "Rắn Bùn Mẹ",
+    "role": "boss",
+    "sprite": "snake",
+    "mechanic": "snake",
+    "maxHp": 180,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 9,
+        "maxDamage": 13,
+        "weight": 3,
+        "status": "poison",
+        "amount": 2
+      },
+      {
+        "kind": "debuff",
+        "status": "poison",
+        "amount": 3,
+        "weight": 1
+      }
+    ],
+    "phases": [
+      {
+        "name": "Rắn Bùn Lột Da",
+        "maxHp": 180,
+        "threshold": 65,
         "patterns": [
-          {"kind": "attack", "minDamage": 8, "maxDamage": 12, "weight": 3},
-          {"kind": "attack", "minDamage": 7, "maxDamage": 10, "status": "weak", "amount": 2, "weight": 2},
-          {"kind": "buff", "status": "strength", "amount": 2, "block": 6, "weight": 1}
-        ]
+          {
+            "kind": "attack",
+            "minDamage": 11,
+            "maxDamage": 15,
+            "weight": 3
+          },
+          {
+            "kind": "buff",
+            "status": "strength",
+            "amount": 2,
+            "block": 5,
+            "weight": 1
+          }
+        ],
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1,
+        "cleanse": true,
+        "strength": 3
+      },
+      {
+        "name": "Siết Nghẹt",
+        "maxHp": 180,
+        "threshold": 25,
+        "patterns": [
+          {
+            "kind": "charge",
+            "minDamage": 25,
+            "maxDamage": 30,
+            "chargeTurns": 2,
+            "weight": 2
+          },
+          {
+            "kind": "attack",
+            "minDamage": 12,
+            "maxDamage": 16,
+            "weight": 3
+          }
+        ],
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1,
+        "constrict": 3
+      }
+    ]
+  },
+  {
+    "id": "hawk",
+    "name": "Diều Hâu Bão",
+    "role": "boss",
+    "sprite": "hawk",
+    "mechanic": "hawk",
+    "airborne": true,
+    "maxHp": 160,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "multi",
+        "minDamage": 5,
+        "maxDamage": 7,
+        "hits": 2,
+        "weight": 3
+      },
+      {
+        "kind": "attack",
+        "minDamage": 12,
+        "maxDamage": 16,
+        "weight": 3
+      },
+      {
+        "kind": "buff",
+        "status": "strength",
+        "amount": 1,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "fox",
+    "name": "Cáo Thầy Phù",
+    "role": "boss",
+    "sprite": "fox",
+    "mechanic": "fox",
+    "maxHp": 220,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 10,
+        "maxDamage": 14,
+        "weight": 3
+      },
+      {
+        "kind": "curse",
+        "weight": 2
+      }
+    ],
+    "phases": [
+      {
+        "name": "Cáo Ảo Ảnh",
+        "maxHp": 220,
+        "threshold": 50,
+        "patterns": [
+          {
+            "kind": "attack",
+            "minDamage": 12,
+            "maxDamage": 16,
+            "weight": 3
+          },
+          {
+            "kind": "curse",
+            "weight": 1
+          }
+        ],
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1,
+        "summon": "fox_clone",
+        "summonCount": 2
+      }
+    ]
+  },
+  {
+    "id": "undergod",
+    "name": "Undergod",
+    "role": "boss",
+    "sprite": "undergod",
+    "mechanic": "undergod",
+    "maxHp": 300,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "mimic",
+        "minDamage": 10,
+        "maxDamage": 14,
+        "weight": 4
+      },
+      {
+        "kind": "defend",
+        "block": 10,
+        "weight": 1
+      }
+    ],
+    "phases": [
+      {
+        "name": "Undergod Hút Nộ",
+        "maxHp": 300,
+        "threshold": 66,
+        "patterns": [
+          {
+            "kind": "drain",
+            "minDamage": 10,
+            "maxDamage": 14,
+            "amount": 20,
+            "weight": 3
+          },
+          {
+            "kind": "attack",
+            "minDamage": 14,
+            "maxDamage": 18,
+            "weight": 3
+          }
+        ],
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1
+      },
+      {
+        "name": "Tận Thế",
+        "maxHp": 300,
+        "threshold": 33,
+        "patterns": [
+          {
+            "kind": "attack",
+            "minDamage": 16,
+            "maxDamage": 20,
+            "weight": 3
+          },
+          {
+            "kind": "multi",
+            "minDamage": 6,
+            "maxDamage": 8,
+            "hits": 2,
+            "weight": 2
+          }
+        ],
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1,
+        "doom": 5
+      }
+    ]
+  },
+  {
+    "id": "tiger",
+    "name": "Hổ Vương Xích Diệm",
+    "role": "boss",
+    "sprite": "tiger",
+    "mechanic": "tiger",
+    "maxHp": 200,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 1,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 10,
+        "maxDamage": 13,
+        "weight": 3
+      },
+      {
+        "kind": "multi",
+        "minDamage": 4,
+        "maxDamage": 6,
+        "hits": 2,
+        "weight": 2
+      },
+      {
+        "kind": "buff",
+        "status": "strength",
+        "amount": 2,
+        "block": 6,
+        "weight": 1
+      }
+    ],
+    "phases": [
+      {
+        "name": "Hổ Vương Bùng Lửa",
+        "maxHp": 200,
+        "threshold": 50,
+        "patterns": [
+          {
+            "kind": "charge",
+            "minDamage": 25,
+            "maxDamage": 28,
+            "chargeTurns": 2,
+            "weight": 1
+          }
+        ],
+        "openingAttack": true,
+        "maxConsecutiveGuards": 1,
+        "strength": 2
+      }
+    ]
+  },
+  {
+    "id": "tadpole",
+    "name": "Nòng Nọc",
+    "role": "summon",
+    "sprite": "tadpole",
+    "maxHp": 12,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 0,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 3,
+        "maxDamage": 4,
+        "weight": 3
+      }
+    ]
+  },
+  {
+    "id": "fox_clone",
+    "name": "Phân Thân Cáo",
+    "role": "summon",
+    "sprite": "fox",
+    "maxHp": 1,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 0,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 1,
+        "maxDamage": 2,
+        "weight": 3
+      }
+    ]
+  },
+  {
+    "id": "circus_dummy",
+    "name": "Võ Sĩ Xiếc",
+    "role": "combat",
+    "sprite": "elite_frog",
+    "maxHp": 30,
+    "openingAttack": true,
+    "maxConsecutiveGuards": 0,
+    "patterns": [
+      {
+        "kind": "attack",
+        "minDamage": 4,
+        "maxDamage": 6,
+        "weight": 3
       }
     ]
   }

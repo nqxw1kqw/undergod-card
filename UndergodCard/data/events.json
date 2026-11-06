@@ -1,0 +1,223 @@
+[
+  {
+    "id": "well",
+    "title": "Giếng Ước",
+    "text": "Một đồng xu đổi lấy cơ hội. Hay uống nước và bước tiếp?",
+    "choices": [
+      {
+        "label": "Ném 30 vàng",
+        "outcome": "50% nhận một di vật thường.",
+        "gold": -30,
+        "action": "wish",
+        "chance": 0.5
+      },
+      {
+        "label": "Uống nước",
+        "outcome": "Hồi 15 HP.",
+        "heal": 15
+      },
+      {
+        "label": "Bỏ qua",
+        "outcome": "Không thay đổi."
+      }
+    ]
+  },
+  {
+    "id": "forge",
+    "title": "Lò Rèn Cũ",
+    "text": "Ngọn lửa còn đủ cho một lần rèn.",
+    "choices": [
+      {
+        "label": "Nâng cấp một lá",
+        "outcome": "Chọn lá muốn nâng cấp.",
+        "action": "select_upgrade"
+      },
+      {
+        "label": "Bỏ một lá",
+        "outcome": "Chọn lá muốn gỡ.",
+        "action": "select_remove"
+      },
+      {
+        "label": "Rèn giáo",
+        "outcome": "Mọi Chọc Giáo +1 sát thương. Mất 8 HP.",
+        "damage": 8,
+        "action": "forge_spear",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "id": "egg",
+    "title": "Ổ Trứng Lạ",
+    "text": "Quả trứng tỏa ánh vàng, kèm một cái bóng.",
+    "choices": [
+      {
+        "label": "Ấp trứng",
+        "outcome": "Nhận một lá Huyền thoại và một Bùn Lầy.",
+        "action": "egg"
+      },
+      {
+        "label": "Ăn trứng",
+        "outcome": "Tăng 6 HP tối đa.",
+        "maxHp": 6
+      }
+    ]
+  },
+  {
+    "id": "merchant",
+    "title": "Thương Nhân Rong",
+    "text": "Thương nhân muốn đổi một món đồ của bạn lấy hai món khác.",
+    "choices": [
+      {
+        "label": "Đổi một di vật",
+        "outcome": "Chọn di vật để đổi lấy hai di vật thường.",
+        "action": "select_trade"
+      },
+      {
+        "label": "Bỏ đi",
+        "outcome": "Không thay đổi."
+      }
+    ]
+  },
+  {
+    "id": "lost_frog",
+    "title": "Ếch Con Lạc",
+    "text": "Một chú ếch con đang tìm đường về nhà.",
+    "choices": [
+      {
+        "label": "Đưa về",
+        "outcome": "Có đồng hành hồi 2 HP sau mỗi trận.",
+        "action": "companion",
+        "amount": 2
+      },
+      {
+        "label": "Lấy đồ",
+        "outcome": "Nhận 60 vàng và một Bùn Lầy.",
+        "gold": 60,
+        "card": "mud"
+      }
+    ]
+  },
+  {
+    "id": "star_temple",
+    "title": "Đền Sao",
+    "text": "Những vì sao đáp lời một sự hiến dâng.",
+    "choices": [
+      {
+        "label": "Hiến 10 HP tối đa",
+        "outcome": "Tuyệt kỹ +15 sát thương mỗi hit.",
+        "action": "star_sacrifice",
+        "amount": 15
+      },
+      {
+        "label": "Cầu nguyện",
+        "outcome": "Đầu mỗi trận nhận thêm 20 Nộ.",
+        "action": "start_rage",
+        "amount": 20
+      }
+    ]
+  },
+  {
+    "id": "bridge",
+    "title": "Cầu Gãy",
+    "text": "Bên dưới cây cầu là một con đường hiểm trở.",
+    "choices": [
+      {
+        "label": "Liều qua",
+        "outcome": "50% đánh tinh anh, thưởng gấp đôi; thất bại đánh trận thường.",
+        "action": "bridge",
+        "chance": 0.5
+      },
+      {
+        "label": "Đi vòng",
+        "outcome": "Đánh thêm một trận thường.",
+        "action": "detour"
+      }
+    ]
+  },
+  {
+    "id": "circus",
+    "title": "Gánh Xiếc Gà",
+    "text": "Hạ Võ Sĩ Xiếc trong ba lượt để thắng giải.",
+    "choices": [
+      {
+        "label": "Thi đấu",
+        "outcome": "Thử thách chiến đấu ba lượt. Thắng nhận 100 vàng.",
+        "action": "trial",
+        "amount": 3
+      },
+      {
+        "label": "Xem biểu diễn",
+        "outcome": "Nhận một lá ngẫu nhiên.",
+        "action": "random_card"
+      }
+    ]
+  },
+  {
+    "id": "mist",
+    "title": "Sương Mù",
+    "text": "Sương che lối đi, nhưng để lộ một chiếc lọ.",
+    "choices": [
+      {
+        "label": "Đi vào sương",
+        "outcome": "Ẩn loại nút hai tầng tiếp theo, nhận một thuốc.",
+        "action": "fog",
+        "amount": 2
+      },
+      {
+        "label": "Chờ sương tan",
+        "outcome": "Không thay đổi."
+      }
+    ]
+  },
+  {
+    "id": "pact",
+    "title": "Bóng Undergod",
+    "text": "Một bàn tay đen đưa ra bản khế ước.",
+    "choices": [
+      {
+        "label": "Ký khế ước",
+        "outcome": "+1 năng lượng mỗi lượt; Undergod cuối +25% HP.",
+        "action": "pact"
+      },
+      {
+        "label": "Từ chối",
+        "outcome": "Không thay đổi."
+      }
+    ]
+  },
+  {
+    "id": "library",
+    "title": "Thư Viện Lông Vũ",
+    "text": "Những trang sách giữ lại kinh nghiệm của người đi trước.",
+    "choices": [
+      {
+        "label": "Chọn sách",
+        "outcome": "Chọn một trong ba lá Hiếm.",
+        "action": "rare_offer"
+      },
+      {
+        "label": "Học nâng cấp",
+        "outcome": "Chọn một lá để nâng cấp.",
+        "action": "select_upgrade"
+      }
+    ]
+  },
+  {
+    "id": "ambush",
+    "title": "Ổ Phục Kích",
+    "text": "Hai bóng địch hiện ra trên con đường hẹp.",
+    "choices": [
+      {
+        "label": "Đột phá",
+        "outcome": "Đánh hai trận liên tiếp, không hồi giữa trận. Nhận di vật.",
+        "action": "ambush"
+      },
+      {
+        "label": "Rút lui",
+        "outcome": "Mất 8 HP để thoát.",
+        "damage": 8
+      }
+    ]
+  }
+]

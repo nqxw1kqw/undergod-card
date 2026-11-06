@@ -1,0 +1,177 @@
+[
+  {
+    "id": "down_feather",
+    "name": "Lông Đuôi Phượng",
+    "rarity": "common",
+    "price": 150,
+    "description": "Đầu trận nhận 8 giáp.",
+    "onCombatStart": [
+      {
+        "op": "block",
+        "amount": 8,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "coin_pouch",
+    "name": "Hạt Ngô Vàng",
+    "rarity": "common",
+    "price": 150,
+    "goldBonus": 15,
+    "description": "Mỗi trận thắng nhận thêm 15 vàng."
+  },
+  {
+    "id": "steel_beak",
+    "name": "Mỏ Sắt",
+    "rarity": "common",
+    "price": 150,
+    "firstAttack": 4,
+    "description": "Lá tấn công đầu mỗi trận gây thêm 4 sát thương."
+  },
+  {
+    "id": "water_jar",
+    "name": "Tổ Ấm",
+    "rarity": "common",
+    "price": 150,
+    "restPercent": 10,
+    "description": "Chỗ nghỉ hồi thêm 10% HP tối đa."
+  },
+  {
+    "id": "lucky_spur",
+    "name": "Chuông Bình Minh",
+    "rarity": "rare",
+    "price": 200,
+    "description": "Lượt đầu trận rút thêm 2 lá.",
+    "onCombatStart": [
+      {
+        "op": "draw",
+        "amount": 2,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "shell_shield",
+    "name": "Khiên Vỏ Ốc",
+    "rarity": "rare",
+    "price": 200,
+    "retainBlock": 5,
+    "description": "Giữ tối đa 5 giáp sang lượt sau."
+  },
+  {
+    "id": "rage_pearl",
+    "name": "Ngọc Nộ",
+    "rarity": "rare",
+    "price": 200,
+    "startRage": 30,
+    "description": "Bắt đầu trận với ít nhất 30 Nộ."
+  },
+  {
+    "id": "frog_crown",
+    "name": "Vương Miện Ếch",
+    "rarity": "boss",
+    "price": 250,
+    "energy": 1,
+    "draw": -1,
+    "description": "Mỗi lượt +1 năng lượng, rút ít hơn 1 lá."
+  },
+  {
+    "id": "hawk_eye",
+    "name": "Mắt Diều Hâu",
+    "rarity": "boss",
+    "price": 250,
+    "preview": true,
+    "description": "Xem dự kiến hai lượt tới nếu không chơi thêm bài."
+  },
+  {
+    "id": "meteor_spear",
+    "name": "Giáo Sao Băng",
+    "rarity": "boss",
+    "price": 250,
+    "comet": true,
+    "description": "Tuyệt kỹ sát thương đánh hai lần, mỗi lần 60%."
+  },
+  {
+    "id": "warm_egg",
+    "name": "Trứng Ấm",
+    "rarity": "rare",
+    "price": 220,
+    "description": "Đầu mỗi lượt nhận thêm 1 năng lượng.",
+    "onTurnStart": [
+      {
+        "op": "energy",
+        "amount": 1,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "thorn_shield",
+    "name": "Khiên Gai",
+    "rarity": "common",
+    "price": 150,
+    "description": "Đầu mỗi lượt nhận 3 giáp.",
+    "onTurnStart": [
+      {
+        "op": "block",
+        "amount": 3,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "venom_vial",
+    "name": "Lọ Nọc",
+    "rarity": "rare",
+    "price": 190,
+    "description": "Đầu trận gây 4 Độc.",
+    "onCombatStart": [
+      {
+        "op": "apply",
+        "amount": 4,
+        "target": "enemy",
+        "status": "poison"
+      }
+    ]
+  },
+  {
+    "id": "brave_heart",
+    "name": "Tim Dũng",
+    "rarity": "common",
+    "price": 160,
+    "maxHp": 8,
+    "description": "Nhận thêm 8 HP tối đa."
+  },
+  {
+    "id": "bargain",
+    "name": "Bùa Mặc Cả",
+    "rarity": "common",
+    "price": 150,
+    "shopDiscount": 20,
+    "description": "Giảm 20% giá mua ở cửa hàng."
+  },
+  {
+    "id": "bandolier",
+    "name": "Dây Thuốc",
+    "rarity": "common",
+    "price": 150,
+    "potionSlot": 1,
+    "description": "Thêm một ô thuốc."
+  },
+  {
+    "id": "war_drum",
+    "name": "Trống Trận",
+    "rarity": "rare",
+    "price": 180,
+    "description": "Đầu trận nhận 1 Sức Mạnh.",
+    "onCombatStart": [
+      {
+        "op": "apply",
+        "amount": 1,
+        "target": "self",
+        "status": "strength"
+      }
+    ]
+  }
+]

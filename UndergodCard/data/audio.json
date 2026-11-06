@@ -1,0 +1,65 @@
+[
+  {
+    "id": "hit",
+    "file": "assets/audio/hit.wav",
+    "volume": 155
+  },
+  {
+    "id": "block",
+    "file": "assets/audio/block.wav",
+    "volume": 155
+  },
+  {
+    "id": "heal",
+    "file": "assets/audio/heal.wav",
+    "volume": 155
+  },
+  {
+    "id": "boss",
+    "file": "assets/audio/boss.wav",
+    "volume": 120
+  },
+  {
+    "id": "ultimate",
+    "file": "assets/audio/ultimate.wav",
+    "volume": 120
+  },
+  {
+    "id": "reward",
+    "file": "assets/audio/reward.wav",
+    "volume": 155
+  },
+  {
+    "id": "victory",
+    "file": "assets/audio/victory.wav",
+    "volume": 155
+  },
+  {
+    "id": "defeat",
+    "file": "assets/audio/defeat.wav",
+    "volume": 155
+  },
+  {
+    "id": "select",
+    "file": "assets/audio/select.wav",
+    "volume": 155
+  },
+  {
+    "id": "music_0",
+    "file": "assets/audio/music_0.wav",
+    "volume": 95,
+    "loop": true
+  },
+  {
+    "id": "music_1",
+    "file": "assets/audio/music_1.wav",
+    "volume": 95,
+    "loop": true
+  },
+  {
+    "id": "music_2",
+    "file": "assets/audio/music_2.wav",
+    "volume": 95,
+    "loop": true
+  }
+]

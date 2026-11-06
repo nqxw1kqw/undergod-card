@@ -1,74 +1,91 @@
-# Undergod Card Quest — C++ / DxLib
+# Undergod Card Quest — C++17 / DxLib
 
-Bản hiện tại thay gameplay và toàn bộ asset cũ của Undergod bằng Card Quest pastel: Gà Chiến Binh đấu Ếch Vương trên sân ngang. Chạy trực tiếp trong **Visual Studio 2022 / MSVC v143 / C++17 / DxLib / x64**. Không cần npm, Electron hoặc server web.
+Bản v1.3.1-preview dùng cửa sổ 1600×900 với bố cục 16:9. Giữ hoạt ảnh theo từng kỹ năng, ba Turn Star luân phiên, bộ riêng của sáu boss, avatar map, FIGHT và chia bài. Chi tiết ở [hoạt ảnh](docs/SKILL_ANIMATIONS.md), [bộ boss](docs/BOSS_DECKS.md), [luật Turn Star](docs/TURN_STARS.md) và [kiểm chứng](docs/VALIDATION.md). Demo HTML giữ độc lập.
 
-## Chạy và build
+Mốc này thêm [hoạt ảnh cho từng kỹ năng](docs/SKILL_ANIMATIONS.md), dùng 18 bộ động tác và 17 bộ VFX mới: lao đâm/ném, phép bay, mổ/giậm/chém/vồ, buff và khiên tồn tại theo giáp thật cho cả hai phe. Lá đang dùng nằm dưới góc phải để không che sân. Game đợi hiệu ứng đòn cuối kết thúc trước khi mở thưởng hoặc trận kế tiếp.
 
-Mở `UndergodCard.sln`, chọn project `UndergodCard`, cấu hình `Release / x64`, nhấn F5. DxLib mặc định tại `C:\DxLib`.
+## Build, chạy và đóng gói
 
-```powershell
-.\build.ps1 -Configuration Release
-.\verify.ps1 -Configuration Release
-.\verify.ps1 -Configuration Debug
-.\package.ps1 -SkipBuild
-```
+Khung hình và vùng nội dung cửa sổ mặc định: **1600×900, tỉ lệ 16:9**. Map/menu được căn giữa, hàng bài thu gọn, sprite và hiệu ứng giữ cùng tỉ lệ hai chiều; tọa độ bấm mục tiêu đi cùng vị trí mới. Không đổi logic chiến đấu hoặc dữ liệu bản lưu.
 
-EXE: `bin/Release/UndergodCard.exe`. Game tự đặt thư mục làm việc về thư mục EXE. Khi mang sang máy khác, dùng `release/UndergodCard-DxLib-Windows-x64.zip`, giải nén và giữ nguyên EXE cùng hai thư mục `assets`, `data`.
+Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x64. Cần MSVC v143, Windows SDK và DxLib Visual C++ x64; mặc định C:\DxLib.
 
-Cả ba script nhận `-DxLibDir 'D:\Libraries\DxLib'` để đổi vị trí SDK. Khi mở trực tiếp Visual Studio, đặt thuộc tính MSBuild `DxLibDir` tương ứng. nlohmann/json đã kèm trong `third_party`.
+    .\build.ps1 -Configuration Release
+    .\verify.ps1 -Configuration Release
+    .\verify.ps1 -Configuration Debug
+    .\bin\Release\CoreChecks.exe --simulate-stars 300
+    .\package.ps1 -SkipBuild
 
-`package.ps1` mặc định build Release trước khi đóng gói; `-SkipBuild` dùng lại bản đã kiểm tra. ZIP có thư mục `licenses` kèm thông báo bên ngoài; không đưa PDB, object, test executable hoặc ảnh gốc vào ZIP. Các đầu ra build và smoke test được sinh lại, không commit lên Git.
+Các script nhận -DxLibDir. EXE ở bin/Release/UndergodCard.exe; ZIP ở release/UndergodCard-DxLib-Windows-x64.zip. Giữ assets/data/licenses cạnh EXE. Bản đóng gói không cần SDK, Python hay Node.js.
 
-## Cách chơi
+Core không dùng DxLib. Makefile hỗ trợ g++ C++17 cho CoreChecks; kiểm chứng lần này dùng MSVC trên Windows.
 
-- Chuột hoặc phím 1–9: chơi thẻ tương ứng. Tấn công tự nhắm địch đang đối mặt.
-- E: kết thúc lượt. U: Sao Rơi khi đủ 100 Nộ.
-- Sau trận thắng, trước trùm: chuột hoặc 1–3 chọn một trong ba lá thưởng. Không có nút bỏ qua.
-- Nút x1/x2/x3 hoặc F1/F2/F3: đổi tốc độ. Mỗi run bắt đầu ở x1 chậm; vẫn đổi được khi đang đánh hoặc xem cinematic.
-- Space / Esc: bỏ qua cinematic; sát thương chưa áp vẫn được xử lý đúng một lần.
-- R / Enter hoặc nút Chơi lại: bắt đầu lại cả hành trình khi không bị khóa input.
-- Đóng bằng nút X của cửa sổ. Tọa độ chuột được đổi từ client Windows về canvas để khớp nút khi hiển thị ở kích thước khác.
+## Hành trình và nhân vật
 
-Gà Chiến Binh có 50 HP, 3 năng lượng và rút 5 lá mỗi lượt. Bộ khởi đầu gồm 5 Chọc Giáo (1 năng lượng/6 sát thương), 3 Khiên Gỗ (1/5 giáp), 1 Đâm Mạnh (2/12 sát thương), 1 Bánh Quy (2/hồi 8 HP). Đánh tăng 8 Nộ, phòng thủ tăng 5, tối đa 100. Nộ được giữ sang trận sau; giáp, Độc, Suy Yếu và Dễ Thương thì không. Sao Rơi gây 40 sát thương trước khi cộng Sức Mạnh, Suy Yếu và Dễ Thương, rồi trừ giáp.
+Ba hồi 13 / 13 / 15 tầng, tính cả trùm/nghỉ cuối. Hồi đầu đọc tầng/cột từ map.json, hai hồi sau từ campaign.json. Hồi hai chọn Rắn, Diều Hâu hoặc Hổ Vương theo seed. Hồi ba có Cáo, nghỉ rồi Undergod. Boss hồi hồi 50% HP tối đa và cho chọn di vật boss; hết pool sẽ đổi thành vàng. Tinh anh thường cho một di vật, tinh anh Cầu Gãy thưởng hai di vật và vàng gấp đôi.
 
-Hành trình trong `data/run.json` là một đường thẳng: Ếch Con, Cóc Canh, Ếch Tinh Anh, rồi Ếch Vương. Ếch Vương có hai thanh máu. Hạ giai đoạn một sẽ hồi đầy giai đoạn hai, nhận Sức Mạnh và đổi bảng ý định; sát thương dư không cộng sang. Ý định hiện con số đã tính trạng thái, ví dụ `Sắp tấn công: 8 · 1 Dễ Thương`.
+| Boss | HP | Cơ chế |
+| --- | --- | --- |
+| Ếch Vương | 150 | Dưới 50% gọi hai Nòng Nọc, khóa một lá mỗi lượt |
+| Rắn Bùn Mẹ | 180 | Lột da ở 65%, siết ba lượt dưới 25%, charge báo trước |
+| Diều Hâu Bão | 160 | Bay giảm nửa sát thương cận chiến; nhận 20 sát thương HP sẽ đáp hai lượt |
+| Hổ Vương Xích Diệm | 200 | Song trảo/gầm; dưới 50% HP tăng Sức Mạnh, có vòng tụ lực báo trước rồi mới vồ |
+| Cáo Thầy Phù | 220 | Biến bài thành Bùn Lầy, dưới 50% tạo hai ảo ảnh/xáo vị trí |
+| Undergod | 300 | Sao chép lá cuối lượt trước; hút Nộ ở 66%; Tận Thế năm lượt ở 33% |
 
-Sức Mạnh cộng vào từng nhát. Suy Yếu còn lại ba phần tư sát thương, Dễ Thương tăng thêm một nửa, làm tròn xuống. Độc gây sát thương xuyên giáp vào đầu lượt của người mang độc, rồi giảm 1. Suy Yếu và Dễ Thương đã có từ trước giảm 1 sau hành động của địch; tầng vừa được gắn trong hành động đó còn lại.
+Ảo ảnh che tên/HP thật; hạ Cáo làm tan bóng. Nòng Nọc còn sống tiếp tục trận sau khi Ếch Vương chết. HP/Nộ và đồ giữ giữa trận; giáp/trạng thái/năng lực trận reset, cờ hồi sinh đã dùng giữ cả run.
 
-## Cấu trúc
+Chiến Binh 50 HP/rút 5, Sao Rơi 40 sát thương. Pháp Sư 40 HP/rút 6, Bão Lông 12 ×4 ngẫu nhiên. Ninja 45 HP/rút 5, Ảnh Phân lặp tối đa ba lá gần nhất. Mỗi lá nay dùng một sao, không giữ giá năng lượng hoặc lá miễn phí cũ; các hiệu ứng năng lượng được đổi sang rút bài. Xem luật chuyển đổi và nâng cấp tại docs/TURN_STARS.md.
 
-- `include/quest_status.hpp`, `include/quest_effects.hpp`, `src/quest_core.cpp`: trạng thái, hiệu ứng đọc từ dữ liệu, và combat. Không include DxLib và không dùng thời gian thực.
-- `include/quest_run.hpp`, `src/quest_run.cpp`: hành trình tuyến tính, phần thưởng, HP/Nộ giữ lại. `MapNode::next`, `relics`, `potions`, `gold` và `class_id` để map rẽ nhánh, sự kiện, cửa hàng, di vật và lớp nhân vật gắn vào sau.
-- `src/quest_data.cpp`: đọc/kiểm tra JSON bằng nlohmann/json đã kèm trong `third_party`, có giấy phép MIT.
-- `include/quest_timeline.hpp`: trình phát timeline, bảo đảm impact/end chỉ một lần khi bỏ qua hoặc nhảy frame.
-- `src/game.cpp`: khóa input, lunge/contact, chuyển lượt, popup, pose, camera và cinematic.
-- `src/ui.cpp`: renderer/input DxLib, tiếng Việt UTF-8, sân parallax, thẻ và 50 PNG mới.
-- `src/main.cpp`: vòng lặp Windows và chế độ `--smoke`.
-- `data/*.json`: thông số, thẻ, nhân vật, địch và cinematic; build tự chép cạnh EXE.
-- `tests/core_checks.cpp`: 134 kiểm tra độc lập renderer, kể cả hành trình seed 1337. `Makefile` và `build-core.sh` biên dịch bộ này không cần DxLib.
-- `assets/pastel`: 50 PNG runtime; `assets/manifest.json` ghi kích thước và SHA-256.
-- `docs`: cấu trúc, kiểm chứng và ảnh gameplay; `THIRD_PARTY.md` ghi nguồn asset và thành phần bên ngoài.
+Mỗi lớp có ba nhánh × năm kỹ năng; mua tuần tự bằng Lông Vũ và áp dụng từ run mới. Thắng độ khó hiện tại mở Thử Thách kế tiếp tới 10. Sổ run đã nhận thưởng ngăn nhận Lông Vũ/thành tựu trùng khi tải lại.
 
-## Sửa dữ liệu
+## Điều khiển
 
-Thêm thẻ trong `data/cards.json` với ID duy nhất, tên, cost, description, copies, rarity (`starter`, `common`, `uncommon`, `rare`) và keywords. `copies` lớn hơn 0 đưa lá vào bộ khởi đầu. Lá thưởng để `copies` là 0 và rarity khác `starter`. Có thể viết tắt `damage`/`block`/`heal`, hoặc khai báo `effects` với `op` là `damage`, `block`, `heal`, `apply`, `draw`, `energy`. `apply` cần `status` là `poison`, `weak`, `vulnerable`, `strength` hoặc `block`. `times` lặp lại hiệu ứng; Sức Mạnh được cộng từng nhát. Đặt ảnh 256×256 tại `assets/pastel/cards/<id>.png` nếu có. Thiếu ảnh thì lá vẫn chơi được và hiện ký hiệu dự phòng. Build lại để chép dữ liệu sang bin.
+- Nút Đấu thử Hổ Vương ở menu lớp mở ngay boss với bài nâng cấp/hai thuốc; không ghi đè bản lưu hoặc thưởng meta. Cũng có thể chạy --boss tiger --seed 1337; xem docs/TIGER_BOSS.md.
+- Chọn lớp: 1–3 hoặc chuột; Enter bắt đầu. Chuột mua kỹ năng/chọn Thử Thách.
+- Map: chuột/1–9 chọn lối; bánh xe, Page Up/Page Down hoặc nút cuộn.
+- Combat: chuột/1–9 xếp bài; bấm lá trong hàng chờ để gỡ; đủ ba vị trí thì E/Attack; Tab/bấm địch chọn mục tiêu; U tuyệt kỹ.
+- Z/X/C dùng ba ô thuốc, V dùng ô thứ tư nếu di vật mở thêm.
+- F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ; run mới bắt đầu chậm ở x1.
+- Space/Esc bỏ cinematic, damage chỉ áp một lần. F10 bật/tắt âm thanh.
+- Shop: 1–7 mua; bấm lá trong bộ để gỡ (75 vàng); E/Esc rời.
+- Nghỉ: H hồi HP hoặc 1–8 nâng cấp trên trang hiện tại. Chỉ chọn một việc.
+- Bộ bài/màn chọn bài/đổi đồ có nút trang, bánh xe, Page Up/Page Down.
+- F6 lưu, F9 tiếp tục. R/Enter/Chơi lại mở menu lớp; Esc từ menu về run đang có.
+- Tham số --seed 1337 khởi tạo run có seed cố định.
 
-`data/balance.json` điều khiển HP/energy/draw/Nộ/damage tuyệt chiêu. `enemies.json` khai báo địch, bảng ý định và các giai đoạn sau giai đoạn một. `run.json` là lộ trình: hiện chỉ nhận node `combat`, `elite` và `boss`; `event`, `shop`, `rest` đã có trong enum để milestone sau dùng. `cinematic.json` khai báo mốc thời gian, dim, zoom, actor/pose, sheet/target, shake, impact và flash. Sao Rơi hiện là gà giơ giáo, phóng lao lên trời, lao rơi đúng địch rồi áp damage khi chạm. Quỹ đạo từ/to/duration nằm trong action moveSpear; loader yêu cầu mốc kết thúc rơi khớp impact. Hiệu ứng va chạm dùng sheet 4 frame; không dùng ngôi sao cũ.
+## Dữ liệu và thêm nội dung
 
-RNG Mulberry32 và hai stream shuffle/intent giữ cùng cách seed với bản TypeScript. Giá trị RNG và tay bài mở đầu được đối chiếu golden test từ bản đó. Luật AI mới ép đòn mở đầu và chặn thủ liên tiếp nên chuỗi intent mặc định đã đổi; chuỗi cũ vẫn có golden test khi tắt chính sách mới. Core áp damage tại callback contact/impact; animation không quyết định giá trị damage.
+| Tệp trong data | Nội dung |
+| --- | --- |
+| cards | 50 lá gốc, type/rarity/class/effects/keywords, exhaust/power/ranged |
+| enemies | Sáu địch thường, hai tinh anh, sáu boss, triệu hồi và đối thủ sự kiện |
+| boss_cards | Sáu lá riêng/boss, ID/tên/chiêu/trọng số và pha được phép; ảnh riêng ở assets/pastel/boss_cards |
+| campaign / map / run | Hồi, pool boss/địch, tầng/cột, trọng số, kinh tế |
+| events | 12 sự kiện với đánh đổi, chọn bài/đổi đồ hoặc mở trận thực |
+| relics / potions | 17 di vật, sáu thuốc dùng chung resolver |
+| classes / skills | Bộ khởi đầu, tuyệt kỹ, 45 kỹ năng và điều kiện mở bài |
+| challenges / achievements | Bất lợi cộng dồn và mốc tiến trình |
+| cinematic / audio | Timeline và danh sách âm thanh/nhạc |
 
-## Asset và kiểm chứng
+Thêm một id duy nhất trong cards.json, effects và icon assets/pastel/cards/id.png (RGBA 256×256). Loader sinh bản nâng cấp; lời nguyền không có nâng cấp. Effect mới cần thêm parser/resolver/kiểm thử. Loader kiểm tra tham chiếu bài/lớp/địch/kỹ năng.
 
-Renderer chỉ nạp `assets/pastel`: 44 frame nhân vật, 4 ảnh thẻ, 1 ảnh lao và 1 sheet va chạm. Khi thiếu PNG, actor/card dùng hình/ký hiệu dự phòng; bản chuẩn smoke test yêu cầu đủ 50/50. Ảnh nguồn, prompt, bản web và kho RE được lưu riêng ngoài repo, không cần để build hoặc chạy.
+Nhân vật: char_<sprite>_<pose>_<frame>.png, RGBA 512×512. Đổi ảnh cần cập nhật assets/manifest.json. tools/validate_assets.py kiểm tra hash, kích thước, tham chiếu và WAV. tools/expand_content.py biên tập JSON, không cần chạy khi build.
 
-Logic combat có 134 kiểm tra và không cần DxLib. Từ máy Linux hoặc macOS:
+## Lưu game
 
-```bash
-make -C UndergodCard core
-```
+save.json schema v2 giữ đường map, hồi/lớp/độ khó, tài nguyên, deck, các pile gồm Tiêu hao, lời nguyền sinh ra, triệu hồi, mục tiêu, năng lực, lịch sử bài, hệ số trận và ba RNG. profile.json schema v1 giữ Lông Vũ, kỹ năng, thành tựu, Thử Thách và sổ nhận thưởng.
 
-Seed 1337 tự chơi hết bốn trận, mang 47 rồi 40 rồi 40 HP vào các trận sau, và thắng Ếch Vương ở giai đoạn hai với 21 HP. Trên Windows, `verify.ps1` chạy cùng bộ đó rồi tới smoke DxLib. Smoke tự chơi hành trình, chụp màn thưởng và giai đoạn hai, và thất bại nếu báo cáo không có `playthrough_victory=1` cùng `boss_phase=2`. Ảnh smoke nằm tại `bin/<cấu hình>/artifacts`.
+Ghi .tmp rồi thay nguyên tử; lỗi giữ checkpoint cũ. Tải qua đối tượng tạm và kiểm tra đường map, tham chiếu, pile bài bảo toàn và trạng thái trận. Khóa lưu/tải trong animation/cinematic. Bản v1/không hợp lệ giữ thành .invalid.* khi tự mở.
 
-Chưa có lưu/tải, âm thanh, map rẽ nhánh, sự kiện, cửa hàng, di vật hay cây kỹ năng. Các trường đó đã có chỗ trong `RunState`. Cảnh báo C4010 trong header ngoài `C:\DxLib\DxFunctionWin.h` có thể xuất hiện. SDK DxLib được cài riêng, không kèm trong repo.
+Chép cả save.json và profile.json cùng phiên bản data để chuyển máy; không đưa chúng vào Git hoặc ZIP.
 
-Nhịp mới: x1 dùng đồng hồ 0,65 lần thời gian thực, một đòn thẻ khoảng 1 giây và cinematic khoảng 5,54 giây. x2/x3 lần lượt nhanh gấp 2 và 3 so với x1, không đổi damage, tay bài hoặc RNG. Toast giữ thời gian thực để đọc được. Bộ throw/projectile/impact do công cụ sinh ảnh tạo, nguồn và công cụ hậu xử lý lưu riêng tại máy phát triển.
+## Cấu trúc và giới hạn
+
+quest_core/effects/status/battle/turn_stars: combat và hàng bài. quest_run: chiến dịch, sự kiện, kinh tế, bot. quest_world: dữ liệu. quest_meta: tiến trình. quest_save/storage/json: lưu/tải. game/game_order: contact, chuyển cảnh, animation và khóa input. ui/ui_world/ui_order/audio: DxLib.
+
+Undergod sao chép sát thương/giáp/hồi máu/trạng thái/năng lực về phía địch. Tài nguyên riêng của người chơi (rút bài/năng lượng/giảm giá tuyệt kỹ) đổi thành Sức Mạnh; Nộ đổi thành hút Nộ. Mắt Diều Hâu dự báo trên bản sao hai lượt nếu không chơi thêm bài; hành động có thể đổi dự báo.
+
+CoreChecks kiểm tra boss, effect, map, checkpoint mỗi quyết định, meta, Thử Thách và luật ba sao. --star-smoke chạy renderer thật với map/FIGHT/chia bài/Attack/tooltip/hổ tụ lực; --smoke giữ đối chiếu chiến dịch theo nền cũ. SDK ngoài repo có cảnh báo C4010 trong DxFunctionWin.h.
+
+Mục tiêu thời lượng/tỉ lệ thắng người chơi mới và chơi tay qua chuột/phím Windows còn cần xác nhận; đọc VALIDATION.md.

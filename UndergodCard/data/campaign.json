@@ -1,0 +1,71 @@
+[
+  {
+    "id": "meadow",
+    "name": "Đồng Cỏ Bình Minh",
+    "biome": "meadow",
+    "bosses": [
+      "frog"
+    ],
+    "combats": [
+      "froglet",
+      "toad",
+      "reed_frog",
+      "moss_toad",
+      "marsh_guard",
+      "poison_frog"
+    ],
+    "elites": [
+      "elder_toad",
+      "elite_frog"
+    ],
+    "floors": 12,
+    "columns": 3
+  },
+  {
+    "id": "marsh",
+    "name": "Đầm Lầy Giông Bão",
+    "biome": "marsh",
+    "bosses": [
+      "snake",
+      "hawk",
+      "tiger"
+    ],
+    "combats": [
+      "froglet",
+      "toad",
+      "reed_frog",
+      "moss_toad",
+      "marsh_guard",
+      "poison_frog"
+    ],
+    "elites": [
+      "elder_toad",
+      "elite_frog"
+    ],
+    "floors": 12,
+    "columns": 3
+  },
+  {
+    "id": "temple",
+    "name": "Đền Sao Tàn",
+    "biome": "temple",
+    "bosses": [
+      "fox"
+    ],
+    "finalBoss": "undergod",
+    "combats": [
+      "froglet",
+      "toad",
+      "reed_frog",
+      "moss_toad",
+      "marsh_guard",
+      "poison_frog"
+    ],
+    "elites": [
+      "elder_toad",
+      "elite_frog"
+    ],
+    "floors": 12,
+    "columns": 3
+  }
+]
