@@ -27,6 +27,7 @@ public:
     static Rect RestartButton(){return {1230,42,150,40};}
     static Rect SpeedButton(int speed){return {520+(speed-1)*70,42,60,40};}
     static Rect SkipButton(){return {1130,115,250,42};}
+    static Rect RetryButton(){return {570,600,300,30};}
     static Rect ResultButton(){return {570,540,300,54};}
 };
 }

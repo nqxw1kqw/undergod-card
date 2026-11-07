@@ -16,6 +16,7 @@ class Game {
     float motion_age_=0,cinematic_age_=0;
     bool motion_impact_=false;
     int speed_=1;
+    unsigned seed_=1337,session_seed_=1337;
     Timeline timeline_;
     TimelinePlayer cinematic_;
     void ConsumeEvents();
@@ -32,6 +33,10 @@ public:
     std::string toast;
     explicit Game(Config config,Timeline timeline):timeline_(std::move(timeline)),state(std::move(config)){}
     void NewRun(unsigned seed=1337);
+    unsigned Seed()const{return seed_;}
+    void SetSessionSeed(unsigned seed){session_seed_=seed;}
+    void NewMatch(){session_seed_+=0x9e3779b9u;NewRun(session_seed_);}
+    void Retry(){NewRun(seed_);}
     bool CanAct()const{return motion_==Motion::None&&!cinematic_.Active()&&state.phase==Phase::Player;}
     bool Busy()const{return motion_!=Motion::None||cinematic_.Active();}
     bool Cinematic()const{return cinematic_.Active();}

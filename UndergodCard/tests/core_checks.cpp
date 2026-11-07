@@ -109,5 +109,12 @@ int main(int,char** argv){
         Tick(g,.61f);Check(g.state.enemy.hp==80,"changed speed still reaches the single impact");
         g.NewRun();Check(!g.visual.spear.visible&&g.Speed()==1&&g.CanAct(),"reset cancels projectile and restores default speed");
     }
+    {
+        Game g(config,timeline);g.NewRun(42);const auto hand=g.state.hand;const auto intent=g.state.intent;
+        g.Play(0);Tick(g,2);g.Retry();
+        Check(g.Seed()==42&&g.state.hand==hand&&g.state.intent.value==intent.value,"retry reproduces seed");
+        g.SetSessionSeed(42);g.NewMatch();const auto first=g.Seed();g.NewMatch();
+        Check(g.Seed()!=first&&g.Seed()!=42,"fresh matches use distinct explicit seeds");
+    }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

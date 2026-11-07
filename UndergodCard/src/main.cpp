@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <fstream>
 #include <cmath>
+#include <chrono>
 
 namespace {
 std::filesystem::path ExeDirectory(){wchar_t path[32768]{};GetModuleFileNameW(nullptr,path,32768);return std::filesystem::path(path).parent_path();}
@@ -74,6 +75,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
         const auto config=LoadConfig();Game game(config,LoadTimeline());game.NewRun();
         if(!ui.Init(config))throw std::runtime_error("Cannot create DxLib fonts or render target");
         if(smoke){const int result=Smoke(game,ui);ui.Shutdown();DxLib_End();return result;}
+        game.SetSessionSeed(unsigned(std::chrono::high_resolution_clock::now().time_since_epoch().count()));game.NewMatch();
         char previous[256]{};int old_mouse=0;auto last=GetNowHiPerformanceCount();
         while(ProcessMessage()==0){
             const auto start=GetNowHiPerformanceCount();const float dt=std::min(.1f,float(start-last)/1000000.f);last=start;
@@ -85,7 +87,8 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             else{
                 const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5};for(int i=0;i<5;++i)if(pressed(numbers[i]))game.Play(i);
                 if(pressed(KEY_INPUT_E))game.EndTurn();if(pressed(KEY_INPUT_U))game.Ultimate();
-                if((pressed(KEY_INPUT_R)||pressed(KEY_INPUT_RETURN))&&!game.Busy())game.NewRun();
+                if(pressed(KEY_INPUT_R)&&!game.Busy())game.Retry();
+                if(pressed(KEY_INPUT_RETURN)&&!game.Busy())game.NewMatch();
             }
             const int buttons=GetMouseInput();if((buttons&MOUSE_INPUT_LEFT)&&!(old_mouse&MOUSE_INPUT_LEFT))ui.Click(game,mx,my);old_mouse=buttons;
             std::copy(keys,keys+256,previous);game.Update(dt);ClearDrawScreen();ui.Draw(game,mx,my);ScreenFlip();

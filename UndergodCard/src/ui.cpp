@@ -86,7 +86,7 @@ void Ui::Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,i
 void Ui::Draw(const Game& game,int mx,int my){
     const auto& s=game.state;DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
     Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);
-    Text(880,53,"01 / ĐỒNG CỎ ÊM ĐỀM",Muted,small_);Button(RestartButton(),"Chơi lại ↻",!game.Busy(),mx,my);
+    Text(880,53,"01 / ĐỒNG CỎ ÊM ĐỀM",Muted,small_);Button(RestartButton(),"Trận mới ↻",!game.Busy(),mx,my);
     Text(430,53,"Tốc độ",Muted,small_);
     for(int speed=1;speed<=3;++speed){const Rect r=SpeedButton(speed);const bool selected=game.Speed()==speed;Box(r,selected?C(79,106,91):(r.Contains(mx,my)?C(226,229,218):C(239,237,229)));Center(r.x+r.w/2,r.y+11,"x"+std::to_string(speed),selected?C(255,255,246):Ink,small_);}
     DrawBox(20,110,Width-20,250,C(227,240,237),TRUE);
@@ -118,15 +118,15 @@ void Ui::Draw(const Game& game,int mx,int my){
         Box({440,305,560,330},C(252,249,239),24);Center(720,338,"✦",C(174,144,199),brand_);
         Center(720,395,s.phase==Phase::Won?"Khu vườn nở hoa!":"Nghỉ một chút nhé!",Ink,brand_);
         Center(720,454,s.phase==Phase::Won?"Bạn đã vượt qua Ếch Vương.":"Ếch Vương thắng lần này. Hãy thử cách khác.",Muted,font_);
-        Center(720,491,"Hành trình kéo dài "+std::to_string(s.turn)+" lượt.",Muted,small_);Button(ResultButton(),"Chơi lại ↻",true,mx,my);
+        Center(720,491,"Hành trình kéo dài "+std::to_string(s.turn)+" lượt.",Muted,small_);Button(ResultButton(),"Trận mới ↻",true,mx,my);Button(RetryButton(),"Thử lại seed "+std::to_string(game.Seed()),true,mx,my);
     }
 }
 void Ui::Click(Game& game,int mx,int my){
     for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
     if(game.Cinematic()){if(SkipButton().Contains(mx,my))game.SkipCinematic();return;}
-    if(game.Result()){if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewRun();return;}
+    if(game.Result()){if(RetryButton().Contains(mx,my)){game.Retry();return;}if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewMatch();return;}
     if(game.Busy())return;
-    if(RestartButton().Contains(mx,my)){game.NewRun();return;}
+    if(RestartButton().Contains(mx,my)){game.NewMatch();return;}
     if(EndButton().Contains(mx,my)){game.EndTurn();return;}
     if(UltimateButton().Contains(mx,my)){game.Ultimate();return;}
     const int count=int(game.state.hand.size());for(int i=0;i<count;++i)if(CardRect(count,i).Contains(mx,my)){game.Play(i);return;}

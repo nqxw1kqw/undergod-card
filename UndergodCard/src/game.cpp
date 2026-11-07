@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed){cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();}
+void Game::NewRun(unsigned seed){seed_=seed;cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();}
 void Game::ConsumeEvents(){
     for(const auto& event:state.events){
         if(event.type==EventType::Damage){const bool blocked=event.amount==0&&event.blocked>0;poses[event.enemy?1:0]={blocked?"defend":"hit",0};popups.push_back({event.enemy,event.amount?event.amount:event.blocked,EventType::Damage,0,blocked});}
