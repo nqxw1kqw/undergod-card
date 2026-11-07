@@ -10,10 +10,29 @@ struct Pose { std::string name="idle"; float age=0; };
 struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
 struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
+struct CardBox {float x=0,y=0,w=176,h=195;};
+struct CardVisual {
+    unsigned id=0;std::string card;int slot=-1;
+    CardBox from,to;float age=0,duration=.2f,delay=0;bool leaving=false,selected=false,via_play=false;
+    CardBox Bounds()const{
+        if(via_play){
+            CardVisual segment=*this;segment.via_play=false;
+            if(age<.32f){segment.to={632,485,176,195};segment.duration=.32f;}
+            else{segment.from={632,485,176,195};segment.age=age-.32f;segment.duration=.25f;}
+            return segment.Bounds();
+        }
+        float t=std::clamp((age-delay)/std::max(.001f,duration),0.f,1.f);t=t*t*(3-2*t);
+        return {from.x+(to.x-from.x)*t,from.y+(to.y-from.y)*t,from.w+(to.w-from.w)*t,from.h+(to.h-from.h)*t};
+    }
+};
 class Game {
     Motion motion_=Motion::None;
     int pending_card_=-1;
     Intent resolving_intent_;
+    unsigned next_visual_id_=1;
+    void EnsureCards();
+    void DrawCards(float age=0);
+    void ResolveCardVisual();
     float motion_age_=0,cinematic_age_=0;
     bool motion_impact_=false;
     int speed_=1;
@@ -26,6 +45,11 @@ class Game {
 public:
     static constexpr float PlayerHome=320,EnemyHome=1120;
     static constexpr float BasePlaybackRate=.65f;
+    static CardBox HandBox(int count,int index){
+        const int w=std::min(176,(1300-12*(count-1))/std::max(1,count)),total=count*w+(count-1)*12;
+        return {float((1440-total)/2+index*(w+12)),710,float(w),195};
+    }
+    std::vector<CardVisual> cards;
     Combat state;
     std::array<Pose,2> poses;
     std::vector<Popup> popups;

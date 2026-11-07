@@ -75,7 +75,8 @@ public:
     }
     bool EndPlayer(){if(phase!=Phase::Player)return false;discard.insert(discard.end(),hand.begin(),hand.end());hand.clear();phase=Phase::Enemy;events.push_back({EventType::TurnEnd});return true;}
     bool ActEnemy(){
-        if(phase!=Phase::Enemy)return false;enemy.block=0;
+        if(phase!=Phase::Enemy)return false;
+        enemy.block=0;
         if(intent.attack)Hit(false,intent.value);else{enemy.block=intent.value;events.push_back({EventType::Block,true,intent.value});}
         events.push_back({EventType::TurnEnd,true});phase=Phase::CheckEnd;CheckEnd();
         if(phase==Phase::CheckEnd){RollIntent();BeginPlayer();}return true;

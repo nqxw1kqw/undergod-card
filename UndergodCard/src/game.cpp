@@ -2,7 +2,27 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed){seed_=seed;cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();}
+void Game::NewRun(unsigned seed){seed_=seed;cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();next_visual_id_=1;cards.clear();DrawCards(.2f);}
+void Game::DrawCards(float age){
+    for(int i=0;i<int(state.hand.size());++i){
+        auto target=HandBox(int(state.hand.size()),i);
+        cards.push_back({next_visual_id_++,state.hand[i],i,{280,640,80,100},target,age,.10f,.01f*i,false,false});
+    }
+}
+void Game::EnsureCards(){
+    int count=0;bool match=true;
+    for(const auto& c:cards)if(!c.leaving){++count;match&=c.slot>=0&&c.slot<int(state.hand.size())&&c.card==state.hand[c.slot];}
+    if(!match||count!=int(state.hand.size())){cards.clear();DrawCards(.2f);}
+}
+void Game::ResolveCardVisual(){
+    for(auto& c:cards){
+        if(c.selected){c.from=c.Bounds();c.to={280,665,80,100};c.age=0;c.duration=motion_==Motion::PlayerOther?.57f:.25f;c.via_play=motion_==Motion::PlayerOther;c.delay=0;c.leaving=true;c.selected=false;c.slot=-1;}
+        else if(!c.leaving){
+            if(c.slot>pending_card_)--c.slot;
+            c.from=c.Bounds();c.to=HandBox(int(state.hand.size()),c.slot);c.age=0;c.delay=0;c.duration=.25f;
+        }
+    }
+}
 void Game::ConsumeEvents(){
     for(const auto& event:state.events){
         if(event.type==EventType::Damage){const bool blocked=event.amount==0&&event.blocked>0;poses[event.enemy?1:0]={blocked?"defend":"hit",0};popups.push_back({event.enemy,event.amount?event.amount:event.blocked,EventType::Damage,0,blocked});}
@@ -14,14 +34,18 @@ void Game::ConsumeEvents(){
 void Game::Play(int index){
     if(!CanAct()||index<0||index>=int(state.hand.size()))return;
     if(!state.CanPlay(index)){Toast("Không đủ năng lượng cho lá bài này.");return;}
+    EnsureCards();
+    for(auto& c:cards)if(c.slot==index&&!c.leaving){c.from=c.Bounds();c.to={632,485,176,195};c.age=0;c.delay=0;c.duration=.32f;c.selected=true;}
     pending_card_=index;const bool attack=state.Definition(state.hand[index]).damage>0;
     motion_=attack?Motion::PlayerAttack:Motion::PlayerOther;motion_age_=0;motion_impact_=false;
     if(attack)poses[0]={"attack",0};else ApplyMotion();
 }
-void Game::EndTurn(){if(!CanAct()||!state.EndPlayer())return;resolving_intent_=state.intent;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();}
+void Game::EndTurn(){if(!CanAct())return;EnsureCards();if(!state.EndPlayer())return;
+    for(auto& c:cards){c.from=c.Bounds();c.to={280,665,80,100};c.age=0;c.delay=.015f*std::max(0,c.slot);c.duration=.25f;c.leaving=true;c.slot=-1;}resolving_intent_=state.intent;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();}
 void Game::ApplyMotion(){
-    if(motion_impact_)return;motion_impact_=true;
-    if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther)state.Play(pending_card_);
+    if(motion_impact_)return;
+    motion_impact_=true;
+    if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther){state.Play(pending_card_);ResolveCardVisual();}
     else state.ActEnemy();
     ConsumeEvents();
 }
@@ -39,7 +63,8 @@ void Game::CueStep(const Step& step){
     }
 }
 void Game::Ultimate(){
-    if(!CanAct())return;if(!state.StartUltimate()){Toast("Sao Rơi cần đầy 100 Nộ.");return;}
+    if(!CanAct())return;
+    if(!state.StartUltimate()){Toast("Sao Rơi cần đầy 100 Nộ.");return;}
     ConsumeEvents();visual={};cinematic_age_=0;
     cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();ConsumeEvents();},[this]{state.FinishUltimate();visual={};poses[0]={};});
 }
@@ -47,6 +72,8 @@ void Game::SkipCinematic(){cinematic_.Skip();}
 void Game::Update(float real_dt){
     real_dt=std::max(0.f,real_dt);toast_age=std::max(0.f,toast_age-real_dt);
     const float dt=real_dt*PlaybackRate();time+=dt;
+    for(auto& c:cards)c.age+=dt;
+    cards.erase(std::remove_if(cards.begin(),cards.end(),[](const CardVisual& c){return c.leaving&&c.age>=c.delay+c.duration;}),cards.end());
     for(auto& p:poses){p.age+=dt;const bool held=p.name=="ult_throw"&&Cinematic();if(!held&&p.name!="idle"&&p.age>(p.name=="ult_charge"?2.f:.65f))p={};}
     for(auto& p:popups)p.age+=dt;
     popups.erase(std::remove_if(popups.begin(),popups.end(),[](const auto& p){return p.age>.95f;}),popups.end());
@@ -57,11 +84,15 @@ void Game::Update(float real_dt){
         const float before=motion_age_;motion_age_+=dt;
         if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={resolving_intent_.attack?"attack":"defend",motion_age_-.45f};
         const float impact=enemy?(motion_==Motion::EnemyAttack?.77f:.45f):.32f;
-        if(motion_age_>=impact)ApplyMotion();
+        if(motion_age_>=impact&&!motion_impact_){
+            ApplyMotion();
+            for(auto& c:cards)if(!enemy)c.age=std::max(0.f,motion_age_-impact);
+        }
         if(motion_age_>=(enemy?1.15f:.65f)){
             const float overshoot=motion_age_-(enemy?1.15f:.65f);
             motion_=enemy&&state.phase==Phase::Player&&overshoot<.20f?Motion::TurnTransition:Motion::None;
             motion_age_=overshoot;pending_card_=-1;
+            if(enemy&&state.phase==Phase::Player)DrawCards(overshoot);
         }
     }
     if(Cinematic()){
@@ -74,6 +105,7 @@ void Game::Update(float real_dt){
         visual.shake_left=std::max(0.f,visual.shake_left-dt);visual.flash_left=std::max(0.f,visual.flash_left-dt);
         cinematic_.Advance(cinematic_age_*1000.f);
     }else cinematic_age_=0;
+    cards.erase(std::remove_if(cards.begin(),cards.end(),[](const CardVisual& c){return c.leaving&&c.age>=c.delay+c.duration;}),cards.end());
 }
 std::pair<float,float> Game::SpearTip()const{
     const auto& s=visual.spear;const float t=std::clamp(s.age/std::max(.001f,s.duration),0.f,1.f);

@@ -22,3 +22,19 @@ remains at contact; displayed intent and incoming hand stay behind recovery
 (1.15 logical seconds), followed by a locked .20-second player transition.
 Lethal hits bypass the incoming transition. Forecast is suppressed during the
 enemy action, so next intent is never paired with expiring block.
+
+Item 3: core 106 -> 120, balance 199366, zero failures. Value-owned visual
+snapshots have stable IDs across play/reflow, lift to a play slot, move to
+discard, sweep on end-turn and draw with stagger after recovery. Nonattack
+rules still resolve immediately, with a separate visual trajectory. Animation
+overshoot is accounted for; input stays locked until movement settles.
+Tests cover repeated copies, contact reservation, survivor identity, snapshot
+expiry, reset, draw boundaries, nonattack trajectories and x1/x2/x3 fine/coarse
+combat and snapshot equivalence. Existing 93 checks remain included unchanged.
+
+All four items retain the baseline policy results above. No deferred items
+were implemented. No Windows build was available: DxLib drawing, font/text fit,
+mouse controls, keyboard routes, trajectory quality/overlap, scaled-window
+alignment and x3 readability require Windows Debug/Release and manual smoke
+validation. Linux compiles core/controller/data and exercises portable behavior;
+UI and WinMain changes have only been statically inspected.

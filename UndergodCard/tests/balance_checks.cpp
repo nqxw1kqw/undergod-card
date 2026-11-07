@@ -16,14 +16,16 @@ Result Run(Config cfg,unsigned seed,int policy){
             if(c.StartUltimate()){c.FinishUltimate();++ults;continue;}
             int best=-1;double score=0;
             for(int i=0;i<int(c.hand.size());++i){
-                if(!c.CanPlay(i))continue;const auto& d=c.Definition(c.hand[i]);double value=d.damage;
+                if(!c.CanPlay(i))continue;
+                const auto& d=c.Definition(c.hand[i]);double value=d.damage;
                 if(d.damage>=c.enemy.hp+c.enemy.block)value+=1000;
                 const int incoming=c.intent.attack?std::max(0,c.intent.value-c.player.block):0;
                 if(policy>=1)value+=std::min(d.block,incoming)*1.3;
                 if(policy>=2)value+=std::min(d.heal,c.player.max_hp-c.player.hp)*(c.player.hp<25?2.:.8);
                 value/=std::max(1,d.cost);if(value>score){score=value;best=i;}
             }
-            if(best<0)break;c.Play(best);Check(Deck(c)==deck);
+            if(best<0)break;
+            c.Play(best);Check(Deck(c)==deck);
         }
         if(c.phase!=Phase::Player)break;
         unspent+=c.energy;c.EndPlayer();Check(Deck(c)==deck);c.ActEnemy();Check(Deck(c)==deck);

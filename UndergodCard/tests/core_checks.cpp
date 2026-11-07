@@ -135,5 +135,39 @@ int main(int,char** argv){
         Check(g.Result()&&!g.Transition(),"lethal enemy skips incoming player transition");
         g.NewRun();Check(g.CanAct()&&!g.Transition(),"reset clears transition");
     }
+    {
+        Game g(config,timeline);g.NewRun();std::set<unsigned> ids;
+        for(const auto& c:g.cards)ids.insert(c.id);
+        Check(ids.size()==5&&g.cards[0].card==g.state.hand[0],"duplicate cards have distinct owned visual identities");
+        const auto selected=g.cards[0].id;const auto survivor=g.cards[1].id;
+        g.Play(0);Tick(g,.319f);
+        Check(g.cards[0].selected&&g.cards[0].id==selected&&g.state.hand.size()==5,"selected snapshot reserves slot until contact");
+        Tick(g,.002f);
+        bool leaving=false,stable=false;
+        for(const auto& c:g.cards){if(c.id==selected)leaving=c.leaving&&c.card=="punch";if(c.id==survivor)stable=c.slot==0;}
+        Check(leaving&&stable&&g.state.hand.size()==4,"contact moves selected snapshot to discard and preserves survivor identity");
+        Tick(g,.33f);Check(g.cards.size()==4&&g.CanAct(),"discard snapshot expires and hand reflow settles before unlock");
+        const auto hp=g.state.enemy.hp;Tick(g,2);Check(g.state.enemy.hp==hp,"visual lifecycle never replays card");
+        g.EndTurn();Check(g.state.hand.empty()&&g.cards.size()==4&&g.cards[0].leaving,"end turn retains departing owned snapshots");
+        Tick(g,.4f);Check(g.cards.empty(),"end turn discard snapshots expire");
+        Tick(g,.751f);Check(g.Transition()&&g.cards.size()==5&&g.cards[0].Bounds().y<710,"incoming hand starts at draw pile after recovery");
+        Tick(g,.20f);bool settled=true;for(const auto& c:g.cards)settled&=std::abs(c.Bounds().y-710)<.01f;
+        Check(g.CanAct()&&settled,"staggered draw settles before input unlock");
+        g.Play(0);g.NewRun(42);Check(g.cards.size()==5&&g.cards[0].id==1&&!g.cards[0].leaving&&!g.Busy(),"reset clears all departing and selected snapshots");
+        g.state.hand={"shield"};g.Play(0);
+        Check(g.state.player.block==5&&g.cards[0].via_play,"nonattack keeps immediate rules with a separate play trajectory");
+        Tick(g,.32f);Check(std::abs(g.cards[0].Bounds().y-485)<.01f,"nonattack visual reaches play slot");
+        Tick(g,.34f);Check(g.cards.empty()&&g.CanAct(),"nonattack visual discards before unlock");
+        bool equivalent=true;
+        for(int speed=1;speed<=3;++speed){
+            Game a(config,timeline),b(config,timeline);a.NewRun();b.NewRun();a.SetSpeed(speed);b.SetSpeed(speed);
+            a.Play(0);b.Play(0);Tick(a,2);for(int i=0;i<200;++i)Tick(b,.01f);
+            equivalent&=a.cards.size()==b.cards.size()&&a.state.hand==b.state.hand&&a.state.enemy.hp==b.state.enemy.hp;
+            for(size_t i=0;i<a.cards.size();++i)equivalent&=a.cards[i].id==b.cards[i].id&&std::abs(a.cards[i].Bounds().x-b.cards[i].Bounds().x)<.01f;
+            a.EndTurn();b.EndTurn();Tick(a,2);for(int i=0;i<200;++i)Tick(b,.01f);
+            equivalent&=a.cards.size()==5&&b.cards.size()==5&&a.state.hand==b.state.hand&&a.state.player.hp==b.state.player.hp;
+        }
+        Check(equivalent,"card snapshots and combat agree across fine/coarse cadence and all speeds");
+    }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

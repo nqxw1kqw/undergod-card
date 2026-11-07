@@ -79,7 +79,8 @@ void Ui::Card(const Combat& state,const CardDef& card,Rect r,int index,bool affo
     const int graph=Image("card_"+card.id);if(!affordable||locked)Blend(95);
     if(graph>=0)DrawRotaGraph3F(r.x+r.w/2.f,float(r.y+65),128,128,.42,.42,0,graph,TRUE);else Center(r.x+r.w/2,r.y+40,"✦",Muted,heading_);Blend(255);
     DrawCircle(r.x+21,r.y+20,15,C(255,255,255),TRUE);Center(r.x+21,r.y+10,std::to_string(card.cost),C(123,91,153),small_);
-    Text(r.x+r.w-20,r.y+10,std::to_string(index+1),Muted,small_);
+    if(r.w<120)return;
+    if(index>=0)Text(r.x+r.w-20,r.y+10,std::to_string(index+1),Muted,small_);
     Text(r.x+12,r.y+127,card.name,affordable&&!locked?Ink:Muted,small_);
     Text(r.x+12,r.y+151,card.description,Muted,small_);
     Text(r.x+12,r.y+174,card.heal>0?"Hồi thực: "+std::to_string(state.EffectiveHeal(card)):"Nộ +"+std::to_string(state.RageGain(card)),Muted,small_);
@@ -110,7 +111,12 @@ void Ui::Draw(const Game& game,int mx,int my){
     Text(128,643,"NĂNG LƯỢNG",Muted,small_);Text(280,639,"Rút: "+std::to_string(s.draw.size()),Muted,small_);Text(280,663,"Bỏ: "+std::to_string(s.discard.size()),Muted,small_);
     Text(470,652,"1–5: bài  ·  E: hết lượt  ·  U: Sao Rơi",Muted,small_);
     Button(UltimateButton(),"✦ Sao Rơi",game.CanAct()&&s.rage>=s.config.balance.rage_max,mx,my);Button(EndButton(),"Kết thúc lượt →",game.CanAct(),mx,my);
-    if(game.ShowHand())for(size_t i=0;i<s.hand.size();++i)Card(s,s.Definition(s.hand[i]),CardRect(int(s.hand.size()),int(i)),int(i),s.CanPlay(int(i)),!game.CanAct(),mx,my);
+    for(const auto& card:game.cards){
+        if(!game.ShowHand()&&!card.leaving)continue;
+        const auto r=card.Bounds();
+        Card(s,s.Definition(card.card),{int(r.x),int(r.y),int(r.w),int(r.h)},card.slot,
+            card.slot>=0&&s.CanPlay(card.slot),!game.CanAct()||card.leaving,mx,my);
+    }
     Text(55,922,"Giáp dư hết hạn khi bắt đầu lượt kế tiếp.  R: cùng seed · Enter: trận mới.",Muted,small_);Text(1090,922,"PHIÊN BẢN THỬ NGHIỆM",Muted,small_);
     if(game.toast_age>0){Box({420,570,600,43},C(55,72,62));Center(720,581,game.toast,C(255,255,246),small_);}
     if(game.Cinematic())Button(SkipButton(),"Bỏ qua · Space / Esc",true,mx,my);

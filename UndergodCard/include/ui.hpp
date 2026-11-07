@@ -21,7 +21,7 @@ public:
     void Shutdown();
     void Draw(const Game& game,int mx,int my);
     void Click(Game& game,int mx,int my);
-    static Rect CardRect(int count,int index){const int w=std::min(176,(1300-12*(count-1))/std::max(1,count)),total=count*w+(count-1)*12;return {(Width-total)/2+index*(w+12),710,w,195};}
+    static Rect CardRect(int count,int index){auto r=Game::HandBox(count,index);return {int(r.x),int(r.y),int(r.w),int(r.h)};}
     static Rect EndButton(){return {1220,635,170,48};}
     static Rect UltimateButton(){return {1040,635,160,48};}
     static Rect RestartButton(){return {1230,42,150,40};}
