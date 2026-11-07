@@ -40,10 +40,9 @@ void Ui::Button(Rect r,const std::string& text,bool active,int mx,int my)const{
 }
 void Ui::Actor(const Game& game,bool enemy)const{
     const auto& pose=game.poses[enemy?1:0];const std::string id=enemy?"frog":game.state.config.player_id;
-    const float fps=pose.name=="ult_throw"?4.f:8.f;
-    const int frame=pose.name=="idle"?int(pose.age*4)%4:std::min(3,int(pose.age*fps));
+    const int frame=game.PoseFrame(enemy);
     int graph=Image(id+"_"+pose.name+"_"+std::to_string(frame));if(graph<0)graph=Image(id+"_idle_0");
-    const float x=(enemy?Game::EnemyHome:Game::PlayerHome)+game.ActorOffset(enemy),y=320-std::sin(game.time*3.14f)*2;
+    const float x=(enemy?Game::EnemyHome:Game::PlayerHome)+game.ActorOffset(enemy),y=320-(pose.name=="idle"?std::sin(game.time*3.14f+(enemy?1.7f:0.f))*2:0);
     Blend(38);DrawOval(int(x),324,enemy?70:46,9,C(80,107,76),TRUE);Blend(255);
     if(graph>=0){
         DrawRotaGraph3F(x,y,256,456,.5,.5,0,graph,TRUE,enemy?TRUE:FALSE);

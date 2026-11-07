@@ -156,7 +156,7 @@ int main(int,char** argv){
         g.Play(0);g.NewRun(42);Check(g.cards.size()==5&&g.cards[0].id==1&&!g.cards[0].leaving&&!g.Busy(),"reset clears all departing and selected snapshots");
         g.state.hand={"shield"};g.Play(0);
         Check(g.state.player.block==5&&g.cards[0].via_play,"nonattack keeps immediate rules with a separate play trajectory");
-        Tick(g,.32f);Check(std::abs(g.cards[0].Bounds().y-485)<.01f,"nonattack visual reaches play slot");
+        Tick(g,.20f);Check(std::abs(g.cards[0].Bounds().y-485)<.01f,"nonattack visual reaches play slot");
         Tick(g,.34f);Check(g.cards.empty()&&g.CanAct(),"nonattack visual discards before unlock");
         bool equivalent=true;
         for(int speed=1;speed<=3;++speed){
@@ -168,6 +168,14 @@ int main(int,char** argv){
             equivalent&=a.cards.size()==5&&b.cards.size()==5&&a.state.hand==b.state.hand&&a.state.player.hp==b.state.player.hp;
         }
         Check(equivalent,"card snapshots and combat agree across fine/coarse cadence and all speeds");
+    }
+    {
+        Game g(config,timeline);g.NewRun();g.state.hand={"shield"};g.Play(0);
+        Tick(g,.449f);Check(!g.CanAct(),"short support recovery stays locked before end");
+        Tick(g,.002f);Check(g.CanAct(),"support recovery unlocks at .45");
+        g.NewRun();g.Play(0);Tick(g,.31f);auto x=g.ActorOffset(false);auto frame=g.PoseFrame(false);g.SetSpeed(3);
+        Check(x==g.ActorOffset(false)&&frame==g.PoseFrame(false),"speed change preserves action sample");
+        Tick(g,.10f);Check(g.poses[1].age>.08f&&g.popups[0].age>.08f,"contact effects include update overshoot");
     }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

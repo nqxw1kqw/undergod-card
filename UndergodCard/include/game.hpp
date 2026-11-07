@@ -6,6 +6,7 @@
 
 namespace undergod {
 enum class Motion { None,PlayerAttack,PlayerOther,EnemyAttack,EnemyOther,TurnTransition };
+struct ActionTiming { float start,contact,end; };
 struct Pose { std::string name="idle"; float age=0; };
 struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
@@ -17,8 +18,8 @@ struct CardVisual {
     CardBox Bounds()const{
         if(via_play){
             CardVisual segment=*this;segment.via_play=false;
-            if(age<.32f){segment.to={632,485,176,195};segment.duration=.32f;}
-            else{segment.from={632,485,176,195};segment.age=age-.32f;segment.duration=.25f;}
+            if(age<.20f){segment.to={632,485,176,195};segment.duration=.20f;}
+            else{segment.from={632,485,176,195};segment.age=age-.20f;segment.duration=.22f;}
             return segment.Bounds();
         }
         float t=std::clamp((age-delay)/std::max(.001f,duration),0.f,1.f);t=t*t*(3-2*t);
@@ -39,7 +40,7 @@ class Game {
     unsigned seed_=1337,session_seed_=1337;
     Timeline timeline_;
     TimelinePlayer cinematic_;
-    void ConsumeEvents();
+    void ConsumeEvents(float late=0);
     void ApplyMotion();
     void CueStep(const Step& step);
 public:
@@ -82,6 +83,8 @@ public:
     bool SetSpeed(int multiplier){if(multiplier<1||multiplier>3)return false;speed_=multiplier;return true;}
     std::pair<float,float> SpearTip()const;
     float ActorOffset(bool enemy)const;
+    ActionTiming Timing()const;
+    int PoseFrame(bool enemy)const;
     void Toast(const std::string& text){toast=text;toast_age=1.8f;}
 };
 }
