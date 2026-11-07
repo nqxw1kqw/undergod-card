@@ -5,7 +5,7 @@
 #include <utility>
 
 namespace undergod {
-enum class Motion { None,PlayerAttack,PlayerOther,EnemyAttack,EnemyOther };
+enum class Motion { None,PlayerAttack,PlayerOther,EnemyAttack,EnemyOther,TurnTransition };
 struct Pose { std::string name="idle"; float age=0; };
 struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
@@ -13,6 +13,7 @@ struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_a
 class Game {
     Motion motion_=Motion::None;
     int pending_card_=-1;
+    Intent resolving_intent_;
     float motion_age_=0,cinematic_age_=0;
     bool motion_impact_=false;
     int speed_=1;
@@ -39,6 +40,12 @@ public:
     void Retry(){NewRun(seed_);}
     bool CanAct()const{return motion_==Motion::None&&!cinematic_.Active()&&state.phase==Phase::Player;}
     bool Busy()const{return motion_!=Motion::None||cinematic_.Active();}
+    Intent DisplayIntent()const{return EnemyResolving()?resolving_intent_:state.intent;}
+    bool EnemyResolving()const{return motion_==Motion::EnemyAttack||motion_==Motion::EnemyOther;}
+    bool Transition()const{return motion_==Motion::TurnTransition;}
+    bool ShowHand()const{return !EnemyResolving();}
+    int IncomingLoss()const{return EnemyResolving()?0:(state.intent.attack?std::max(0,state.intent.value-state.player.block):0);}
+    const char* TurnStatus()const{return Transition()?"Your turn":(EnemyResolving()?(motion_impact_?"Enemy recovery":(resolving_intent_.attack?"Enemy attack":"Enemy guard")):(Busy()?"Resolving card":"Your turn"));}
     bool Cinematic()const{return cinematic_.Active();}
     bool Result()const{return !Busy()&&(state.phase==Phase::Won||state.phase==Phase::Lost);}
     void Play(int index);

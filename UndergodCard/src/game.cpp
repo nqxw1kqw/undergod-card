@@ -18,7 +18,7 @@ void Game::Play(int index){
     motion_=attack?Motion::PlayerAttack:Motion::PlayerOther;motion_age_=0;motion_impact_=false;
     if(attack)poses[0]={"attack",0};else ApplyMotion();
 }
-void Game::EndTurn(){if(!CanAct()||!state.EndPlayer())return;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();}
+void Game::EndTurn(){if(!CanAct()||!state.EndPlayer())return;resolving_intent_=state.intent;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();}
 void Game::ApplyMotion(){
     if(motion_impact_)return;motion_impact_=true;
     if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther)state.Play(pending_card_);
@@ -50,13 +50,19 @@ void Game::Update(float real_dt){
     for(auto& p:poses){p.age+=dt;const bool held=p.name=="ult_throw"&&Cinematic();if(!held&&p.name!="idle"&&p.age>(p.name=="ult_charge"?2.f:.65f))p={};}
     for(auto& p:popups)p.age+=dt;
     popups.erase(std::remove_if(popups.begin(),popups.end(),[](const auto& p){return p.age>.95f;}),popups.end());
-    if(motion_!=Motion::None){
+    if(motion_==Motion::TurnTransition){
+        motion_age_+=dt;if(motion_age_>=.20f){motion_=Motion::None;motion_age_=0;}
+    }else if(motion_!=Motion::None){
         const bool enemy=motion_==Motion::EnemyAttack||motion_==Motion::EnemyOther;
         const float before=motion_age_;motion_age_+=dt;
-        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={state.intent.attack?"attack":"defend",motion_age_-.45f};
+        if(enemy&&before<.45f&&motion_age_>=.45f)poses[1]={resolving_intent_.attack?"attack":"defend",motion_age_-.45f};
         const float impact=enemy?(motion_==Motion::EnemyAttack?.77f:.45f):.32f;
         if(motion_age_>=impact)ApplyMotion();
-        if(motion_age_>=(enemy?1.15f:.65f)){motion_=Motion::None;pending_card_=-1;}
+        if(motion_age_>=(enemy?1.15f:.65f)){
+            const float overshoot=motion_age_-(enemy?1.15f:.65f);
+            motion_=enemy&&state.phase==Phase::Player&&overshoot<.20f?Motion::TurnTransition:Motion::None;
+            motion_age_=overshoot;pending_card_=-1;
+        }
     }
     if(Cinematic()){
         cinematic_age_+=dt;

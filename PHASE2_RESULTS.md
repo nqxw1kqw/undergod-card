@@ -16,3 +16,9 @@ while the other policies already win every seed. Keep damage 12: current evidenc
 does not justify tuning or block breaking. Heavy retains hand/action compression;
 cards now expose capped rage and effective healing, including zero healing.
 Core 95 -> 98, balance unchanged at 199366; zero failures.
+
+Item 5: core 98 -> 106, balance 199366, zero failures. Core advancement
+remains at contact; displayed intent and incoming hand stay behind recovery
+(1.15 logical seconds), followed by a locked .20-second player transition.
+Lethal hits bypass the incoming transition. Forecast is suppressed during the
+enemy action, so next intent is never paired with expiring block.

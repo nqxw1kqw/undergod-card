@@ -100,17 +100,17 @@ void Ui::Draw(const Game& game,int mx,int my){
     };health(false);health(true);
     Box({80,239,260,5},C(209,215,210),2);if(s.rage>0)Box({80,239,260*s.rage/s.config.balance.rage_max,5},C(173,146,212),2);
     Text(360,216,"Nộ "+std::to_string(s.rage)+" / "+std::to_string(s.config.balance.rage_max),C(123,91,153),small_);
-    Center(720,131,"LƯỢT "+std::to_string(s.turn),Muted,small_);Center(720,162,game.Cinematic()?"Sao Rơi":(game.Busy()?"Đang hành động…":"Lượt của bạn"),Ink,font_);
-    Center(720,198,"Lá nhỏ, chuyến phiêu lưu lớn.",Muted,small_);
+    Center(720,131,"LƯỢT "+std::to_string(s.turn),Muted,small_);Center(720,162,game.Cinematic()?"Sao Rơi":game.TurnStatus(),Ink,font_);
+    Center(720,198,"HP mất dự kiến: "+std::to_string(game.IncomingLoss()),Muted,small_);
     World(game);
     // Intent remains visible above the opponent, outside the zoomed arena.
-    if(!game.Cinematic()){Box({1060,257,300,32},C(255,249,237),9);Center(1210,264,s.intent.attack?"Sắp tấn công: "+std::to_string(s.intent.value):"Sắp nhận "+std::to_string(s.intent.value)+" giáp",Ink,small_);}
+    if(!game.Cinematic()){Box({1060,257,300,32},C(255,249,237),9);Center(1210,264,game.DisplayIntent().attack?"Sắp tấn công: "+std::to_string(game.DisplayIntent().value):"Sắp nhận "+std::to_string(game.DisplayIntent().value)+" giáp",Ink,small_);}
     DrawLine(20,610,Width-20,610,C(219,219,202));
     DrawCircle(90,659,25,C(233,221,244),TRUE);Center(90,647,std::to_string(s.energy)+"/"+std::to_string(s.config.balance.energy),C(123,91,153),font_);
     Text(128,643,"NĂNG LƯỢNG",Muted,small_);Text(280,639,"Rút: "+std::to_string(s.draw.size()),Muted,small_);Text(280,663,"Bỏ: "+std::to_string(s.discard.size()),Muted,small_);
     Text(470,652,"1–5: bài  ·  E: hết lượt  ·  U: Sao Rơi",Muted,small_);
     Button(UltimateButton(),"✦ Sao Rơi",game.CanAct()&&s.rage>=s.config.balance.rage_max,mx,my);Button(EndButton(),"Kết thúc lượt →",game.CanAct(),mx,my);
-    for(size_t i=0;i<s.hand.size();++i)Card(s,s.Definition(s.hand[i]),CardRect(int(s.hand.size()),int(i)),int(i),s.CanPlay(int(i)),!game.CanAct(),mx,my);
+    if(game.ShowHand())for(size_t i=0;i<s.hand.size();++i)Card(s,s.Definition(s.hand[i]),CardRect(int(s.hand.size()),int(i)),int(i),s.CanPlay(int(i)),!game.CanAct(),mx,my);
     Text(55,922,"Giáp dư hết hạn khi bắt đầu lượt kế tiếp.  R: cùng seed · Enter: trận mới.",Muted,small_);Text(1090,922,"PHIÊN BẢN THỬ NGHIỆM",Muted,small_);
     if(game.toast_age>0){Box({420,570,600,43},C(55,72,62));Center(720,581,game.toast,C(255,255,246),small_);}
     if(game.Cinematic())Button(SkipButton(),"Bỏ qua · Space / Esc",true,mx,my);

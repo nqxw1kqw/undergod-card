@@ -122,5 +122,18 @@ int main(int,char** argv){
         Check(c.EffectiveHeal(c.Definition("cookie"))==2,"heal preview caps at missing HP");
         c.player.hp=50;Check(c.EffectiveHeal(c.Definition("cookie"))==0,"full health preview is zero");
     }
+    {
+        Game g(config,timeline);g.NewRun(42);Combat expected=g.state;const auto intent=g.state.intent;
+        expected.EndPlayer();expected.ActEnemy();g.EndTurn();Tick(g,.769f);
+        Check(g.state.turn==1&&!g.ShowHand(),"enemy contact boundary holds old turn");
+        Tick(g,.002f);Check(g.state.turn==2&&g.DisplayIntent().value==intent.value&&!g.ShowHand(),"next hand and intent hidden at contact");
+        Tick(g,.378f);Check(g.EnemyResolving()&&!g.CanAct(),"recovery remains locked before boundary");
+        Tick(g,.002f);Check(g.Transition()&&g.ShowHand()&&!g.CanAct(),"recovery reveals next hand in locked transition");
+        Tick(g,.198f);Check(!g.CanAct(),"transition locks until exact duration");
+        Tick(g,.002f);Check(g.CanAct()&&g.state.hand==expected.hand&&g.state.intent.value==expected.intent.value,"transition does not draw or roll twice");
+        g.NewRun();g.state.player.hp=1;g.EndTurn();Tick(g,1.151f);
+        Check(g.Result()&&!g.Transition(),"lethal enemy skips incoming player transition");
+        g.NewRun();Check(g.CanAct()&&!g.Transition(),"reset clears transition");
+    }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }
