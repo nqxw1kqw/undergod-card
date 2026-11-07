@@ -71,7 +71,7 @@ void Ui::World(const Game& game){
     DrawRotaGraph3F(Width/2.f+shake,430,Width/2.f,180,game.visual.zoom,game.visual.zoom,0,stage_,TRUE);
     SetDrawArea(0,0,Width,Height);
 }
-void Ui::Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const{
+void Ui::Card(const Combat& state,const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const{
     if(!locked&&r.Contains(mx,my))r.y-=8;
     Box({r.x,r.y+4,r.w,r.h},C(225,218,202));Box(r,C(221,214,201));Box({r.x+1,r.y+1,r.w-2,r.h-2},C(255,252,246));
     const auto bg=card.id=="shield"?C(227,236,235):(card.id=="heavy"?C(233,226,241):(card.id=="cookie"?C(244,236,204):C(242,230,223)));
@@ -81,7 +81,8 @@ void Ui::Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,i
     DrawCircle(r.x+21,r.y+20,15,C(255,255,255),TRUE);Center(r.x+21,r.y+10,std::to_string(card.cost),C(123,91,153),small_);
     Text(r.x+r.w-20,r.y+10,std::to_string(index+1),Muted,small_);
     Text(r.x+12,r.y+127,card.name,affordable&&!locked?Ink:Muted,small_);
-    Text(r.x+12,r.y+156,card.description,Muted,small_);
+    Text(r.x+12,r.y+151,card.description,Muted,small_);
+    Text(r.x+12,r.y+174,card.heal>0?"Hồi thực: "+std::to_string(state.EffectiveHeal(card)):"Nộ +"+std::to_string(state.RageGain(card)),Muted,small_);
 }
 void Ui::Draw(const Game& game,int mx,int my){
     const auto& s=game.state;DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
@@ -109,8 +110,8 @@ void Ui::Draw(const Game& game,int mx,int my){
     Text(128,643,"NĂNG LƯỢNG",Muted,small_);Text(280,639,"Rút: "+std::to_string(s.draw.size()),Muted,small_);Text(280,663,"Bỏ: "+std::to_string(s.discard.size()),Muted,small_);
     Text(470,652,"1–5: bài  ·  E: hết lượt  ·  U: Sao Rơi",Muted,small_);
     Button(UltimateButton(),"✦ Sao Rơi",game.CanAct()&&s.rage>=s.config.balance.rage_max,mx,my);Button(EndButton(),"Kết thúc lượt →",game.CanAct(),mx,my);
-    for(size_t i=0;i<s.hand.size();++i)Card(s.Definition(s.hand[i]),CardRect(int(s.hand.size()),int(i)),int(i),s.CanPlay(int(i)),!game.CanAct(),mx,my);
-    Text(55,922,"Hãy đọc ý định của Ếch Vương trước khi chọn bài.",Muted,small_);Text(1090,922,"PHIÊN BẢN THỬ NGHIỆM",Muted,small_);
+    for(size_t i=0;i<s.hand.size();++i)Card(s,s.Definition(s.hand[i]),CardRect(int(s.hand.size()),int(i)),int(i),s.CanPlay(int(i)),!game.CanAct(),mx,my);
+    Text(55,922,"Giáp dư hết hạn khi bắt đầu lượt kế tiếp.  R: cùng seed · Enter: trận mới.",Muted,small_);Text(1090,922,"PHIÊN BẢN THỬ NGHIỆM",Muted,small_);
     if(game.toast_age>0){Box({420,570,600,43},C(55,72,62));Center(720,581,game.toast,C(255,255,246),small_);}
     if(game.Cinematic())Button(SkipButton(),"Bỏ qua · Space / Esc",true,mx,my);
     if(game.Result()){

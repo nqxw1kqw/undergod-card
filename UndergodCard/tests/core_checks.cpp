@@ -116,5 +116,11 @@ int main(int,char** argv){
         g.SetSessionSeed(42);g.NewMatch();const auto first=g.Seed();g.NewMatch();
         Check(g.Seed()!=first&&g.Seed()!=42,"fresh matches use distinct explicit seeds");
     }
+    {
+        Combat c(config);c.rage=98;c.player.hp=48;
+        Check(c.RageGain(c.Definition("heavy"))==2,"rage preview caps at remaining capacity");
+        Check(c.EffectiveHeal(c.Definition("cookie"))==2,"heal preview caps at missing HP");
+        c.player.hp=50;Check(c.EffectiveHeal(c.Definition("cookie"))==0,"full health preview is zero");
+    }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

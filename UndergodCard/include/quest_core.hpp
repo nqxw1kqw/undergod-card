@@ -61,6 +61,8 @@ public:
     }
     const CardDef& Definition(const std::string& id) const {for(const auto& c:config.cards)if(c.id==id)return c;throw std::runtime_error("Unknown card: "+id);}
     void Draw(int count){for(int i=0;i<count;++i){if(draw.empty()){draw=std::move(discard);discard.clear();Shuffle(draw);}if(draw.empty())break;hand.push_back(draw.back());draw.pop_back();}}
+    int RageGain(const CardDef& c)const{return std::min(config.balance.rage_max-rage,(c.damage>0?config.balance.rage_attack:0)+(c.block>0?config.balance.rage_block:0));}
+    int EffectiveHeal(const CardDef& c)const{return std::min(c.heal,player.max_hp-player.hp);}
     bool CanPlay(int index) const {return phase==Phase::Player && index>=0 && index<int(hand.size()) && energy>=Definition(hand[index]).cost;}
     bool Play(int index){
         if(!CanPlay(index))return false;

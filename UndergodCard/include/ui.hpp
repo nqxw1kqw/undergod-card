@@ -12,7 +12,7 @@ class Ui {
     void Button(Rect r,const std::string& text,bool active,int mx,int my)const;
     void World(const Game& game);
     void Actor(const Game& game,bool enemy)const;
-    void Card(const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const;
+    void Card(const Combat& state,const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const;
     int Image(const std::string& key)const;
 public:
     static constexpr int Width=1440,Height=960,ExpectedAssets=50;
