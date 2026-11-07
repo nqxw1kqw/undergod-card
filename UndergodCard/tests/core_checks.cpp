@@ -177,5 +177,24 @@ int main(int,char** argv){
         Check(x==g.ActorOffset(false)&&frame==g.PoseFrame(false),"speed change preserves action sample");
         Tick(g,.10f);Check(g.poses[1].age>.08f&&g.popups[0].age>.08f,"contact effects include update overshoot");
     }
+    {
+        Game g(config,timeline);g.NewRun();g.state.hand={"punch"};g.state.enemy.block=2;g.Play(0);Tick(g,.321f);
+        Check(g.popups.size()==2&&g.popups[0].amount==2&&g.popups[1].amount==4&&g.popups[0].lane!=g.popups[1].lane,"partial block reports both amounts in separate lanes");
+        Check(!g.particles.empty()&&g.particles.size()<=64&&g.visual.shake_left>0,"ordinary contact has bounded feedback");
+        Tick(g,2);Check(g.particles.empty()&&g.popups.empty()&&g.visual.shake_left==0&&g.visual.flash_left==0,"ordinary effects expire outside cinematic");
+        g.NewRun();g.state.hand={"shield","cookie"};g.Play(0);Tick(g,.46f);g.Play(0);
+        Check(!g.particles.empty(),"shield and heal produce pulses");
+        g.NewRun();Check(g.particles.empty()&&g.popups.empty()&&g.visual.shake_left==0,"reset clears feedback");
+        for(int i=0;i<100;++i){g.state.events.push_back({EventType::Block,false,5});}
+        g.EndTurn();
+        Check(g.particles.size()==64&&g.popups.size()==8,"feedback caps particles and popup lanes under burst load");
+        g.visual.flash_left=.1f;g.visual.flash_duration=.1f;Tick(g,.2f);
+        Check(g.visual.flash_left==0,"flash expires without active cinematic");
+        bool same=true;
+        for(int speed=1;speed<=3;++speed){Game a(config,timeline),b(config,timeline);a.NewRun(12);b.NewRun(12);a.SetSpeed(speed);b.SetSpeed(speed);a.reduced_feedback=true;
+            a.Play(0);b.Play(0);Tick(a,1);for(int i=0;i<100;++i)Tick(b,.01f);a.EndTurn();b.EndTurn();Tick(a,2);Tick(b,2);
+            same&=a.state.hand==b.state.hand&&a.state.intent.value==b.state.intent.value&&a.state.player.hp==b.state.player.hp&&a.particles.empty()&&b.particles.empty();}
+        Check(same,"feedback settings and cadence preserve combat RNG at all speeds");
+    }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

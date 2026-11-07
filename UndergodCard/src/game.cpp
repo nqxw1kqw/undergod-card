@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed){seed_=seed;cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();visual={};time=toast_age=0;toast.clear();next_visual_id_=1;cards.clear();DrawCards(.2f);}
+void Game::NewRun(unsigned seed){seed_=seed;cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();particles.clear();visual_rng_.Seed(seed^0xBADC0DEu);visual={};time=toast_age=0;toast.clear();next_visual_id_=1;cards.clear();DrawCards(.2f);}
 void Game::DrawCards(float age){
     for(int i=0;i<int(state.hand.size());++i){
         auto target=HandBox(int(state.hand.size()),i);
@@ -23,14 +23,39 @@ void Game::ResolveCardVisual(){
         }
     }
 }
+void Game::AgeEffects(float dt){
+    for(auto& p:popups)p.age+=dt;
+    popups.erase(std::remove_if(popups.begin(),popups.end(),[](const auto& p){return p.age>=.95f;}),popups.end());
+    for(auto& p:particles)p.age+=dt;
+    particles.erase(std::remove_if(particles.begin(),particles.end(),[](const auto& p){return p.age>=p.life;}),particles.end());
+    visual.shake_left=std::max(0.f,visual.shake_left-dt);
+    visual.flash_left=std::max(0.f,visual.flash_left-dt);
+}
 void Game::ConsumeEvents(float late){
+    auto popup=[&](bool enemy,int amount,EventType type,bool blocked){
+        int lane=0;for(;lane<8;++lane){bool used=false;for(const auto& p:popups)used|=p.enemy==enemy&&p.lane==lane;if(!used)break;}
+        if(lane<8&&late<.95f)popups.push_back({enemy,amount,type,late,blocked,lane});
+    };
     for(const auto& event:state.events){
-        if(event.type==EventType::Damage){const bool blocked=event.amount==0&&event.blocked>0;poses[event.enemy?1:0]={blocked?"defend":"hit",0};popups.push_back({event.enemy,event.amount?event.amount:event.blocked,EventType::Damage,0,blocked});}
-        else if(event.type==EventType::Block){poses[event.enemy?1:0]={"defend",0};popups.push_back({event.enemy,event.amount,EventType::Block,0});}
-        else if(event.type==EventType::Heal)popups.push_back({event.enemy,event.amount,EventType::Heal,0});
+        if(event.type!=EventType::Damage&&event.type!=EventType::Block&&event.type!=EventType::Heal)continue;
+        if(event.type==EventType::Damage){
+            poses[event.enemy?1:0]={event.amount?"hit":"defend",late};
+            if(event.blocked)popup(event.enemy,event.blocked,EventType::Damage,true);
+            if(event.amount)popup(event.enemy,event.amount,EventType::Damage,false);
+            if(!reduced_feedback&&!Cinematic()){
+                visual.shake=event.amount>=12?4.f:2.f;
+                visual.shake_left=std::max(0.f,.18f-late);
+            }
+        }else{
+            if(event.type==EventType::Block)poses[event.enemy?1:0]={"defend",late};
+            popup(event.enemy,event.amount,event.type,false);
+        }
+        const int count=event.type==EventType::Damage?(event.amount>=12?10:6):8;
+        for(int i=0;i<count;++i){
+            const float vx=float(visual_rng_.Next()*160-80),vy=float(-30-visual_rng_.Next()*90);
+            if(particles.size()<64&&late<.4f)particles.push_back({event.enemy,event.type,late,.4f,vx,vy});
+        }
     }
-    for(auto& p:poses)if(p.age==0)p.age=late;
-    for(auto& p:popups)if(p.age==0)p.age=late;
     state.events.clear();
 }
 void Game::Play(int index){
@@ -76,9 +101,8 @@ void Game::Update(float real_dt){
     const float dt=real_dt*PlaybackRate();time+=dt;
     for(auto& c:cards)c.age+=dt;
     cards.erase(std::remove_if(cards.begin(),cards.end(),[](const CardVisual& c){return c.leaving&&c.age>=c.delay+c.duration;}),cards.end());
-    for(auto& p:poses){p.age+=dt;const bool held=p.name=="ult_throw"&&Cinematic();if(!held&&p.name!="idle"&&p.age>(p.name=="ult_charge"?2.f:.65f))p={};}
-    for(auto& p:popups)p.age+=dt;
-    popups.erase(std::remove_if(popups.begin(),popups.end(),[](const auto& p){return p.age>.95f;}),popups.end());
+    for(auto& p:poses){p.age+=dt;const bool held=(p.name=="ult_throw"&&Cinematic())||(p.name=="attack"&&motion_!=Motion::None);if(!held&&p.name!="idle"&&p.age>(p.name=="ult_charge"?2.f:.65f))p={};}
+    AgeEffects(dt);
     if(motion_==Motion::TurnTransition){
         motion_age_+=dt;if(motion_age_>=.20f){motion_=Motion::None;motion_age_=0;}
     }else if(motion_!=Motion::None){
@@ -93,6 +117,7 @@ void Game::Update(float real_dt){
         }
         if(motion_age_>=timing.end){
             const float overshoot=motion_age_-timing.end;
+            if(poses[enemy?1:0].name=="attack")poses[enemy?1:0]={};
             motion_=enemy&&state.phase==Phase::Player&&overshoot<.20f?Motion::TurnTransition:Motion::None;
             motion_age_=overshoot;pending_card_=-1;
             if(enemy&&state.phase==Phase::Player)DrawCards(overshoot);
@@ -105,9 +130,10 @@ void Game::Update(float real_dt){
         visual.zoom=1+(visual.zoom_target-1)*(1-(1-z)*(1-z));
         if(visual.vfx_age>=0)visual.vfx_age+=dt;
         if(visual.spear.visible)visual.spear.age+=dt;
-        visual.shake_left=std::max(0.f,visual.shake_left-dt);visual.flash_left=std::max(0.f,visual.flash_left-dt);
         cinematic_.Advance(cinematic_age_*1000.f);
     }else cinematic_age_=0;
+    AgeEffects(0);
+    for(auto& p:poses)if((p.name=="hit"||p.name=="defend")&&p.age>=.65f)p={};
     cards.erase(std::remove_if(cards.begin(),cards.end(),[](const CardVisual& c){return c.leaving&&c.age>=c.delay+c.duration;}),cards.end());
 }
 ActionTiming Game::Timing()const{

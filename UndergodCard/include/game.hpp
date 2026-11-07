@@ -8,7 +8,8 @@ namespace undergod {
 enum class Motion { None,PlayerAttack,PlayerOther,EnemyAttack,EnemyOther,TurnTransition };
 struct ActionTiming { float start,contact,end; };
 struct Pose { std::string name="idle"; float age=0; };
-struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; };
+struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; int lane=0; };
+struct Particle { bool enemy; EventType type; float age,life,vx,vy; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
 struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
 struct CardBox {float x=0,y=0,w=176,h=195;};
@@ -38,6 +39,8 @@ class Game {
     bool motion_impact_=false;
     int speed_=1;
     unsigned seed_=1337,session_seed_=1337;
+    Rng visual_rng_;
+    void AgeEffects(float dt);
     Timeline timeline_;
     TimelinePlayer cinematic_;
     void ConsumeEvents(float late=0);
@@ -54,6 +57,8 @@ public:
     Combat state;
     std::array<Pose,2> poses;
     std::vector<Popup> popups;
+    std::vector<Particle> particles;
+    bool reduced_feedback=false;
     CinematicVisual visual;
     float time=0,toast_age=0;
     std::string toast;
