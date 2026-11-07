@@ -196,5 +196,62 @@ int main(int,char** argv){
             same&=a.state.hand==b.state.hand&&a.state.intent.value==b.state.intent.value&&a.state.player.hp==b.state.player.hp&&a.particles.empty()&&b.particles.empty();}
         Check(same,"feedback settings and cadence preserve combat RNG at all speeds");
     }
+    {
+        Combat c(config);c.difficulty=Difficulty::Challenge;c.Reset(17);const auto advertised=c.intent;
+        c.enemy.hp=72;c.hand={"punch"};c.Play(0);
+        Check(c.intent.attack==advertised.attack&&c.intent.value==advertised.value&&c.stage_entries==0,"crossing threshold preserves advertised intent");
+        const int hp=c.player.hp;c.EndPlayer();c.ActEnemy();
+        Check(c.player.hp==hp-advertised.value&&c.stage_entries==1&&c.intent.prepare&&!c.intent.attack,"phase begins once after advertised action resolves");
+        const int prepared_hp=c.player.hp;c.EndPlayer();c.ActEnemy();
+        Check(c.player.hp==prepared_hp&&c.intent.attack&&c.intent.charged&&c.intent.value==34,"preparation is harmless and announces exact charged damage");
+        c.player.block=10;c.EndPlayer();c.ActEnemy();
+        Check(c.player.hp==prepared_hp-24&&c.stage_entries==1,"charged hit uses ordinary block once");
+        c.player.hp=500;for(int i=0;i<12;++i){c.EndPlayer();c.ActEnemy();}
+        Check(c.stage_entries==1,"repeating pattern never reenters stage");
+        c.Reset(17);Check(c.stage_entries==0&&!c.intent.prepare&&!c.intent.charged,"reset clears stage and pattern");
+        bool reproducible=true,isolated=true;
+        for(auto d:{Difficulty::Gentle,Difficulty::Standard,Difficulty::Challenge}){
+            Combat a(config),b(config);a.difficulty=b.difficulty=d;a.Reset(42);b.Reset(42);a.enemy.hp=b.enemy.hp=60;a.player.hp=b.player.hp=1000;
+            for(int i=0;i<20;++i){reproducible&=a.intent.attack==b.intent.attack&&a.intent.value==b.intent.value&&a.intent.prepare==b.intent.prepare&&a.intent.charged==b.intent.charged;
+                a.Draw(2);a.EndPlayer();b.EndPlayer();a.ActEnemy();b.ActEnemy();}
+            isolated&=reproducible;
+        }
+        Check(reproducible&&isolated,"profile intents reproducible and independent of extra shuffle draws");
+        Combat standard(config),challenge(config);challenge.difficulty=Difficulty::Challenge;challenge.Reset(1337);
+        Check(standard.hand==challenge.hand&&standard.intent.value==challenge.intent.value,"profile choice preserves shuffle stream and challenge opening");
+        standard.enemy.hp=1;standard.EndPlayer();standard.ActEnemy();
+        Check(standard.stage_entries==0&&!standard.intent.prepare&&!standard.intent.charged,"standard never escalates even below threshold");
+        Game g(config,timeline);g.NewRun(42);
+        Check(!g.SelectDifficulty(static_cast<Difficulty>(99)),"profile selection rejects out of range");
+        Check(g.SelectDifficulty(Difficulty::Gentle)&&g.Seed()==42&&g.state.difficulty==Difficulty::Gentle,"profile selection retries explicit seed");
+        g.Play(0);Check(!g.SelectDifficulty(Difficulty::Challenge),"profile selection respects action input lock");
+        g.NewRun(42);g.Retry();Check(g.state.difficulty==Difficulty::Gentle,"retry retains selected profile");
+        auto invalid=config;invalid.enemy.stage_threshold_percent=100;bool rejected=false;
+        try{Combat bad(invalid);}catch(const std::runtime_error&){rejected=true;}
+        Check(rejected,"profile threshold bounds validated");
+        invalid=config;invalid.enemy.challenge_charge=0;rejected=false;
+        try{Combat bad(invalid);}catch(const std::runtime_error&){rejected=true;}
+        Check(rejected,"charged damage bounds validated");
+        bool cadence=true;
+        for(int speed=1;speed<=3;++speed){Game a(config,timeline),b(config,timeline);a.SelectDifficulty(Difficulty::Challenge);b.SelectDifficulty(Difficulty::Challenge);a.state.enemy.hp=b.state.enemy.hp=60;a.SetSpeed(speed);b.SetSpeed(speed);
+            for(int turn=0;turn<2;++turn){a.EndTurn();b.EndTurn();Tick(a,1.4f);for(int i=0;i<140;++i)Tick(b,.01f);}
+            cadence&=a.state.hand==b.state.hand&&a.state.intent.charged&&b.state.intent.charged&&a.state.player.hp==b.state.player.hp&&a.state.stage_entries==1&&b.state.stage_entries==1;}
+        Check(cadence,"stage preparation preserves fine/coarse and speed equivalence");
+    }
+    {
+        Combat c(config);c.difficulty=Difficulty::Challenge;c.Reset(33);c.enemy.hp=73;c.EndPlayer();c.ActEnemy();
+        Check(c.stage_entries==0,"stage stays inactive immediately above threshold");
+        c.enemy.hp=72;c.EndPlayer();c.ActEnemy();Check(c.stage_entries==1&&c.intent.prepare,"stage enters at exact threshold");
+        bool once=true,clean=true;
+        for(auto d:{Difficulty::Gentle,Difficulty::Standard,Difficulty::Challenge})for(int speed=1;speed<=3;++speed){
+            Game g(config,timeline);g.SelectDifficulty(d);g.SetSpeed(speed);g.state.rage=100;g.Ultimate();Tick(g,2.61f);g.SkipCinematic();g.SkipCinematic();
+            once&=g.state.enemy.hp==80&&g.state.stage_entries==0&&g.particles.empty()&&g.visual.shake_left==0;
+            g.state.enemy.hp=60;g.EndTurn();Tick(g,1.4f);const int hp=g.state.player.hp;g.EndTurn();Tick(g,2);Tick(g,2);
+            once&=d==Difficulty::Standard||g.state.player.hp==hp;
+            g.NewRun();clean&=g.CanAct()&&g.state.stage_entries==0&&g.particles.empty()&&g.popups.empty()&&!g.visual.spear.visible;
+        }
+        Check(once,"ultimate and preparation remain exactly once across profiles and speeds");
+        Check(clean,"all profile resets clean locks and presentation");
+    }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

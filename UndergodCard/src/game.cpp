@@ -95,7 +95,7 @@ void Game::Ultimate(){
     ConsumeEvents();visual={};cinematic_age_=0;
     cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();ConsumeEvents();},[this]{state.FinishUltimate();visual={};poses[0]={};});
 }
-void Game::SkipCinematic(){cinematic_.Skip();}
+void Game::SkipCinematic(){const bool active=Cinematic();cinematic_.Skip();if(active)particles.clear();}
 void Game::Update(float real_dt){
     real_dt=std::max(0.f,real_dt);toast_age=std::max(0.f,toast_age-real_dt);
     const float dt=real_dt*PlaybackRate();time+=dt;
@@ -109,7 +109,7 @@ void Game::Update(float real_dt){
         const bool enemy=motion_==Motion::EnemyAttack||motion_==Motion::EnemyOther;
         const auto timing=Timing();
         const float before=motion_age_;motion_age_+=dt;
-        if(enemy&&before<timing.start&&motion_age_>=timing.start)poses[1]={resolving_intent_.attack?"attack":"defend",motion_age_-timing.start};
+        if(enemy&&before<timing.start&&motion_age_>=timing.start)poses[1]={resolving_intent_.prepare?"ult_charge":(resolving_intent_.attack?"attack":"defend"),motion_age_-timing.start};
         const float impact=timing.contact;
         if(motion_age_>=impact&&!motion_impact_){
             ApplyMotion();
@@ -117,7 +117,7 @@ void Game::Update(float real_dt){
         }
         if(motion_age_>=timing.end){
             const float overshoot=motion_age_-timing.end;
-            if(poses[enemy?1:0].name=="attack")poses[enemy?1:0]={};
+            if(poses[enemy?1:0].name=="attack"||(enemy&&resolving_intent_.prepare))poses[enemy?1:0]={"idle",overshoot};
             motion_=enemy&&state.phase==Phase::Player&&overshoot<.20f?Motion::TurnTransition:Motion::None;
             motion_age_=overshoot;pending_card_=-1;
             if(enemy&&state.phase==Phase::Player)DrawCards(overshoot);

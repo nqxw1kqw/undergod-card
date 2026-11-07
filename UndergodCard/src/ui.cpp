@@ -92,7 +92,7 @@ void Ui::Card(const Combat& state,const CardDef& card,Rect r,int index,bool affo
 void Ui::Draw(const Game& game,int mx,int my){
     const auto& s=game.state;DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
     Text(55,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(82,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);
-    Text(880,53,"01 / ĐỒNG CỎ ÊM ĐỀM",Muted,small_);Button(RestartButton(),"Trận mới ↻",!game.Busy(),mx,my);
+    Button(DifficultyButton(),std::string("D: ")+DifficultyName(s.difficulty)+" / đổi & thử lại",!game.Busy(),mx,my);Button(RestartButton(),"Trận mới ↻",!game.Busy(),mx,my);
     Text(430,53,"Tốc độ",Muted,small_);
     for(int speed=1;speed<=3;++speed){const Rect r=SpeedButton(speed);const bool selected=game.Speed()==speed;Box(r,selected?C(79,106,91):(r.Contains(mx,my)?C(226,229,218):C(239,237,229)));Center(r.x+r.w/2,r.y+11,"x"+std::to_string(speed),selected?C(255,255,246):Ink,small_);}
     Button(FeedbackButton(),game.reduced_feedback?"FX: nhẹ":"FX: đầy đủ",true,mx,my);
@@ -110,7 +110,7 @@ void Ui::Draw(const Game& game,int mx,int my){
     Center(720,198,"HP mất dự kiến: "+std::to_string(game.IncomingLoss()),Muted,small_);
     World(game);
     // Intent remains visible above the opponent, outside the zoomed arena.
-    if(!game.Cinematic()){Box({1060,257,300,32},C(255,249,237),9);Center(1210,264,game.DisplayIntent().attack?"Sắp tấn công: "+std::to_string(game.DisplayIntent().value):"Sắp nhận "+std::to_string(game.DisplayIntent().value)+" giáp",Ink,small_);}
+    if(!game.Cinematic()){Box({1060,257,300,32},C(255,249,237),9);Center(1210,264,game.DisplayIntent().prepare?"Chuẩn bị → đòn "+std::to_string(game.DisplayIntent().value)+" lượt sau":(game.DisplayIntent().attack?(game.DisplayIntent().charged?"Đòn tích lực: ":"Sắp tấn công: ")+std::to_string(game.DisplayIntent().value):"Sắp nhận "+std::to_string(game.DisplayIntent().value)+" giáp"),Ink,small_);}
     DrawLine(20,610,Width-20,610,C(219,219,202));
     DrawCircle(90,659,25,C(233,221,244),TRUE);Center(90,647,std::to_string(s.energy)+"/"+std::to_string(s.config.balance.energy),C(123,91,153),font_);
     Text(128,643,"NĂNG LƯỢNG",Muted,small_);Text(280,639,"Rút: "+std::to_string(s.draw.size()),Muted,small_);Text(280,663,"Bỏ: "+std::to_string(s.discard.size()),Muted,small_);
@@ -137,6 +137,7 @@ void Ui::Click(Game& game,int mx,int my){
     if(FeedbackButton().Contains(mx,my)){game.reduced_feedback=!game.reduced_feedback;return;}
     for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
     if(game.Cinematic()){if(SkipButton().Contains(mx,my))game.SkipCinematic();return;}
+    if(!game.Busy()&&DifficultyButton().Contains(mx,my)){game.CycleDifficulty();return;}
     if(game.Result()){if(RetryButton().Contains(mx,my)){game.Retry();return;}if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewMatch();return;}
     if(game.Busy())return;
     if(RestartButton().Contains(mx,my)){game.NewMatch();return;}

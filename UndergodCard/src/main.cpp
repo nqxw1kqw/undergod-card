@@ -86,6 +86,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             if(game.Cinematic()){if(pressed(KEY_INPUT_SPACE)||pressed(KEY_INPUT_ESCAPE))game.SkipCinematic();}
             else{
                 const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5};for(int i=0;i<5;++i)if(pressed(numbers[i]))game.Play(i);
+                if(pressed(KEY_INPUT_D)&&!game.Busy())game.CycleDifficulty();
                 if(pressed(KEY_INPUT_E))game.EndTurn();if(pressed(KEY_INPUT_U))game.Ultimate();
                 if(pressed(KEY_INPUT_R)&&!game.Busy())game.Retry();
                 if(pressed(KEY_INPUT_RETURN)&&!game.Busy())game.NewMatch();

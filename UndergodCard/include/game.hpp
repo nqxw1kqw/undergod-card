@@ -68,6 +68,11 @@ public:
     void SetSessionSeed(unsigned seed){session_seed_=seed;}
     void NewMatch(){session_seed_+=0x9e3779b9u;NewRun(session_seed_);}
     void Retry(){NewRun(seed_);}
+    bool SelectDifficulty(Difficulty d){
+        if(Busy()||(d!=Difficulty::Gentle&&d!=Difficulty::Standard&&d!=Difficulty::Challenge))return false;
+        state.difficulty=d;NewRun(seed_);return true;
+    }
+    void CycleDifficulty(){SelectDifficulty(state.difficulty==Difficulty::Standard?Difficulty::Challenge:(state.difficulty==Difficulty::Challenge?Difficulty::Gentle:Difficulty::Standard));}
     bool CanAct()const{return motion_==Motion::None&&!cinematic_.Active()&&state.phase==Phase::Player;}
     bool Busy()const{return motion_!=Motion::None||cinematic_.Active();}
     Intent DisplayIntent()const{return EnemyResolving()?resolving_intent_:state.intent;}
@@ -75,7 +80,7 @@ public:
     bool Transition()const{return motion_==Motion::TurnTransition;}
     bool ShowHand()const{return !EnemyResolving();}
     int IncomingLoss()const{return EnemyResolving()?0:(state.intent.attack?std::max(0,state.intent.value-state.player.block):0);}
-    const char* TurnStatus()const{return Transition()?"Your turn":(EnemyResolving()?(motion_impact_?"Enemy recovery":(resolving_intent_.attack?"Enemy attack":"Enemy guard")):(Busy()?"Resolving card":"Your turn"));}
+    const char* TurnStatus()const{return Transition()?"Your turn":(EnemyResolving()?(motion_impact_?"Enemy recovery":(resolving_intent_.prepare?"Enemy preparing":(resolving_intent_.charged?"Charged attack":(resolving_intent_.attack?"Enemy attack":"Enemy guard")))):(Busy()?"Resolving card":"Your turn"));}
     bool Cinematic()const{return cinematic_.Active();}
     bool Result()const{return !Busy()&&(state.phase==Phase::Won||state.phase==Phase::Lost);}
     void Play(int index);
