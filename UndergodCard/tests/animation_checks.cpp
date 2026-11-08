@@ -63,7 +63,8 @@ void AnimationChecks(const Config& config,const Timeline& timeline){
     {
         Game g(config,timeline);g.NewRun(1337);g.ChooseNode(0);Settle(g);g.state.enemy.hp=1;g.state.hand={"punch"};g.state.live.locked=-1;g.state.stars.enemy={{0,Idle(),true},{0,Idle(),true},{0,Idle(),true}};
         Attack(g);AdvanceSkill(g,.34f);Check(g.state.phase==Phase::Won&&g.run.place==Place::Fight&&g.Busy()&&g.SkillVisual().active,"fatal strike keeps the stage visible through its impact tail");
-        AdvanceSkill(g,.35f);Check(g.run.place!=Place::Fight&&!g.SkillVisual().active,"loot transition happens only after the killing animation finishes");
+        AdvanceSkill(g,.35f);Check(g.run.place==Place::Fight&&g.terminal.active&&!g.SkillVisual().active,"terminal sequence holds loot after the killing skill finishes");
+        AdvanceSkill(g,1.2f);Check(g.run.place!=Place::Fight,"loot transition follows the terminal fade");
         g.NewRun();Check(!g.SkillVisual().active&&g.FloatingEffects().empty()&&g.Reaction(-1).break_age>1,"a new run clears all old visual reactions");
     }
     std::string reference;

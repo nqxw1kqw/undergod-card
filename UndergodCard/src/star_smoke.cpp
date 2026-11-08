@@ -39,7 +39,7 @@ int StarSmoke(Game& game,Ui& ui,Audio& audio){
     Intent fang;fang.attack=true;fang.kind=IntentKind::Attack;fang.value=3;fang.status=StatusId::Vulnerable;fang.status_amount=1;fang.deck_card_id="boss_tiger_fang";
     game.state.stars.enemy={{0,strike,false},{0,guard,false},{0,fang,false}};capture("09-boss-plan.png");
     const int hp=game.state.enemy.hp;
-    for(int i=0;i<3;++i){const auto r=Ui::StarHandRect(5-i,0);ui.Click(game,r.x+r.w/2,r.y+r.h/2);}
+    step(.25f);for(int i=0;i<3;++i){const auto r=Ui::StarHandRect(5-i,0);ui.Click(game,r.x+r.w/2,r.y+r.h/2);step(.23f);}
     check(game.state.stars.player.size()==3&&game.state.enemy.hp==hp&&game.CanAttack(),"three_clicks_queue_without_damage");capture("10-three-player-cards.png");
     const auto enemy=Ui::EnemyStarRect(0);const auto rng=game.state.Snapshot().intent_rng;
     capture("11-boss-card-tooltip.png",enemy.x+20,enemy.y+20);check(game.state.Snapshot().intent_rng==rng,"enemy_tooltip_does_not_reroll");

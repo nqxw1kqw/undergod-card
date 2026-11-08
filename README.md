@@ -1,8 +1,8 @@
-# undergod-card — v1.3.1-preview
+# undergod-card — v1.4.0-preview
 
-Game thẻ bài roguelike bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Nhánh draft/v0.3-wip có luật [ba Turn Star](UndergodCard/docs/TURN_STARS.md), avatar đi trên map, chuyển cảnh đen, FIGHT và chia bài có hoạt ảnh. Bản mới sửa icon nhảy về điểm cũ khi tới stage và thêm [36 lá riêng của sáu boss](UndergodCard/docs/BOSS_DECKS.md).
+Game thẻ bài roguelike bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Nhánh `integrate/draft-main-optimizations` lấy draft làm nền và tích hợp các cải tiến đã triển khai trên main. Giữ chiến dịch, [ba Turn Star](UndergodCard/docs/TURN_STARS.md), avatar map, chuyển cảnh đen, FIGHT và [36 lá riêng của sáu boss](UndergodCard/docs/BOSS_DECKS.md). Đối chiếu từng mục tại [báo cáo hợp nhất](UndergodCard/docs/DRAFT_MAIN_INTEGRATION.md).
 
-v1.3.1 dùng khung hình/cửa sổ **1600×900 (16:9)**, căn giữa map/menu/sân đấu và thu gọn hàng bài cho chiều cao mới, giữ đúng tỉ lệ sprite. Có [hoạt ảnh riêng theo kỹ năng](UndergodCard/docs/SKILL_ANIMATIONS.md): đâm lao, niệm phép, đạn bay, vuốt/vồ và lớp khiên theo giáp thật của hai phe.
+Khung hình/cửa sổ **1600×900 (16:9)**; giữ [hoạt ảnh riêng theo kỹ năng](UndergodCard/docs/SKILL_ANIMATIONS.md) và toàn bộ asset draft. Bản tích hợp thêm chuyển động bài có ID riêng, xem trước hiệu quả thực, popup chặn/HP riêng, FX nhẹ, fade kết thúc/recap, xem chồng bài không lộ thứ tự, chơi lại cùng seed và ba mức khó đấu thử.
 
 ![Ba lớp trong bản DxLib](UndergodCard/docs/images/classes.png)
 
@@ -24,13 +24,14 @@ Tải gói Windows tại [Releases](https://github.com/nqxw1kqw/undergod-card/re
     .\UndergodCard\verify.ps1 -Configuration Release
     .\UndergodCard\verify.ps1 -Configuration Debug
     .\UndergodCard\bin\Release\CoreChecks.exe --simulate-stars 300
+    .\UndergodCard\bin\Release\CoreChecks.exe --integrate-balance 20
     .\UndergodCard\package.ps1 -SkipBuild
 
-Các script nhận -DxLibDir. Nhánh vẫn ở [PR #2](https://github.com/nqxw1kqw/undergod-card/pull/2), chưa merge main hoặc PR #1.
+Các script nhận -DxLibDir. Nhánh tích hợp mới giữ cả lịch sử main/draft; hai nhánh nguồn và [PR draft cũ #2](https://github.com/nqxw1kqw/undergod-card/pull/2) giữ nguyên. ZIP build của nhánh này ở `UndergodCard/release/`; trang Releases có thể vẫn là phiên bản trước.
 
 ## Điều khiển và tiến trình
 
-Chuột / 1–9 chọn lối và xếp bài; bấm lá trong hàng chờ để gỡ. Mỗi lá dùng một sao, đủ ba vị trí thì bấm Attack hoặc E. Có Chờ 1 sao khi thiếu bài. Tab hoặc bấm địch chọn mục tiêu; U tuyệt kỹ. F1/F2/F3 đổi x1/x2/x3, Space/Esc bỏ cinematic; Z/X/C/V dùng thuốc, F10 bật/tắt âm thanh. F6 lưu, F9 tiếp tục; có thể lưu cả hàng bài đang chọn. Các trang bộ bài và map hỗ trợ bánh xe, Page Up/Page Down và nút trang.
+Chuột / 1–0 xếp bài; ←/→ xem chi tiết, Space xếp lá đang focus; bấm hàng chờ để gỡ. Đủ ba vị trí thì Attack/E, ta/địch luân phiên. P/O xem chồng rút/bỏ, Esc đóng. N hành trình mới, Shift+R lặp seed hiện tại, R/Enter mở menu lớp; D đổi mức khó khi đấu thử. Tab chọn mục tiêu, U tuyệt kỹ; F1/F2/F3 đổi tốc độ, Space/Esc bỏ cinematic; Z/X/C/V dùng thuốc, F10 âm thanh, nút FX đổi mức hiệu ứng. F6 lưu/F9 tải; bánh xe/Page Up/Page Down đổi trang.
 
 profile.json giữ Lông Vũ/kỹ năng/thành tựu; save.json giữ hành trình. Chép cả hai khi chuyển máy. Schema session v2 không tương thích v1 cũ; khi tự mở, game giữ tệp cũ thành .invalid.* trước khi tạo mới.
 

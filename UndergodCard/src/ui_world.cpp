@@ -13,6 +13,7 @@ bool Ui::DrawExtensions(const Game& game,int mx,int my){
     Text(135,42,"✦ UNDERGOD",Rgb(75,93,82),brand_);
     Text(1030,55,"Lông Vũ: "+std::to_string(game.profile.feathers),Rgb(146,112,48),font_);
     Button(AudioButton(),game.profile.muted?"Tắt ♪":"Bật ♪",true,mx,my);
+    Button(FeedbackButton(),game.ReducedFeedback()?"FX: nhẹ":"FX: đầy",true,mx,my);
     Button(BackButton(),game.Menu()?"← Quay lại":(game.RelicReward()?"Chọn lớp / hành trình":"Bỏ qua"),true,mx,my);
     const auto& config=game.state.config;
     if(game.MenuPage()==1){
@@ -77,9 +78,9 @@ void Ui::DrawTargets(const Game& game,int mx,int my)const{
         if(disguised)Center(x,r.y+42,"Chọn để thử phá ảo",Muted,small_);
         else if(index>0){const auto& intent=state.adds[index-1].intent;Center(x,r.y+42,intent.attack?"Đánh "+std::to_string(intent.value*intent.hits):"Phòng / Tăng sức",Muted,small_);}
     }
-    if(state.live.airborne)Center(1240,game.TurnStarRules()?338:294,"Đang bay · giảm 50% sát thương cận chiến",Rgb(105,113,158),small_);
+    if(state.live.airborne&&game.CanAct())Center(1240,game.TurnStarRules()?338:294,"Đang bay · giảm 50% sát thương cận chiến",Rgb(105,113,158),small_);
     if(state.live.doom_left>0)Center(800,226,"TẬN THẾ SAU "+std::to_string(state.live.doom_left)+" LƯỢT",Rgb(181,77,91),font_);
     else if(state.live.constrict_left>0)Center(800,226,"Siết: còn "+std::to_string(state.live.constrict_left)+" lượt",Rgb(156,105,77),small_);
-    const auto future=state.PreviewIntentText();if(!future.empty())Wrapped({840,568,620,40},future,Muted);
+    const auto future=state.PreviewIntentText();if(game.CanAct()&&!future.empty())Wrapped({840,568,620,40},future,Muted);
 }
 }

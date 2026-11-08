@@ -26,3 +26,8 @@ if (!$animation.WaitForExit(60000)) { Stop-Process -Id $animation.Id; throw 'Ski
 $animationReport=Get-Content -LiteralPath (Join-Path $PSScriptRoot "bin\$Configuration\artifacts\skill-animations\smoke.txt") -Raw
 Write-Output $animationReport
 if ($animation.ExitCode -ne 0 -or $animationReport -notmatch 'PASS=1') { throw 'Skill animation DxLib smoke that bai.' }
+$integration=Start-Process -FilePath (Join-Path $PSScriptRoot "bin\$Configuration\UndergodCard.exe") -ArgumentList '--integration-smoke' -WindowStyle Hidden -PassThru
+if (!$integration.WaitForExit(60000)) { Stop-Process -Id $integration.Id; throw 'Integration smoke qua 60 giay.' }
+$integrationReport=Get-Content -LiteralPath (Join-Path $PSScriptRoot "bin\$Configuration\artifacts\integration\smoke.txt") -Raw
+Write-Output $integrationReport
+if ($integration.ExitCode -ne 0 -or $integrationReport -notmatch 'PASS=1') { throw 'Integration DxLib smoke that bai.' }

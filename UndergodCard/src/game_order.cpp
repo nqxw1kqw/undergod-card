@@ -4,6 +4,7 @@
 namespace undergod {
 void Game::BeginArrival(bool banner){
     if(banner)ResetSkillVisuals();
+    else SyncCards(true);
     arrival_banner_=banner;arrival_=banner?Arrival::FadeIn:Arrival::Deal;arrival_age_=0;
 }
 void Game::UpdateArrival(float dt){
@@ -23,7 +24,7 @@ void Game::UpdateArrival(float dt){
             arrival_=Arrival::BlackHold;save_dirty_=true;
         }else if(arrival_==Arrival::BlackHold)arrival_=Arrival::FadeIn;
         else if(arrival_==Arrival::FadeIn)arrival_=arrival_banner_?Arrival::Fight:Arrival::None;
-        else if(arrival_==Arrival::Fight){arrival_=Arrival::Deal;sound_events.push_back("select");}
+        else if(arrival_==Arrival::Fight){arrival_=Arrival::Deal;SyncCards(true);sound_events.push_back("select");}
         else{arrival_=Arrival::None;arrival_age_=0;save_dirty_=true;}
     }
 }
@@ -44,8 +45,8 @@ float Game::DealtCards()const{
     if(arrival_==Arrival::Deal)return std::clamp((arrival_age_-.08f)/.12f,0.f,float(state.hand.size()));
     return float(state.hand.size());
 }
-bool Game::QueueWait(){const bool result=CanAct()&&turn_stars_&&state.QueueWait();save_dirty_|=result;return result;}
-bool Game::UnqueueCard(int slot){const bool result=CanAct()&&state.UnqueueStar(slot);save_dirty_|=result;if(result)sound_events.push_back("select");return result;}
+bool Game::QueueWait(){const bool result=CanAct()&&!pile_view&&turn_stars_&&state.QueueWait();save_dirty_|=result;return result;}
+bool Game::UnqueueCard(int slot){const bool result=CanAct()&&!pile_view&&state.UnqueueStar(slot);save_dirty_|=result;if(result){SyncCards();sound_events.push_back("select");}return result;}
 void Game::BeginStarMotion(){
     const int cursor=state.stars.cursor,slot=cursor/2;
     const bool enemy=cursor%2!=0;
@@ -64,6 +65,7 @@ void Game::BeginStarMotion(){
     motion_age_=0;motion_impact_=false;
     if(!enemy)poses[0]={attack?"attack":"defend",0};
     BeginSkillVisual(enemy,slot);
+    StartCardVisual(enemy,slot);
 }
 void Game::FinishStarMotion(){
     if(state.phase==Phase::Won||state.phase==Phase::Lost){star_sequence_=false;state.stars.resolving=false;active_actor_=-1;AfterResolve();return;}

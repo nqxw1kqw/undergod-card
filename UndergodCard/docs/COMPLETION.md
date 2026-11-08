@@ -1,4 +1,6 @@
-# Hoàn thiện kế hoạch — v1.3.1-preview
+# Hoàn thiện kế hoạch — v1.4.0-preview
+
+2026-11-09: nhánh mới `integrate/draft-main-optimizations` giữ nền draft và chuyển các cải tiến main sang luật ba sao. Chuyển động bài, resolver preview, FX nhẹ, thông tin chồng bài, seed, mức khó đấu thử, terminal/recap và camera liên tục được đối chiếu tại [DRAFT_MAIN_INTEGRATION.md](DRAFT_MAIN_INTEGRATION.md). Hai nhánh nguồn giữ nguyên; trạng thái kiểm tra hiện tại ở [VALIDATION.md](VALIDATION.md).
 
 Cập nhật theo yêu cầu mới: avatar đi tới điểm trên map, giữ màn đen khi đổi khu vực, ảnh FIGHT và chia bài; mỗi phe ba Turn Star, xếp ba lá rồi Attack luân phiên, xem trước bài địch bằng tooltip. Luật, chuyển đổi năng lượng/nâng cấp và tương thích bản lưu ở [TURN_STARS.md](TURN_STARS.md). Bản HTML/website giữ độc lập.
 
@@ -8,7 +10,7 @@ v1.3.0 thêm 98 cấu hình hoạt ảnh cho player/boss/địch, 72 frame cơ t
 
 v1.3.1 chuyển backbuffer và cửa sổ sang 1600×900. Giữ tỉ lệ sprite, căn giữa nội dung và đồng bộ vùng bấm mục tiêu; chỉnh chiều cao hàng chờ/bài tay, nút dưới map/shop và thông báo menu cho màn 16:9.
 
-2026-11-06. Giữ nhánh draft/v0.3-wip và PR #2; chưa merge main/PR #1. Các hệ thống trong mốc v0.4/v0.5/v1.0 và yêu cầu Turn Star đã có triển khai. Hai tiêu chí cần chơi thực để mở trong IMPLEMENTATION_CHECKLIST.
+Mốc draft 2026-11-06 nằm ở `draft/v0.3-wip` và PR #2. Nhánh tích hợp hiện tại có cả lịch sử main/draft, không thay đầu hai nhánh nguồn. Các hệ thống v0.4/v0.5/v1.0 và Turn Star vẫn giữ; hai tiêu chí chơi thực để mở trong IMPLEMENTATION_CHECKLIST.
 
 - Ba hồi phân nhánh 13/13/15 tầng, phần thưởng/hồi HP boss, sáu boss với ngưỡng HP và cơ chế riêng.
 - Nhiều mục tiêu, chọn mục tiêu, AOE/ngẫu nhiên, summon, multi-hit và charge.

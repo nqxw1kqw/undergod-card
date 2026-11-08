@@ -1,4 +1,4 @@
-UNDERGOD CARD QUEST v1.3.1-preview — C++17 / DxLib / Windows x64
+UNDERGOD CARD QUEST v1.4.0-preview — C++17 / DxLib / Windows x64
 
 Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
 Game mở ở 1600×900, tỉ lệ 16:9; giao diện và hàng bài đã căn theo khung mới.
@@ -18,7 +18,9 @@ Bài được chia lần lượt; đợi chia xong mới chọn bài.
 
 TURN STAR
 Mỗi phe có ba Turn Star mỗi vòng. Mỗi lá dùng một sao, thay giá năng lượng cũ.
-Bấm lá hoặc 1–9 để xếp vào hàng chờ. Chọn bài chưa tạo hiệu ứng.
+Bấm lá hoặc 1–0 để xếp vào hàng chờ. Chọn bài chưa tạo hiệu ứng.
+←/→ xem chi tiết lá, Space xếp lá đang chọn. Chi tiết dùng hiệu quả thực
+nếu đánh ngay; các lá trước đó trong hàng có thể thay đổi kết quả khi đánh.
 Bấm lá trong hàng chờ để gỡ; các lá còn lại giữ nguyên thứ tự.
 Đủ ba vị trí thì bấm Attack hoặc E:
 ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3.
@@ -28,6 +30,8 @@ Khi một phe gục, phần chuỗi còn lại bị hủy.
 
 Địch chốt sẵn ba lá phía trên đầu. Rê chuột lên lá để xem thông tin.
 Không đổi kế hoạch địch khi chọn/gỡ bài hoặc rê chuột.
+P/O mở chồng rút/bỏ theo tên và số lượng, không hiện thứ tự rút.
+Nút trang hoặc ←/→ đổi trang; Esc đóng bảng. Đóng bảng trước khi đánh.
 Tab hoặc bấm địch để chọn mục tiêu trước khi xếp từng lá.
 Nếu mục tiêu đó đã gục khi thực hiện thì chuyển sang địch còn sống.
 Trong lúc chuỗi đang chạy không sửa hàng bài, dùng thuốc hay lưu/tải.
@@ -50,6 +54,13 @@ Space/Esc bỏ cinematic; sát thương chỉ áp một lần.
 Z/X/C/V dùng thuốc trong giai đoạn chuẩn bị.
 F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ; run mới luôn bắt đầu ở x1.
 F10/nút nhạc bật tắt âm thanh.
+Nút FX đổi đầy/nhẹ; FX nhẹ giảm hạt, tắt rung, flash và zoom camera.
+N tạo hành trình/đấu thử với seed mới; Shift+R chơi lại cùng seed/lớp.
+Khi đấu thử, D hoặc nút mức khó đổi Nhẹ/Chuẩn/Khó rồi lặp cùng seed.
+Nhẹ giảm sát thương địch 2, Khó tăng 4; giữ HP và bộ bài boss.
+Thử Thách của hành trình vẫn chọn riêng ở menu lớp.
+Đòn kết liễu giữ hoạt ảnh 1,5 giây logic rồi mới chuyển thưởng/kết quả.
+Recap hiển thị hiệu quả thực và seed của trận vừa kết thúc.
 
 BA HỒI VÀ TRÙM
 Ba hồi 13 / 13 / 15 tầng, gồm trận, tinh anh, sự kiện, shop, nghỉ và boss.

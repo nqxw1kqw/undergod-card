@@ -33,7 +33,7 @@ bool SettleProfile(Profile& profile,RunState& run,const Config& config){
     return true;
 }
 bool SaveProfile(const std::filesystem::path& file,const Profile& p,std::string& error){
-    nlohmann::json j={{"format","undergod-profile"},{"version",1},{"feathers",p.feathers},{"highestChallenge",p.highest_challenge},{"nextRun",p.next_run},{"class",p.selected_class},{"muted",p.muted},{"skills",p.skills},{"achievements",p.achievements},{"bosses",p.bosses},{"relics",p.relics},{"settledRuns",p.settled_runs},{"metrics",p.metrics}};
+    nlohmann::json j={{"format","undergod-profile"},{"version",1},{"feathers",p.feathers},{"highestChallenge",p.highest_challenge},{"nextRun",p.next_run},{"class",p.selected_class},{"muted",p.muted},{"reducedFeedback",p.reduced_feedback},{"skills",p.skills},{"achievements",p.achievements},{"bosses",p.bosses},{"relics",p.relics},{"settledRuns",p.settled_runs},{"metrics",p.metrics}};
     return WriteAtomicText(file,j.dump(2)+"\n",error);
 }
 bool LoadProfile(const std::filesystem::path& file,Profile& profile,const Config& config,std::string& error){
@@ -41,7 +41,7 @@ bool LoadProfile(const std::filesystem::path& file,Profile& profile,const Config
         if(!std::filesystem::is_regular_file(file)||std::filesystem::file_size(file)>16*1024*1024)throw std::runtime_error("Profile missing or too large");
         std::ifstream in(file);nlohmann::json j;in>>j;if(j.at("format")!="undergod-profile"||j.at("version")!=1)throw std::runtime_error("Unknown profile version");
         Profile p;p.feathers=j.at("feathers");p.highest_challenge=j.at("highestChallenge");p.next_run=j.at("nextRun");p.selected_class=j.at("class");p.skills=j.at("skills").get<std::vector<std::string>>();p.achievements=j.at("achievements").get<std::vector<std::string>>();p.bosses=j.at("bosses").get<std::vector<std::string>>();p.relics=j.at("relics").get<std::vector<std::string>>();p.settled_runs=j.at("settledRuns").get<std::vector<std::string>>();p.metrics=j.at("metrics").get<std::map<std::string,int>>();
-        p.muted=j.value("muted",false);
+        p.muted=j.value("muted",false);p.reduced_feedback=j.value("reducedFeedback",false);
         if(j.at("nextRun").get<int64_t>()<1||j.at("nextRun").get<int64_t>()>1000000000||p.settled_runs.size()>100000)throw std::runtime_error("Invalid profile run counter");
         if(p.feathers<0||p.feathers>10000000||p.highest_challenge<-1||p.highest_challenge>10||p.next_run<1||p.skills.size()>config.skills.size()||p.achievements.size()>config.achievements.size())throw std::runtime_error("Invalid profile values");
         FindClass(config,p.selected_class);std::set<std::string> seen;

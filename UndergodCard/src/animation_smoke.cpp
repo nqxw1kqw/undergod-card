@@ -17,7 +17,7 @@ int AnimationSmoke(Game& game,Ui& ui,Audio& audio){
     auto fixture=[&](const std::string& card,const std::string& cls="chick",const std::string& boss="tiger"){
         game.StartBossPractice(boss,1337,cls);settle();game.state.player.hp=game.state.player.max_hp=500;game.state.enemy.hp=game.state.enemy.max_hp=500;
         game.state.hand={card};game.state.live.locked=-1;game.state.player.block=game.state.enemy.block=0;
-        game.state.stars.enemy={{0,idle,true},{0,idle,true},{0,idle,true}};
+        game.state.stars.enemy={{0,idle,true},{0,idle,true},{0,idle,true}};step(.26f);
     };
     auto launch=[&](){const auto r=Ui::StarHandRect(1,0);ui.Click(game,r.x+30,r.y+30);game.QueueWait();game.QueueWait();const auto attack=Ui::EndButton();ui.Click(game,attack.x+20,attack.y+20);};
     auto enemy=[&](const Intent& action){game.state.stars.enemy[0]={0,action,false};for(int i=0;i<3;++i)game.QueueWait();game.EndTurn();for(int n=0;n<100&&game.ActiveActor()<0;++n)step(.01f);};

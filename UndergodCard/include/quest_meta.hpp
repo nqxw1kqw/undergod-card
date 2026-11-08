@@ -8,7 +8,7 @@ struct Profile {
     int feathers=0,highest_challenge=-1;
     uint64_t next_run=1;
     std::string selected_class="chick";
-    bool muted=false;
+    bool muted=false,reduced_feedback=false;
     std::vector<std::string> skills,achievements,bosses,relics,settled_runs;
     std::map<std::string,int> metrics;
 };

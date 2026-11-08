@@ -70,6 +70,18 @@ Phạm vi được Shin xác nhận: toàn bộ lộ trình còn lại, cùng nh
 - [x] Chỉnh nút cuối map/shop/phân trang và giới hạn cuộn để vẫn thấy đầy đủ tầng boss trên màn ngắn hơn.
 - [x] Debug/Release và EXE giải nén chạy đủ ba smoke; xem VALIDATION.md.
 
+## Hợp nhất draft/main — v1.4.0-preview
+
+- [x] Nhánh mới từ draft, đối chiếu từng cải tiến đã triển khai trên main; giữ cả lịch sử cha và hai nhánh nguồn.
+- [x] Seed phiên/chơi lại, preview resolver không tiêu RNG, bài có ID riêng và vùng bấm theo chuyển động.
+- [x] FX giới hạn, popup giáp/HP riêng, tùy chọn FX nhẹ trong profile; giữ khiên/skill của draft.
+- [x] Lượt mới sau hồi động tác, fade kết thúc/recap, pose gục có bộ lọc đơn sắc DxLib.
+- [x] Chi tiết lá, focus 1–0, chồng rút/bỏ không lộ thứ tự và phân trang/modal.
+- [x] Mức khó đấu thử riêng; giữ charge của các boss và Thử Thách chiến dịch; đo lại cả sáu boss.
+- [x] Camera nối các đoạn zoom và về trung tính; skip/ultimate kết liễu chỉ settle một lần.
+- [x] Giữ toàn bộ hash 379 PNG/12 WAV và kiểm tra chiến dịch 300 seed.
+- [x] Build Debug/Release, bốn smoke DxLib và EXE từ gói giải nén; bằng chứng ở VALIDATION.md.
+
 ## Các mục cần bằng chứng chơi thực
 
 - [ ] Chơi tay toàn chiến dịch trên Windows (helper trước đó lỗi native pipe).
