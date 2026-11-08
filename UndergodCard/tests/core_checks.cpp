@@ -45,7 +45,7 @@ int main(int,char** argv){
         c.Reset();c.rage=100;c.StartUltimate();c.FinishUltimate();c.FinishUltimate();Check(c.enemy.hp==80,"skip before impact resolves once");
     }
     {
-        TimelinePlayer player;int hits=0,ends=0,cues=0;player.Start(timeline,[&](const Step&){++cues;},[&]{++hits;},[&]{++ends;});player.Advance(2599);Check(hits==0,"timeline waits for 2600ms impact");player.Advance(2600);Check(hits==1,"timeline impact exact boundary");player.Advance(5000);player.Skip();Check(hits==1&&ends==1&&cues==8,"timeline ends once after skipped frames");
+        TimelinePlayer player;int hits=0,ends=0,cues=0;player.Start(timeline,[&](const Step&){++cues;},[&]{++hits;},[&]{++ends;});player.Advance(2599);Check(hits==0,"timeline waits for 2600ms impact");player.Advance(2600);Check(hits==1,"timeline impact exact boundary");player.Advance(5000);player.Skip();Check(hits==1&&ends==1&&cues==9,"timeline ends once after skipped frames");
         for(float t:{0.f,900.f,2600.f,3400.f}){hits=ends=0;player.Start(timeline,[](const Step&){},[&]{++hits;},[&]{++ends;});player.Advance(t);player.Skip();player.Advance(9999);Check(hits==1&&ends==1,"skip before or after impact is idempotent");}
     }
     {
@@ -291,6 +291,24 @@ int main(int,char** argv){
         Game a(combined,timeline);a.NewRun();a.state.hand={combined.cards[0].id};a.state.rage=99;a.state.player.hp=49;
         auto q=a.Preview(0);Combat copy=a.state;copy.Play(0);
         Check(q.rage==copy.rage-99&&q.heal==copy.player.hp-49&&q.block==copy.player.block,"combined-effect preview follows actual resolver order");
+    }
+    {
+        Timeline multi;multi.steps={{0,Cue::Zoom,1.2f,1000},{500,Cue::Zoom,1.4f,1000},{750,Cue::Zoom,1.f,500},{2000,Cue::Impact},{2200,Cue::End}};
+        Game a(config,multi),b(config,multi);a.NewRun();b.NewRun();a.state.rage=b.state.rage=100;a.Ultimate();b.Ultimate();
+        Tick(a,.5f);Check(std::abs(a.visual.zoom-1.15f)<.0001f&&std::abs(a.visual.zoom_start-1.15f)<.0001f,"consecutive zoom captures current interpolated zoom");
+        Tick(a,.25f);const float second=1.15f+.25f*.4375f;
+        Check(std::abs(a.visual.zoom-second)<.0001f&&std::abs(a.visual.zoom_start-second)<.0001f,"third zoom starts continuously at interrupted cue boundary");
+        Tick(a,.25f);Tick(b,1.f);Check(std::abs(a.visual.zoom-b.visual.zoom)<.0001f&&std::abs(b.visual.zoom-(second+(1-second)*.75f))<.0001f,"single update crossing several cues matches boundary sampling");
+        Tick(a,.3f);Check(a.visual.zoom==1&&a.Cinematic(),"camera returns neutral before cinematic ends");
+        a.SkipCinematic();Check(a.visual.zoom==1&&a.visual.zoom_start==1&&a.visual.zoom_target==1&&!a.visual.spear.visible&&a.state.enemy.hp==80,"skip restores neutral camera and impacts once");
+        b.NewRun();Check(b.visual.zoom==1&&b.visual.zoom_time==0&&b.CanAct(),"reset cancels interrupted zoom and clears segment");
+        Game g(config,timeline);g.NewRun();g.state.rage=100;g.Ultimate();Tick(g,3.2f);Check(g.visual.zoom>1&&g.visual.zoom<1.12f,"stock ultimate eases home before ending");
+        Tick(g,.36f);Check(g.visual.zoom==1&&g.Cinematic(),"stock zoom reaches neutral ahead of end cue");
+        Tick(g,.1f);Check(g.visual.zoom==1&&!g.Cinematic(),"normal cinematic cleanup stays neutral");
+        g.NewRun();g.reduced_feedback=true;g.state.rage=100;g.Ultimate();Tick(g,.8f);Check(g.visual.zoom==1&&g.visual.zoom_target==1,"shared reduced feedback suppresses cinematic camera motion");
+        g.SkipCinematic();Check(g.visual.zoom==1&&g.visual.flash_left==0&&g.visual.shake_left==0&&g.CanAct(),"reduced feedback skip retains neutral cleanup");
+        bool same=true;for(int speed=1;speed<=3;++speed){Game x(config,multi),y(config,multi);x.NewRun();y.NewRun();x.SetSpeed(speed);y.SetSpeed(speed);x.state.rage=y.state.rage=100;x.Ultimate();y.Ultimate();Tick(x,1.1f);for(int n=0;n<110;++n)Tick(y,.01f);same&=std::abs(x.visual.zoom-y.visual.zoom)<.0001f;x.SkipCinematic();y.SkipCinematic();same&=x.state.enemy.hp==y.state.enemy.hp&&x.visual.zoom==1&&y.visual.zoom==1;}
+        Check(same,"zoom cadence and cleanup equivalent at every speed");
     }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

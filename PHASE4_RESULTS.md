@@ -38,3 +38,40 @@ invariance, all 1–10 layouts, invalid bounds, focus traversal/empty/reset.
 UTF-8/font wrapping and fit, overlays/dismissal, keyboard/mouse controls,
 ten-card layout/clipping and scaled pointer alignment are statically verified
 only; Windows builds and manual checks remain required.
+
+## Item 11
+
+Core 177 -> 189; balance 569849 -> 569849; zero failures.
+Zoom segments capture their interpolated current value at each cue timestamp.
+Sampling the preceding segment at each boundary preserves continuity even when a
+single update crosses several overlapping/consecutive cues. The stock timeline
+returns to 1 over 550 ms from 3000 ms, reaching neutral before its 3600 ms end.
+Skip/reset still immediately clear camera/effects; existing skip button and keys
+retain their behavior. The shared phase-3 FX setting suppresses camera motion,
+shake, flashes and victory bounce, and reduces cinematic dim intensity. Rendering
+uses neutral zoom immediately when that setting changes during a cinematic.
+Files: game.hpp, game.cpp, ui.cpp, cinematic.json, core_checks.cpp.
+Tests cover interrupted/consecutive segments, several boundaries per update,
+normal return, skip/reset, reduced feedback and x1/x2/x3 fine/coarse equivalence.
+The original timeline idempotence check now expects the added ninth visual cue.
+
+Camera cropping inside the 360-pixel arena, perceived zoom/return continuity,
+dim/flash comfort, skip controls and speed readability are statically verified
+only; Windows Debug/Release and manual validation remain unavailable.
+
+## Final status
+
+All portable suites passed after each item. Final: **189 core + 569849 balance**,
+zero failures. Existing checks continue to cover RNG stream isolation, deck
+conservation, action locks, exactly-once contact/ultimate damage, reset cleanup,
+and the unchanged standard-profile regression (820/1000/1000 wins for the three
+policies). No core rules, balance numbers, assets, rewards or audio were changed.
+Items 10 and 12 remain deferred. No GitHub push was performed.
+
+Windows-unverified list: Debug/Release compilation and DxLib API integration;
+monochrome sprite filter, pivots, terminal fade/tilt/dust and victory bounce;
+result fade and recap legibility; UTF-8 wrapping/font fit; ten-card clipping and
+layout; focused details and unordered pile overlays; keyboard/mouse routes and
+dismissal; scaled-window hit alignment; camera crop/continuity and reduced FX
+comfort; manual play and readability at all three speeds. These presentation
+paths received static inspection only, not a Windows runtime validation.

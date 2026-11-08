@@ -12,7 +12,7 @@ struct Pose { std::string name="idle"; float age=0; };
 struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; int lane=0; };
 struct Particle { bool enemy; EventType type; float age,life,vx,vy; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
-struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
+struct CinematicVisual { float dim=0,zoom=1,zoom_start=1,zoom_target=1,zoom_duration=0,zoom_age=0,zoom_time=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
 struct CardPreview { int cost=0,damage=0,absorbed=0,block=0,heal=0,rage=0; std::string unavailable; };
 struct MatchSummary { int turns=0,hp=0,cards=0,damage=0,blocked=0,healed=0,ultimates=0; unsigned seed=0; };
 struct TerminalVisual { bool active=false,enemy=false; float age=0; unsigned entries=0; };
@@ -51,6 +51,7 @@ class Game {
     void ConsumeEvents(float late=0);
     void ApplyMotion();
     void CueStep(const Step& step);
+    void SampleZoom(float at);
 public:
     static constexpr float PlayerHome=320,EnemyHome=1120;
     static constexpr float BasePlaybackRate=.65f;

@@ -84,7 +84,7 @@ void Ui::World(const Game& game){
     DrawBox(0,306,Width,360,C(220,227,182),TRUE);DrawBox(0,306,Width,310,C(143,169,124),TRUE);
     for(int i=0;i<40;++i){const int x=i*37;DrawLine(x,337,x+18,337,C(173,188,146));DrawCircle(x+12,316+(i%4)*8,3,i%3?C(246,239,205):C(238,185,194),TRUE);}
     Actor(game,true);
-    if(game.Cinematic()){Blend(int(game.visual.dim*255));DrawBox(0,0,Width,360,C(33,28,60),TRUE);Blend(255);}
+    if(game.Cinematic()){Blend(int(game.visual.dim*(game.reduced_feedback?70:255)));DrawBox(0,0,Width,360,C(33,28,60),TRUE);Blend(255);}
     Actor(game,false);
     if(game.visual.spear.visible){const auto tip=game.SpearTip();const int spear=Image("spear");if(spear>=0)DrawRotaGraph3F(tip.first,tip.second,256,56,.45,.45,game.visual.spear.falling?3.141592653589793:0,spear,TRUE);}
     if(game.visual.vfx_age>=0&&game.visual.vfx_age<game.visual.vfx_frames/8.f){const int frame=std::min(game.visual.vfx_frames-1,int(game.visual.vfx_age*8)),vfx=Image("spear_impact");if(vfx>=0)DrawRectRotaGraph3F(game.visual.vfx_enemy?1120.f:320.f,195,(frame%2)*256,(frame/2)*256,256,256,128,128,1,1,0,vfx,TRUE);}
@@ -97,7 +97,7 @@ void Ui::World(const Game& game){
     if(!game.reduced_feedback&&game.visual.flash_left>0){Blend(int(255*game.visual.flash_left/std::max(.01f,game.visual.flash_duration)));DrawBox(0,0,Width,360,C(255,255,255),TRUE);Blend(255);}
     SetDrawScreen(DX_SCREEN_BACK);SetDrawArea(20,250,Width-20,610);
     const float shake=!game.reduced_feedback&&game.visual.shake_left>0?std::sin(game.time*95)*game.visual.shake*std::min(1.f,game.visual.shake_left/.18f):0;
-    DrawRotaGraph3F(Width/2.f+shake,430,Width/2.f,180,game.visual.zoom,game.visual.zoom,0,stage_,TRUE);
+    DrawRotaGraph3F(Width/2.f+shake,430,Width/2.f,180,(game.reduced_feedback?1:game.visual.zoom),(game.reduced_feedback?1:game.visual.zoom),0,stage_,TRUE);
     SetDrawArea(0,0,Width,Height);
 }
 void Ui::Card(const Combat& state,const CardDef& card,Rect r,int index,bool affordable,bool locked,int mx,int my)const{

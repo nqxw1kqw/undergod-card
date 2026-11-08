@@ -106,11 +106,21 @@ void Game::ApplyMotion(){
     else state.ActEnemy();
     ConsumeEvents(std::max(0.f,motion_age_-Timing().contact));
 }
+void Game::SampleZoom(float at){
+    visual.zoom_age=std::max(0.f,at-visual.zoom_time);
+    const float t=visual.zoom_duration>0?std::clamp(visual.zoom_age/visual.zoom_duration,0.f,1.f):1;
+    visual.zoom=visual.zoom_start+(visual.zoom_target-visual.zoom_start)*(1-(1-t)*(1-t));
+    if(reduced_feedback)visual.zoom=1;
+}
 void Game::CueStep(const Step& step){
     const float late=std::max(0.f,cinematic_age_-step.t/1000.f);
     switch(step.cue){
     case Cue::Dim:visual.dim=step.value;break;
-    case Cue::Zoom:visual.zoom_target=step.value;visual.zoom_duration=step.duration/1000.f;visual.zoom_age=0;break;
+    case Cue::Zoom:
+        // Sample the previous segment at the cue boundary, not the end of this update.
+        SampleZoom(step.t/1000.f);visual.zoom_start=visual.zoom;
+        visual.zoom_target=reduced_feedback?1:step.value;visual.zoom_duration=step.duration/1000.f;
+        visual.zoom_time=step.t/1000.f;visual.zoom_age=0;break;
     case Cue::Pose:poses[step.enemy?1:0]={step.pose,late};break;
     case Cue::Vfx:visual.vfx_age=late;visual.vfx_frames=int(step.value);visual.vfx_enemy=step.enemy;break;
     case Cue::Spear:visual.spear={true,step.falling,late,step.duration/1000.f,step.from_x,step.from_y,step.to_x,step.to_y};break;
@@ -156,12 +166,10 @@ void Game::Update(float real_dt){
     }
     if(Cinematic()){
         cinematic_age_+=dt;
-        visual.zoom_age+=dt;
-        const float z=std::min(1.f,visual.zoom_duration>0?visual.zoom_age/visual.zoom_duration:1.f);
-        visual.zoom=1+(visual.zoom_target-1)*(1-(1-z)*(1-z));
         if(visual.vfx_age>=0)visual.vfx_age+=dt;
         if(visual.spear.visible)visual.spear.age+=dt;
         cinematic_.Advance(cinematic_age_*1000.f);
+        if(Cinematic())SampleZoom(cinematic_age_);
     }else cinematic_age_=0;
     AgeEffects(0);
     for(auto& p:poses)if((p.name=="hit"||p.name=="defend")&&p.age>=.65f)p={};
