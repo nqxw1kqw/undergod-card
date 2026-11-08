@@ -2,6 +2,7 @@
 #include "quest_core.hpp"
 #include "quest_timeline.hpp"
 #include <array>
+#include <map>
 #include <utility>
 
 namespace undergod {
@@ -12,6 +13,7 @@ struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked
 struct Particle { bool enemy; EventType type; float age,life,vx,vy; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
 struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
+struct CardPreview { int cost=0,damage=0,absorbed=0,block=0,heal=0,rage=0; std::string unavailable; };
 struct MatchSummary { int turns=0,hp=0,cards=0,damage=0,blocked=0,healed=0,ultimates=0; unsigned seed=0; };
 struct TerminalVisual { bool active=false,enemy=false; float age=0; unsigned entries=0; };
 struct CardBox {float x=0,y=0,w=176,h=195;};
@@ -53,11 +55,16 @@ public:
     static constexpr float PlayerHome=320,EnemyHome=1120;
     static constexpr float BasePlaybackRate=.65f;
     static CardBox HandBox(int count,int index){
+        count=std::clamp(count,1,10);index=std::clamp(index,0,count-1);
         const int w=std::min(176,(1300-12*(count-1))/std::max(1,count)),total=count*w+(count-1)*12;
         return {float((1440-total)/2+index*(w+12)),710,float(w),195};
     }
     std::vector<CardVisual> cards;
     Combat state;
+    int focused_card=-1,pile_view=0; // 0 closed, 1 draw multiset, 2 discard multiset
+    void FocusCard(int delta){const int n=int(state.hand.size());focused_card=n?((focused_card<0?(delta<0?n-1:0):focused_card+delta)%n+n)%n:-1;pile_view=0;}
+    static std::map<std::string,int> PileCounts(const std::vector<std::string>& pile){std::map<std::string,int> counts;for(const auto& id:pile)++counts[id];return counts;}
+    CardPreview Preview(int index)const;
     MatchSummary summary;
     TerminalVisual terminal;
     std::array<Pose,2> poses;

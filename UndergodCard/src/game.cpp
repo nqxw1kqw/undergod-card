@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed){seed_=seed;summary={};terminal={};cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();particles.clear();visual_rng_.Seed(seed^0xBADC0DEu);visual={};time=toast_age=0;toast.clear();next_visual_id_=1;cards.clear();DrawCards(.2f);}
+void Game::NewRun(unsigned seed){seed_=seed;focused_card=-1;pile_view=0;summary={};terminal={};cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();particles.clear();visual_rng_.Seed(seed^0xBADC0DEu);visual={};time=toast_age=0;toast.clear();next_visual_id_=1;cards.clear();DrawCards(.2f);}
 void Game::DrawCards(float age){
     for(int i=0;i<int(state.hand.size());++i){
         auto target=HandBox(int(state.hand.size()),i);
@@ -70,16 +70,34 @@ void Game::ConsumeEvents(float late){
     state.events.clear();
     BeginTerminal(late);
 }
+CardPreview Game::Preview(int index)const{
+    CardPreview p;
+    if(index<0||index>=int(state.hand.size())){p.unavailable="No card selected";return p;}
+    const auto& c=state.Definition(state.hand[index]);p.cost=c.cost;
+    // Resolve a value-owned copy, including combined effects and resolver ordering.
+    Combat copy=state;copy.events.clear();copy.phase=Phase::Player;copy.energy=std::max(copy.energy,c.cost);
+    const int rage=copy.rage;copy.Play(index);p.rage=copy.rage-rage;
+    for(const auto& e:copy.events){
+        if(e.type==EventType::Damage&&e.enemy){p.damage+=e.amount;p.absorbed+=e.blocked;}
+        if(e.type==EventType::Block&&!e.enemy)p.block+=e.amount;
+        if(e.type==EventType::Heal&&!e.enemy)p.heal+=e.amount;
+    }
+    if(state.phase==Phase::Won||state.phase==Phase::Lost)p.unavailable="Match finished";
+    else if(!CanAct())p.unavailable="Wait for the current action";
+    else if(state.energy<c.cost)p.unavailable="Not enough energy";
+    return p;
+}
 void Game::Play(int index){
     if(!CanAct()||index<0||index>=int(state.hand.size()))return;
     if(!state.CanPlay(index)){Toast("Không đủ năng lượng cho lá bài này.");return;}
+    focused_card=-1;pile_view=0;
     EnsureCards();
     for(auto& c:cards)if(c.slot==index&&!c.leaving){c.from=c.Bounds();c.to={632,485,176,195};c.age=0;c.delay=0;c.duration=.32f;c.selected=true;}
     pending_card_=index;const bool attack=state.Definition(state.hand[index]).damage>0;
     motion_=attack?Motion::PlayerAttack:Motion::PlayerOther;motion_age_=0;motion_impact_=false;
     if(attack)poses[0]={"attack",0};else ApplyMotion();
 }
-void Game::EndTurn(){if(!CanAct())return;EnsureCards();if(!state.EndPlayer())return;
+void Game::EndTurn(){if(!CanAct())return;focused_card=-1;pile_view=0;EnsureCards();if(!state.EndPlayer())return;
     for(auto& c:cards){c.from=c.Bounds();c.to={280,665,80,100};c.age=0;c.delay=.015f*std::max(0,c.slot);c.duration=.25f;c.leaving=true;c.slot=-1;}resolving_intent_=state.intent;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();}
 void Game::ApplyMotion(){
     if(motion_impact_)return;
@@ -104,7 +122,7 @@ void Game::CueStep(const Step& step){
 void Game::Ultimate(){
     if(!CanAct())return;
     if(!state.StartUltimate()){Toast("Sao Rơi cần đầy 100 Nộ.");return;}
-    ConsumeEvents();visual={};cinematic_age_=0;
+    focused_card=-1;pile_view=0;ConsumeEvents();visual={};cinematic_age_=0;
     cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();ConsumeEvents();},[this]{state.FinishUltimate();visual={};poses[0]={};});
 }
 void Game::SkipCinematic(){const bool active=Cinematic();cinematic_.Skip();if(active&&!terminal.active)particles.clear();}

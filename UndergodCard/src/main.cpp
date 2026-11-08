@@ -85,7 +85,13 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             if(pressed(KEY_INPUT_F1))game.SetSpeed(1);if(pressed(KEY_INPUT_F2))game.SetSpeed(2);if(pressed(KEY_INPUT_F3))game.SetSpeed(3);
             if(game.Cinematic()){if(pressed(KEY_INPUT_SPACE)||pressed(KEY_INPUT_ESCAPE))game.SkipCinematic();}
             else{
-                const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5};for(int i=0;i<5;++i)if(pressed(numbers[i]))game.Play(i);
+                const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5,KEY_INPUT_6,KEY_INPUT_7,KEY_INPUT_8,KEY_INPUT_9,KEY_INPUT_0};for(int i=0;i<10;++i)if(pressed(numbers[i]))game.Play(i);
+                if(pressed(KEY_INPUT_LEFT))game.FocusCard(-1);
+                if(pressed(KEY_INPUT_RIGHT))game.FocusCard(1);
+                if(pressed(KEY_INPUT_SPACE)&&!game.pile_view)game.Play(game.focused_card);
+                if(pressed(KEY_INPUT_P)){game.pile_view=game.pile_view==1?0:1;game.focused_card=-1;}
+                if(pressed(KEY_INPUT_O)){game.pile_view=game.pile_view==2?0:2;game.focused_card=-1;}
+                if(pressed(KEY_INPUT_ESCAPE)){game.focused_card=-1;game.pile_view=0;}
                 if(pressed(KEY_INPUT_D)&&!game.Busy())game.CycleDifficulty();
                 if(pressed(KEY_INPUT_E))game.EndTurn();if(pressed(KEY_INPUT_U))game.Ultimate();
                 if(pressed(KEY_INPUT_R)&&!game.Busy())game.Retry();

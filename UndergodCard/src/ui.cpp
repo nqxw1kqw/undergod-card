@@ -37,6 +37,20 @@ bool Ui::Init(const Config& config){
 }
 void Ui::Shutdown(){for(const auto& pair:images_)if(pair.second>=0)DeleteGraph(pair.second);images_.clear();if(stage_>=0)DeleteGraph(stage_);stage_=-1;for(int f:{font_,small_,heading_,brand_})if(f>=0)DeleteFontToHandle(f);}
 void Ui::Text(int x,int y,const std::string& text,unsigned color,int font)const{DrawStringToHandle(x,y,text.c_str(),color,font<0?font_:font);}
+void Ui::Wrapped(int x,int y,int width,const std::string& text,unsigned color)const{
+    std::string line;
+    // Append whole UTF-8 codepoints; pixel measurement uses the same font as drawing.
+    for(size_t i=0;i<text.size();){
+        const unsigned char ch=static_cast<unsigned char>(text[i]);
+        const size_t length=ch<128?1:((ch&0xe0)==0xc0?2:((ch&0xf0)==0xe0?3:4));
+        const auto point=text.substr(i,length);i+=length;
+        if(point=="\n"){Text(x,y,line,color,small_);line.clear();y+=21;continue;}
+        const auto next=line+point;
+        if(!line.empty()&&GetDrawStringWidthToHandle(next.c_str(),int(next.size()),small_)>width){Text(x,y,line,color,small_);line.clear();y+=21;}
+        line+=point;
+    }
+    if(!line.empty())Text(x,y,line,color,small_);
+}
 void Ui::Center(int x,int y,const std::string& text,unsigned color,int font)const{if(font<0)font=font_;const int w=GetDrawStringWidthToHandle(text.c_str(),int(text.size()),font);Text(x-w/2,y,text,color,font);}
 void Ui::Box(Rect r,unsigned fill,int radius)const{DrawRoundRect(r.x,r.y,r.x+r.w,r.y+r.h,radius,radius,fill,TRUE);}
 void Ui::Button(Rect r,const std::string& text,bool active,int mx,int my)const{
@@ -94,11 +108,13 @@ void Ui::Card(const Combat& state,const CardDef& card,Rect r,int index,bool affo
     const int graph=Image("card_"+card.id);if(!affordable||locked)Blend(95);
     if(graph>=0)DrawRotaGraph3F(r.x+r.w/2.f,float(r.y+65),128,128,.42,.42,0,graph,TRUE);else Center(r.x+r.w/2,r.y+40,"✦",Muted,heading_);Blend(255);
     DrawCircle(r.x+21,r.y+20,15,C(255,255,255),TRUE);Center(r.x+21,r.y+10,std::to_string(card.cost),C(123,91,153),small_);
-    if(r.w<120)return;
-    if(index>=0)Text(r.x+r.w-20,r.y+10,std::to_string(index+1),Muted,small_);
+    if(index>=0)Text(r.x+r.w-20,r.y+10,std::to_string((index+1)%10),Muted,small_);
+    if(r.h<=120)return; // Pile-sized moving snapshots have no text area.
+    SetDrawArea(r.x+4,r.y+115,r.x+r.w-4,r.y+r.h);
     Text(r.x+12,r.y+127,card.name,affordable&&!locked?Ink:Muted,small_);
-    Text(r.x+12,r.y+151,card.description,Muted,small_);
+    Text(r.x+12,r.y+151,"← / →: chi tiết",Muted,small_);
     Text(r.x+12,r.y+174,card.heal>0?"Hồi thực: "+std::to_string(state.EffectiveHeal(card)):"Nộ +"+std::to_string(state.RageGain(card)),Muted,small_);
+    SetDrawArea(0,0,Width,Height);
 }
 void Ui::Draw(const Game& game,int mx,int my){
     const auto& s=game.state;DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
@@ -125,13 +141,34 @@ void Ui::Draw(const Game& game,int mx,int my){
     DrawLine(20,610,Width-20,610,C(219,219,202));
     DrawCircle(90,659,25,C(233,221,244),TRUE);Center(90,647,std::to_string(s.energy)+"/"+std::to_string(s.config.balance.energy),C(123,91,153),font_);
     Text(128,643,"NĂNG LƯỢNG",Muted,small_);Text(280,639,"Rút: "+std::to_string(s.draw.size()),Muted,small_);Text(280,663,"Bỏ: "+std::to_string(s.discard.size()),Muted,small_);
-    Text(470,652,"1–5: bài  ·  E: hết lượt  ·  U: Sao Rơi",Muted,small_);
+    Text(470,652,"1–0: bài · ←/→: xem · Space: dùng · P/O: chồng",Muted,small_);
     Button(UltimateButton(),"✦ Sao Rơi",game.CanAct()&&s.rage>=s.config.balance.rage_max,mx,my);Button(EndButton(),"Kết thúc lượt →",game.CanAct(),mx,my);
     for(const auto& card:game.cards){
         if(!game.ShowHand()&&!card.leaving)continue;
         const auto r=card.Bounds();
         Card(s,s.Definition(card.card),{int(r.x),int(r.y),int(r.w),int(r.h)},card.slot,
             card.slot>=0&&s.CanPlay(card.slot),!game.CanAct()||card.leaving,mx,my);
+    }
+    int detail=game.focused_card;
+    if(game.ShowHand()&&game.CanAct()&&game.pile_view==0){
+        for(int i=0;i<int(s.hand.size());++i)if(CardRect(int(s.hand.size()),i).Contains(mx,my))detail=i;
+    }
+    if(!game.Cinematic()&&!game.terminal.active&&game.pile_view){
+        Box({470,300,750,300},C(252,249,239));
+        Text(495,320,game.pile_view==1?"Draw pile · unordered contents":"Discard pile · unordered contents",Ink,heading_);
+        int y=365;const auto counts=Game::PileCounts(game.pile_view==1?s.draw:s.discard);
+        if(counts.empty())Text(495,y,"Empty",Muted,small_);
+        for(const auto& entry:counts){Text(495,y,s.Definition(entry.first).name+" × "+std::to_string(entry.second),Ink,small_);y+=25;}
+        Text(495,570,"P / O: switch pile · Esc / click panel: close",Muted,small_);
+    }else if(!game.Cinematic()&&!game.terminal.active&&detail>=0&&detail<int(s.hand.size())&&game.ShowHand()){
+        const auto& card=s.Definition(s.hand[detail]);const auto p=game.Preview(detail);
+        Box({470,300,750,300},C(252,249,239));Text(495,320,card.name+" · Cost "+std::to_string(p.cost),Ink,heading_);
+        Wrapped(495,365,695,card.description,Muted);
+        Text(495,460,"HP damage: "+std::to_string(p.damage)+" · Absorbed: "+std::to_string(p.absorbed)+" · Block: "+std::to_string(p.block),Ink,small_);
+        Text(495,487,"Heal: "+std::to_string(p.heal)+" · Rage: +"+std::to_string(p.rage),Ink,small_);
+        Text(495,519,p.unavailable.empty()?"Ready · block expires next turn":p.unavailable,Muted,small_);
+        Text(495,563,"← / →: focus · Esc: close",Muted,small_);
+        if(game.focused_card>=0)Button(DetailPlayButton(),"Play · Space",p.unavailable.empty(),mx,my);
     }
     Text(55,922,"Giáp dư hết hạn khi bắt đầu lượt kế tiếp.  R: cùng seed · Enter: trận mới.",Muted,small_);Text(1090,922,"PHIÊN BẢN THỬ NGHIỆM",Muted,small_);
     if(game.toast_age>0){Box({420,570,600,43},C(55,72,62));Center(720,581,game.toast,C(255,255,246),small_);}
@@ -152,7 +189,10 @@ void Ui::Click(Game& game,int mx,int my){
     if(game.Cinematic()){if(SkipButton().Contains(mx,my))game.SkipCinematic();return;}
     if(!game.Busy()&&DifficultyButton().Contains(mx,my)){game.CycleDifficulty();return;}
     if(game.Result()){if(game.Busy())return;if(RetryButton().Contains(mx,my)){game.Retry();return;}if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewMatch();return;}
+    if(game.pile_view&&Rect{470,300,750,300}.Contains(mx,my)){game.pile_view=0;return;}
+    for(int pile=1;pile<=2;++pile)if(PileButton(pile).Contains(mx,my)){game.pile_view=game.pile_view==pile?0:pile;game.focused_card=-1;return;}
     if(game.Busy())return;
+    if(game.focused_card>=0&&DetailPlayButton().Contains(mx,my)){game.Play(game.focused_card);return;}
     if(RestartButton().Contains(mx,my)){game.NewMatch();return;}
     if(EndButton().Contains(mx,my)){game.EndTurn();return;}
     if(UltimateButton().Contains(mx,my)){game.Ultimate();return;}

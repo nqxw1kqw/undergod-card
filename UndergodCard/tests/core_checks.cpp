@@ -267,5 +267,30 @@ int main(int,char** argv){
         g.NewRun();g.state.hand={"cookie","shield"};g.state.player.hp=49;g.Play(0);Tick(g,1);g.Play(0);Tick(g,1);
         Check(g.summary.healed==1&&g.summary.cards==2,"support summary uses effective healing and played cards");
     }
+    {
+        Game g(config,timeline);g.NewRun();g.state.hand={"heavy","shield","cookie"};g.state.enemy.block=5;g.state.enemy.hp=3;g.state.rage=98;g.state.player.hp=49;
+        auto p=g.Preview(0);Check(p.cost==2&&p.damage==3&&p.absorbed==5&&p.rage==2&&p.unavailable.empty(),"detail preview respects armor lethal clamp cost and rage cap");
+        p=g.Preview(1);Check(p.block==5&&p.rage==2,"shield preview matches resolver");
+        p=g.Preview(2);Check(p.heal==1&&p.rage==0,"heal preview caps actual HP restoration");
+        const auto hand=g.state.hand;const auto draw=g.state.draw;
+        g.Preview(0);Check(g.state.hand==hand&&g.state.draw==draw&&g.state.enemy.hp==3&&g.state.rage==98&&g.summary.cards==0,"preview leaves live state and accounting untouched");
+        g.state.energy=0;Check(g.Preview(0).unavailable=="Not enough energy","detail explains energy restriction");
+        g.state.energy=3;g.Play(0);Check(g.Preview(1).unavailable=="Wait for the current action","detail explains action lock");
+        Tick(g,.32f);Check(g.Preview(0).unavailable=="Match finished","detail explains terminal restriction");
+        Check(g.Preview(-1).unavailable=="No card selected"&&g.Preview(99).cost==0,"detail rejects invalid selection");
+        const auto counts=Game::PileCounts({"shield","punch","shield"});
+        Check(counts==Game::PileCounts({"shield","shield","punch"})&&counts.at("shield")==2&&Game::PileCounts({}).empty(),"pile inspection exposes only sorted multiset counts");
+        bool bounds=true;for(int n=1;n<=10;++n){float end=0;for(int j=0;j<n;++j){auto r=Game::HandBox(n,j);bounds&=r.x>=20&&r.x+r.w<=1420&&r.y+r.h<=960&&r.w>0&&r.x>=end;end=r.x+r.w;}}
+        Check(bounds,"all supported hand layouts stay bounded and nonoverlapping");
+        Check(Game::HandBox(0,-3).x==Game::HandBox(1,0).x&&Game::HandBox(20,99).x==Game::HandBox(10,9).x,"layout clamps invalid counts and slots");
+        g.NewRun();g.state.hand.assign(10,"punch");g.FocusCard(-1);Check(g.focused_card==9,"keyboard focus reaches tenth card from left");
+        g.FocusCard(1);bool reach=g.focused_card==0;for(int j=1;j<10;++j){g.FocusCard(1);reach&=g.focused_card==j;}Check(reach,"keyboard navigation covers all ten slots and wraps");
+        g.state.hand.clear();g.FocusCard(1);Check(g.focused_card==-1,"empty hand safely clears focus");
+        g.pile_view=2;g.NewRun();Check(g.focused_card==-1&&g.pile_view==0,"reset clears information overlays");
+        auto combined=config;combined.cards[0].damage=6;combined.cards[0].block=5;combined.cards[0].heal=4;
+        Game a(combined,timeline);a.NewRun();a.state.hand={combined.cards[0].id};a.state.rage=99;a.state.player.hp=49;
+        auto q=a.Preview(0);Combat copy=a.state;copy.Play(0);
+        Check(q.rage==copy.rage-99&&q.heal==copy.player.hp-49&&q.block==copy.player.block,"combined-effect preview follows actual resolver order");
+    }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }
