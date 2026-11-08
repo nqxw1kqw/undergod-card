@@ -15,6 +15,9 @@ Config LoadConfig(const std::string& directory){
     c.balance={b.at("playerHp"),b.at("energy"),b.at("draw"),b.at("rageMax"),b.at("rageAttack"),b.at("rageBlock"),b.at("ultimateDamage")};
     const auto e=Read(directory+"/enemies.json").at(0);
     c.enemy={e.at("name"),e.at("maxHp"),e.at("minDamage"),e.at("maxDamage"),e.at("block"),e.at("attackChance")};
+    c.enemy.stage_threshold_percent=e.value("stageThresholdPercent",60);
+    c.enemy.gentle_reduction=e.value("gentleReduction",2);c.enemy.gentle_charge=e.value("gentleCharge",14);c.enemy.challenge_charge=e.value("challengeCharge",34);
+    if(c.enemy.stage_threshold_percent<1||c.enemy.stage_threshold_percent>99||c.enemy.gentle_reduction<0||c.enemy.gentle_reduction>c.enemy.min_damage||c.enemy.gentle_charge<1||c.enemy.gentle_charge>100||c.enemy.challenge_charge<1||c.enemy.challenge_charge>100)throw std::runtime_error("Invalid difficulty profile");
     c.enemy.opening_attack=e.value("openingAttack",true);c.enemy.max_guards=e.value("maxConsecutiveGuards",1);
     const auto character=Read(directory+"/characters.json").at(0);c.player_name=character.at("name");c.player_id=character.at("id");
     if(c.player_id.empty()||c.player_id.find_first_not_of("abcdefghijklmnopqrstuvwxyz0123456789_")!=std::string::npos||c.enemy.max_guards<0)throw std::runtime_error("Invalid character ID or enemy guard limit");
