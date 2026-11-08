@@ -2,7 +2,7 @@
 #include <cmath>
 
 namespace undergod {
-void Game::NewRun(unsigned seed){seed_=seed;cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();particles.clear();visual_rng_.Seed(seed^0xBADC0DEu);visual={};time=toast_age=0;toast.clear();next_visual_id_=1;cards.clear();DrawCards(.2f);}
+void Game::NewRun(unsigned seed){seed_=seed;summary={};terminal={};cinematic_.Cancel();state.Reset(seed);motion_=Motion::None;pending_card_=-1;motion_age_=cinematic_age_=0;motion_impact_=false;speed_=1;poses={};popups.clear();particles.clear();visual_rng_.Seed(seed^0xBADC0DEu);visual={};time=toast_age=0;toast.clear();next_visual_id_=1;cards.clear();DrawCards(.2f);}
 void Game::DrawCards(float age){
     for(int i=0;i<int(state.hand.size());++i){
         auto target=HandBox(int(state.hand.size()),i);
@@ -31,12 +31,23 @@ void Game::AgeEffects(float dt){
     visual.shake_left=std::max(0.f,visual.shake_left-dt);
     visual.flash_left=std::max(0.f,visual.flash_left-dt);
 }
+void Game::BeginTerminal(float late){
+    if(terminal.active||(state.phase!=Phase::Won&&state.phase!=Phase::Lost))return;
+    terminal={true,state.phase==Phase::Won,late,1};
+    summary.turns=state.turn;summary.hp=state.player.hp;summary.seed=seed_;
+    for(int i=0;i<12&&particles.size()<64;++i)if(late<.8f)
+        particles.push_back({terminal.enemy,EventType::Damage,late,.8f,float(i-6)*13,-30.f-float(i%3)*15});
+}
 void Game::ConsumeEvents(float late){
     auto popup=[&](bool enemy,int amount,EventType type,bool blocked){
         int lane=0;for(;lane<8;++lane){bool used=false;for(const auto& p:popups)used|=p.enemy==enemy&&p.lane==lane;if(!used)break;}
         if(lane<8&&late<.95f)popups.push_back({enemy,amount,type,late,blocked,lane});
     };
     for(const auto& event:state.events){
+        if(event.type==EventType::CardPlayed)++summary.cards;
+        if(event.type==EventType::Ultimate)++summary.ultimates;
+        if(event.type==EventType::Damage){if(event.enemy)summary.damage+=event.amount;else summary.blocked+=event.blocked;}
+        if(event.type==EventType::Heal&&!event.enemy)summary.healed+=event.amount;
         if(event.type!=EventType::Damage&&event.type!=EventType::Block&&event.type!=EventType::Heal)continue;
         if(event.type==EventType::Damage){
             poses[event.enemy?1:0]={event.amount?"hit":"defend",late};
@@ -57,6 +68,7 @@ void Game::ConsumeEvents(float late){
         }
     }
     state.events.clear();
+    BeginTerminal(late);
 }
 void Game::Play(int index){
     if(!CanAct()||index<0||index>=int(state.hand.size()))return;
@@ -95,10 +107,11 @@ void Game::Ultimate(){
     ConsumeEvents();visual={};cinematic_age_=0;
     cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();ConsumeEvents();},[this]{state.FinishUltimate();visual={};poses[0]={};});
 }
-void Game::SkipCinematic(){const bool active=Cinematic();cinematic_.Skip();if(active)particles.clear();}
+void Game::SkipCinematic(){const bool active=Cinematic();cinematic_.Skip();if(active&&!terminal.active)particles.clear();}
 void Game::Update(float real_dt){
     real_dt=std::max(0.f,real_dt);toast_age=std::max(0.f,toast_age-real_dt);
     const float dt=real_dt*PlaybackRate();time+=dt;
+    if(terminal.active)terminal.age+=dt;
     for(auto& c:cards)c.age+=dt;
     cards.erase(std::remove_if(cards.begin(),cards.end(),[](const CardVisual& c){return c.leaving&&c.age>=c.delay+c.duration;}),cards.end());
     for(auto& p:poses){p.age+=dt;const bool held=(p.name=="ult_throw"&&Cinematic())||(p.name=="attack"&&motion_!=Motion::None);if(!held&&p.name!="idle"&&p.age>(p.name=="ult_charge"?2.f:.65f))p={};}

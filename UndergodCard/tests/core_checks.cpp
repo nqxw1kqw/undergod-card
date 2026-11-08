@@ -52,7 +52,7 @@ int main(int,char** argv){
         Game g(config,timeline);g.NewRun();g.Play(0);Check(g.Busy()&&g.state.enemy.hp==120,"lunge defers resolution");Tick(g,.24f);Check(g.state.enemy.hp==120,"windup has no damage");Tick(g,.11f);Check(g.state.enemy.hp==114&&g.state.energy==2,"contact applies card");g.Play(0);Check(g.state.enemy.hp==114,"animation locks input");Drain(g);
         g.EndTurn();Tick(g,.8f);Check(g.Busy()&&g.state.turn==2,"controller holds lock through enemy recovery");Drain(g);
         g.NewRun();g.state.rage=100;g.state.enemy.block=6;g.Ultimate();Tick(g,2.59f);Check(g.state.enemy.hp==120&&g.Cinematic(),"cinematic delay");Tick(g,.02f);Check(g.state.enemy.hp==86,"cinematic callback applies damage");g.SkipCinematic();Check(g.CanAct()&&g.visual.zoom==1&&g.visual.dim==0&&g.state.enemy.hp==86,"skip cleans camera and unlocks once");
-        g.NewRun();g.state.rage=100;g.state.enemy.hp=10;g.Ultimate();g.SkipCinematic();Check(g.Result()&&g.state.phase==Phase::Won,"skipped lethal ultimate shows result");
+        g.NewRun();g.state.rage=100;g.state.enemy.hp=10;g.Ultimate();g.SkipCinematic();Check(g.terminal.active&&g.Busy()&&g.state.phase==Phase::Won,"skipped lethal ultimate starts terminal transition");
         g.NewRun();g.state.rage=100;g.Ultimate();g.NewRun();Tick(g,5);Check(g.state.enemy.hp==120&&g.CanAct()&&g.state.rage==0,"reset cancels pending cinematic safely");
         Game a(config,timeline),b(config,timeline);a.Play(0);b.Play(0);Tick(a,10);for(int i=0;i<100;++i)Tick(b,.1f);Check(a.state.enemy.hp==b.state.enemy.hp&&a.state.energy==b.state.energy,"frame cadence does not alter card outcome");
     }
@@ -132,7 +132,7 @@ int main(int,char** argv){
         Tick(g,.198f);Check(!g.CanAct(),"transition locks until exact duration");
         Tick(g,.002f);Check(g.CanAct()&&g.state.hand==expected.hand&&g.state.intent.value==expected.intent.value,"transition does not draw or roll twice");
         g.NewRun();g.state.player.hp=1;g.EndTurn();Tick(g,1.151f);
-        Check(g.Result()&&!g.Transition(),"lethal enemy skips incoming player transition");
+        Check(g.terminal.active&&!g.Transition(),"lethal enemy skips incoming player transition");
         g.NewRun();Check(g.CanAct()&&!g.Transition(),"reset clears transition");
     }
     {
@@ -252,6 +252,20 @@ int main(int,char** argv){
         }
         Check(once,"ultimate and preparation remain exactly once across profiles and speeds");
         Check(clean,"all profile resets clean locks and presentation");
+    }
+    {
+        Game g(config,timeline);g.NewRun(71);g.state.enemy.hp=1;g.state.hand={"punch"};g.Play(0);Tick(g,.32f);
+        Check(g.state.phase==Phase::Won&&g.terminal.active&&g.Busy()&&!g.Result(),"lethal core immediate terminal presentation locked");
+        Check(g.summary.cards==1&&g.summary.damage==1&&g.summary.turns==1&&g.summary.hp==50&&g.summary.seed==71,"terminal summary counts resolved values");
+        g.Play(0);g.EndTurn();g.Ultimate();Check(g.summary.cards==1&&g.terminal.entries==1,"terminal rejects further actions");
+        Tick(g,2);Check(g.Result()&&!g.Busy()&&g.ResultAlpha()==1,"results settle and fully fade in");
+        g.NewRun();Check(!g.terminal.active&&g.summary.cards==0&&g.summary.damage==0&&g.CanAct(),"reset clears terminal and summary");
+        for(bool after:{false,true}){g.NewRun();g.state.enemy.hp=1;g.state.rage=100;g.Ultimate();if(after)Tick(g,2.61f);g.SkipCinematic();g.SkipCinematic();
+            Check(g.terminal.entries==1&&g.summary.ultimates==1&&g.summary.damage==1&&g.Busy()&&g.visual.zoom==1,"lethal skip before or after impact enters terminal once");}
+        g.NewRun();g.state.player.hp=1;g.state.player.block=2;g.EndTurn();Tick(g,.77f);
+        Check(g.state.phase==Phase::Lost&&!g.terminal.enemy&&g.summary.blocked==2&&g.summary.hp==0,"enemy lethal summary and defeated actor");
+        g.NewRun();g.state.hand={"cookie","shield"};g.state.player.hp=49;g.Play(0);Tick(g,1);g.Play(0);Tick(g,1);
+        Check(g.summary.healed==1&&g.summary.cards==2,"support summary uses effective healing and played cards");
     }
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

@@ -25,6 +25,11 @@ bool Ui::Init(const Config& config){
         const std::string key=std::string(actor)+"_"+state+"_"+std::to_string(f);
         load(key,"characters/char_"+key+".png",512);
     }
+    for(const auto& actor:std::vector<std::string>{config.player_id,"frog"}){
+        const int gray=LoadGraph(("assets/pastel/characters/char_"+actor+"_hit_3.png").c_str());
+        if(gray>=0)GraphFilter(gray,DX_GRAPH_FILTER_MONO,0,0);
+        images_[actor+"_defeated"]=gray;
+    }
     for(int f=0;f<4;++f){const auto key=config.player_id+"_ult_throw_"+std::to_string(f);load(key,"characters/char_"+key+".png",512);}
     for(const auto& card:config.cards)load("card_"+card.id,"cards/"+card.id+".png",256);
     load("spear","vfx/spear.png",512);load("spear_impact","vfx/spear_impact.png",512);
@@ -42,10 +47,16 @@ void Ui::Actor(const Game& game,bool enemy)const{
     const auto& pose=game.poses[enemy?1:0];const std::string id=enemy?"frog":game.state.config.player_id;
     const int frame=game.PoseFrame(enemy);
     int graph=Image(id+"_"+pose.name+"_"+std::to_string(frame));if(graph<0)graph=Image(id+"_idle_0");
-    const float x=(enemy?Game::EnemyHome:Game::PlayerHome)+game.ActorOffset(enemy),y=320-(pose.name=="idle"?std::sin(game.time*3.14f+(enemy?1.7f:0.f))*2:0);
+    const bool defeated=game.terminal.active&&game.terminal.enemy==enemy;
+    if(defeated&&Image(id+"_defeated")>=0)graph=Image(id+"_defeated");
+    const float death=defeated?std::clamp(game.terminal.age/.8f,0.f,1.f):0;
+    const float bounce=game.terminal.active&&!defeated&&!game.reduced_feedback?std::abs(std::sin(std::min(game.terminal.age,.8f)*7.85f))*18:0;
+    const float x=(enemy?Game::EnemyHome:Game::PlayerHome)+game.ActorOffset(enemy),y=320-bounce-(pose.name=="idle"?std::sin(game.time*3.14f+(enemy?1.7f:0.f))*2:0);
     Blend(38);DrawOval(int(x),324,enemy?70:46,9,C(80,107,76),TRUE);Blend(255);
     if(graph>=0){
-        DrawRotaGraph3F(x,y,256,456,.5,.5,0,graph,TRUE,enemy?TRUE:FALSE);
+        Blend(int(255*(1-death*.85f)));SetDrawBright(int(255-100*death),int(255-100*death),int(255-100*death));
+        DrawRotaGraph3F(x,y,256,456,.5,.5,death*(enemy?-.65f:.65f),graph,TRUE,enemy?TRUE:FALSE);
+        SetDrawBright(255,255,255);Blend(255);
         if(!game.reduced_feedback&&pose.name=="hit"&&pose.age<.1f){SetDrawBlendMode(DX_BLENDMODE_ADD,150);DrawRotaGraph3F(x,y,256,456,.5,.5,0,graph,TRUE,enemy?TRUE:FALSE);Blend(255);}
     }else{DrawOval(int(x),int(y-72),enemy?65:43,72,enemy?C(165,197,135):C(255,229,139),TRUE);Text(int(x-32),int(y-74),enemy?"Ếch":"Gà",Ink,small_);}
     if(pose.name=="defend"&&pose.age<.6f){const int shield=Image("card_shield");if(shield>=0){Blend(int(255*(1-pose.age/.65f)));DrawRotaGraph3F(x,y-160-pose.age*30,128,128,.24,.24,0,shield,TRUE);Blend(255);}}
@@ -126,11 +137,13 @@ void Ui::Draw(const Game& game,int mx,int my){
     if(game.toast_age>0){Box({420,570,600,43},C(55,72,62));Center(720,581,game.toast,C(255,255,246),small_);}
     if(game.Cinematic())Button(SkipButton(),"Bỏ qua · Space / Esc",true,mx,my);
     if(game.Result()){
-        Blend(210);DrawBox(0,0,Width,Height,C(38,57,44),TRUE);Blend(255);
-        Box({440,305,560,330},C(252,249,239),24);Center(720,338,"✦",C(174,144,199),brand_);
+        const int alpha=int(255*game.ResultAlpha());
+        Blend(int(210*game.ResultAlpha()));DrawBox(0,0,Width,Height,C(38,57,44),TRUE);Blend(255);
+        Blend(alpha);Box({440,305,560,330},C(252,249,239),24);Center(720,338,"✦",C(174,144,199),brand_);
         Center(720,395,s.phase==Phase::Won?"Khu vườn nở hoa!":"Nghỉ một chút nhé!",Ink,brand_);
         Center(720,454,s.phase==Phase::Won?"Bạn đã vượt qua Ếch Vương.":"Ếch Vương thắng lần này. Hãy thử cách khác.",Muted,font_);
-        Center(720,491,"Hành trình kéo dài "+std::to_string(s.turn)+" lượt.",Muted,small_);Button(ResultButton(),"Trận mới ↻",true,mx,my);Button(RetryButton(),"Thử lại seed "+std::to_string(game.Seed()),true,mx,my);
+        Center(720,483,"Lượt: "+std::to_string(game.summary.turns)+" · HP: "+std::to_string(game.summary.hp)+" · Seed: "+std::to_string(game.summary.seed),Muted,small_);
+        Center(720,510,"Bài: "+std::to_string(game.summary.cards)+" · Sát thương: "+std::to_string(game.summary.damage)+" · Chặn: "+std::to_string(game.summary.blocked)+" · Hồi: "+std::to_string(game.summary.healed)+" · Sao Rơi: "+std::to_string(game.summary.ultimates),Muted,small_);Button(ResultButton(),"Trận mới ↻",!game.Busy(),mx,my);Button(RetryButton(),"Thử lại seed "+std::to_string(game.Seed()),!game.Busy(),mx,my);Blend(255);
     }
 }
 void Ui::Click(Game& game,int mx,int my){
@@ -138,7 +151,7 @@ void Ui::Click(Game& game,int mx,int my){
     for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
     if(game.Cinematic()){if(SkipButton().Contains(mx,my))game.SkipCinematic();return;}
     if(!game.Busy()&&DifficultyButton().Contains(mx,my)){game.CycleDifficulty();return;}
-    if(game.Result()){if(RetryButton().Contains(mx,my)){game.Retry();return;}if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewMatch();return;}
+    if(game.Result()){if(game.Busy())return;if(RetryButton().Contains(mx,my)){game.Retry();return;}if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my))game.NewMatch();return;}
     if(game.Busy())return;
     if(RestartButton().Contains(mx,my)){game.NewMatch();return;}
     if(EndButton().Contains(mx,my)){game.EndTurn();return;}
