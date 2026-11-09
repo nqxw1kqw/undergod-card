@@ -1,0 +1,28 @@
+{
+  "frames_per_case": 120,
+  "unit": "microseconds",
+  "cases": [
+    {
+      "scenario": 0,
+      "update_mean_us": 17.6142,
+      "draw_mean_us": 938.194,
+      "draw_p95_us": 1788.5,
+      "present_mean_us": 6030.74
+    },
+    {
+      "scenario": 1,
+      "update_mean_us": 16.2675,
+      "draw_mean_us": 928.918,
+      "draw_p95_us": 1408.9,
+      "present_mean_us": 6008.52
+    },
+    {
+      "scenario": 2,
+      "update_mean_us": 17.6492,
+      "draw_mean_us": 952.973,
+      "draw_p95_us": 1511,
+      "present_mean_us": 6407.82
+    }
+  ],
+  "scope": "current native CPU update/draw submission; present includes GPU/display wait; not a before-after FPS claim"
+}

@@ -26,24 +26,30 @@ void Ui::DrawFx(const std::string& effect,float x,float y,float size,float progr
 void Ui::SkillActor(const Game& game,bool enemy,int target)const{
     const int unit=enemy?target:-1;const auto& reaction=game.Reaction(unit);
     const bool dead=(enemy?game.state.Target(target).hp:game.state.player.hp)<=0;
-    if(dead&&reaction.hit_age>=.32f)return;
+    if(dead&&(!reaction.defeated||reaction.defeat_age>1.5f))return;
     const auto id=enemy?game.state.Sprite(target):FindClass(game.state.config,game.run.class_id).sprite;
     std::string pose="idle";int frame=int(game.time*4)%4;
-    if(game.SkillActor(enemy,target)){pose=game.SkillVisual().pose;frame=game.SkillFrame();}
+    if(dead){pose="hit";frame=std::min(3,int(reaction.defeat_age*10));}
+    else if(game.SkillActor(enemy,target)){pose=game.SkillVisual().pose;frame=game.SkillFrame();}
     else if(!enemy&&game.Cinematic()){
         pose=game.poses[0].name;frame=std::min(3,int(game.poses[0].age*(pose=="ult_throw"?4.f:8.f)));
     }else if(reaction.hit_age<.32f){pose="hit";frame=std::min(3,int(reaction.hit_age*12));}
     int graph=Image(id+"_"+pose+"_"+std::to_string(frame));
+    if(dead&&Image(id+"_defeated")>=0)graph=Image(id+"_defeated");
     if(graph<0)graph=Image(id+"_idle_0");
     const float scale=game.ActorScale(enemy,target);
-    const float x=SceneX(enemy?game.TargetX(target):Game::PlayerHome)+game.ActorOffset(enemy,target);
-    const float y=320+game.ActorLift(enemy,target)-(pose=="idle"?std::sin(game.time*3.14f)*2:0);
+    const float x=dead?SceneX(reaction.defeat_x):SceneX(enemy?game.TargetX(target):Game::PlayerHome)+game.ActorOffset(enemy,target);
+    const float death=dead?std::clamp(reaction.defeat_age/.8f,0.f,1.f):0;
+    const float bounce=game.terminal.active&&!dead&&!game.ReducedFeedback()?std::abs(std::sin(std::min(game.terminal.age,.8f)*7.85f))*12:0;
+    const float y=dead?reaction.defeat_y-death*35:320+game.ActorLift(enemy,target)-bounce-(pose=="idle"?std::sin(game.time*3.14f+(enemy?1.7f:0.f))*2:0);
     Alpha(38);DrawOval(int(x),324,int(105*scale),9,GetColor(80,107,76),TRUE);Alpha(255);
-    const float opacity=dead?std::max(0.f,1-reaction.hit_age/.32f):std::min(1.f,reaction.spawn_age/.24f);
+    const float opacity=dead?std::max(0.f,1-death*.85f)*std::min(1.f,std::max(0.f,(1.5f-reaction.defeat_age)/.3f)):std::min(1.f,reaction.spawn_age/.24f);
     if(graph>=0){
         Alpha(int(opacity*255));
-        DrawRotaGraph3F(x,y,256,456,scale,scale,game.ActorAngle(enemy,target),graph,TRUE);
-        if(reaction.hit_age<.09f){SetDrawBlendMode(DX_BLENDMODE_ADD,int(110*opacity));DrawRotaGraph3F(x,y,256,456,scale,scale,game.ActorAngle(enemy,target),graph,TRUE);}
+        SetDrawBright(int(255-100*death),int(255-100*death),int(255-100*death));
+        DrawRotaGraph3F(x,y,256,456,scale,scale,dead?death*(enemy?-.45f:.45f):game.ActorAngle(enemy,target),graph,TRUE);
+        SetDrawBright(255,255,255);
+        if(!game.ReducedFeedback()&&reaction.hit_age<.09f){SetDrawBlendMode(DX_BLENDMODE_ADD,int(110*opacity));DrawRotaGraph3F(x,y,256,456,scale,scale,game.ActorAngle(enemy,target),graph,TRUE);}
         Alpha(255);
     }
 }

@@ -34,6 +34,8 @@ struct ActorReaction {
     float hit_age=10,guard_age=10,break_age=10,spawn_age=10;
     int last_block=0;
     std::string ward;
+    bool defeated=false;
+    float defeat_age=10,defeat_x=0,defeat_y=320;
 };
 struct FloatingFx { std::string effect;float x=0,y=0,age=0,size=100; };
 struct ProjectileSample { float x=0,y=0,angle=0,progress=0;int target=-1;bool returning=false; };

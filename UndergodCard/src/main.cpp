@@ -3,12 +3,13 @@
 #endif
 #include <DxLib.h>
 #include "ui.hpp"
+#include <chrono>
 #include "audio.hpp"
 #include <filesystem>
 #include <fstream>
 #include <cmath>
 #include <sstream>
-namespace undergod { int StarSmoke(Game&,Ui&,Audio&); int AnimationSmoke(Game&,Ui&,Audio&); }
+namespace undergod { int StarSmoke(Game&,Ui&,Audio&); int AnimationSmoke(Game&,Ui&,Audio&); int IntegrationSmoke(Game&,Ui&,Audio&); }
 
 namespace {
 std::filesystem::path ExeDirectory(){wchar_t path[32768]{};GetModuleFileNameW(nullptr,path,32768);return std::filesystem::path(path).parent_path();}
@@ -126,15 +127,16 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
     using namespace undergod;std::filesystem::current_path(ExeDirectory());const bool smoke=std::string(args?args:"").find("--smoke")!=std::string::npos;
     const bool star_smoke=std::string(args?args:"").find("--star-smoke")!=std::string::npos;
     const bool animation_smoke=std::string(args?args:"").find("--animation-smoke")!=std::string::npos;
+    const bool integration_smoke=std::string(args?args:"").find("--integration-smoke")!=std::string::npos;
     ChangeWindowMode(TRUE);SetGraphMode(Ui::Width,Ui::Height,32);SetWindowSize(Ui::Width,Ui::Height);SetMainWindowText("Undergod Card Quest - C++ / DxLib");
     SetAlwaysRunFlag(TRUE);SetDoubleStartValidFlag(TRUE);SetOutApplicationLogValidFlag(FALSE);SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
     if(DxLib_Init()<0)return 1;SetDrawScreen(DX_SCREEN_BACK);Ui ui;Audio audio;
     try{
-        const auto config=LoadConfig();Game game(config,LoadTimeline(),!smoke);
+        const auto config=LoadConfig();Game game(config,LoadTimeline(),!smoke);game.SetSessionSeed(unsigned(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
         const std::string arguments=args?args:"";const auto seed_at=arguments.find("--seed ");
         const auto boss_at=arguments.find("--boss ");
         const unsigned seed=seed_at==std::string::npos?unsigned(GetNowHiPerformanceCount()):unsigned(std::stoul(arguments.substr(seed_at+7)));
-        if(smoke||star_smoke||animation_smoke)game.NewRun();
+        if(smoke||star_smoke||animation_smoke||integration_smoke)game.NewRun();
         else if(boss_at!=std::string::npos){
             std::string boss_id;std::istringstream(arguments.substr(boss_at+7))>>boss_id;
             game.SetSaveFile("save.json");game.SetProfileFile("profile.json");game.StartBossPractice(boss_id,seed,game.profile.selected_class);
@@ -152,6 +154,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
         if(smoke){const int result=Smoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
         if(star_smoke){const int result=StarSmoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
         if(animation_smoke){const int result=AnimationSmoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
+        if(integration_smoke){const int result=IntegrationSmoke(game,ui,audio);audio.Shutdown();ui.Shutdown();DxLib_End();return result;}
         char previous[256]{};int old_mouse=0;auto last=GetNowHiPerformanceCount();
         while(ProcessMessage()==0){
             const auto start=GetNowHiPerformanceCount();const float dt=std::min(.1f,float(start-last)/1000000.f);last=start;
@@ -163,12 +166,15 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             if(pressed(KEY_INPUT_F6))game.Save();if(pressed(KEY_INPUT_F9)&&game.Load())ui.ResetView();
             if(pressed(KEY_INPUT_PGUP))ui.Page(game,game.Map()?1:-1);if(pressed(KEY_INPUT_PGDN))ui.Page(game,game.Map()?-1:1);
             const int wheel=GetMouseWheelRotVol();if(wheel)ui.Page(game,game.Map()?(wheel>0?1:-1):(wheel>0?-1:1));
-            const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5,KEY_INPUT_6,KEY_INPUT_7,KEY_INPUT_8,KEY_INPUT_9};
+            const int numbers[]={KEY_INPUT_1,KEY_INPUT_2,KEY_INPUT_3,KEY_INPUT_4,KEY_INPUT_5,KEY_INPUT_6,KEY_INPUT_7,KEY_INPUT_8,KEY_INPUT_9,KEY_INPUT_0};
             if(game.Cinematic()){if(pressed(KEY_INPUT_SPACE)||pressed(KEY_INPUT_ESCAPE))game.SkipCinematic();}
             else if(game.Menu()){
                 if(pressed(KEY_INPUT_ESCAPE))game.BackMenu();
                 else if(game.MenuPage()==1){for(int i=0;i<3;++i)if(pressed(numbers[i]))game.SelectClass(i);if(pressed(KEY_INPUT_RETURN)){game.BeginSelected(unsigned(GetNowHiPerformanceCount()));ui.ResetView();}}
             }
+            else if(pressed(KEY_INPUT_R)&&(keys[KEY_INPUT_LSHIFT]||keys[KEY_INPUT_RSHIFT])&&!game.Busy()){game.Retry();ui.ResetView();}
+            else if(pressed(KEY_INPUT_N)&&!game.Busy()){game.NewMatch();ui.ResetView();}
+            else if(pressed(KEY_INPUT_D)&&game.Practice()&&!game.Busy()){game.CyclePracticeDifficulty();}
             else if((pressed(KEY_INPUT_R)||pressed(KEY_INPUT_RETURN))&&!game.Busy()&&!game.Shop()&&!game.Rest()){game.OpenClasses();ui.ResetView();}
             else if(game.RelicReward()){for(int i=0;i<3;++i)if(pressed(numbers[i]))game.ChooseRelic(i);}
             else if(game.CardSelection()||game.RelicSelection()){for(int i=0;i<8;++i)if(pressed(numbers[i])){if(game.CardSelection())ui.ChooseSelection(game,i);else ui.ChooseTrade(game,i);}if(pressed(KEY_INPUT_ESCAPE))game.CancelSelection();}
@@ -178,7 +184,13 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             else if(game.Shop()){for(int i=0;i<9;++i)if(pressed(numbers[i]))game.Buy(i);if(pressed(KEY_INPUT_ESCAPE)||pressed(KEY_INPUT_E))game.LeaveShop();}
             else if(game.Rest()){if(pressed(KEY_INPUT_H))game.RestHeal();for(int i=0;i<8;++i)if(pressed(numbers[i]))ui.ChooseUpgrade(game,i);}
             else{
-                for(int i=0;i<9;++i)if(pressed(numbers[i]))ui.ChooseHand(game,i);
+                if(pressed(KEY_INPUT_T))game.ToggleForecast();
+                if(pressed(KEY_INPUT_P))game.TogglePile(1);if(pressed(KEY_INPUT_O))game.TogglePile(2);
+                if(pressed(KEY_INPUT_ESCAPE)){game.pile_view=0;game.forecast_view=false;game.focused_card=-1;}
+                if(pressed(KEY_INPUT_LEFT)){if(game.pile_view)game.pile_page=std::max(0,game.pile_page-1);else game.FocusCard(-1);}
+                if(pressed(KEY_INPUT_RIGHT)){if(game.pile_view){const int pages=std::max(1,(int(Game::PileCounts(game.pile_view==1?game.state.draw:game.state.discard).size())+13)/14);game.pile_page=std::min(pages-1,game.pile_page+1);}else game.FocusCard(1);}
+                if(pressed(KEY_INPUT_SPACE)&&!game.InfoOpen())game.Play(game.focused_card);
+                for(int i=0;i<10;++i)if(pressed(numbers[i]))ui.ChooseHand(game,i);
                 if(pressed(KEY_INPUT_E))game.EndTurn();if(pressed(KEY_INPUT_U))game.Ultimate();
                 if(pressed(KEY_INPUT_Z))game.DrinkPotion(0);if(pressed(KEY_INPUT_X))game.DrinkPotion(1);
                 if(pressed(KEY_INPUT_C))game.DrinkPotion(2);if(pressed(KEY_INPUT_V))game.DrinkPotion(3);

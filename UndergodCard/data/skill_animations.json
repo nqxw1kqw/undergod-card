@@ -224,7 +224,7 @@
       "ward": "ward_blue",
       "launch": 0.08,
       "contact": 0.32,
-      "duration": 0.85,
+      "duration": 0.62,
       "size": 245
     },
     "heal": {
@@ -235,7 +235,7 @@
       "impact": "heal",
       "launch": 0.08,
       "contact": 0.38,
-      "duration": 0.95,
+      "duration": 0.7,
       "size": 150
     },
     "buff": {
@@ -367,9 +367,11 @@
     },
     "heavy": {
       "family": "thrust",
-      "duration": 0.82,
+      "duration": 0.88,
       "size": 175,
-      "lunge": 1.04
+      "lunge": 1.04,
+      "contact": 0.44,
+      "launch": 0.12
     },
     "cookie": {
       "family": "heal",

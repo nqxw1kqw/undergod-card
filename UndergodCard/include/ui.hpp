@@ -19,6 +19,9 @@ class Ui {
     void SkillActor(const Game& game,bool enemy,int target)const;
     void DrawWard(const Game& game,int unit)const;
     void DrawSkillEffects(const Game& game)const;
+    void DrawCardVisuals(const Game& game,int mx,int my)const;
+    void DrawPresentation(const Game& game,int mx,int my)const;
+    void DrawActionStrip(const Game& game,int mx,int my)const;
     void DrawFx(const std::string& effect,float x,float y,float size,float progress,float angle=0,int alpha=255)const;
     bool DrawExtensions(const Game& game,int mx,int my);
     void DrawTargets(const Game& game,int mx,int my)const;
@@ -34,13 +37,13 @@ public:
     static constexpr int ContentOffset=(Width-1440)/2;
     static float SceneX(float x){return x+ContentOffset;}
     static Rect ContentRect(Rect r){r.x+=ContentOffset;return r;}
-    int loaded=0,expected=0;
+    int loaded=0,expected=0,grayscale=0;
     bool Init(const Config& config);
     void Shutdown();
     void Draw(const Game& game,int mx,int my);
     void DrawTransitions(const Game& game)const;
     void Click(Game& game,int mx,int my);
-    void Page(const Game& game,int direction);
+    void Page(Game& game,int direction);
     void ResetView(){map_node_=screen_node_=-999;deck_page_=map_scroll_=0;}
     void ChooseUpgrade(Game& game,int local_index){game.UpgradeCard(deck_page_*8+local_index);}
     int DeckPage()const{return deck_page_;}
@@ -62,6 +65,8 @@ public:
     static Rect LoadButton(){return ContentRect({1000,42,140,40});}
     static Rect SkipButton(){return ContentRect({1130,115,250,42});}
     static Rect ResultButton(){return ContentRect({570,540,300,54});}
+    static Rect RetrySeedButton(){return {540,650,250,44};}
+    static Rect NewSeedButton(){return {810,650,250,44};}
     static Rect RewardRect(int index){const int w=250,h=230,gap=24,total=3*w+2*gap;return {(Width-total)/2+index*(w+gap),360,w,h};}
     static Rect MapNodeRect(int floor,int column,bool boss,int columns=3){return ContentRect({boss?660:660-(columns-1)*105+column*210,668-floor*88,120,60});}
     static Rect MapUpButton(){return ContentRect({1150,230,200,48});}
@@ -86,5 +91,14 @@ public:
     static Rect ChallengePlus(){return ContentRect({1240,650,60,55});}
     static Rect SkillRect(int branch,int tier){return ContentRect({80+branch*430,210+tier*78,400,66});}
     static Rect AudioButton(){return ContentRect({1150,42,60,40});}
+    static Rect FeedbackButton(){return {810,42,100,40};}
+    static Rect DifficultyButton(){return {920,86,300,22};}
+    static Rect ForecastButton(){return {535,192,480,25};}
+    static Rect ForecastCloseButton(){return {1035,558,150,32};}
+    static Rect DrawPileButton(){return {345,630,125,24};}
+    static Rect DiscardPileButton(){return {345,657,125,24};}
+    static Rect PilePrevButton(){return {470,574,150,32};}
+    static Rect PileNextButton(){return {650,574,150,32};}
+    static Rect PileCloseButton(){return {990,574,130,32};}
 };
 }

@@ -284,6 +284,7 @@ public:
     const CombatMods& Mods()const{return mods_;}
     const std::string& EnemyId()const{return enemy_id_;}
     CombatSnapshot Snapshot()const;
+    void AppendForecastKey(std::string& out)const;
     void Restore(const CombatSnapshot& snapshot,CombatMods mods);
     const CardDef& Definition(const std::string& id) const;
     void Draw(int count);

@@ -1,0 +1,11 @@
+{
+  "baseline_median_us": 61.6358,
+  "baseline_p95_block_us": 72.49589999999999,
+  "blocks": 15,
+  "cached_median_us": 0.9702000000000001,
+  "cached_p95_block_us": 1.5802,
+  "checksum": 270000,
+  "iterations_per_block": 1000,
+  "round_builds": 1,
+  "scope": "CPU incoming forecast only; not total FPS or GPU"
+}

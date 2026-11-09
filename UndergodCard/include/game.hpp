@@ -3,6 +3,7 @@
 #include "quest_timeline.hpp"
 #include "quest_save.hpp"
 #include "quest_meta.hpp"
+#include "quest_presentation.hpp"
 #include <array>
 #include <utility>
 
@@ -10,9 +11,9 @@ namespace undergod {
 enum class Motion { None,PlayerAttack,PlayerOther,EnemyAttack,EnemyOther };
 enum class Arrival { None,Travel,FadeOut,BlackHold,FadeIn,Fight,Deal };
 struct Pose { std::string name="idle"; float age=0; };
-struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; StatusId status=StatusId::Poison; int target=0; };
+struct Popup { bool enemy; int amount; EventType type; float age=0; bool blocked=false; StatusId status=StatusId::Poison; int target=0,lane=0; };
 struct SpearVisual { bool visible=false,falling=false; float age=0,duration=1,from_x=0,from_y=0,to_x=0,to_y=0; };
-struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
+struct CinematicVisual { float dim=0,zoom=1,zoom_target=1,zoom_duration=0,zoom_age=0,vfx_age=-1,shake=0,shake_left=0,flash_left=0,flash_duration=1,zoom_start=1,zoom_time=0; int vfx_frames=4; bool vfx_enemy=true; SpearVisual spear; };
 class Game {
     bool turn_stars_=true;
     bool star_sequence_=false;
@@ -27,7 +28,24 @@ class Game {
     void ResetSkillVisuals();
     void TickSkillVisuals(float dt);
     void SyncSkillShields();
-    void ReactSkillEvent(const Event& event);
+    void ReactSkillEvent(const Event& event,float late=0);
+    unsigned next_visual_id_=1,session_seed_=1337;
+    Rng visual_rng_;
+    mutable ForecastCache forecast_cache_;
+    RoundForecast active_round_;
+    int active_step_=-1;
+    void EnsureForecastCache()const;
+    CardPreview EvaluateCard(int index)const;
+    PracticeDifficulty practice_difficulty_=PracticeDifficulty::Standard;
+    void ResetPresentation();
+    void SyncCards(bool deal=false);
+    void PrepareStarCards();
+    void StartCardVisual(bool enemy,int slot);
+    void ResolveCardVisual(int hand_index,float late=0);
+    void TickPresentation(float dt);
+    void BeginTerminal(float late=0);
+    void PresentEvent(const undergod::Event& event,float late);
+    void SampleZoom(float at);
     Arrival arrival_=Arrival::None;
     bool arrival_banner_=true;
     float arrival_age_=0;
@@ -50,9 +68,9 @@ class Game {
     int menu_=0,selected_challenge_=0;
     Timeline timeline_;
     TimelinePlayer cinematic_;
-    void ConsumeEvents();
+    void ConsumeEvents(float late=0);
     void ApplyMotion();
-    void AfterResolve();
+    void AfterResolve(float late=0);
     void CueStep(const Step& step);
 public:
     static constexpr float PlayerHome=320,EnemyHome=1120;
@@ -63,6 +81,41 @@ public:
     std::vector<std::string> sound_events;
     std::array<Pose,2> poses;
     std::vector<Popup> popups;
+    std::vector<CardVisual> cards;
+    std::vector<ContactParticle> particles;
+    MatchSummary summary;
+    TerminalVisual terminal;
+    int focused_card=-1,pile_view=0,pile_page=0;
+    bool forecast_view=false;
+    bool InfoOpen()const{return pile_view||forecast_view;}
+    void ToggleForecast();
+    void InvalidateForecast()const{forecast_cache_.key.clear();forecast_cache_.round_valid=false;forecast_cache_.card_valid.fill(false);}
+    const ForecastMetrics& ForecastStats()const{return forecast_cache_.metrics;}
+    RoundForecast EvaluateRound()const;
+    const RoundForecast& Forecast()const;
+    int ActiveStep()const{return active_step_;}
+    bool Recovering()const{return motion_impact_;}
+    float ActionProgress()const{return motion_==Motion::None?0:std::clamp(motion_age_/std::max(.01f,Timing().end),0.f,1.f);}
+    bool ReducedFeedback()const{return profile.reduced_feedback;}
+    void ToggleFeedback(){profile.reduced_feedback=!profile.reduced_feedback;if(practice_)practice_profile_.reduced_feedback=profile.reduced_feedback;profile_dirty_=true;}
+    void SetSessionSeed(unsigned seed){session_seed_=seed;}
+    unsigned Seed()const{return run.seed;}
+    void NewMatch();
+    void Retry();
+    PracticeDifficulty PracticeLevel()const{return practice_difficulty_;}
+    bool SelectPracticeDifficulty(PracticeDifficulty level);
+    void CyclePracticeDifficulty();
+    void FocusCard(int delta);
+    void TogglePile(int which);
+    static std::map<std::string,int> PileCounts(const std::vector<std::string>& pile){std::map<std::string,int> out;for(const auto& id:pile)++out[id];return out;}
+    static CardBox HandBox(int count,int index){count=std::clamp(count,1,10);index=std::clamp(index,0,count-1);const int w=std::min(176,(1300-12*(count-1))/count),total=count*w+(count-1)*12;return {float((1600-total)/2+index*(w+12)),710,float(w),150};}
+    static CardBox QueueBox(int slot){return {530.f+slot*190,627,180,76};}
+    static CardBox PlayBox(){return {1150,650,320,218};}
+    CardPreview Preview(int index)const;
+    int IncomingLoss()const;
+    std::string TurnStatus()const;
+    ActionTiming Timing()const;
+    float ResultAlpha()const{return terminal.active?std::clamp((terminal.age-.8f)/.7f,0.f,1.f):0;}
     CinematicVisual visual;
     float time=0,toast_age=0;
     std::string toast;
@@ -89,7 +142,7 @@ public:
     bool Save(bool notify=true);
     bool Load();
     bool CanAct()const{return !Menu()&&!Busy()&&run.place==Place::Fight&&state.phase==Phase::Player&&!run.victory&&!run.defeat;}
-    bool Busy()const{return motion_!=Motion::None||cinematic_.Active()||arrival_!=Arrival::None||star_sequence_;}
+    bool Busy()const{return motion_!=Motion::None||cinematic_.Active()||arrival_!=Arrival::None||star_sequence_||(terminal.active&&terminal.age<1.5f);}
     bool TurnStarRules()const{return turn_stars_;}
     Arrival ArrivalStage()const{return arrival_;}
     float ArrivalTime()const{return arrival_age_;}
@@ -143,7 +196,7 @@ public:
     bool ChooseCard(int index);
     bool TradeRelic(int index);
     void CancelSelection(){undergod::CancelSelection(run);save_dirty_=true;}
-    bool SelectTarget(int index){if(!CanAct())return false;const bool changed=state.SelectTarget(index);save_dirty_|=changed;return changed;}
+    bool SelectTarget(int index){if(!CanAct()||InfoOpen())return false;const bool changed=state.SelectTarget(index);save_dirty_|=changed;return changed;}
     void ChooseEvent(int index);
     bool Buy(int index);
     bool RemoveCard(int index);

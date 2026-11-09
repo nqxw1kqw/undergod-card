@@ -1,12 +1,12 @@
 # Undergod Card Quest — C++17 / DxLib
 
-Bản v1.3.1-preview dùng cửa sổ 1600×900 với bố cục 16:9. Giữ hoạt ảnh theo từng kỹ năng, ba Turn Star luân phiên, bộ riêng của sáu boss, avatar map, FIGHT và chia bài. Chi tiết ở [hoạt ảnh](docs/SKILL_ANIMATIONS.md), [bộ boss](docs/BOSS_DECKS.md), [luật Turn Star](docs/TURN_STARS.md) và [kiểm chứng](docs/VALIDATION.md). Demo HTML giữ độc lập.
+Bản v1.4.1-preview trên `integrate/draft-main-optimizations` dùng draft làm nền rồi tích hợp các cải tiến main và [vòng cải thiện sáu nhịp](docs/SIX_ACTION_POLISH.md): dự báo từng lá, chỉ báo xuyên hồi động tác, nhịp heavy/khiên/hồi và cache dự báo có đo CPU. Giữ 1600×900, chiến dịch, hoạt ảnh kỹ năng, ba Turn Star và sáu bộ boss. Xem [đối chiếu hợp nhất](docs/DRAFT_MAIN_INTEGRATION.md) và [kiểm chứng](docs/VALIDATION.md). HTML giữ độc lập.
 
 Mốc này thêm [hoạt ảnh cho từng kỹ năng](docs/SKILL_ANIMATIONS.md), dùng 18 bộ động tác và 17 bộ VFX mới: lao đâm/ném, phép bay, mổ/giậm/chém/vồ, buff và khiên tồn tại theo giáp thật cho cả hai phe. Lá đang dùng nằm dưới góc phải để không che sân. Game đợi hiệu ứng đòn cuối kết thúc trước khi mở thưởng hoặc trận kế tiếp.
 
 ## Build, chạy và đóng gói
 
-Khung hình và vùng nội dung cửa sổ mặc định: **1600×900, tỉ lệ 16:9**. Map/menu được căn giữa, hàng bài thu gọn, sprite và hiệu ứng giữ cùng tỉ lệ hai chiều; tọa độ bấm mục tiêu đi cùng vị trí mới. Không đổi logic chiến đấu hoặc dữ liệu bản lưu.
+Khung hình và vùng nội dung cửa sổ mặc định: **1600×900, tỉ lệ 16:9**. Giữ luật/chỉ số chiến dịch và session v2. Profile có thêm tùy chọn FX nhẹ; mức khó đấu thử không thay đổi Thử Thách chiến dịch.
 
 Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x64. Cần MSVC v143, Windows SDK và DxLib Visual C++ x64; mặc định C:\DxLib.
 
@@ -14,6 +14,8 @@ Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x
     .\verify.ps1 -Configuration Release
     .\verify.ps1 -Configuration Debug
     .\bin\Release\CoreChecks.exe --simulate-stars 300
+    .\bin\Release\CoreChecks.exe --integrate-balance 20
+    .\bin\Release\CoreChecks.exe --forecast-benchmark 1000
     .\package.ps1 -SkipBuild
 
 Các script nhận -DxLibDir. EXE ở bin/Release/UndergodCard.exe; ZIP ở release/UndergodCard-DxLib-Windows-x64.zip. Giữ assets/data/licenses cạnh EXE. Bản đóng gói không cần SDK, Python hay Node.js.
@@ -44,10 +46,12 @@ Mỗi lớp có ba nhánh × năm kỹ năng; mua tuần tự bằng Lông Vũ v
 - Nút Đấu thử Hổ Vương ở menu lớp mở ngay boss với bài nâng cấp/hai thuốc; không ghi đè bản lưu hoặc thưởng meta. Cũng có thể chạy --boss tiger --seed 1337; xem docs/TIGER_BOSS.md.
 - Chọn lớp: 1–3 hoặc chuột; Enter bắt đầu. Chuột mua kỹ năng/chọn Thử Thách.
 - Map: chuột/1–9 chọn lối; bánh xe, Page Up/Page Down hoặc nút cuộn.
-- Combat: chuột/1–9 xếp bài; bấm lá trong hàng chờ để gỡ; đủ ba vị trí thì E/Attack; Tab/bấm địch chọn mục tiêu; U tuyệt kỹ.
+- Combat: chuột/1–0 xếp bài; ←/→ focus/chi tiết, Space xếp lá; bấm hàng chờ để gỡ; đủ ba vị trí thì E/Attack; Tab chọn mục tiêu; U tuyệt kỹ.
+- P/O xem chồng rút/bỏ theo tên/số lượng, không lộ thứ tự; nút trang/←/→ phân trang, Esc đóng.
+- N seed mới, Shift+R lặp cùng seed/lớp; hai nút tương ứng ở kết quả. D/nút mức khó chỉ đổi đấu thử, giữ seed.
 - Z/X/C dùng ba ô thuốc, V dùng ô thứ tư nếu di vật mở thêm.
 - F1/F2/F3 hoặc x1/x2/x3 đổi tốc độ; run mới bắt đầu chậm ở x1.
-- Space/Esc bỏ cinematic, damage chỉ áp một lần. F10 bật/tắt âm thanh.
+- Space/Esc bỏ cinematic, damage chỉ áp một lần. F10 bật/tắt âm thanh; nút FX chuyển đầy/nhẹ và lưu trong profile.
 - Shop: 1–7 mua; bấm lá trong bộ để gỡ (75 vàng); E/Esc rời.
 - Nghỉ: H hồi HP hoặc 1–8 nâng cấp trên trang hiện tại. Chỉ chọn một việc.
 - Bộ bài/màn chọn bài/đổi đồ có nút trang, bánh xe, Page Up/Page Down.

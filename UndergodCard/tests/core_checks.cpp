@@ -15,6 +15,10 @@ void WorldChecks(const Config&,const Timeline&);
 void TigerChecks(const Config&,const Timeline&);
 void StarChecks(const Config&,const Timeline&);
 void AnimationChecks(const Config&,const Timeline&);
+void IntegrationChecks(const Config&,const Timeline&);
+void ForecastChecks(const Config&,const Timeline&);
+void ForecastBenchmark(const Config&,const Timeline&,int);
+void IntegratedBalanceChecks(const Config&,const Timeline&,int);
 void BossDeckChecks(const Config&,const Timeline&);
 void SimulateStarRuns(const Config&,const Timeline&,int);
 void SimulateRuns(const Config&,const Timeline&,int);
@@ -57,7 +61,7 @@ int main(int argc,char** argv){
         c.Reset();c.rage=100;c.enemy.hp=120;c.StartUltimate();c.FinishUltimate();c.FinishUltimate();Check(c.enemy.hp==80,"skip before impact resolves once");
     }
     {
-        TimelinePlayer player;int hits=0,ends=0,cues=0;player.Start(timeline,[&](const Step&){++cues;},[&]{++hits;},[&]{++ends;});player.Advance(2599);Check(hits==0,"timeline waits for 2600ms impact");player.Advance(2600);Check(hits==1,"timeline impact exact boundary");player.Advance(5000);player.Skip();Check(hits==1&&ends==1&&cues==8,"timeline ends once after skipped frames");
+        TimelinePlayer player;int hits=0,ends=0,cues=0;player.Start(timeline,[&](const Step&){++cues;},[&]{++hits;},[&]{++ends;});player.Advance(2599);Check(hits==0,"timeline waits for 2600ms impact");player.Advance(2600);Check(hits==1,"timeline impact exact boundary");player.Advance(5000);player.Skip();Check(hits==1&&ends==1&&cues==int(std::count_if(timeline.steps.begin(),timeline.steps.end(),[](const Step& s){return s.cue!=Cue::Impact&&s.cue!=Cue::End;})),"timeline ends once after skipped frames");
         for(float t:{0.f,900.f,2600.f,3400.f}){hits=ends=0;player.Start(timeline,[](const Step&){},[&]{++hits;},[&]{++ends;});player.Advance(t);player.Skip();player.Advance(9999);Check(hits==1&&ends==1,"skip before or after impact is idempotent");}
     }
     {
@@ -224,7 +228,11 @@ int main(int argc,char** argv){
     try{StarChecks(config,timeline);}catch(const std::exception& error){std::cout<<"TURN_STAR_EXCEPTION "<<error.what()<<"\n";Check(false,"Turn Star tests must not throw");}
     try{BossDeckChecks(config,timeline);}catch(const std::exception& error){std::cout<<"BOSS_DECK_EXCEPTION "<<error.what()<<"\n";Check(false,"Boss deck tests must not throw");}
     try{AnimationChecks(config,timeline);}catch(const std::exception& error){std::cout<<"ANIMATION_EXCEPTION "<<error.what()<<"\n";Check(false,"Animation checks must not throw");}
+    try{IntegrationChecks(config,timeline);}catch(const std::exception& error){std::cout<<"INTEGRATION_EXCEPTION "<<error.what()<<"\n";Check(false,"Integration checks must not throw");}
+    try{ForecastChecks(config,timeline);}catch(const std::exception& e){std::cout<<"FORECAST_EXCEPTION "<<e.what()<<"\n";Check(false,"forecast checks must not throw");}
+    if(argc==3&&std::string(argv[1])=="--forecast-benchmark")ForecastBenchmark(config,timeline,std::clamp(std::stoi(argv[2]),10,10000));
     if(argc==3&&std::string(argv[1])=="--simulate")SimulateRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));
     if(argc==3&&std::string(argv[1])=="--simulate-stars")try{SimulateStarRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));}catch(const std::exception& error){std::cout<<"STAR_CAMPAIGN_EXCEPTION "<<error.what()<<"\n";Check(false,"Turn Star campaign must not throw");}
+    if(argc==3&&std::string(argv[1])=="--integrate-balance")IntegratedBalanceChecks(config,timeline,std::clamp(std::stoi(argv[2]),1,1000));
     std::cout<<"RESULT "<<checks<<" checks, "<<failures<<" failures\n";return failures?1:0;
 }

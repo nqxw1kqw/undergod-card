@@ -18,7 +18,7 @@ float EnemyX(const Combat& state,int target){
     return 840.f+500.f*slot/std::max(1,count-1);
 }
 }
-void Game::ResetSkillVisuals(){skill_visual_={};reactions_={};floating_fx_.clear();known_adds_=int(state.adds.size());}
+void Game::ResetSkillVisuals(){skill_visual_={};reactions_={};floating_fx_.clear();known_adds_=int(state.adds.size());ResetPresentation();}
 float Game::ActorScale(bool enemy,int target)const{
     if(!enemy)return .5f;
     if(!state.adds.empty())return target==0||state.adds.at(target-1).illusion?.4f:.27f;
@@ -52,19 +52,20 @@ void Game::SyncSkillShields(){
 }
 void Game::TickSkillVisuals(float dt){
     if(!turn_stars_)return;
-    for(auto& r:reactions_){r.hit_age+=dt;r.guard_age+=dt;r.break_age+=dt;r.spawn_age+=dt;}
+    for(auto& r:reactions_){r.hit_age+=dt;r.guard_age+=dt;r.break_age+=dt;r.spawn_age+=dt;r.defeat_age+=dt;}
     for(auto& fx:floating_fx_)fx.age+=dt;
     floating_fx_.erase(std::remove_if(floating_fx_.begin(),floating_fx_.end(),[](const FloatingFx& f){return f.age>.65f;}),floating_fx_.end());
     SyncSkillShields();
 }
-void Game::ReactSkillEvent(const undergod::Event& event){
+void Game::ReactSkillEvent(const undergod::Event& event,float late){
     if(!turn_stars_)return;
     const int unit=event.enemy?event.target:-1;if(unit< -1||unit>int(state.adds.size()))return;
     auto& r=reactions_[unit+1];const auto point=UnitAim(unit);
-    if(event.type==EventType::Damage){if(event.amount>0)r.hit_age=0;if(event.blocked>0)r.guard_age=0;}
-    else if(event.type==EventType::Block)r.guard_age=0;
-    else if(event.type==EventType::Heal||event.type==EventType::Revive)floating_fx_.push_back({"heal",point.first,point.second,0,145});
-    else if(event.type==EventType::Status)floating_fx_.push_back({event.status==StatusId::Poison?"toxin_orb":"sigil",point.first,point.second,0,80});
+    if(!r.defeated&&(unit<0?state.player.hp:state.Target(unit).hp)<=0){r.defeated=true;r.defeat_age=late;r.defeat_x=(unit<0?PlayerHome:TargetX(unit))+ActorOffset(unit>=0,std::max(0,unit));r.defeat_y=320+ActorLift(unit>=0,std::max(0,unit));}
+    if(event.type==EventType::Damage){if(event.amount>0)r.hit_age=late;if(event.blocked>0)r.guard_age=late;}
+    else if(event.type==EventType::Block)r.guard_age=late;
+    else if(event.type==EventType::Heal||event.type==EventType::Revive)floating_fx_.push_back({"heal",point.first,point.second,late,145});
+    else if(event.type==EventType::Status)floating_fx_.push_back({event.status==StatusId::Poison?"toxin_orb":"sigil",point.first,point.second,late,80});
 }
 void Game::BeginSkillVisual(bool enemy,int slot){
     skill_visual_={};auto& v=skill_visual_;v.enemy=enemy;v.actor=enemy?state.stars.enemy.at(slot).actor:-1;v.card_id=active_card_.id;

@@ -35,6 +35,12 @@ bool Ui::Init(const Config& config){
         const auto file="characters/char_"+key+".png";if(std::filesystem::exists("assets/pastel/"+file))load(key,file,512);
     }
     for(const auto& b:config.animations.bodies)for(int f=0;f<4;++f){const auto key=b.actor+"_"+b.pose+"_"+std::to_string(f);load(key,"characters/char_"+key+".png",512);}
+    for(const auto& actor:actors){
+        auto file="assets/pastel/characters/char_"+actor+"_hit_3.png";
+        if(!std::filesystem::exists(file))file="assets/pastel/characters/char_"+actor+"_idle_0.png";
+        const int gray=LoadGraph(file.c_str());if(gray>=0&&GraphFilter(gray,DX_GRAPH_FILTER_MONO,0,0)==0)++grayscale;
+        images_[actor+"_defeated"]=gray;
+    }
     for(const auto& effect:config.animations.effects)for(int f=0;f<4;++f){const auto key=effect+"_"+std::to_string(f);load("skill_"+key,"skill_fx/"+key+".png",512);}
     for(const auto& card:config.cards)if(!card.upgraded){const auto file="cards/"+card.id+".png";load("card_"+card.id,file,256);}
     for(const auto& card:config.boss_cards)load("card_"+card.id,"boss_cards/"+card.id+".png",256);
@@ -64,7 +70,8 @@ void Ui::Wrapped(Rect r,const std::string& text,unsigned color,int font)const{
     const int limit=std::max(1,r.h/step);
     for(int i=0;i<std::min(limit,int(lines.size()));++i)Text(r.x,r.y+i*step,lines[i],color,font);
 }
-void Ui::Page(const Game& game,int direction){
+void Ui::Page(Game& game,int direction){
+    if(game.pile_view){const int pages=std::max(1,(int(Game::PileCounts(game.pile_view==1?game.state.draw:game.state.discard).size())+13)/14);game.pile_page=std::clamp(game.pile_page+direction,0,pages-1);return;}
     if(game.Map())map_scroll_=std::clamp(map_scroll_+direction*3,0,std::max(0,game.run.map.back().floor-5));
     else if(game.Shop()||game.Rest()||game.CardSelection()||game.RelicSelection()){const int count=game.RelicSelection()?int(game.run.relics.size()):int(game.run.deck.size());deck_page_=std::clamp(deck_page_+direction,0,std::max(0,(count-1)/8));}
 }
@@ -95,7 +102,7 @@ void Ui::World(const Game& game){
     for(int i=0;i<40;++i){const int x=i*37;DrawLine(x,337,x+18,337,C(173,188,146));DrawCircle(x+12,316+(i%4)*8,3,i%3?C(246,239,205):C(238,185,194),TRUE);}
     if(game.TurnStarRules()){for(int target=0;target<=int(game.state.adds.size());++target)Actor(game,true,target);}
     else for(int target:game.state.Targets())Actor(game,true,target);
-    if(game.Cinematic()){Blend(int(game.visual.dim*255));DrawBox(0,0,Width,360,C(33,28,60),TRUE);Blend(255);}
+    if(game.Cinematic()){Blend(int(game.visual.dim*(game.ReducedFeedback()?70:255)));DrawBox(0,0,Width,360,C(33,28,60),TRUE);Blend(255);}
     Actor(game,false);
     if(game.TurnStarRules()){
         DrawWard(game,-1);for(int target=0;target<=int(game.state.adds.size());++target)DrawWard(game,target);
@@ -113,18 +120,19 @@ void Ui::World(const Game& game){
     }
     if(game.visual.spear.visible){const auto tip=game.SpearTip();const int spear=Image("spear");if(spear>=0)DrawRotaGraph3F(SceneX(tip.first),tip.second,256,56,.45,.45,game.visual.spear.falling?3.141592653589793:0,spear,TRUE);}
     if(game.visual.vfx_age>=0&&game.visual.vfx_age<game.visual.vfx_frames/8.f){const int frame=std::min(game.visual.vfx_frames-1,int(game.visual.vfx_age*8)),vfx=Image("spear_impact");if(vfx>=0)DrawRectRotaGraph3F(SceneX(game.visual.vfx_enemy?1120.f:320.f),195,(frame%2)*256,(frame/2)*256,256,256,128,128,1,1,0,vfx,TRUE);}
+    for(const auto& p:game.particles){const float t=p.age/p.life;Blend(int(170*(1-t)));const auto color=p.type==EventType::Heal?C(90,170,100):(p.type==EventType::Block?C(100,170,210):C(235,185,100));DrawCircle(int(SceneX(p.x+p.vx*p.age)),int(p.y+p.vy*p.age+160*p.age*p.age),p.type==EventType::Damage?3:4,color,TRUE);Blend(255);}
     for(const auto& popup:game.popups){
         const bool status=popup.type==EventType::Status;
         const auto color=popup.type==EventType::Heal||status?C(90,142,98):((popup.type==EventType::Block||popup.blocked)?C(84,130,150):C(172,85,106));
         std::string value;
         if(status)value="+"+std::to_string(popup.amount)+" "+StatusName(popup.status);
         else{const auto suffix=popup.type==EventType::Heal?" HP":(popup.type==EventType::Block?" giáp":"");value=(popup.blocked?"Chặn ":(popup.type==EventType::Damage?"−":"+"))+std::to_string(popup.amount)+suffix;}
-        Blend(int(255*(1-popup.age/.95f)));Center(int(SceneX(popup.enemy?game.TargetX(popup.target):320)),int(140-popup.age*70)-int(&popup-&game.popups[0])*16,value,color,heading_);Blend(255);
+        Blend(int(255*(1-popup.age/.95f)));Center(int(SceneX(popup.enemy?game.TargetX(popup.target):320))+(popup.lane/4)*(popup.enemy?-105:105),int(165-popup.age*55)-(popup.lane%4)*24,value,color,heading_);Blend(255);
     }
-    if(game.visual.flash_left>0){Blend(int(255*game.visual.flash_left/std::max(.01f,game.visual.flash_duration)));DrawBox(0,0,Width,360,C(255,255,255),TRUE);Blend(255);}
+    if(!game.ReducedFeedback()&&game.visual.flash_left>0){Blend(int(255*game.visual.flash_left/std::max(.01f,game.visual.flash_duration)));DrawBox(0,0,Width,360,C(255,255,255),TRUE);Blend(255);}
     SetDrawScreen(DX_SCREEN_BACK);SetDrawArea(20,250,Width-20,610);
-    const float shake=game.visual.shake_left>0?std::sin(game.time*95)*game.visual.shake:0;
-    DrawRotaGraph3F(Width/2.f+shake,430,Width/2.f,180,game.visual.zoom,game.visual.zoom,0,stage_,TRUE);
+    const float shake=!game.ReducedFeedback()&&game.visual.shake_left>0?std::sin(game.time*95)*game.visual.shake*std::min(1.f,game.visual.shake_left/.18f):0;
+    DrawRotaGraph3F(Width/2.f+shake,430,Width/2.f,180,(game.ReducedFeedback()?1:game.visual.zoom),(game.ReducedFeedback()?1:game.visual.zoom),0,stage_,TRUE);
     SetDrawArea(0,0,Width,Height);
 }
 void Ui::Card(const CardDef& original,Rect r,int index,bool affordable,bool locked,int mx,int my)const{
@@ -161,7 +169,7 @@ void Ui::Card(const CardDef& original,Rect r,int index,bool affordable,bool lock
     for(int i=0;i<std::min(limit,int(lines.size()));++i)Text(r.x+12,text_y+i*18,lines[i],Muted,small_);
 }
 void Ui::Draw(const Game& game,int mx,int my){
-    struct FinishFrame { const Ui& ui;const Game& game;~FinishFrame(){ui.DrawTransitions(game);} } finish{*this,game};
+    struct FinishFrame { const Ui& ui;const Game& game;int mx,my;~FinishFrame(){ui.DrawPresentation(game,mx,my);ui.DrawTransitions(game);} } finish{*this,game,mx,my};
     star_cards_=game.TurnStarRules();
     const auto& s=game.state;
     if(screen_place_!=game.run.place||screen_node_!=game.run.node){deck_page_=0;screen_place_=game.run.place;screen_node_=game.run.node;}
@@ -173,6 +181,7 @@ void Ui::Draw(const Game& game,int mx,int my){
         DrawBox(0,0,Width,Height,C(232,233,227),TRUE);Box({20,20,Width-40,Height-40},C(251,249,243),22);
         Text(135,42,"✦ CARD QUEST",C(75,93,82),brand_);Text(162,78,"UNDERGOD  /  C++ · DXLIB",Muted,small_);
         Button(RestartButton(),"Chơi lại ↻",!game.Busy(),mx,my);Button(SaveButton(),"F6 · Lưu",!game.Busy()&&!game.Practice(),mx,my);Button(LoadButton(),"F9 · Tiếp tục",!game.Busy(),mx,my);
+        Button(FeedbackButton(),game.ReducedFeedback()?"FX: nhẹ":"FX: đầy",true,mx,my);
         Button(AudioButton(),game.profile.muted?"Tắt ♪":"Bật ♪",true,mx,my);
         Text(1240,87,"Vàng: "+std::to_string(game.run.gold),C(146,112,48),small_);Text(510,53,"Tốc độ",Muted,small_);
         for(int speed=1;speed<=3;++speed){const Rect r=SpeedButton(speed);const bool selected=game.Speed()==speed;Box(r,selected?C(79,106,91):(r.Contains(mx,my)?C(226,229,218):C(239,237,229)));Center(r.x+r.w/2,r.y+11,"x"+std::to_string(speed),selected?C(255,255,246):Ink,small_);}
@@ -182,7 +191,10 @@ void Ui::Draw(const Game& game,int mx,int my){
         backdrop();Box({520,305,560,330},C(252,249,239),24);Center(800,338,"✦",C(174,144,199),brand_);
         Center(800,395,game.Practice()?(game.run.victory?"Đã hạ trùm!":"Thử lại một lần nhé!"):(game.run.victory?"Khu vườn nở hoa!":"Nghỉ một chút nhé!"),Ink,brand_);
         Center(800,454,game.Practice()?FindEnemy(s.config,s.EnemyId()).name:(game.run.victory?"Bạn đã vượt qua ba hồi và Undergod.":"Hành trình dừng trước khi hạ được trùm."),Muted,font_);
-        Center(800,491,game.Practice()?"Đấu thử · Không nhận thưởng hoặc thay đổi bản lưu":"Lông Vũ: "+std::to_string(game.profile.feathers)+" · Hồi "+std::to_string(game.run.act+1)+" / 3",Muted,small_);Button(ResultButton(),game.Practice()?"Chọn lớp / Đấu lại ↻":"Chọn lớp / Chơi lại ↻",true,mx,my);return;
+        Center(800,491,game.Practice()?"Đấu thử · Không nhận thưởng hoặc thay đổi bản lưu":"Lông Vũ: "+std::to_string(game.profile.feathers)+" · Hồi "+std::to_string(game.run.act+1)+" / 3",Muted,small_);
+        if(game.TurnStarRules())Center(800,516,std::to_string(game.summary.turns)+" lượt · "+std::to_string(game.summary.cards)+" lá · Gây "+std::to_string(game.summary.damage)+" HP · Chặn "+std::to_string(game.summary.blocked),Muted,small_);
+        Button(ResultButton(),game.Practice()?"Chọn lớp / Đấu lại ↻":"Chọn lớp / Chơi lại ↻",true,mx,my);if(game.TurnStarRules())Center(800,605,"Seed "+std::to_string(game.summary.seed)+" · Còn "+std::to_string(game.summary.hp)+" HP · Hồi "+std::to_string(game.summary.healed)+" · Tuyệt kỹ "+std::to_string(game.summary.ultimates),Muted,small_);
+        Button(RetrySeedButton(),"Cùng seed · Shift+R",true,mx,my);Button(NewSeedButton(),"Seed mới · N",true,mx,my);return;
     }
     if(game.ShowingMap()){
         backdrop();Center(800,120,s.config.acts[game.run.act].name,Ink,brand_);Center(800,158,"Hồi "+std::to_string(game.run.act+1)+" / 3 · HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp),Muted,font_);
@@ -268,7 +280,8 @@ void Ui::Draw(const Game& game,int mx,int my){
         progress=game.Practice()?"ĐẤU THỬ TRÙM":"Hồi "+std::to_string(game.run.act+1)+" · Tầng "+std::to_string(game.run.map[node].floor+1)+"/"+std::to_string(game.run.map.back().floor+1);
         if(s.PhaseCount()>1)progress+=" · Giai đoạn "+std::to_string(s.PhaseIndex()+1)+"/"+std::to_string(s.PhaseCount());
     }
-    Text(840,87,progress,Muted,small_);
+    if(!game.Practice())Text(840,87,progress,Muted,small_);
+    if(game.Practice())Button(DifficultyButton(),std::string("D · Đấu thử: ")+PracticeDifficultyName(game.PracticeLevel())+" · đổi và thử lại",!game.Busy(),mx,my);
     DrawBox(20,110,Width-20,250,C(227,240,237),TRUE);
     auto health=[&](bool enemy){const auto& actor=enemy?s.enemy:s.player;int x=ContentOffset+(enemy?1100:80);
         Text(x,123,enemy?"NGƯỜI GIỮ KHU VƯỜN":"NGƯỜI LỮ HÀNH",Muted,small_);
@@ -281,8 +294,9 @@ void Ui::Draw(const Game& game,int mx,int my){
     Box({160,245,260,5},C(209,215,210),2);if(s.rage>0)Box({160,245,260*s.rage/s.config.balance.rage_max,5},C(173,146,212),2);
     Text(440,232,"Nộ "+std::to_string(s.rage)+" / "+std::to_string(s.config.balance.rage_max),C(123,91,153),small_);
     const std::string ultimate=s.Mods().ultimate=="storm"?"Bão Lông":(s.Mods().ultimate=="shadow"?"Ảnh Phân":"Sao Rơi");
-    Center(800,131,"LƯỢT "+std::to_string(s.turn),Muted,small_);Center(800,162,game.Cinematic()?ultimate:(game.Busy()?"Đang hành động…":"Lượt của bạn"),Ink,font_);
-    Center(800,198,"Lá nhỏ, chuyến phiêu lưu lớn.",Muted,small_);
+    Center(800,131,"LƯỢT "+std::to_string(s.turn),Muted,small_);Center(800,162,game.Cinematic()?ultimate:game.TurnStatus(),Ink,font_);
+    if(game.TurnStarRules())DrawActionStrip(game,mx,my);
+    else if(game.CanAct())Center(800,198,"Dự kiến mất "+std::to_string(game.IncomingLoss())+" HP theo hàng bài hiện tại",Muted,small_);
     World(game);
     DrawTargets(game,mx,my);
     // Intent remains visible above the opponent, outside the zoomed arena.
@@ -303,15 +317,12 @@ void Ui::Draw(const Game& game,int mx,int my){
     if(game.Cinematic())Button(SkipButton(),"Bỏ qua · Space / Esc",true,mx,my);
     const char* potion_keys[]={"Z","X","C","V"};
     for(int i=0;i<int(game.run.potions.size())&&i<4;++i)Button(PotionRect(i),std::string(potion_keys[i])+" · "+FindPotion(s.config,game.run.potions[i]).name,game.CanAct(),mx,my);
-    if(game.CanAct()&&!game.TurnStarRules())for(int i=0;i<int(s.hand.size());++i)if(CardRect(int(s.hand.size()),i).Contains(mx,my)){
-        const auto& card=s.Definition(s.hand[i]);const int x=std::clamp(CardRect(int(s.hand.size()),i).x,30,Width-400);
-        Box({x,475,370,128},C(255,252,246));Wrapped({x+16,489,338,105},card.name+": "+card.description,Ink);break;
-    }
     if(game.Reward()){
         Blend(210);DrawBox(0,0,Width,Height,C(38,57,44),TRUE);Blend(255);
         Box({340,205,920,470},C(251,249,243),24);
         Center(800,250,"Chiến lợi phẩm",Ink,brand_);
         Center(800,300,"Chọn 1 trong 3 lá. HP "+std::to_string(game.run.hp)+"/"+std::to_string(game.run.max_hp)+" được giữ sang bản đồ.",Muted,font_);
+        if(game.TurnStarRules())Center(800,640,std::to_string(game.summary.turns)+" lượt / "+std::to_string(game.summary.cards)+" lá / HP -"+std::to_string(game.summary.damage)+" / Chặn "+std::to_string(game.summary.blocked)+" / Hồi +"+std::to_string(game.summary.healed)+" / Seed "+std::to_string(game.summary.seed),Muted,small_);
         for(int i=0;i<int(game.run.rewards.size());++i){
             const auto card=s.StarCardView(s.Definition(game.run.rewards[i]),game.TurnStarRules());
             Card(card,RewardRect(i),i,true,false,mx,my);
@@ -320,7 +331,15 @@ void Ui::Draw(const Game& game,int mx,int my){
     }
 }
 void Ui::Click(Game& game,int mx,int my){
+    if(FeedbackButton().Contains(mx,my)){game.ToggleFeedback();return;}
     if(AudioButton().Contains(mx,my)){game.ToggleAudio();return;}
+    for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
+    if(game.forecast_view){if(ForecastCloseButton().Contains(mx,my)||ForecastButton().Contains(mx,my))game.ToggleForecast();return;}
+    if(game.TurnStarRules()&&ForecastButton().Contains(mx,my)&&(game.CanAct()||game.ResolvingStars())){game.ToggleForecast();return;}
+    if(game.pile_view){if(PileCloseButton().Contains(mx,my))game.pile_view=0;else if(PilePrevButton().Contains(mx,my))game.pile_page=std::max(0,game.pile_page-1);else if(PileNextButton().Contains(mx,my)){const int pages=std::max(1,(int(Game::PileCounts(game.pile_view==1?game.state.draw:game.state.discard).size())+13)/14);game.pile_page=std::min(pages-1,game.pile_page+1);}return;}
+    if(game.Practice()&&DifficultyButton().Contains(mx,my)){game.CyclePracticeDifficulty();return;}
+    if(game.CanAct()&&DrawPileButton().Contains(mx,my)){game.TogglePile(1);return;}
+    if(game.CanAct()&&DiscardPileButton().Contains(mx,my)){game.TogglePile(2);return;}
     if(game.Menu()){
         if(BackButton().Contains(mx,my)){game.BackMenu();return;}
         if(game.MenuPage()==1){
@@ -347,7 +366,6 @@ void Ui::Click(Game& game,int mx,int my){
         for(int i=0;i<8;++i)if(UpgradeRect(i).Contains(mx,my)){if(game.CardSelection())ChooseSelection(game,i);else ChooseTrade(game,i);return;}
         return;
     }
-    for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
     if(game.Cinematic()){if(SkipButton().Contains(mx,my))game.SkipCinematic();return;}
     if(SaveButton().Contains(mx,my)){game.Save();return;}if(LoadButton().Contains(mx,my)){game.Load();map_node_=-999;screen_node_=-999;return;}
     if(game.Reward()){
@@ -355,7 +373,11 @@ void Ui::Click(Game& game,int mx,int my){
         for(int i=0;i<int(game.run.rewards.size());++i)if(RewardRect(i).Contains(mx,my)){game.ChooseReward(i);return;}
         return;
     }
-    if(game.Result()){if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my)){game.OpenClasses();ResetView();}return;}
+    if(game.Result()){
+        if(RetrySeedButton().Contains(mx,my)){game.Retry();ResetView();return;}
+        if(NewSeedButton().Contains(mx,my)){game.NewMatch();ResetView();return;}
+        if(ResultButton().Contains(mx,my)||RestartButton().Contains(mx,my)){game.OpenClasses();ResetView();}return;
+    }
     if(RestartButton().Contains(mx,my)&&!game.Busy()){game.OpenClasses();ResetView();return;}
     if(game.Map()){
         if(MapUpButton().Contains(mx,my)){Page(game,1);return;}if(MapDownButton().Contains(mx,my)){Page(game,-1);return;}
@@ -387,6 +409,7 @@ void Ui::Click(Game& game,int mx,int my){
     if(EndButton().Contains(mx,my)){game.EndTurn();return;}
     if(UltimateButton().Contains(mx,my)){game.Ultimate();return;}
     for(int i=0;i<int(game.run.potions.size())&&i<4;++i)if(PotionRect(i).Contains(mx,my)){game.DrinkPotion(i);return;}
-    const auto hand=HandIndices(game);const int count=int(hand.size());for(int i=0;i<count;++i)if((game.TurnStarRules()?StarHandRect(count,i):CardRect(count,i)).Contains(mx,my)){game.Play(hand[i]);return;}
+    if(game.TurnStarRules()){for(auto it=game.cards.rbegin();it!=game.cards.rend();++it)if(it->zone==CardZone::Hand&&!it->leaving){const auto b=it->Bounds();if(Rect{int(b.x),int(b.y),int(b.w),int(b.h)}.Contains(mx,my)){game.Play(it->hand_index);return;}}return;}
+    const auto hand=HandIndices(game);const int count=int(hand.size());for(int i=0;i<count;++i)if(CardRect(count,i).Contains(mx,my)){game.Play(hand[i]);return;}
 }
 }
