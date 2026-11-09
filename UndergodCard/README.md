@@ -1,6 +1,6 @@
 # Undergod Card Quest — C++17 / DxLib
 
-Bản v1.4.0-preview trên `integrate/draft-main-optimizations` dùng draft làm nền rồi tích hợp các cải tiến main: chuyển động bài, preview resolver, FX nhẹ, thông tin chồng bài, kết thúc trận/recap, seed và mức khó đấu thử. Giữ 1600×900, chiến dịch, hoạt ảnh kỹ năng, ba Turn Star và sáu bộ boss. Xem [đối chiếu hợp nhất](docs/DRAFT_MAIN_INTEGRATION.md) và [kiểm chứng](docs/VALIDATION.md). HTML giữ độc lập.
+Bản v1.4.1-preview trên `integrate/draft-main-optimizations` dùng draft làm nền rồi tích hợp các cải tiến main và [vòng cải thiện sáu nhịp](docs/SIX_ACTION_POLISH.md): dự báo từng lá, chỉ báo xuyên hồi động tác, nhịp heavy/khiên/hồi và cache dự báo có đo CPU. Giữ 1600×900, chiến dịch, hoạt ảnh kỹ năng, ba Turn Star và sáu bộ boss. Xem [đối chiếu hợp nhất](docs/DRAFT_MAIN_INTEGRATION.md) và [kiểm chứng](docs/VALIDATION.md). HTML giữ độc lập.
 
 Mốc này thêm [hoạt ảnh cho từng kỹ năng](docs/SKILL_ANIMATIONS.md), dùng 18 bộ động tác và 17 bộ VFX mới: lao đâm/ném, phép bay, mổ/giậm/chém/vồ, buff và khiên tồn tại theo giáp thật cho cả hai phe. Lá đang dùng nằm dưới góc phải để không che sân. Game đợi hiệu ứng đòn cuối kết thúc trước khi mở thưởng hoặc trận kế tiếp.
 
@@ -15,6 +15,7 @@ Mở UndergodCard.sln trong Visual Studio 2022, chọn UndergodCard, Release | x
     .\verify.ps1 -Configuration Debug
     .\bin\Release\CoreChecks.exe --simulate-stars 300
     .\bin\Release\CoreChecks.exe --integrate-balance 20
+    .\bin\Release\CoreChecks.exe --forecast-benchmark 1000
     .\package.ps1 -SkipBuild
 
 Các script nhận -DxLibDir. EXE ở bin/Release/UndergodCard.exe; ZIP ở release/UndergodCard-DxLib-Windows-x64.zip. Giữ assets/data/licenses cạnh EXE. Bản đóng gói không cần SDK, Python hay Node.js.

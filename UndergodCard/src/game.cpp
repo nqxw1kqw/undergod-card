@@ -74,7 +74,7 @@ void Game::AfterResolve(float late){
     if(SettleProfile(profile,run,state.config)){profile_dirty_=true;sound_events.push_back(run.victory?"victory":"defeat");}save_dirty_=true;
 }
 void Game::Play(int index){
-    if(!CanAct()||pile_view||index<0||index>=int(state.hand.size()))return;
+    if(!CanAct()||InfoOpen()||index<0||index>=int(state.hand.size()))return;
     if(turn_stars_){
         SyncCards();
         if(!state.QueueStar(index)){Toast(state.IsQueuedStar(index)?"Lá này đã nằm trong hàng chờ.":(state.stars.player.size()>=3?"Đã đủ ba sao. Bấm Attack hoặc gỡ một lá.":"Lá này bị khóa hoặc không thể chơi."));return;}
@@ -86,14 +86,21 @@ void Game::Play(int index){
     if(attack)poses[0]={"attack",0};else ApplyMotion();
 }
 void Game::EndTurn(){
-    if(turn_stars_){if(!CanAct()||pile_view)return;if(!state.CanAttackStars()){Toast("Chọn đủ ba lá trước khi Attack. Có thể dùng Chờ nếu thiếu bài.");return;}PrepareStarCards();state.BeginStarAttack();star_sequence_=true;BeginStarMotion();return;}
+    if(turn_stars_){if(!CanAct()||InfoOpen())return;if(!state.CanAttackStars()){Toast("Chọn đủ ba lá trước khi Attack. Có thể dùng Chờ nếu thiếu bài.");return;}active_round_=Forecast();forecast_view=false;PrepareStarCards();state.BeginStarAttack();star_sequence_=true;BeginStarMotion();return;}
     if(!CanAct()||!state.EndPlayer())return;motion_=state.intent.attack?Motion::EnemyAttack:Motion::EnemyOther;motion_age_=0;motion_impact_=false;ConsumeEvents();
 }
 void Game::ApplyMotion(){
     if(motion_impact_)return;motion_impact_=true;
     if(skill_visual_.active)skill_visual_.applied=true;
     const int at=star_sequence_&&state.stars.cursor%2==0?state.stars.player[state.stars.cursor/2].hand_index:-1;
-    if(star_sequence_)state.ResolveStarAction();
+    if(star_sequence_){
+        state.ResolveStarAction();
+        if(active_step_>=0&&active_step_<6){
+            auto& step=active_round_.steps[active_step_];
+            step.damage_taken=step.damage_dealt=step.healed=step.shield=step.absorbed=0;step.effects.clear();
+            FinishForecastAction(step,state);
+        }
+    }
     else if(motion_==Motion::PlayerAttack||motion_==Motion::PlayerOther)state.Play(pending_card_);
     else state.ActEnemy();
     if(turn_stars_)ResolveCardVisual(at,std::max(0.f,motion_age_-Timing().contact));
@@ -137,7 +144,7 @@ bool Game::RemoveCard(int index){const bool changed=Shop()&&undergod::RemoveCard
 void Game::LeaveShop(){if(Shop()){undergod::LeaveShop(run);save_dirty_=true;}}
 bool Game::RestHeal(){const bool changed=Rest()&&undergod::RestHeal(run,state.config);save_dirty_|=changed;return changed;}
 bool Game::UpgradeCard(int index){const bool changed=Rest()&&undergod::UpgradeCard(run,state.config,index);save_dirty_|=changed;return changed;}
-bool Game::DrinkPotion(int index){if(!CanAct()||pile_view)return false;const bool drank=undergod::DrinkPotion(run,state,index);if(drank){AfterResolve();save_dirty_=true;}return drank;}
+bool Game::DrinkPotion(int index){if(!CanAct()||InfoOpen())return false;const bool drank=undergod::DrinkPotion(run,state,index);if(drank){AfterResolve();save_dirty_=true;}return drank;}
 bool Game::Act(const AutoStep& step){
     switch(step.kind){
     case AutoKind::Node: ChooseNode(step.index); return true;
@@ -174,7 +181,7 @@ void Game::CueStep(const Step& step){
     }
 }
 void Game::Ultimate(){
-    if(!CanAct()||pile_view)return;if(!state.StartUltimate()){Toast("Tuyệt kỹ cần "+std::to_string(state.UltimateCost())+" Nộ.");return;}
+    if(!CanAct()||InfoOpen())return;if(!state.StartUltimate()){Toast("Tuyệt kỹ cần "+std::to_string(state.UltimateCost())+" Nộ.");return;}
     sound_events.push_back("ultimate");
     ConsumeEvents();visual={};cinematic_age_=0;
     cinematic_.Start(timeline_,[this](const Step& s){CueStep(s);},[this]{state.UltimateImpact();AfterResolve();},[this]{state.FinishUltimate();visual={};poses[0]={};if(turn_stars_)AfterResolve();});

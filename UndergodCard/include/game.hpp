@@ -31,6 +31,11 @@ class Game {
     void ReactSkillEvent(const Event& event,float late=0);
     unsigned next_visual_id_=1,session_seed_=1337;
     Rng visual_rng_;
+    mutable ForecastCache forecast_cache_;
+    RoundForecast active_round_;
+    int active_step_=-1;
+    void EnsureForecastCache()const;
+    CardPreview EvaluateCard(int index)const;
     PracticeDifficulty practice_difficulty_=PracticeDifficulty::Standard;
     void ResetPresentation();
     void SyncCards(bool deal=false);
@@ -81,6 +86,16 @@ public:
     MatchSummary summary;
     TerminalVisual terminal;
     int focused_card=-1,pile_view=0,pile_page=0;
+    bool forecast_view=false;
+    bool InfoOpen()const{return pile_view||forecast_view;}
+    void ToggleForecast();
+    void InvalidateForecast()const{forecast_cache_.key.clear();forecast_cache_.round_valid=false;forecast_cache_.card_valid.fill(false);}
+    const ForecastMetrics& ForecastStats()const{return forecast_cache_.metrics;}
+    RoundForecast EvaluateRound()const;
+    const RoundForecast& Forecast()const;
+    int ActiveStep()const{return active_step_;}
+    bool Recovering()const{return motion_impact_;}
+    float ActionProgress()const{return motion_==Motion::None?0:std::clamp(motion_age_/std::max(.01f,Timing().end),0.f,1.f);}
     bool ReducedFeedback()const{return profile.reduced_feedback;}
     void ToggleFeedback(){profile.reduced_feedback=!profile.reduced_feedback;if(practice_)practice_profile_.reduced_feedback=profile.reduced_feedback;profile_dirty_=true;}
     void SetSessionSeed(unsigned seed){session_seed_=seed;}
@@ -181,7 +196,7 @@ public:
     bool ChooseCard(int index);
     bool TradeRelic(int index);
     void CancelSelection(){undergod::CancelSelection(run);save_dirty_=true;}
-    bool SelectTarget(int index){if(!CanAct())return false;const bool changed=state.SelectTarget(index);save_dirty_|=changed;return changed;}
+    bool SelectTarget(int index){if(!CanAct()||InfoOpen())return false;const bool changed=state.SelectTarget(index);save_dirty_|=changed;return changed;}
     void ChooseEvent(int index);
     bool Buy(int index);
     bool RemoveCard(int index);

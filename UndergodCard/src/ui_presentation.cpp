@@ -4,6 +4,18 @@
 
 namespace undergod {
 namespace { const unsigned Ink=0x343948,Muted=0x7c887c; }
+void Ui::DrawActionStrip(const Game& game,int mx,int my)const{
+    if(!game.TurnStarRules()||game.Cinematic())return;
+    if(game.CanAct())Button(ForecastButton(),"Dự báo: mất "+std::to_string(game.IncomingLoss())+" HP · T: xem 6 nhịp",true,mx,my);
+    else if(game.ResolvingStars())Button(ForecastButton(),"Diễn biến · T: xem 6 nhịp",true,mx,my);
+    const int active=game.ResolvingStars()?game.ActiveStep():-1;
+    for(int i=0;i<6;++i){
+        const Rect r{535+i*80,220,74,25};const bool current=i==active,done=active>=0&&i<active;
+        Box(r,current?(i%2?GetColor(165,100,84):GetColor(79,113,88)):GetColor(239,237,229),6);
+        Center(r.x+r.w/2,r.y+4,std::string(i%2?"Địch ":"Ta ")+std::to_string(i/2+1)+(done?" ✓":""),current?GetColor(255,255,246):Muted,small_);
+        if(current){const int width=int((r.w-4)*game.ActionProgress());if(width>0)DrawBox(r.x+2,r.y+r.h-3,r.x+2+width,r.y+r.h-1,GetColor(255,239,186),TRUE);}
+    }
+}
 void Ui::DrawCardVisuals(const Game& game,int mx,int my)const{
     for(int layer=0;layer<2;++layer)for(const auto& v:game.cards){
         if((v.zone==CardZone::Hand)!=(layer==0))continue;
@@ -32,6 +44,20 @@ void Ui::DrawPresentation(const Game& game,int mx,int my)const{
         Center(Width/2,438,std::to_string(s.turns)+" lượt · "+std::to_string(s.cards)+" lá · Gây "+std::to_string(s.damage)+" HP · Chặn "+std::to_string(s.blocked),GetColor(255,250,234),font_);
         Center(Width/2,474,"Hồi "+std::to_string(s.healed)+" HP · Seed "+std::to_string(s.seed),GetColor(228,230,218),small_);
         SetDrawBlendMode(DX_BLENDMODE_NOBLEND,255);return;
+    }
+    if(game.forecast_view&&(game.CanAct()||game.ResolvingStars())){
+        const auto& f=game.Forecast();Box({400,290,800,310},GetColor(255,252,240),16);
+        Text(423,305,game.ResolvingStars()?"DIỄN BIẾN · ✓ ĐÃ XẢY RA":"DỰ BÁO 6 NHỊP",Ink,heading_);
+        Text(423,340,"NHỊP / LÁ",Muted,small_);Text(680,340,"HIỆU QUẢ · sát thương là HP thực",Muted,small_);Text(1090,340,"HP / giáp ta",Muted,small_);
+        for(int i=0;i<6;++i){const auto& s=f.steps[i];const int y=365+i*30;const bool active=game.ResolvingStars()&&game.ActiveStep()==i;
+            if(active)Box({413,y-2,774,30},GetColor(228,236,221),5);
+            const auto color=s.cancelled?Muted:Ink;
+            Wrapped({423,y,245,29},std::to_string(i+1)+(s.resolved?" ✓ ":" · ")+(i%2?"Địch ":"Ta ")+std::to_string(i/2+1)+" · "+s.name,color,small_);
+            Wrapped({680,y,400,29},s.assumed_wait?"Ô trống · tính là Chờ":s.effects,color,small_);
+            Text(1090,y,std::to_string(s.hp)+" / "+std::to_string(s.block),color,small_);
+        }
+        Text(423,562,"Đến hết lá 6 · chưa tính hiệu ứng cuối vòng / đầu vòng sau.",Muted,small_);
+        Button(ForecastCloseButton(),"Đóng · Esc / T",true,mx,my);return;
     }
     if(!game.CanAct())return;
     if(game.pile_view){

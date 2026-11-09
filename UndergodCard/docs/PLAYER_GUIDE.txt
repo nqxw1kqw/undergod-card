@@ -1,4 +1,4 @@
-UNDERGOD CARD QUEST v1.4.0-preview — C++17 / DxLib / Windows x64
+UNDERGOD CARD QUEST v1.4.1-preview — C++17 / DxLib / Windows x64
 
 Giải nén rồi chạy UndergodCard.exe. Giữ assets, data và licenses cạnh EXE.
 Game mở ở 1600×900, tỉ lệ 16:9; giao diện và hàng bài đã căn theo khung mới.
@@ -24,6 +24,11 @@ nếu đánh ngay; các lá trước đó trong hàng có thể thay đổi kế
 Bấm lá trong hàng chờ để gỡ; các lá còn lại giữ nguyên thứ tự.
 Đủ ba vị trí thì bấm Attack hoặc E:
 ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3.
+Thanh sáu nhịp phía trên đánh dấu lá đang thi triển và cả phần hồi động tác.
+Bấm nút dự báo hoặc T: xem HP/giáp ta sau từng nhịp, lượng HP mất/chặn/hồi.
+Ô chưa chọn được tính là Chờ; chưa tính hiệu ứng cuối vòng/đầu vòng tiếp.
+Khi đang đánh, dấu ✓ trong bảng là nhịp đã xảy ra, phần còn lại là dự báo.
+Đóng bảng bằng T/Esc/nút Đóng trước khi sửa bài hoặc Attack.
 Lá hiện lớn giữa sân rồi áp hiệu ứng đúng nhịp chạm.
 Nút Chờ 1 sao dùng khi thiếu bài hoặc bị khóa; không tạo hiệu ứng.
 Khi một phe gục, phần chuỗi còn lại bị hủy.

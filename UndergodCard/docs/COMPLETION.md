@@ -1,4 +1,6 @@
-# Hoàn thiện kế hoạch — v1.4.0-preview
+# Hoàn thiện kế hoạch — v1.4.1-preview
+
+Vòng cải thiện sau hợp nhất: [SIX_ACTION_POLISH.md](SIX_ACTION_POLISH.md) bổ sung bảng sáu hành động và diễn biến thực, đánh dấu xuyên phần hồi, timing heavy/khiên/hồi riêng, cache theo trạng thái với phép đo CPU. Giữ gameplay/chỉ số/asset và tương thích bản lưu.
 
 2026-11-09: nhánh mới `integrate/draft-main-optimizations` giữ nền draft và chuyển các cải tiến main sang luật ba sao. Chuyển động bài, resolver preview, FX nhẹ, thông tin chồng bài, seed, mức khó đấu thử, terminal/recap và camera liên tục được đối chiếu tại [DRAFT_MAIN_INTEGRATION.md](DRAFT_MAIN_INTEGRATION.md). Hai nhánh nguồn giữ nguyên; trạng thái kiểm tra hiện tại ở [VALIDATION.md](VALIDATION.md).
 

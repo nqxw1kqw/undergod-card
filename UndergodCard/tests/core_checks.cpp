@@ -16,6 +16,8 @@ void TigerChecks(const Config&,const Timeline&);
 void StarChecks(const Config&,const Timeline&);
 void AnimationChecks(const Config&,const Timeline&);
 void IntegrationChecks(const Config&,const Timeline&);
+void ForecastChecks(const Config&,const Timeline&);
+void ForecastBenchmark(const Config&,const Timeline&,int);
 void IntegratedBalanceChecks(const Config&,const Timeline&,int);
 void BossDeckChecks(const Config&,const Timeline&);
 void SimulateStarRuns(const Config&,const Timeline&,int);
@@ -227,6 +229,8 @@ int main(int argc,char** argv){
     try{BossDeckChecks(config,timeline);}catch(const std::exception& error){std::cout<<"BOSS_DECK_EXCEPTION "<<error.what()<<"\n";Check(false,"Boss deck tests must not throw");}
     try{AnimationChecks(config,timeline);}catch(const std::exception& error){std::cout<<"ANIMATION_EXCEPTION "<<error.what()<<"\n";Check(false,"Animation checks must not throw");}
     try{IntegrationChecks(config,timeline);}catch(const std::exception& error){std::cout<<"INTEGRATION_EXCEPTION "<<error.what()<<"\n";Check(false,"Integration checks must not throw");}
+    try{ForecastChecks(config,timeline);}catch(const std::exception& e){std::cout<<"FORECAST_EXCEPTION "<<e.what()<<"\n";Check(false,"forecast checks must not throw");}
+    if(argc==3&&std::string(argv[1])=="--forecast-benchmark")ForecastBenchmark(config,timeline,std::clamp(std::stoi(argv[2]),10,10000));
     if(argc==3&&std::string(argv[1])=="--simulate")SimulateRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));
     if(argc==3&&std::string(argv[1])=="--simulate-stars")try{SimulateStarRuns(config,timeline,std::clamp(std::stoi(argv[2]),1,10000));}catch(const std::exception& error){std::cout<<"STAR_CAMPAIGN_EXCEPTION "<<error.what()<<"\n";Check(false,"Turn Star campaign must not throw");}
     if(argc==3&&std::string(argv[1])=="--integrate-balance")IntegratedBalanceChecks(config,timeline,std::clamp(std::stoi(argv[2]),1,1000));

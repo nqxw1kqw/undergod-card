@@ -295,7 +295,8 @@ void Ui::Draw(const Game& game,int mx,int my){
     Text(440,232,"Nộ "+std::to_string(s.rage)+" / "+std::to_string(s.config.balance.rage_max),C(123,91,153),small_);
     const std::string ultimate=s.Mods().ultimate=="storm"?"Bão Lông":(s.Mods().ultimate=="shadow"?"Ảnh Phân":"Sao Rơi");
     Center(800,131,"LƯỢT "+std::to_string(s.turn),Muted,small_);Center(800,162,game.Cinematic()?ultimate:game.TurnStatus(),Ink,font_);
-    if(game.CanAct())Center(800,198,"Dự kiến mất "+std::to_string(game.IncomingLoss())+" HP theo hàng bài hiện tại",Muted,small_);
+    if(game.TurnStarRules())DrawActionStrip(game,mx,my);
+    else if(game.CanAct())Center(800,198,"Dự kiến mất "+std::to_string(game.IncomingLoss())+" HP theo hàng bài hiện tại",Muted,small_);
     World(game);
     DrawTargets(game,mx,my);
     // Intent remains visible above the opponent, outside the zoomed arena.
@@ -331,11 +332,14 @@ void Ui::Draw(const Game& game,int mx,int my){
 }
 void Ui::Click(Game& game,int mx,int my){
     if(FeedbackButton().Contains(mx,my)){game.ToggleFeedback();return;}
+    if(AudioButton().Contains(mx,my)){game.ToggleAudio();return;}
+    for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
+    if(game.forecast_view){if(ForecastCloseButton().Contains(mx,my)||ForecastButton().Contains(mx,my))game.ToggleForecast();return;}
+    if(game.TurnStarRules()&&ForecastButton().Contains(mx,my)&&(game.CanAct()||game.ResolvingStars())){game.ToggleForecast();return;}
     if(game.pile_view){if(PileCloseButton().Contains(mx,my))game.pile_view=0;else if(PilePrevButton().Contains(mx,my))game.pile_page=std::max(0,game.pile_page-1);else if(PileNextButton().Contains(mx,my)){const int pages=std::max(1,(int(Game::PileCounts(game.pile_view==1?game.state.draw:game.state.discard).size())+13)/14);game.pile_page=std::min(pages-1,game.pile_page+1);}return;}
     if(game.Practice()&&DifficultyButton().Contains(mx,my)){game.CyclePracticeDifficulty();return;}
     if(game.CanAct()&&DrawPileButton().Contains(mx,my)){game.TogglePile(1);return;}
     if(game.CanAct()&&DiscardPileButton().Contains(mx,my)){game.TogglePile(2);return;}
-    if(AudioButton().Contains(mx,my)){game.ToggleAudio();return;}
     if(game.Menu()){
         if(BackButton().Contains(mx,my)){game.BackMenu();return;}
         if(game.MenuPage()==1){
@@ -362,7 +366,6 @@ void Ui::Click(Game& game,int mx,int my){
         for(int i=0;i<8;++i)if(UpgradeRect(i).Contains(mx,my)){if(game.CardSelection())ChooseSelection(game,i);else ChooseTrade(game,i);return;}
         return;
     }
-    for(int speed=1;speed<=3;++speed)if(SpeedButton(speed).Contains(mx,my)){game.SetSpeed(speed);return;}
     if(game.Cinematic()){if(SkipButton().Contains(mx,my))game.SkipCinematic();return;}
     if(SaveButton().Contains(mx,my)){game.Save();return;}if(LoadButton().Contains(mx,my)){game.Load();map_node_=-999;screen_node_=-999;return;}
     if(game.Reward()){

@@ -1,10 +1,12 @@
-# undergod-card — v1.4.0-preview
+# undergod-card — v1.4.1-preview
 
 Game thẻ bài roguelike bằng **C++17 / DxLib / Visual Studio 2022 / Windows x64**. Nhánh `integrate/draft-main-optimizations` lấy draft làm nền và tích hợp các cải tiến đã triển khai trên main. Giữ chiến dịch, [ba Turn Star](UndergodCard/docs/TURN_STARS.md), avatar map, chuyển cảnh đen, FIGHT và [36 lá riêng của sáu boss](UndergodCard/docs/BOSS_DECKS.md). Đối chiếu từng mục tại [báo cáo hợp nhất](UndergodCard/docs/DRAFT_MAIN_INTEGRATION.md).
 
 Khung hình/cửa sổ **1600×900 (16:9)**; giữ [hoạt ảnh riêng theo kỹ năng](UndergodCard/docs/SKILL_ANIMATIONS.md) và toàn bộ asset draft. Bản tích hợp thêm chuyển động bài có ID riêng, xem trước hiệu quả thực, popup chặn/HP riêng, FX nhẹ, fade kết thúc/recap, xem chồng bài không lộ thứ tự, chơi lại cùng seed và ba mức khó đấu thử.
 
 ![Ba lớp trong bản DxLib](UndergodCard/docs/images/classes.png)
+
+Mốc mới thêm [bảng dự báo/diễn biến sáu nhịp](UndergodCard/docs/SIX_ACTION_POLISH.md), đánh dấu đúng lá xuyên phần hồi động tác, nhịp heavy/khiên/hồi riêng và cache dự báo theo trạng thái combat. T/nút dự báo mở bảng; các phép đo CPU và kiểm tra renderer được ghi riêng, không suy thành mức tăng FPS.
 
 - Ba hồi 13 / 13 / 15 tầng, map phân nhánh theo seed; sáu boss có cơ chế riêng.
 - Xếp ba lá rồi Attack: ta 1 → địch 1 → ta 2 → địch 2 → ta 3 → địch 3. Kế hoạch địch hiện sẵn và có tooltip.

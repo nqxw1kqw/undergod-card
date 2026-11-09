@@ -44,7 +44,7 @@ int StarSmoke(Game& game,Ui& ui,Audio& audio){
     const auto enemy=Ui::EnemyStarRect(0);const auto rng=game.state.Snapshot().intent_rng;
     capture("11-boss-card-tooltip.png",enemy.x+20,enemy.y+20);check(game.state.Snapshot().intent_rng==rng,"enemy_tooltip_does_not_reroll");
     const auto attack=Ui::EndButton();ui.Click(game,attack.x+20,attack.y+20);step(.30f);capture("12-player-windup.png");check(game.state.enemy.hp==hp,"no_early_queue_damage");
-    step(.04f);check(game.state.enemy.hp==hp-15,"player_card_one_at_contact");capture("13-player-card-one.png");
+    step(game.Timing().contact-.30f+.02f);check(game.state.enemy.hp==hp-15,"player_card_one_at_contact");capture("13-player-card-one.png");
     for(int i=0;i<100&&game.ActiveActor()<0;++i)step(.02f);
     const int player_hp=game.state.player.hp;step(.69f);capture("14-enemy-lunge.png");check(game.state.player.hp==player_hp,"enemy_windup_has_no_damage");
     step(.10f);check(game.state.player.hp==player_hp-6,"enemy_card_one_after_player_one");capture("15-enemy-card-one.png");

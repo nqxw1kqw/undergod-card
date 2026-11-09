@@ -10,7 +10,9 @@ Bài hiển thị sở hữu snapshot và ID riêng, không giữ tham chiếu v
 
 JSON được tải/kiểm tra một lần khi khởi động; PNG/WAV nạp một lần, Shutdown giải phóng handle. Ảnh gục là bản sao GPU dùng bộ lọc đơn sắc DxLib, không thêm asset runtime. Sân dùng render target riêng để zoom/shake không làm lệch HUD/hit-test. Các đoạn zoom lấy mẫu tại timestamp cue nên không nhảy về mặc định khi ngắt đoạn.
 
-Chưa đo CPU/GPU/FPS trước/sau; các cải tiến được xác nhận về hành vi, tính tái lập và renderer, không phải cam kết tăng FPS. Số liệu Debug/Release, mô phỏng, asset và gói ở [VALIDATION.md](VALIDATION.md).
+Các cải tiến được xác nhận về hành vi, tính tái lập và renderer. Số liệu Debug/Release, mô phỏng, asset và gói ở [VALIDATION.md](VALIDATION.md); các phép đo CPU được tách khỏi kết luận về FPS/GPU toàn game.
+
+v1.4.1 đã đo riêng truy vấn CPU dự báo trước/sau cache và CPU Update/Draw hiện tại. Cache dùng khóa trạng thái byte chính xác, tái sử dụng bộ đệm, chỉ mô phỏng lại khi trạng thái gameplay thay đổi. Chi tiết điều kiện mất hiệu lực, benchmark và giới hạn đo ở [SIX_ACTION_POLISH.md](SIX_ACTION_POLISH.md); chưa có phép so FPS/GPU toàn game trước/sau.
 
 Game.Update nhận thời gian thực, rồi nhân playback rate 0,65 × speed cho action, pose, projectile và timeline. Core không dùng clock nên đổi x1/x2/x3 không đổi kết quả combat; toast dùng thời gian thực riêng.
 

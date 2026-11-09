@@ -21,6 +21,7 @@ class Ui {
     void DrawSkillEffects(const Game& game)const;
     void DrawCardVisuals(const Game& game,int mx,int my)const;
     void DrawPresentation(const Game& game,int mx,int my)const;
+    void DrawActionStrip(const Game& game,int mx,int my)const;
     void DrawFx(const std::string& effect,float x,float y,float size,float progress,float angle=0,int alpha=255)const;
     bool DrawExtensions(const Game& game,int mx,int my);
     void DrawTargets(const Game& game,int mx,int my)const;
@@ -92,6 +93,8 @@ public:
     static Rect AudioButton(){return ContentRect({1150,42,60,40});}
     static Rect FeedbackButton(){return {810,42,100,40};}
     static Rect DifficultyButton(){return {920,86,300,22};}
+    static Rect ForecastButton(){return {535,192,480,25};}
+    static Rect ForecastCloseButton(){return {1035,558,150,32};}
     static Rect DrawPileButton(){return {345,630,125,24};}
     static Rect DiscardPileButton(){return {345,657,125,24};}
     static Rect PilePrevButton(){return {470,574,150,32};}

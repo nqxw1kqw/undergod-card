@@ -184,11 +184,12 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR args,int){
             else if(game.Shop()){for(int i=0;i<9;++i)if(pressed(numbers[i]))game.Buy(i);if(pressed(KEY_INPUT_ESCAPE)||pressed(KEY_INPUT_E))game.LeaveShop();}
             else if(game.Rest()){if(pressed(KEY_INPUT_H))game.RestHeal();for(int i=0;i<8;++i)if(pressed(numbers[i]))ui.ChooseUpgrade(game,i);}
             else{
+                if(pressed(KEY_INPUT_T))game.ToggleForecast();
                 if(pressed(KEY_INPUT_P))game.TogglePile(1);if(pressed(KEY_INPUT_O))game.TogglePile(2);
-                if(pressed(KEY_INPUT_ESCAPE)){game.pile_view=0;game.focused_card=-1;}
+                if(pressed(KEY_INPUT_ESCAPE)){game.pile_view=0;game.forecast_view=false;game.focused_card=-1;}
                 if(pressed(KEY_INPUT_LEFT)){if(game.pile_view)game.pile_page=std::max(0,game.pile_page-1);else game.FocusCard(-1);}
                 if(pressed(KEY_INPUT_RIGHT)){if(game.pile_view){const int pages=std::max(1,(int(Game::PileCounts(game.pile_view==1?game.state.draw:game.state.discard).size())+13)/14);game.pile_page=std::min(pages-1,game.pile_page+1);}else game.FocusCard(1);}
-                if(pressed(KEY_INPUT_SPACE)&&!game.pile_view)game.Play(game.focused_card);
+                if(pressed(KEY_INPUT_SPACE)&&!game.InfoOpen())game.Play(game.focused_card);
                 for(int i=0;i<10;++i)if(pressed(numbers[i]))ui.ChooseHand(game,i);
                 if(pressed(KEY_INPUT_E))game.EndTurn();if(pressed(KEY_INPUT_U))game.Ultimate();
                 if(pressed(KEY_INPUT_Z))game.DrinkPotion(0);if(pressed(KEY_INPUT_X))game.DrinkPotion(1);

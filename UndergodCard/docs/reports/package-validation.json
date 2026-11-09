@@ -5,7 +5,7 @@
   "data_files": 18,
   "crc": true,
   "exact_manifest": true,
-  "exe_sha256": "a83d9f2f29dcfa36210d761446494f25748e4ec81f50e17c4072d2cee37c8339",
-  "zip_sha256": "a5f8afe2d8f041a425b24d73acdcda366a800735081cfacffaee0a4c888e621a",
-  "zip_bytes": 56762147
+  "exe_sha256": "ef921856fca9ca74e266de8460911f1a3fbe38a15253903682bf6d3e22210cfa",
+  "zip_sha256": "2d30757dee7404c71a779beb7ef075126a7c41167ebc88449eb506e6fb0b3597",
+  "zip_bytes": 56777133
 }

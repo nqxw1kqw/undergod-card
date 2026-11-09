@@ -1,70 +1,70 @@
 # Kiểm chứng — 2026-11-09
 
-**v1.4.0-preview**, nhánh `integrate/draft-main-optimizations`, C++17 / DxLib / MSVC v143 / Visual Studio 2022 / Windows x64. Draft `65b383b` là nền; main `2a70e02` cung cấp các cải tiến được chuyển sang luật Turn Star. Xem [đối chiếu từng phần](DRAFT_MAIN_INTEGRATION.md). Hai nhánh nguồn giữ nguyên.
+**v1.4.1-preview**, nhánh `integrate/draft-main-optimizations`, C++17 / DxLib / MSVC v143 / Windows x64. Tiếp tục sau mốc hợp nhất `f8f17e8`: bảng dự báo sáu hành động, trace thực tại contact, chỉ báo xuyên hồi động tác, chỉnh nhịp heavy/khiên/hồi và cache dự báo có đo CPU. [Thiết kế và điều kiện cache](SIX_ACTION_POLISH.md).
 
-| Kiểm tra | Kết quả mới chạy |
+| Kiểm tra mới chạy | Kết quả |
 | --- | --- |
-| Build Debug / Release x64 | Thành công; chỉ còn cảnh báo C4010 trong SDK DxLib |
-| Core Debug / Release | **4.077 kiểm tra/cấu hình, 0 lỗi** |
-| Release với 300 hành trình | **4.078 kiểm tra, 0 lỗi**; 133 thắng /167 thua /0 kẹt, giữ nguyên baseline draft |
-| Sáu boss ×ba lớp ×ba mức khó ×ba chính sách ×20 seed | **3.240 trận +3.240 replay**, so trace/snapshot/RNG và bảo toàn đa tập bài; 383.937 kiểm tra, 0 lỗi/0 kẹt |
-| Bốn smoke DxLib trên Debug / Release | Legacy, Turn Star, skill animation, integration đều thoát 0 và PASS=1 |
+| MSVC x64 Debug / Release | Build thành công; cảnh báo còn lại C4010 trong SDK DxLib |
+| Core Debug / Release | **4.141 kiểm tra/cấu hình, 0 lỗi** |
+| Release +300 hành trình | **4.142 kiểm tra, 0 lỗi**; 133 thắng/167 thua/0 kẹt, giữ baseline |
+| Release +benchmark dự báo | **4.143 kiểm tra, 0 lỗi**; 15 block ×1.000 truy vấn mỗi cách, checksum/snapshot khớp |
+| Sáu boss ×ba lớp ×ba mức khó ×ba chính sách ×20 seed | 3.240 trận +3.240 replay; **384.001 kiểm tra, 0 lỗi/0 kẹt** |
+| Bốn smoke DxLib trên Debug / Release | Legacy, Turn Star, skill animation, integration đều thoát 0, PASS=1 |
 | EXE từ ZIP giải nén riêng | Cả bốn smoke thoát 0, PASS=1 |
-| Renderer | Backbuffer/client 1600×900; 18 ảnh integration, 24 mốc skill; bộ lọc đơn sắc DxLib chạy thành công cho ba hero/sáu boss |
-| Runtime | 379 PNG/12 WAV giữ nguyên hash so với draft; 18 JSON, chỉ cinematic đổi cue zoom |
-| ZIP | 417 tệp; CRC, danh sách chính xác, hash toàn bộ runtime và EXE khớp nguồn |
+| Cache trong renderer | Ba tình huống ×120 frame không dựng lại dự báo |
+| Trình diễn | 23 ảnh integration; đã xem bảng dự báo, trace ✓, recovery, heavy trước/sau contact |
+| Runtime và gói | 379 PNG/12 WAV giữ hash; 18 JSON; 417 tệp, CRC/manifest/hash khớp |
 
-Báo cáo máy đọc và 80 SHA-256 nguồn chuẩn hóa LF: [validation.json](reports/validation.json). Log build/core/renderer: [Debug](reports/integrate-verify-debug.txt), [Release](reports/integrate-verify-release.txt). Mốc trước được lưu ở [v1.3.1](reports/v1.3.1-validation.md) và [v1.3.0](reports/v1.3.0-validation.md).
+Báo cáo máy đọc có 83 hash nguồn chuẩn hóa LF: [validation.json](reports/validation.json). Log [Debug](reports/polish-verify-debug.txt), [Release](reports/polish-verify-release.txt). Mốc trước được giữ tại [v1.4.0](reports/v1.4.0-validation.md), [v1.3.1](reports/v1.3.1-validation.md).
 
-## Hành vi mới và ảnh thực
+## Dự báo, diễn biến và timing
 
-Test kiểm tra ID hình ảnh của hai bản bài trùng tên, queue/unqueue/reflow, chuyển bài sang ô thi triển rồi bỏ/tiêu hao sau contact, vùng bấm theo vị trí đang vẽ. Giữ timing riêng từng skill, projectile và lớp khiên của draft. Bài vòng mới chỉ xuất hiện sau chuỗi sáu hành động và hồi động tác; forecast ẩn khi busy.
+Test dùng cùng resolver trên bản sao để kiểm tra HP/giáp sau cả sáu contact, thay đổi thứ tự bài, giáp hấp thụ một phần, hồi giới hạn, ô trống = Chờ và hủy các nhịp còn lại khi lethal. Dự báo không đổi snapshot/ba RNG; khi thực hiện, trace ghi event và HP/giáp thật. Modal chặn bài/Attack/chờ/thuốc/đổi mục tiêu.
 
-Preview chạy resolver trên bản sao: HP thực/giáp bị chặn/hồi bị giới hạn/Nộ bị giới hạn, lý do khóa lá; không đổi combat hoặc ba RNG. P/O chỉ hiện tên/số lượng, có phân trang và khóa thao tác xuyên modal. Đã xem ảnh chi tiết UTF-8 và bảng chồng bài.
+Thanh sáu nhịp và viền bài dùng chỉ số hành động trình diễn độc lập với core cursor: sau contact của Ta1, core cursor đã thành 1 nhưng chip vẫn Ta1 đến khi recovery xong. Bảng diễn biến đánh dấu ✓ ở các contact đã xảy ra, các dòng còn lại là dự báo. T/nút dự báo mở bảng, T/Esc/nút Đóng đóng; tốc độ/âm thanh/FX vẫn bấm được.
 
-![Chi tiết resolver](images/integration-details.png)
+![Dự báo HP và giáp từng nhịp](images/six-step-forecast.png)
 
-![Chồng bài có phân trang, không lộ thứ tự](images/integration-piles.png)
+![Trace thực trong lúc hồi động tác](images/six-step-live.png)
 
-Giáp chặn một phần tạo hai popup khác vị trí. RNG hình ảnh riêng; hạt/popup có giới hạn và được xóa cả ngoài cinematic. Nút FX nhẹ thay đổi camera ngay giữa cinematic, tắt rung/flash, lưu trong profile. Zoom nối từ giá trị segment trước, quay về trung tính trước khi kết thúc; test cả fine/coarse update, skip và x1/x2/x3.
+Heavy có launch/contact/end 0,12/0,44/0,88 giây logic; đòn thường giữ contact 0,32. Họ khiên/hồi mặc định kết thúc ở 0,62/0,70, giữ override riêng. Test x1/x2/x3 xác nhận không gây damage hoặc phát hit cue trước contact, và chỉ phát một lần tại contact. Smoke cũ đổi mốc heavy gắn cứng sang timing thực, giữ kiểm tra trước/sau.
 
-![Giáp và HP hiển thị riêng tại contact](images/integration-impact.png)
+![Heavy lấy đà trước contact](images/heavy-windup.png)
 
-Core xác định chết tại contact; controller giữ terminal 1,5 giây logic, fade kết quả từ 0,8–1,5 giây rồi settle một lần. Ảnh gục dùng hit sprite đã qua bộ lọc đơn sắc DxLib, nghiêng/mờ, giữ chân trong sân. Đã xem pose, fade, recap và nút cùng seed/seed mới. Test ultimate kết liễu bị skip hai lần không nhân đôi sát thương/thưởng/recap.
+Các kiểm tra cũ về map/avatar xuyên FadeOut, FIGHT/chia bài, sáu bộ boss, 98 binding hoạt ảnh, projectile/ward, lưu/tải/meta và skip/terminal vẫn qua. Chiến dịch và chỉ số bài không đổi; JSON duy nhất đổi so với v1.4.0 là `skill_animations.json`.
 
-![Fade kết quả và actor gục](images/integration-fade.png)
+## Đo hiệu năng
 
-![Recap và lựa chọn seed](images/integration-result.png)
+[Benchmark CPU dự báo](reports/forecast-performance.json) so đúng cùng kết quả HP trên cùng tình huống ba lá, xen kẽ 15 block ×1.000 truy vấn:
 
-[Smoke integration Release](reports/release-integration-smoke.txt) gọi renderer và các handler click thật; [Debug](reports/debug-integration-smoke.txt) cũng qua. Hai smoke cũ giữ kiểm tra avatar đúng đích xuyên FadeOut/lưu/tải, FIGHT/chia bài, thứ tự ba sao, tooltip/bộ sáu boss, charge, menu/shop/sự kiện và hành trình tham chiếu. Skill smoke tiếp tục đi qua 98 cấu hình, 18 bộ cơ thể/17 FX; không dùng asset prototype main đè lên draft.
+| Truy vấn HP dự báo | Median µs/lần | P95 của block µs/lần |
+| --- | --- | --- |
+| Cách cũ: copy combat +resolve sáu action mỗi lần | 61,6358 | 72,4959 |
+| Cache: so khóa trạng thái, dùng lại kết quả | 0,9702 | 1,5802 |
 
-## Mô phỏng và mức khó
+Khóa cache là chuỗi byte chính xác, không phải hash. Bộ đệm tái sử dụng dung lượng; key gồm các trạng thái ảnh hưởng resolver và RNG. Đổi HP/giáp/tay/plan/runtime/pile làm mất hiệu lực cache; thời gian hình ảnh, tốc độ và FX không buộc tính lại. Catalog cố định giữa reset/load; sửa catalog trực tiếp cần gọi `InvalidateForecast()`.
 
-300 seed 0–299, Thử Thách 0, không mua kỹ năng meta, luân phiên ba lớp; bot chờ chuyển cảnh/hành động. **Đã chạy lại ở mốc tích hợp này**: Chiến Binh 50/100 thắng, Pháp Sư 28/100, Ninja 55/100; tổng 133/300, thua theo hồi 34/36/97, không kẹt. 90 trận Ếch/Hổ vẫn 48 thắng/42 thua/0 kẹt. [Dữ liệu hành trình](reports/turn-star-simulation.json), [log core](reports/integrate-core-release.txt).
+Đo thêm renderer thật: [Release](reports/native-performance-release.json), [Debug](reports/native-performance-debug.json), [EXE giải nén](reports/native-performance-packaged.json). Mỗi trường hợp chuẩn bị/focus/bảng sáu nhịp có 120 frame; ghi CPU Update, CPU gửi lệnh Draw, và present riêng. Present gồm cả đợi GPU/màn hình.
 
-Mức khó mới chỉ dành cho đấu thử: Nhẹ/Chuẩn/Khó thay sát thương địch −2/0/+4, giữ HP, bài, seed và RNG. Giữ cơ chế tụ lực của boss draft; không nhập chỉ số charge của prototype bốn lá. Thử Thách chiến dịch vẫn độc lập.
+Đây là phép đo riêng truy vấn CPU và chi phí khung hình hiện tại, **chưa phải so FPS/GPU toàn game trước/sau**, không phải benchmark máy sạch. Không suy mức tăng FPS từ tỉ lệ thời gian truy vấn.
 
-Mỗi hàng dưới có 360 trận (sáu boss ×ba lớp ×20 seed), cùng bộ seed cho từng chính sách:
+## Hồi quy chiến dịch và boss
 
-| Mức đấu thử | Ưu tiên công: thắng/thua | Có thủ: thắng/thua | Có thủ/hồi: thắng/thua |
-| --- | --- | --- | --- |
-| Nhẹ | 103/257 | 130/230 | 142/218 |
-| Chuẩn | 67/293 | 105/255 | 122/238 |
-| Khó | 7/353 | 58/302 | 67/293 |
+300 seed 0–299, Thử Thách 0, không mua meta, luân phiên ba lớp: thắng theo lớp 50/28/55, tổng 133/300; thua theo hồi 34/36/97, không kẹt. 90 trận Ếch/Hổ giữ 48 thắng/42 thua/0 kẹt. [Dữ liệu hành trình](reports/turn-star-simulation.json), [log](reports/polish-campaign-release.txt).
 
-Mỗi trận chạy lại với cùng quyết định; mọi action kiểm tra bảo toàn bài gốc/bài được tạo, trace thứ tự tay và ba RNG. [Dữ liệu đầy đủ](reports/integrated-balance.json), [log 383.937 kiểm tra](reports/integrate-balance-release.txt). Đây là bot đơn giản dùng bài khởi đầu nâng cấp và tuyệt kỹ, không phải người chơi tối ưu; các mức đấu thử vẫn khá khó. Chỉ số `shield_budget_gap` là chênh giữa sát thương công bố và ngân sách giáp hiện tại, không chứng minh HP buộc phải mất hoặc seed không thể thắng.
+Loạt sáu boss ×ba lớp ×ba mức khó ×ba chính sách ×20 seed được chạy lại với replay, trace/RNG và bảo toàn đa tập bài. Giữ nguyên số thắng/thua so với mốc hợp nhất: [dữ liệu](reports/integrated-balance.json), [log 384.001 kiểm tra](reports/polish-balance-release.txt). Bot không đại diện tỉ lệ thắng người chơi.
 
-## Gói Windows của nhánh tích hợp
+## Gói Windows
 
-ZIP chỉ có runtime/hướng dẫn/giấy phép, không có save/profile, SDK, test EXE hoặc PDB. Đã giải nén sang thư mục mới và chạy đủ bốn smoke.
+Gói chỉ có EXE/runtime/hướng dẫn/giấy phép, không có save/profile, SDK, CoreChecks hoặc PDB. Đã giải nén vào thư mục mới và chạy bốn smoke độc lập.
 
-- 417 tệp; **56.762.147 byte**; 379 PNG /12 WAV /18 JSON.
-- SHA-256 ZIP: `a5f8afe2d8f041a425b24d73acdcda366a800735081cfacffaee0a4c888e621a`.
-- SHA-256 EXE: `a83d9f2f29dcfa36210d761446494f25748e4ec81f50e17c4072d2cee37c8339`.
+- 417 tệp; **56.777.133 byte**; 379 PNG /12 WAV /18 JSON.
+- SHA-256 ZIP: `2d30757dee7404c71a779beb7ef075126a7c41167ebc88449eb506e6fb0b3597`.
+- SHA-256 EXE: `ef921856fca9ca74e266de8460911f1a3fbe38a15253903682bf6d3e22210cfa`.
 - [Báo cáo gói](reports/package-validation.json), [smoke integration từ gói](reports/packaged-integration-smoke.txt).
 
 ## Giới hạn bằng chứng
 
-Smoke sử dụng renderer/backbuffer và handler UI Windows với fixture kiểm soát; chưa xác nhận nhập liệu chuột/phím Windows bằng chơi tay toàn chiến dịch, cảm giác x1/x2/x3 hoặc một máy Windows sạch khác. Helper Computer Use trước đó không nối được native pipe. Chưa đo thời lượng 25–35 phút/run, tỉ lệ thắng người mới 40–50% hoặc CPU/GPU/FPS trước/sau. Không suy những điều đó từ build/bot/PNG.
+Đã kiểm tra renderer/backbuffer và handler UI với fixture kiểm soát. Chưa chơi tay toàn chiến dịch, xác nhận nhập liệu chuột/phím Windows trọn luồng hoặc thử trên máy Windows sạch khác. Computer Use khởi tạo/liệt kê cửa sổ được ở mốc này; các kiểm tra trong game vẫn là tự động, không ghi thành bằng chứng chơi tay.
 
-HTML/website ngoài phạm vi và thư mục sibling hiện không có trong workspace; không tuyên bố kiểm tra lại web. Session v2 giữ nguyên; profile v1 có thêm tùy chọn FX tương thích file cũ. Bản tích hợp giữ nhãn preview.
+Thời lượng 25–35 phút/run, tỉ lệ thắng người mới 40–50% và cảm giác thao tác cần mẫu chơi thực. Dự báo chỉ đến hết lá thứ sáu, không tính hiệu ứng cuối vòng/đầu vòng sau; UI ghi rõ phạm vi. Session/profile giữ tương thích. HTML ngoài phạm vi. Bản này giữ nhãn preview.

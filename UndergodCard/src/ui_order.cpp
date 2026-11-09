@@ -15,7 +15,7 @@ std::vector<int> Ui::HandIndices(const Game& game)const{
     for(int i=0;i<int(game.state.hand.size());++i)if(!game.TurnStarRules()||!game.state.IsQueuedStar(i))result.push_back(i);
     return result;
 }
-void Ui::ChooseHand(Game& game,int index){if(game.pile_view)return;const auto hand=HandIndices(game);if(index>=0&&index<int(hand.size()))game.Play(hand[index]);}
+void Ui::ChooseHand(Game& game,int index){if(game.InfoOpen())return;const auto hand=HandIndices(game);if(index>=0&&index<int(hand.size()))game.Play(hand[index]);}
 void Ui::PlanCard(const CardDef& card,Rect r,int number,bool filled,bool spent,int mx,int my)const{
     const auto border=spent?Color(207,211,199):(filled?Color(129,154,119):Color(214,216,206));
     Box({r.x,r.y+3,r.w,r.h},Color(222,221,207),9);Box(r,border,9);Box({r.x+1,r.y+1,r.w-2,r.h-2},filled?Color(251,249,237):Color(239,239,229),8);
@@ -39,7 +39,8 @@ void Ui::DrawStarBattle(const Game& game,int mx,int my){
     for(int slot=0;slot<3;++slot){
         const bool filled=slot<int(state.stars.player.size());CardDef card;
         if(filled){const auto& q=state.stars.player[slot];if(q.id.empty()){card.name="Chờ";card.description="Không thực hiện hành động.";}else card=state.StarCardView(state.Definition(q.id));}
-        const bool spent=state.stars.cursor>=slot*2+1;PlanCard(card,StarSlotRect(slot),slot+1,filled&&spent,spent,mx,my);
+        const bool spent=state.stars.cursor>=slot*2+1;const bool active=game.ResolvingStars()&&game.ActiveStep()==slot*2;
+        PlanCard(card,StarSlotRect(slot),slot+1,filled&&(spent||active),spent,mx,my);
     }
     const std::string ultimate=state.Mods().ultimate=="storm"?"Bão Lông":(state.Mods().ultimate=="shadow"?"Ảnh Phân":"Sao Rơi");
     if(!game.ResolvingStars())Button(UltimateButton(),"✦ "+ultimate,game.CanAct()&&state.CanUltimate(),mx,my);
@@ -57,6 +58,10 @@ void Ui::DrawStarBattle(const Game& game,int mx,int my){
 
     }
     DrawCardVisuals(game,mx,my);
+    if(game.ResolvingStars()){
+        const int at=game.ActiveStep();const auto r=at%2?EnemyStarRect(at/2):StarSlotRect(at/2);
+        DrawRoundRect(r.x-3,r.y-3,r.x+r.w+3,r.y+r.h+3,9,9,at%2?Color(165,100,84):Color(79,113,88),FALSE);
+    }
     for(int slot=0;slot<int(state.stars.enemy.size());++slot)if(EnemyStarRect(slot).Contains(mx,my)){
         const auto card=state.EnemyStarView(slot);const int actor=state.stars.enemy[slot].actor;
         Box({1035,337,425,185},Color(255,252,240),14);

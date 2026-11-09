@@ -45,10 +45,10 @@ float Game::DealtCards()const{
     if(arrival_==Arrival::Deal)return std::clamp((arrival_age_-.08f)/.12f,0.f,float(state.hand.size()));
     return float(state.hand.size());
 }
-bool Game::QueueWait(){const bool result=CanAct()&&!pile_view&&turn_stars_&&state.QueueWait();save_dirty_|=result;return result;}
-bool Game::UnqueueCard(int slot){const bool result=CanAct()&&!pile_view&&state.UnqueueStar(slot);save_dirty_|=result;if(result){SyncCards();sound_events.push_back("select");}return result;}
+bool Game::QueueWait(){const bool result=CanAct()&&!InfoOpen()&&turn_stars_&&state.QueueWait();save_dirty_|=result;return result;}
+bool Game::UnqueueCard(int slot){const bool result=CanAct()&&!InfoOpen()&&state.UnqueueStar(slot);save_dirty_|=result;if(result){SyncCards();sound_events.push_back("select");}return result;}
 void Game::BeginStarMotion(){
-    const int cursor=state.stars.cursor,slot=cursor/2;
+    const int cursor=state.stars.cursor,slot=cursor/2;active_step_=cursor;
     const bool enemy=cursor%2!=0;
     active_charge_=enemy&&state.stars.enemy.at(slot).action.kind==IntentKind::Charge;
     active_actor_=-1;
@@ -70,7 +70,7 @@ void Game::BeginStarMotion(){
 void Game::FinishStarMotion(){
     if(state.phase==Phase::Won||state.phase==Phase::Lost){star_sequence_=false;state.stars.resolving=false;active_actor_=-1;AfterResolve();return;}
     if(state.stars.cursor<Combat::TurnStars*2){BeginStarMotion();return;}
-    state.FinishStarRound();star_sequence_=false;active_actor_=-1;AfterResolve();
+    state.FinishStarRound();star_sequence_=false;active_actor_=-1;forecast_view=false;AfterResolve();
     if(state.phase==Phase::Player&&run.place==Place::Fight)BeginArrival(false);
 }
 AutoStep Game::Suggest()const{

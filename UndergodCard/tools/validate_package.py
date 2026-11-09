@@ -16,7 +16,7 @@ with zipfile.ZipFile(archive) as bundle:
     for name in files:
         if name.startswith(('assets/','data/')):assert bundle.read(name)==(ROOT/name).read_bytes(),name
     exe=bundle.read('UndergodCard.exe');assert exe[:2]==b'MZ' and exe==(ROOT/'bin/Release/UndergodCard.exe').read_bytes()
-    guide=bundle.read('README.txt').decode('utf-8');assert 'v1.4.0-preview' in guide and 'profile.json' in guide and 'Attack' in guide
+    guide=bundle.read('README.txt').decode('utf-8');assert 'v1.4.1-preview' in guide and 'profile.json' in guide and 'Attack' in guide
     report=dict(files=len(files),pngs=len(manifest['files']),wavs=len(manifest['audio_files']),data_files=len(list((ROOT/'data').glob('*.json'))),crc=True,exact_manifest=True,exe_sha256=hashlib.sha256(exe).hexdigest(),zip_sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),zip_bytes=archive.stat().st_size)
     (ROOT/'artifacts/package-validation.json').write_text(json.dumps(report,indent=2)+'\n')
     print('PACKAGE '+json.dumps(report))

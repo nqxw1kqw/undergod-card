@@ -10,6 +10,7 @@ void Move(CardVisual& c,CardBox to,float duration=.2f,float delay=0){c.from=c.Bo
 }
 void Game::ResetPresentation(){
     cards.clear();particles.clear();summary={};summary.seed=run.seed;terminal={};next_visual_id_=1;
+    InvalidateForecast();active_round_={};active_step_=-1;forecast_view=false;
     focused_card=-1;pile_view=pile_page=0;visual_rng_.Seed(run.seed^0xBADC0DEu^uint32_t(run.node+1));
 }
 void Game::SyncCards(bool deal){
@@ -49,7 +50,7 @@ void Game::PrepareStarCards(){
         if(at==selected.end()){Move(c,DiscardBox(),.24f);c.zone=CardZone::Discard;c.leaving=true;c.hand_index=-1;}
         else c.hand_index=at->second;
     }
-    focused_card=-1;pile_view=0;
+    focused_card=-1;pile_view=0;forecast_view=false;
 }
 void Game::StartCardVisual(bool enemy,int slot){
     if(!turn_stars_||active_card_.id.empty()||skill_visual_.animation.id=="wait")return;
@@ -85,7 +86,7 @@ void Game::TickPresentation(float dt){
 void Game::BeginTerminal(float late){
     if(!turn_stars_||terminal.active||(state.phase!=Phase::Won&&state.phase!=Phase::Lost))return;
     terminal.active=true;terminal.age=late;terminal.entries=1;summary.turns=state.turn;summary.hp=state.player.hp;summary.seed=run.seed;
-    focused_card=-1;pile_view=0;
+    focused_card=-1;pile_view=0;forecast_view=false;
 }
 void Game::PresentEvent(const undergod::Event& event,float late){
     if(event.type==EventType::CardPlayed&&!event.enemy)++summary.cards;
@@ -112,7 +113,7 @@ void Game::PresentEvent(const undergod::Event& event,float late){
         if(particles.size()<64&&late<.4f)particles.push_back({unit,event.type,point.first,point.second,late,.4f,vx,vy});
     }
 }
-CardPreview Game::Preview(int index)const{
+CardPreview Game::EvaluateCard(int index)const{
     CardPreview p;if(index<0||index>=int(state.hand.size())){p.unavailable="Chưa chọn lá";return p;}
     const auto& c=state.Definition(state.hand[index]);p.cost=turn_stars_?1:c.cost;
     if(c.unplayable){p.unavailable="Lời nguyền không chơi được";return p;}
@@ -138,18 +139,15 @@ CardPreview Game::Preview(int index)const{
 }
 int Game::IncomingLoss()const{
     if(!CanAct())return 0;
-    Combat copy=state;copy.events.clear();
-    if(turn_stars_){
-        while(copy.stars.player.size()<3)copy.QueueWait();if(!copy.BeginStarAttack())return 0;
-        for(int n=0;n<6&&copy.phase==Phase::Player;++n)copy.ResolveStarAction();
-    }else{copy.EndPlayer();copy.ActEnemy();}
+    if(turn_stars_)return Forecast().damage_taken;
+    Combat copy=state;copy.events.clear();copy.EndPlayer();copy.ActEnemy();
     int damage=0;for(const auto& e:copy.events)if(e.type==EventType::Damage&&!e.enemy)damage+=e.amount;return damage;
 }
 std::string Game::TurnStatus()const{
     if(terminal.active&&!terminal.settled)return state.phase==Phase::Won?"Kết liễu · chờ kết thúc":"Đang kết thúc trận";
     if(ResolvingStars()){
         const auto actor=active_actor_<0?"Bạn":state.TargetName(active_actor_);
-        return actor+(motion_impact_?" · Hồi động tác":" · Đang thi triển");
+        return std::to_string(active_step_+1)+"/6 · "+actor+(motion_impact_?" · Hồi động tác":" · Đang thi triển");
     }
     if(Busy())return "Chờ chia bài / chuyển cảnh";
     return "Lượt của bạn";
@@ -170,7 +168,7 @@ void Game::FocusCard(int delta){
     auto at=std::find(slots.begin(),slots.end(),focused_card);int n=at==slots.end()?(delta<0?int(slots.size())-1:0):(int(at-slots.begin())+delta+int(slots.size()))%int(slots.size());
     focused_card=slots[n];pile_view=0;
 }
-void Game::TogglePile(int which){if(!CanAct()||which<1||which>2)return;pile_view=pile_view==which?0:which;pile_page=0;focused_card=-1;}
+void Game::TogglePile(int which){if(!CanAct()||which<1||which>2)return;forecast_view=false;pile_view=pile_view==which?0:which;pile_page=0;focused_card=-1;}
 void Game::NewMatch(){if(Busy())return;session_seed_+=0x9e3779b9u;if(practice_)StartBossPractice(state.EnemyId(),session_seed_,run.class_id);else NewRun(session_seed_,run.class_id,run.challenge);}
 void Game::Retry(){if(Busy())return;if(practice_)StartBossPractice(state.EnemyId(),run.seed,run.class_id);else NewRun(run.seed,run.class_id,run.challenge);}
 bool Game::SelectPracticeDifficulty(PracticeDifficulty level){

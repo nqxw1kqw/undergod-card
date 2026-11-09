@@ -82,6 +82,8 @@ Phạm vi được Shin xác nhận: toàn bộ lộ trình còn lại, cùng nh
 - [x] Giữ toàn bộ hash 379 PNG/12 WAV và kiểm tra chiến dịch 300 seed.
 - [x] Build Debug/Release, bốn smoke DxLib và EXE từ gói giải nén; bằng chứng ở VALIDATION.md.
 
+Vòng v1.4.1 đã kiểm tra bảng dự báo sáu nhịp/trace contact, chỉ báo xuyên recovery, timing heavy x1/x2/x3, cache không đổi RNG và không build lại qua 120 frame DxLib; xem [SIX_ACTION_POLISH.md](SIX_ACTION_POLISH.md).
+
 ## Các mục cần bằng chứng chơi thực
 
 - [ ] Chơi tay toàn chiến dịch trên Windows (helper trước đó lỗi native pipe).
